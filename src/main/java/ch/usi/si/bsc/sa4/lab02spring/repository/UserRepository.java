@@ -1,6 +1,6 @@
 package ch.usi.si.bsc.sa4.lab02spring.repository;
 
-import ch.usi.si.bsc.sa4.lab02spring.model.User;
+import ch.usi.si.bsc.sa4.lab02spring.model.User.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

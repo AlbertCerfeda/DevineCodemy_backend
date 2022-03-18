@@ -2,7 +2,7 @@ package ch.usi.si.bsc.sa4.lab02spring.controller;
 
 import ch.usi.si.bsc.sa4.lab02spring.controller.dto.CreateUserDTO;
 import ch.usi.si.bsc.sa4.lab02spring.controller.dto.UserDTO;
-import ch.usi.si.bsc.sa4.lab02spring.model.User;
+import ch.usi.si.bsc.sa4.lab02spring.model.User.User;
 import ch.usi.si.bsc.sa4.lab02spring.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

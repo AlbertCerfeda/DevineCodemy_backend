@@ -1,4 +1,4 @@
-package ch.usi.si.bsc.sa4.lab02spring.model;
+package ch.usi.si.bsc.sa4.lab02spring.model.User;
 
 import ch.usi.si.bsc.sa4.lab02spring.controller.dto.UserDTO;
 import ch.usi.si.bsc.sa4.lab02spring.service.PasswordHashingService;

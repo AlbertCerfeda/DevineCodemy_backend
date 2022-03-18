@@ -1,11 +1,13 @@
-package ch.usi.si.bsc.sa4.lab02spring.model;
+package ch.usi.si.bsc.sa4.lab02spring.model.Level;
+import ch.usi.si.bsc.sa4.lab02spring.model.EOrientation;
+
 
 public class Robot {
     private int start_x;
     private int start_y;
-//    private Orientation orientation;
+    private EOrientation orientation;
 
-    public Robot(int start_x, int start_y) {
+    public Robot(int start_x, int start_y, EOrientation orientation) {
         this.start_x = start_x;
         this.start_y = start_y;
     }

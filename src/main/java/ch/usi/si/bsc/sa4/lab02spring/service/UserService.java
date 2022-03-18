@@ -1,7 +1,7 @@
 package ch.usi.si.bsc.sa4.lab02spring.service;
 
 import ch.usi.si.bsc.sa4.lab02spring.controller.dto.CreateUserDTO;
-import ch.usi.si.bsc.sa4.lab02spring.model.User;
+import ch.usi.si.bsc.sa4.lab02spring.model.User.User;
 import ch.usi.si.bsc.sa4.lab02spring.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

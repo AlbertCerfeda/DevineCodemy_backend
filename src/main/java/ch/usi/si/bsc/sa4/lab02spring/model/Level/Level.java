@@ -1,5 +1,6 @@
-package ch.usi.si.bsc.sa4.lab02spring.model;
+package ch.usi.si.bsc.sa4.lab02spring.model.Level;
 
+import ch.usi.si.bsc.sa4.lab02spring.model.EAction;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -19,10 +20,10 @@ public class Level {
     private Board board;
     private Robot robot;
 
-    private CommandTypes[] allowed_commands;
+    private EAction[] allowed_commands;
 
     @PersistenceConstructor
-    public Level(String name, String description, Board board, Robot robot, CommandTypes[] allowed_commands) {
+    public Level(String name, String description, Board board, Robot robot, EAction[] allowed_commands) {
         this.name = name;
         this.description = description;
         this.board = board;
@@ -43,15 +44,15 @@ public class Level {
     }
 
 
-    public boolean validatePath(final CommandTypes[] commands) {
+    public boolean validatePath(final EAction[] commands) {
         int x = robot.getStart_x();
         int y = robot.getStart_y();
 
         int current_orientation;
 
-        for(CommandTypes command : commands) {
+        for(EAction command : commands) {
 
-            if (command == CommandTypes.MOVE_FORWARD) {
+            if (command == EAction.MOVE_FORWARD) {
                 // Do something
             }
 
