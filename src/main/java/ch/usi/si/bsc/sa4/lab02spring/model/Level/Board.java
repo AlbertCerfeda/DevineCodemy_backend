@@ -1,15 +1,26 @@
 package ch.usi.si.bsc.sa4.lab02spring.model.Level;
 
-import ch.usi.si.bsc.sa4.lab02spring.model.Item.EItem;
-import ch.usi.si.bsc.sa4.lab02spring.model.Tile.ETile;
+import ch.usi.si.bsc.sa4.lab02spring.model.Item.Item;
+import ch.usi.si.bsc.sa4.lab02spring.model.Tile.Tile;
 
+/**
+ * A Board represents the terrain on which the player moves.
+ * It also contains the items that are distributed on the board.
+ */
 public class Board {
-    private int dim_x;
-    private int dim_y;
-    private final ETile[][] grid;
-    private final EItem[][] items;
+    private final int dim_x;
+    private final int dim_y;
+    private Tile[][] grid;
+    private Item[][] items;
 
-    public Board(int dim_x, int dim_y, ETile[][] grid, EItem[][] items) {
+    /**
+     * Constructor for board objects
+     * @param dim_x the x dimension of the board.
+     * @param dim_y the y dimension of the board.
+     * @param grid the grid representing the terrain.
+     * @param items the items to collect.
+     */
+    public Board(final int dim_x, final int dim_y, Tile[][] grid, Item[][] items) {
         // TODO: calculate dim_x and dim_y based on grid size
         // TODO: Throw exception if 'grid' an 'items' dont have the same size
         this.dim_x = dim_x;
@@ -19,15 +30,9 @@ public class Board {
     }
 
     // TODO: generate board given dimensions
-//    public static Board from(int dim_x, int dim_y) {
-//        TileTypes[][] grid = new TileTypes[dim_x][dim_y];
-//        ItemTypes[][] items = new ItemTypes[dim_x][dim_y];
-//        CommandTypes[] commands = new CommandTypes[0];
-//        // ...
-//        return new Board(dim_x, dim_y, grid, items, commands);
-//    }
 
-    public ETile getTileTyleFromPosition(final int x, final int y) {
+
+    public Tile getTileInPosition(final int x, final int y) {
         return grid[x][y];
     }
 
