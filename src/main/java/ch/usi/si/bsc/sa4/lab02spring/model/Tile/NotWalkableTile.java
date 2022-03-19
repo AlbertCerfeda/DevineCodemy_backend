@@ -1,12 +1,12 @@
 package ch.usi.si.bsc.sa4.lab02spring.model.Tile;
 
 /**
- * A NotWalkableTile do not allow the player to walk on it.
+ * A NotWalkableTile do NOT allow the player to walk on it.
  */
 public class NotWalkableTile extends Tile {
 
     /**
-     * Construct for not walkable tiles.
+     * Construct for NotWalkable tiles.
      * @param pos_x the x position of the tile.
      * @param pos_y the y position of the tile.
      * @param pos_z the z position of the tile.
