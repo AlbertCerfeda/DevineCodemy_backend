@@ -12,6 +12,6 @@ public class ConcreteTile extends Tile {
      * @param pos_z the z position of the tile.
      */
     public ConcreteTile(int pos_x, int pos_y, int pos_z) {
-        super(pos_x, pos_y, pos_z, true);
+        super(ETile.CONCRETE, pos_x, pos_y, pos_z, true);
     }
 }

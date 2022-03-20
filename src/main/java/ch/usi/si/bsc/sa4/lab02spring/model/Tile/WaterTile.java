@@ -12,6 +12,6 @@ public class WaterTile extends Tile {
      * @param pos_z the z position of the tile.
      */
     public WaterTile(int pos_x, int pos_y, int pos_z) {
-        super(pos_x, pos_y, pos_z, false);
+        super(ETile.WATER, pos_x, pos_y, pos_z, false);
     }
 }
