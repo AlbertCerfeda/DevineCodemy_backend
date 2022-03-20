@@ -1,17 +1,18 @@
 package ch.usi.si.bsc.sa4.lab02spring.model.Tile;
 
+import ch.usi.si.bsc.sa4.lab02spring.controller.dto.Tile.TileDTO;
+
 /**
  * This class represents the general structure of a tile.
  */
 public abstract class Tile {
-
-    // position
+    // Position
     protected final int pos_x;
     protected final int pos_y;
     protected int pos_z;
-
     //
-    protected final boolean is_walkable;
+    
+    protected boolean is_walkable;
 
 //    protected final String material;
 //    protected final String shape;
@@ -39,7 +40,11 @@ public abstract class Tile {
     public boolean is_walkable() {
         return is_walkable;
     }
-
+    
+    public void set_walkable(boolean is_walkable) {
+        this.is_walkable = is_walkable;
+    }
+    
     /**
      * To get the height position of the tile.
      * @return the height position of the tile.
@@ -87,5 +92,10 @@ public abstract class Tile {
      */
     public void setVisited(boolean visited) {
         this.visited = visited;
+    }
+    
+    
+    public TileDTO toTileDTO() {
+        return new TileDTO(this);
     }
 }
