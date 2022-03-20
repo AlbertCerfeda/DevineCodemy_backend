@@ -44,6 +44,7 @@ public class Level {
     }
 
 
+    // TODO
     public boolean validatePath(final EAction[] commands) {
         int x = robot.getStart_x();
         int y = robot.getStart_y();
