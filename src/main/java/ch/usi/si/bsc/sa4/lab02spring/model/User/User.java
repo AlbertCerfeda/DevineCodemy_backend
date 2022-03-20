@@ -50,6 +50,6 @@ public class User {
     }
 
     public UserDTO toUserDTO() {
-        return new UserDTO(this.getId(), this.getName());
+        return new UserDTO(this);
     }
 }

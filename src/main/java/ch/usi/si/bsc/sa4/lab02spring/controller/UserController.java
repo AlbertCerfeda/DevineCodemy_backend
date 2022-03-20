@@ -10,8 +10,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ *  Request router for  /users
+ */
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -21,10 +25,13 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-
+    
+    /**
+     * GET  /users
+     */
     @GetMapping
     public ResponseEntity<List<UserDTO>> getAll() {
-        var allUserDTOs = new ArrayList<UserDTO>();
+        ArrayList<UserDTO> allUserDTOs = new ArrayList<UserDTO>();
 
         // Same as in getByNameContaining() but with for-each approach
         for (User user : userService.getAll()) {
@@ -33,26 +40,36 @@ public class UserController {
 
         return ResponseEntity.ok(allUserDTOs);
     }
-
+    
+    /**
+     * POST /users
+     */
     @PostMapping
     public ResponseEntity<UserDTO> addUser(@RequestBody CreateUserDTO createUserDTO) {
-        var savedUser = userService.createUser(createUserDTO);
+        User savedUser = userService.createUser(createUserDTO);
         return ResponseEntity.ok(savedUser.toUserDTO());
     }
-
+    
+    /**
+     * GET /users/search?string
+     */
     @GetMapping("/search")
-    public ResponseEntity<List<UserDTO>> getByNameContaining(@RequestParam("string") String string) {
+    public ResponseEntity<List<UserDTO>> getByNameContaining(@RequestParam("name") String name) {
         // Same as in getAll() but with functional approach
-        var allUserDTOs = userService.searchByNameContaining(string).stream()
+        List<UserDTO> allUserDTOs = userService.searchByNameContaining(name).stream()
                 .map(user -> user.toUserDTO())
                 .collect(Collectors.toList());
         return ResponseEntity.ok(allUserDTOs);
     }
-
+    
+    /**
+     * GET /users/:id
+     */
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getById(@PathVariable("id") String id) {
-        var optionalUser = userService.getById(id);
+        Optional<User> optionalUser = userService.getById(id);
         if (optionalUser.isPresent()) {
+            // TODO: Check whether the user has a public account or not
             return ResponseEntity.ok(optionalUser.get().toUserDTO());
         } else {
             return ResponseEntity.notFound().build();

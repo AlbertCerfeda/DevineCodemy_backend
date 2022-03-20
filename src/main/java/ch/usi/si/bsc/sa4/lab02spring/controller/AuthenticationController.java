@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
+/**
+ * Request router for /auth.
+ */
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationController {
@@ -19,7 +23,10 @@ public class AuthenticationController {
     public AuthenticationController(UserService userService) {
         this.userService = userService;
     }
-
+    
+    /**
+     * POST /auth/changePassword
+     */
     @PostMapping("/changePassword")
     public ResponseEntity<UserDTO> changePassword(@RequestBody ChangePasswordDTO changePasswordDTO) {
         var optionalUser = userService.changePassword(changePasswordDTO.getUserId(), changePasswordDTO.getOldPassword(), changePasswordDTO.getNewPassword());
