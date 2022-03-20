@@ -88,7 +88,7 @@ public class Board {
 
         // place n_items items on the board (first in the corners of the path, then randomly on the board)
         // first item at the end of the path;
-        ArrayList<Tile> itemsPath = path; // duplicate path
+        ArrayList<Tile> itemsPath = new ArrayList<>(path); // duplicate path
         int new_item_x = currentTile.getPos_x();
         int new_item_y = currentTile.getPos_y();
         items[new_item_x][new_item_y] = new CoinItem(new_item_x, new_item_y); // TODO: pick random item, for now we just have coins.
@@ -124,31 +124,49 @@ public class Board {
 
 
         // TODO: generate obstacles (e.g. rivers, lakes, etc).
-        // Check if they interfere with the path and fix it accordingly: place a bridge, ...
+        //  Check if they interfere with the path and fix it accordingly: place a bridge, ...
 
 
         // adjust tile elevation
         int prev_elevation = 0;
-        for (int i = 0; i < path.size(); i++) {
-            final int delta = random.nextInt(2) -1; // pick random delta between -1, 0 and 1
+        for (int i = 0; i < path.size()-1; i++) {
+            final int delta = random.nextInt(3) -1; // pick random delta between -1, 0 and 1
             int new_elevation = prev_elevation + delta;
             new_elevation = (new_elevation > max_elevation || new_elevation < 0) ? prev_elevation : new_elevation;
 
-            Tile tile = path.get(i);
-            // TODO: fix elevation and check if already visited
-            if (tile.isVisited() && tile.getPos_z() != new_elevation) {
-                int d = tile.getPos_z() - prev_elevation;
-                if (d > 1) {
-                    i = i - d;
-                    break;
+            Tile current_tile = path.get(i);
+            Tile next_tile = path.get(i+1);
+
+            if (current_tile.isVisited()) {
+                // do nothing, leave current elevation
+                continue;
+            } else if (next_tile.isVisited()) {
+                int delta_elevation = next_tile.getPos_z() - prev_elevation;
+                if (Math.abs(delta_elevation) > 2) {
+                    // step too high, retry
+                    i = i - delta_elevation;
+                    continue;
                 }
 
+                if (new_elevation - next_tile.getPos_z() == 2) {
+                    new_elevation = new_elevation - 1;
+                } else if (new_elevation - next_tile.getPos_z() == -2) {
+                    new_elevation = new_elevation + 1;
+                }
             }
-            tile.setPos_z(new_elevation);
-
-            tile.setVisited(true);
+            // update tile
+            current_tile.setPos_z(new_elevation);
+            current_tile.setVisited(true);
             prev_elevation = new_elevation;
         }
+
+        // set elevation for last tile
+        final int delta = random.nextInt(3) -1;
+        int new_elevation = prev_elevation + delta;
+        new_elevation = (new_elevation > max_elevation || new_elevation < 0) ? prev_elevation : new_elevation;
+        Tile last_tile = path.get(path.size()-1);
+        last_tile.setPos_z(new_elevation);
+        last_tile.setVisited(true);
 
 
         this.dim_x = dim_x;
