@@ -1,23 +1,28 @@
 package ch.usi.si.bsc.sa4.lab02spring.model.Level;
+import ch.usi.si.bsc.sa4.lab02spring.controller.dto.RobotDTO;
 import ch.usi.si.bsc.sa4.lab02spring.model.EOrientation;
 
 
 public class Robot {
-    private int start_x;
-    private int start_y;
+    private int pos_x;
+    private int pos_y;
     private EOrientation orientation;
 
     public Robot(int start_x, int start_y, EOrientation orientation) {
-        this.start_x = start_x;
-        this.start_y = start_y;
+        this.pos_x= start_x;
+        this.pos_y= start_y;
+        this.orientation = orientation;
+    }
+    
+    public RobotDTO toRobotDTO() { return new RobotDTO(this); }
+    
+    public int getPos_x() {
+        return pos_x;
     }
 
-    public int getStart_x() {
-        return start_x;
+    public int getPos_y() {
+        return pos_y;
     }
-
-    public int getStart_y() {
-        return start_y;
-    }
-
+    
+    public EOrientation getOrientation(){ return orientation; }
 }
