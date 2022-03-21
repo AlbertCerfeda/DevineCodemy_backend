@@ -1,5 +1,7 @@
 package ch.usi.si.bsc.sa4.lab02spring.model.Item;
 
+import ch.usi.si.bsc.sa4.lab02spring.controller.dto.ItemDTO;
+
 /**
  * This class represents the general structure of a tile.
  */
@@ -35,4 +37,7 @@ public abstract class Item {
     public int getPos_y() {
         return pos_y;
     }
+
+    
+    public ItemDTO toItemDTO() { return new ItemDTO(this); }
 }
