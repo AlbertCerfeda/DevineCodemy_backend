@@ -1,5 +1,7 @@
 package ch.usi.si.bsc.sa4.lab02spring.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -49,6 +51,37 @@ public enum EOrientation {
         Random random = new Random();
         final int r = random.nextInt(values().length);
         return values()[r];
+    }
+
+    /**
+     * To get a random direction depending on the given direction with the following weights:
+     *  - 50% proceeding forward;
+     *  - 10% going back;
+     *  - 20% turn left;
+     *  - 20% turn right.
+     * @param orientation the given direction
+     * @return a random direction weighted on the given direction.
+     */
+    public static EOrientation getWeightedRandom(EOrientation orientation) {
+        // building the weighted array from which we pick a random orientation
+        ArrayList<EOrientation> weighted_list = new ArrayList<>();
+        add_n_times_to_list(weighted_list, orientation, 5);
+        add_n_times_to_list(weighted_list, getOppositeDirection(orientation), 1);
+        for (int i = 0; i < values().length; i++) {
+            if (!weighted_list.contains(values()[i]))
+                add_n_times_to_list(weighted_list, values()[i], 2);
+        }
+        // picking random orientation from the weighted list
+        Random random = new Random();
+        final int r = random.nextInt(weighted_list.size()-1);
+        return weighted_list.get(r);
+    }
+
+    // helper method to add an orientation n times into a given list
+    private static void add_n_times_to_list(List<EOrientation> list, EOrientation object, int n) {
+        for (int i = 0; i <n; i++) {
+            list.add(object);
+        }
     }
 
     /**
