@@ -1,5 +1,6 @@
 package ch.usi.si.bsc.sa4.lab02spring.model.Level;
 
+import ch.usi.si.bsc.sa4.lab02spring.controller.dto.Tile.LevelDTO;
 import ch.usi.si.bsc.sa4.lab02spring.model.EAction;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
@@ -30,24 +31,15 @@ public class Level {
         this.robot = robot;
         this.allowed_commands = allowed_commands;
     }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
+    
+    
+    
+    public LevelDTO toLevelDTO() { return new LevelDTO(this); }
 
     // TODO
     public boolean validatePath(final EAction[] commands) {
-        int x = robot.getStart_x();
-        int y = robot.getStart_y();
+        int x = robot.getPos_x();
+        int y = robot.getPos_y();
 
         int current_orientation;
 
@@ -64,6 +56,27 @@ public class Level {
         return true;
     }
 
-
+    
+    
+    // Getters and setters
+    public String getName(){
+        return name;
+    }
+    
+    public String getDescription(){
+        return description;
+    }
+    
+    public Board getBoard(){
+        return board;
+    }
+    
+    public Robot getRobot(){
+        return robot;
+    }
+    
+    public EAction[] getAllowed_commands(){
+        return allowed_commands;
+    }
 
 }
