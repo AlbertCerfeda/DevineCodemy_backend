@@ -1,5 +1,6 @@
 package ch.usi.si.bsc.sa4.lab02spring.model.Level;
 
+import ch.usi.si.bsc.sa4.lab02spring.controller.dto.BoardDTO;
 import ch.usi.si.bsc.sa4.lab02spring.model.EOrientation;
 import ch.usi.si.bsc.sa4.lab02spring.model.Item.CoinItem;
 import ch.usi.si.bsc.sa4.lab02spring.model.Item.Item;
@@ -299,5 +300,28 @@ public class Board {
     public boolean canStep(final int x, final int y, EOrientation direction) {
         // FIXME
         return true;
+    }
+
+    
+    public BoardDTO toBoardDTO() {
+        return new BoardDTO(this);
+    }
+    
+    // Getters and setters below
+    
+    public int getDim_x(){
+        return dim_x;
+    }
+    
+    public int getDim_y(){
+        return dim_y;
+    }
+    
+    public Tile[][] getGrid(){
+        return grid;
+    }
+    
+    public Item[][] getItems(){
+        return items;
     }
 }
