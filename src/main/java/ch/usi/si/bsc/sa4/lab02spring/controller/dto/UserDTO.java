@@ -13,11 +13,6 @@ public class UserDTO {
         this.name = user.getName();
     }
     
-    public UserDTO(String id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-    
     
     // Getters and setters
     
