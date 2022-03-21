@@ -6,9 +6,7 @@ import ch.usi.si.bsc.sa4.lab02spring.controller.dto.Tile.TileDTO;
  * This class represents the general structure of a tile.
  */
 public abstract class Tile {
-    // The type field is used by the TileDTO to indicate what kind of tile he represents.
-    // This field is expected to be set by each subclass of class Tile
-    protected ETile type = ETile.PLACEHOLDER;
+    protected static ETile type;
     
     // Position
     protected final int pos_x;
@@ -25,7 +23,7 @@ public abstract class Tile {
 
     /**
      * Constructor for abstract class Tile.
-     * @param type the ETile type for this tile.
+     * @param type the ENUM representing the type of the tile.
      * @param pos_x the x position of the tile.
      * @param pos_y the y position of the tile.
      * @param pos_z the z position of the tile.
@@ -86,7 +84,7 @@ public abstract class Tile {
      * Returns the enum type of the Tile.
      * @return the enum type of the tile.
      */
-    public ETile getType(){
+    public static ETile getType(){
         return type;
     }
     
