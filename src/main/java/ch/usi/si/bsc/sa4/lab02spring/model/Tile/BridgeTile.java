@@ -12,6 +12,6 @@ public class BridgeTile extends Tile {
      * @param pos_z the z position of the bridge.
      */
     public BridgeTile(int pos_x, int pos_y, int pos_z) {
-        super(pos_x, pos_y, pos_z, true);
+        super(ETile.BRIDGE, pos_x, pos_y, pos_z, true);
     }
 }

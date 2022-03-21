@@ -12,6 +12,6 @@ public class SandTile extends Tile {
      * @param pos_z the z position of the tile.
      */
     public SandTile(int pos_x, int pos_y, int pos_z) {
-        super(pos_x, pos_y, pos_z, true);
+        super(ETile.SAND, pos_x, pos_y, pos_z, true);
     }
 }

@@ -6,6 +6,10 @@ import ch.usi.si.bsc.sa4.lab02spring.controller.dto.Tile.TileDTO;
  * This class represents the general structure of a tile.
  */
 public abstract class Tile {
+    // The type field is used by the TileDTO to indicate what kind of tile he represents.
+    // This field is expected to be set by each subclass of class Tile
+    protected ETile type = ETile.PLACEHOLDER;
+    
     // Position
     protected final int pos_x;
     protected final int pos_y;
@@ -21,12 +25,14 @@ public abstract class Tile {
 
     /**
      * Constructor for abstract class Tile.
+     * @param type the ETile type for this tile.
      * @param pos_x the x position of the tile.
      * @param pos_y the y position of the tile.
      * @param pos_z the z position of the tile.
      * @param is_walkable true if the tile is walkable, false otherwise.
      */
-    public Tile(final int pos_x, final int pos_y, final int pos_z, final boolean is_walkable) {
+    public Tile(ETile type, final int pos_x, final int pos_y, final int pos_z, final boolean is_walkable) {
+        this.type = type;
         this.pos_x = pos_x;
         this.pos_y = pos_y;
         this.pos_z = pos_z;
@@ -75,7 +81,15 @@ public abstract class Tile {
     public int getPos_y() {
         return pos_y;
     }
-
+    
+    /**
+     * Returns the enum type of the Tile.
+     * @return the enum type of the tile.
+     */
+    public ETile getType(){
+        return type;
+    }
+    
     /**
      * To get if the tile has been already visited or not.
      * Useful when creating board.
