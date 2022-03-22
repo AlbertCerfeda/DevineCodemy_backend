@@ -85,7 +85,7 @@ public enum EOrientation {
     }
 
     /**
-     * To get the opposite direction to the given one.
+     * Returns the opposite direction to the given one.
      * @param orientation the given direction.
      * @return the opposite direction to the given direction.
      */
@@ -99,6 +99,45 @@ public enum EOrientation {
                 return RIGHT;
             case RIGHT:
                 return LEFT;
+        }
+        // else invalid orientation, return UP as default.
+        return EOrientation.UP;
+    }
+    
+    /**
+     * Returns the new direction by turning the given direction to the left.
+     * @param orientation the given direction.
+     * @return the direction turned to the left.
+     */
+    public static EOrientation turnLeft(EOrientation orientation) {
+        switch (orientation) {
+            case UP:
+                return LEFT;
+            case DOWN:
+                return RIGHT;
+            case LEFT:
+                return DOWN;
+            case RIGHT:
+                return UP;
+        }
+        // else invalid orientation, return UP as default.
+        return EOrientation.UP;
+    }
+    /**
+     * Returns the new direction by turning the given direction to the right.
+     * @param orientation the given direction.
+     * @return the direction turned to the right.
+     */
+    public static EOrientation turnRight(EOrientation orientation) {
+        switch (orientation) {
+            case UP:
+                return RIGHT;
+            case DOWN:
+                return LEFT;
+            case LEFT:
+                return UP;
+            case RIGHT:
+                return DOWN;
         }
         // else invalid orientation, return UP as default.
         return EOrientation.UP;
