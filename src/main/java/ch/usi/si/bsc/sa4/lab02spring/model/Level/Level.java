@@ -12,12 +12,14 @@ public class Level {
     private String id;
     private final String name;
     private final String description;
-
-    // stats
-//    private int time_limit;
-//    private int max_steps;
-
-    // board
+    
+    private int max_steps;
+    /*
+    TODO: Add additional fields
+    - Goal of the level in order to complete it
+    - Thumbnail image of the level
+     */
+    
     private Board board;
     private Robot robot;
 
@@ -34,8 +36,6 @@ public class Level {
     
     
     
-    public LevelDTO toLevelDTO() { return new LevelDTO(this); }
-
     // TODO
     public boolean validatePath(final EAction[] commands) {
         int x = robot.getPos_x();
@@ -55,7 +55,8 @@ public class Level {
 
         return true;
     }
-
+    
+    public LevelDTO toLevelDTO() { return new LevelDTO(this); }
     
     
     // Getters and setters

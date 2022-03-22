@@ -12,6 +12,13 @@ public class User {
     private String id;
     private final String name;
     private String hash;
+    
+    private boolean public_profile = false;
+    
+    /* TODO: Add additional fields
+    - GitLab specific fields
+    - Statistics on completed levels
+     */
 
     @PersistenceConstructor
     public User(String id, String name, String hash) {
