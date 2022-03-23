@@ -69,8 +69,13 @@ public class UserController {
     public ResponseEntity<UserDTO> getById(@PathVariable("id") String id) {
         Optional<User> optionalUser = userService.getById(id);
         if (optionalUser.isPresent()) {
-            // TODO: Check whether the user has a public account or not
-            return ResponseEntity.ok(optionalUser.get().toUserDTO());
+            //TODO: Check if request is sent by the authenticated user itself
+
+            if (optionalUser.get().isProfilePublic()) {
+                return ResponseEntity.ok(optionalUser.get().toUserDTO());
+            } else {
+                return ResponseEntity.notFound().build();
+            }
         } else {
             return ResponseEntity.notFound().build();
         }
