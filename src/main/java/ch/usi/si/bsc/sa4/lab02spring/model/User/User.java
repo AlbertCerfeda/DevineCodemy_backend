@@ -44,6 +44,8 @@ public class User {
         return hash;
     }
 
+    public Boolean isProfilePublic() { return public_profile; }
+
     public void changePassword(String oldPassword, String newPassword) {
         if (oldPassword == null || newPassword == null) {
             throw new IllegalArgumentException("Password cannot be null");
