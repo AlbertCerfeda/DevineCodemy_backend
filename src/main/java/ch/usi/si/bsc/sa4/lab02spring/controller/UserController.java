@@ -35,7 +35,9 @@ public class UserController {
 
         // Same as in getByNameContaining() but with for-each approach
         for (User user : userService.getAll()) {
-            allUserDTOs.add(user.toUserDTO());
+            if(user.isProfilePublic()) {
+                allUserDTOs.add(user.toUserDTO());
+            }
         }
 
         return ResponseEntity.ok(allUserDTOs);
