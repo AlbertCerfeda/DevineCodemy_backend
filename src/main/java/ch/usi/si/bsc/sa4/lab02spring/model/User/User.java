@@ -1,4 +1,4 @@
-package ch.usi.si.bsc.sa4.lab02spring.model;
+package ch.usi.si.bsc.sa4.lab02spring.model.User;
 
 import ch.usi.si.bsc.sa4.lab02spring.controller.dto.UserDTO;
 import ch.usi.si.bsc.sa4.lab02spring.service.PasswordHashingService;
@@ -12,6 +12,13 @@ public class User {
     private String id;
     private final String name;
     private String hash;
+    
+    private boolean public_profile = false;
+    
+    /* TODO: Add additional fields
+    - GitLab specific fields
+    - Statistics on completed levels
+     */
 
     @PersistenceConstructor
     public User(String id, String name, String hash) {
@@ -50,6 +57,6 @@ public class User {
     }
 
     public UserDTO toUserDTO() {
-        return new UserDTO(this.getId(), this.getName());
+        return new UserDTO(this);
     }
 }
