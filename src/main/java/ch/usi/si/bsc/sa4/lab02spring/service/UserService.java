@@ -28,6 +28,16 @@ public class UserService {
     public List<User> getAll() {
         return userRepository.findAll();
     }
+    public List<User> getAllPublic() { return userRepository.findAllPublic(); }
+    
+    
+    /**
+     * Returns, if the user exists, whether its profile is public or not.
+     * @param id the ID of the user to look for.
+     * @return an Optional containing, if the user exists, a boolean value that tells if the profile is public o not.
+     */
+    public Optional<Boolean> isUserPublic(String id) { return userRepository.isUserPublic(id); }
+    
     /**
      * Returns a User with a specific ID.
      * @param id the id of the user to look for.
