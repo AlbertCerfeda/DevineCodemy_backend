@@ -10,9 +10,9 @@ public enum EAction {
     TURN_LEFT   ("Turns Robot left"),
     TURN_RIGHT  ("Turns Robot right"),
     COLLECT_COIN("Collects a Coin");
-    
-    
-    private String description;
+
+    private final String description;
+
     EAction(String description) {
         this.description = description;
     }
