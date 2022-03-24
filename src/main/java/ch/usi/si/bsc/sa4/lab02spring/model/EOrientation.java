@@ -67,13 +67,11 @@ public enum EOrientation {
         ArrayList<EOrientation> weighted_list = new ArrayList<>();
         add_n_times_to_list(weighted_list, orientation, 5);
         add_n_times_to_list(weighted_list, getOppositeDirection(orientation), 1);
-        for (int i = 0; i < values().length; i++) {
-            if (!weighted_list.contains(values()[i]))
-                add_n_times_to_list(weighted_list, values()[i], 2);
-        }
+        add_n_times_to_list(weighted_list, turnLeft(orientation), 2);
+        add_n_times_to_list(weighted_list, turnRight(orientation), 2);
         // picking random orientation from the weighted list
         Random random = new Random();
-        final int r = random.nextInt(weighted_list.size()-1);
+        final int r = random.nextInt(weighted_list.size());
         return weighted_list.get(r);
     }
 
