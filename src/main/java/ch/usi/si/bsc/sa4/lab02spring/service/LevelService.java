@@ -21,6 +21,28 @@ public class LevelService {
         LevelService.levelRepository = levelRepository;
     }
     
+    
+    /**
+     * Simulates a set of actions on a specific level.
+     * @param level_id the level ID string.
+     * @param actions the array of actions to be simulated on the Level.
+     */
+    public static boolean validateActions(String level_id, List<EAction> actions) {
+        // TODO: Change signature and return list of all the TileDTO state changes after performing each move.
+        Optional<Level> level = getLevelById(level_id);
+        
+        if(level.isPresent()) {
+            return level.get().validateActions(actions);
+        } else {
+            // throw custom exception
+            return false;
+        }
+    }
+    
+    
+    
+    
+    
     /**
      * Returns all the Levels that are playable by the User.
      * @param user_id the User ID string.
