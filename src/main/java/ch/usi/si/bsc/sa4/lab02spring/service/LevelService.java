@@ -56,22 +56,6 @@ public class LevelService {
         return Pair.of(levels, levels.size());
     }
     
-    /**
-     * Simulates a set of actions on a specific level.
-     * @param level_id the level ID string.
-     * @param actions the array of actions to be simulated on the Level.
-     */
-    public static void validateMoves(String level_id, List<EAction> actions) {
-        // TODO: Change signature and return list of all the TileDTO state changes after performing each move.
-        Optional<Level> level = getLevelById(level_id);
-        
-        if(level.isPresent()) {
-            level.get().validateActions(actions);
-        } else {
-            // throw custom exception
-        }
-    }
-    
     
     
     /**

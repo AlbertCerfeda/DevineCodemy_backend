@@ -52,7 +52,6 @@ public class Level {
     
     
     
-    // TODO
     public boolean validateActions(final List<EAction> commands) {
         int x = robot.getPos_x();
         int y = robot.getPos_y();
