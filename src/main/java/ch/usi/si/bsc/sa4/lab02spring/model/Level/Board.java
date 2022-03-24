@@ -22,6 +22,8 @@ public class Board {
     private int dim_y;
     private Tile[][] grid;
     private Item[][] items;
+    private int difficulty;
+    private int n_coins;
 
     /**
      * Constructor for board objects.
@@ -29,7 +31,7 @@ public class Board {
      * @param items the items to collect.
      * @throws IllegalArgumentException if 'grid' an 'items' don't have the same size.
      */
-    public Board(Tile[][] grid, Item[][] items) throws IllegalArgumentException {
+    public Board(Tile[][] grid, Item[][] items, int difficulty, int n_coins) throws IllegalArgumentException {
         // Throw exception if 'grid' an 'items' don't have the same size
         if (grid.length != items.length || grid[0].length != items[0].length) {
             throw new IllegalArgumentException();
@@ -38,6 +40,8 @@ public class Board {
         this.dim_y = grid[0].length;
         this.grid = grid;
         this.items = items;
+        this.difficulty = difficulty;
+        this.n_coins = n_coins;
     }
 
 
@@ -52,11 +56,32 @@ public class Board {
         final int start_x = rand.nextInt(dim_x);
         final int start_y = rand.nextInt(dim_y);
         final int n_steps = rand.nextInt(3*dim_x + 3*dim_y);
+        final int water_n_steps = rand.nextInt(2*dim_x*dim_y);
+        final int n_items = rand.nextInt(n_steps/2);
+        final int max_elevation = rand.nextInt((dim_x+dim_y)/3);
+        System.out.println("n_steps: " + n_steps + "\nwater_n_steps: " + water_n_steps);
+        init(dim_x, dim_y, start_x, start_y, n_steps, water_n_steps, n_items, max_elevation);
+    }
+
+    /**
+     * Generate board from given dimensions.
+     * @param dim_x the x dimension of the board.
+     * @param dim_y the y dimension of the board.
+     * @param start_x the starting x position.
+     * @param start_y the starting y position.
+     * @throws IndexOutOfBoundsException if an error occurs, should never happen.
+     */
+    public Board(final int dim_x, final int dim_y, final int start_x, final int start_y) throws IndexOutOfBoundsException {
+        Random rand = new Random();
+        final int n_steps = rand.nextInt(3*dim_x + 3*dim_y);
         final int water_n_steps = rand.nextInt(dim_x*dim_y);
         final int n_items = rand.nextInt(n_steps/2);
         final int max_elevation = rand.nextInt((dim_x+dim_y)/4);
         init(dim_x, dim_y, start_x, start_y, n_steps, water_n_steps, n_items, max_elevation);
     }
+
+
+
 
 
     /**
@@ -87,8 +112,15 @@ public class Board {
      * @throws IndexOutOfBoundsException if an error occurs, should never happen.
      */
     private void init(final int dim_x, final int dim_y, final int start_x, final int start_y, final int n_steps, final int water_n_steps, final int n_items, final int max_elevation) throws IndexOutOfBoundsException {
-        Tile[][] grid = new Tile[dim_x][dim_y];
-        Item[][] items = new Item[dim_x][dim_y];
+        // SETUP BOARD ----------------------------------------------------------------------------------------
+        this.dim_x = dim_x;
+        this.dim_y = dim_y;
+        this.grid = new Tile[dim_x][dim_y];
+        this.items = new Item[dim_x][dim_y];
+        this.difficulty = n_steps;
+        this.n_coins = n_items;
+
+        // INIT BOARD -----------------------------------------------------------------------------------------
         int placed_items = 0;
         Random random = new Random();
 
@@ -136,6 +168,7 @@ public class Board {
             // compute next direction: continuing straight is more likely than turning, turning back is unlikely but possible.
             previousDirection = currentDirection;
             currentDirection = EOrientation.getWeightedRandom(previousDirection);
+//            currentDirection = EOrientation.getRandom();
         }
 
 
@@ -151,7 +184,7 @@ public class Board {
         // place items in the corners of the path
         while (placed_items < n_items && turns.size() > 0 && itemsPath.size() > 0) {
             // pick random tile from turns.
-            final int index = random.nextInt(turns.size() - 1);
+            final int index = random.nextInt(turns.size());
             Tile tile = turns.get(index);
             new_item_x = tile.getPos_x();
             new_item_y = tile.getPos_y();
@@ -165,7 +198,7 @@ public class Board {
         // place items randomly on the path
         while (placed_items < n_items && itemsPath.size() > 0) {
             // pick random tile on the path.
-            final int index = random.nextInt(itemsPath.size() - 1);
+            final int index = random.nextInt(itemsPath.size());
             Tile tile = itemsPath.get(index);
             new_item_y = tile.getPos_y();
             new_item_x = tile.getPos_x();
@@ -255,13 +288,6 @@ public class Board {
         Tile last_tile = path.get(path.size()-1);
         last_tile.setPos_z(new_elevation);
         last_tile.setVisited(true);
-
-
-        // SETUP BOARD ----------------------------------------------------------------------------------------
-        this.dim_x = dim_x;
-        this.dim_y = dim_y;
-        this.grid = grid;
-        this.items = items;
     }
 
 
@@ -324,4 +350,13 @@ public class Board {
     public Item[][] getItems(){
         return items;
     }
+
+    public int getDifficulty() {
+        return difficulty;
+    }
+
+    public int getCoinsNumber() {
+        return n_coins;
+    }
+
 }

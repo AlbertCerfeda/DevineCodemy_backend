@@ -1,6 +1,5 @@
 package ch.usi.si.bsc.sa4.lab02spring.controller.dto;
 
-import ch.usi.si.bsc.sa4.lab02spring.model.EOrientation;
 import ch.usi.si.bsc.sa4.lab02spring.model.Level.Robot;
 
 public class RobotDTO {

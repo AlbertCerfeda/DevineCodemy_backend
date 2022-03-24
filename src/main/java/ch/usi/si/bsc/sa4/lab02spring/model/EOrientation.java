@@ -67,13 +67,11 @@ public enum EOrientation {
         ArrayList<EOrientation> weighted_list = new ArrayList<>();
         add_n_times_to_list(weighted_list, orientation, 5);
         add_n_times_to_list(weighted_list, getOppositeDirection(orientation), 1);
-        for (int i = 0; i < values().length; i++) {
-            if (!weighted_list.contains(values()[i]))
-                add_n_times_to_list(weighted_list, values()[i], 2);
-        }
+        add_n_times_to_list(weighted_list, turnLeft(orientation), 2);
+        add_n_times_to_list(weighted_list, turnRight(orientation), 2);
         // picking random orientation from the weighted list
         Random random = new Random();
-        final int r = random.nextInt(weighted_list.size()-1);
+        final int r = random.nextInt(weighted_list.size());
         return weighted_list.get(r);
     }
 
@@ -85,7 +83,7 @@ public enum EOrientation {
     }
 
     /**
-     * To get the opposite direction to the given one.
+     * Returns the opposite direction to the given one.
      * @param orientation the given direction.
      * @return the opposite direction to the given direction.
      */
@@ -99,6 +97,45 @@ public enum EOrientation {
                 return RIGHT;
             case RIGHT:
                 return LEFT;
+        }
+        // else invalid orientation, return UP as default.
+        return EOrientation.UP;
+    }
+    
+    /**
+     * Returns the new direction by turning the given direction to the left.
+     * @param orientation the given direction.
+     * @return the direction turned to the left.
+     */
+    public static EOrientation turnLeft(EOrientation orientation) {
+        switch (orientation) {
+            case UP:
+                return LEFT;
+            case DOWN:
+                return RIGHT;
+            case LEFT:
+                return DOWN;
+            case RIGHT:
+                return UP;
+        }
+        // else invalid orientation, return UP as default.
+        return EOrientation.UP;
+    }
+    /**
+     * Returns the new direction by turning the given direction to the right.
+     * @param orientation the given direction.
+     * @return the direction turned to the right.
+     */
+    public static EOrientation turnRight(EOrientation orientation) {
+        switch (orientation) {
+            case UP:
+                return RIGHT;
+            case DOWN:
+                return LEFT;
+            case LEFT:
+                return UP;
+            case RIGHT:
+                return DOWN;
         }
         // else invalid orientation, return UP as default.
         return EOrientation.UP;

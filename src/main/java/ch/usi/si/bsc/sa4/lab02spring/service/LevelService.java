@@ -18,8 +18,30 @@ public class LevelService {
     
     @Autowired
     public LevelService(LevelRepository levelRepository) {
-        this.levelRepository = levelRepository;
+        LevelService.levelRepository = levelRepository;
     }
+    
+    
+    /**
+     * Simulates a set of actions on a specific level.
+     * @param level_id the level ID string.
+     * @param actions the array of actions to be simulated on the Level.
+     */
+    public static boolean validateActions(String level_id, List<EAction> actions) {
+        // TODO: Change signature and return list of all the TileDTO state changes after performing each move.
+        Optional<Level> level = getLevelById(level_id);
+        
+        if(level.isPresent()) {
+            return level.get().validateActions(actions);
+        } else {
+            // throw custom exception
+            return false;
+        }
+    }
+    
+    
+    
+    
     
     /**
      * Returns all the Levels that are playable by the User.
@@ -34,22 +56,6 @@ public class LevelService {
         return Pair.of(levels, levels.size());
     }
     
-    /**
-     * Simulates a set of actions on a specific level.
-     * @param level_id the level ID string.
-     * @param actions the array of actions to be simulated on the Level.
-     */
-    public static void validateMoves(String level_id, EAction[] actions) {
-        // TODO: Change signature and return list of all the TileDTO state changes after performing each move.
-        Optional<Level> level = getLevelById(level_id);
-        
-        if(level.isPresent()) {
-            level.get().validateActions(actions);
-        } else {
-            // throw custom exception
-        }
-    }
-    
     
     
     /**
@@ -59,6 +65,17 @@ public class LevelService {
     public static List<Level> getAll() {
         return levelRepository.findAll();
     }
+    
+    /**
+     * Returns all level info in the game. The returned levels do not contain data like the game board.
+     *  Useful for having a more lightweight message when displaying just the level info.
+     * @return List containing all the level infos in the game.
+     */
+    public static List<Level> getAllInfo() {
+        return levelRepository.findAllInfo();
+    }
+    
+    
     
     /**
      * Returns a Level with a specific ID.
