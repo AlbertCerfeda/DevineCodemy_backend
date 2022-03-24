@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface LevelRepository extends MongoRepository<Level, String> {
     
-    @Query(fields="{ board : 0 }")
+    @Query(value="{}",fields="{ board : 0 }")
     List<Level> findAllInfo();
     
     
