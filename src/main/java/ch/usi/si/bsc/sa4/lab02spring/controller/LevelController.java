@@ -1,7 +1,7 @@
 package ch.usi.si.bsc.sa4.lab02spring.controller;
 
 
-import ch.usi.si.bsc.sa4.lab02spring.controller.dto.Tile.LevelDTO;
+import ch.usi.si.bsc.sa4.lab02spring.controller.dto.LevelDTO;
 import ch.usi.si.bsc.sa4.lab02spring.model.Level.Level;
 import ch.usi.si.bsc.sa4.lab02spring.service.LevelService;
 import org.springframework.beans.factory.annotation.Autowired;
