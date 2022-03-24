@@ -5,6 +5,7 @@ import ch.usi.si.bsc.sa4.lab02spring.controller.dto.UserDTO;
 import ch.usi.si.bsc.sa4.lab02spring.model.User.User;
 import ch.usi.si.bsc.sa4.lab02spring.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,11 +34,8 @@ public class UserController {
     public ResponseEntity<List<UserDTO>> getAll() {
         ArrayList<UserDTO> allUserDTOs = new ArrayList<UserDTO>();
 
-        // Same as in getByNameContaining() but with for-each approach
-        for (User user : userService.getAll()) {
-            if(user.isProfilePublic()) {
+        for (User user : userService.getAllPublic()) {
                 allUserDTOs.add(user.toUserDTO());
-            }
         }
 
         return ResponseEntity.ok(allUserDTOs);
@@ -68,7 +66,7 @@ public class UserController {
      * GET /users/:id
      */
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getById(@PathVariable("id") String id) {
+    public ResponseEntity<?> getById(@PathVariable("id") String id) {
         Optional<User> optionalUser = userService.getById(id);
         if (optionalUser.isPresent()) {
             //TODO: Check if request is sent by the authenticated user itself
@@ -76,7 +74,7 @@ public class UserController {
             if (optionalUser.get().isProfilePublic()) {
                 return ResponseEntity.ok(optionalUser.get().toUserDTO());
             } else {
-                return ResponseEntity.notFound().build();
+                return new ResponseEntity<>("This profile is private.", HttpStatus.UNAUTHORIZED);
             }
         } else {
             return ResponseEntity.notFound().build();
