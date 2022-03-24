@@ -7,27 +7,31 @@ import ch.usi.si.bsc.sa4.lab02spring.controller.dto.RobotDTO;
 import ch.usi.si.bsc.sa4.lab02spring.model.EAction;
 import ch.usi.si.bsc.sa4.lab02spring.model.Level.Level;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class LevelDTO {
-    private String name;
-    private String description;
+    private final String name;
+    private final String description;
     
-    private BoardDTO board;
-    private RobotDTO robot;
+    private final BoardDTO board;
+    private final RobotDTO robot;
     
-    private EActionDTO[] allowed_commands;
+    private final List<EActionDTO> allowed_commands;
     
     public LevelDTO(Level level) {
-        name = level.getName();
-        description = level.getDescription();
+        this.name = level.getName();
+        this.description = level.getDescription();
         
-        board = level.getBoard().toBoardDTO();
+        this.board = level.getBoard().toBoardDTO();
         
-        robot = level.getRobot().toRobotDTO();
-        
-        EAction[] commands = level.getAllowed_commands();
-        for(int i = 0; i<commands.length;i++) {
-            allowed_commands[i] = commands[i].toEActionDTO();
+        this.robot = level.getRobot().toRobotDTO();
+
+        this.allowed_commands = new ArrayList<>();
+        List<EAction> commands = level.getAllowed_commands();
+        for(EAction command : commands) {
+            allowed_commands.add(command.toEActionDTO());
         }
         
     }

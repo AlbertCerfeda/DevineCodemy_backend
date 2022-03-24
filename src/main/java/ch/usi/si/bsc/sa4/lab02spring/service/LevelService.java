@@ -18,7 +18,7 @@ public class LevelService {
     
     @Autowired
     public LevelService(LevelRepository levelRepository) {
-        this.levelRepository = levelRepository;
+        LevelService.levelRepository = levelRepository;
     }
     
     /**
@@ -39,7 +39,7 @@ public class LevelService {
      * @param level_id the level ID string.
      * @param actions the array of actions to be simulated on the Level.
      */
-    public static void validateMoves(String level_id, EAction[] actions) {
+    public static void validateMoves(String level_id, List<EAction> actions) {
         // TODO: Change signature and return list of all the TileDTO state changes after performing each move.
         Optional<Level> level = getLevelById(level_id);
         
