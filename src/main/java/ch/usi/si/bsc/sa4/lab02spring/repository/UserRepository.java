@@ -21,7 +21,7 @@ public interface UserRepository extends MongoRepository<User, String> {
     List<User> findAllPublic();
     
     @Query(value="{ id : ?0}", fields="{ public_profile : 1 }")
-    Optional<Boolean> isUserPublic(String id);
+    Optional<User> isUserPublic(String id);
     
     
     
