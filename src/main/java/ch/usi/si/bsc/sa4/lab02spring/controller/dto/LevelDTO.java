@@ -1,4 +1,4 @@
-package ch.usi.si.bsc.sa4.lab02spring.controller.dto.Tile;
+package ch.usi.si.bsc.sa4.lab02spring.controller.dto;
 
 
 import ch.usi.si.bsc.sa4.lab02spring.controller.dto.BoardDTO;
@@ -33,6 +33,5 @@ public class LevelDTO {
         for(EAction command : commands) {
             allowed_commands.add(command.toEActionDTO());
         }
-        
     }
 }

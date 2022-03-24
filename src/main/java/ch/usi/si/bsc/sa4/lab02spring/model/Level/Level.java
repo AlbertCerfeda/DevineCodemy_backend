@@ -1,6 +1,6 @@
 package ch.usi.si.bsc.sa4.lab02spring.model.Level;
 
-import ch.usi.si.bsc.sa4.lab02spring.controller.dto.Tile.LevelDTO;
+import ch.usi.si.bsc.sa4.lab02spring.controller.dto.LevelDTO;
 import ch.usi.si.bsc.sa4.lab02spring.model.EAction;
 import ch.usi.si.bsc.sa4.lab02spring.model.EOrientation;
 import org.springframework.data.annotation.Id;
