@@ -61,6 +61,17 @@ public class LevelService {
     }
     
     /**
+     * Returns all level info in the game. The returned levels do not contain data like the game board.
+     *  Useful for having a more lightweight message when displaying just the level info.
+     * @return List containing all the level infos in the game.
+     */
+    public static List<Level> getAllInfo() {
+        return levelRepository.findAllInfo();
+    }
+    
+    
+    
+    /**
      * Returns a Level with a specific ID.
      * @param level_id the level_id of the level to look for.
      * @return an Optional containing the Level if there is one with the provided ID.
