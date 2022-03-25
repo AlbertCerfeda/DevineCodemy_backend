@@ -1,45 +1,24 @@
-image: gradle:jdk11
-
-# Disable the Gradle daemon for Continuous Integration servers as correctness
-# is usually a priority over speed in CI environments. Using a fresh
-# runtime for each build is more reliable since the runtime is completely
-# isolated from any previous builds.
-variables:
-  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
-
-before_script:
-  - export GRADLE_USER_HOME=`pwd`/.gradle
-
-build:
-  stage: build
-  script: gradle build
-
 spring:
   security:
     oauth2:
       client:
         registration:
           gitlab:
-            authorization−grant−type: authorization_code
-            redirect−uri: ’http://localhost:8080/login/oauth2/code/gitlab’
-            client−id: gitlab-client-id
-            client −secret : gitlab-client-secret
+            authorization-grant-type: authorization_code
+            redirect-uri: 'http://localhost:8080/login/oauth2/code/gitlab'
+            client-id: gitlab-client-id
+            client-secret : gitlab-client-secret
             scope : openid , read_user
             provider : gitlab
-            client −authentication−method:
+            client-authentication-method:
         provider :
           gitlab :
-            authorization−uri: https://gitlab.com/oauth/authorize
-            token−uri : https :// gitlab .com/oauth/token
-            user−info−uri: https://gitlab.com/oauth/userinfo
-            jwk−set−uri: https://gitlab.com/oauth/discovery/keys
+            authorization-uri: https://gitlab.com/oauth/authorize
+            token-uri : https :// gitlab .com/oauth/token
+            user-info-uri: https://gitlab.com/oauth/userinfo
+            jwk-set-uri: https://gitlab.com/oauth/discovery/keys
 logging :
 level :
 org :
   springframework :
   security: DEBUG
-
-
-test:
-  stage: test
-  script: gradle test

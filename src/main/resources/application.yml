@@ -1,0 +1,14 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            clientId: <clientIdFromGitHub>
+            clientSecret: <clientIdFromGitHub>
+
+logging :
+  level :
+    org :
+      springframework :
+        security : DEBUG
