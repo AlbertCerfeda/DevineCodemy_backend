@@ -37,11 +37,8 @@ public class UserService {
      * @return an Optional containing, if the user exists, a boolean value that tells if the profile is public o not.
      */
     public Optional<Boolean> isUserPublic(String id){
-        Optional<User> user = userRepository.isUserPublic(id);
-        if (user.isPresent()){
-            return Optional.of(user.get().isProfilePublic());
-        }
-        return Optional.empty();
+        Optional<User> optionalUser = userRepository.isUserPublic(id);
+        return optionalUser.map((user)->user.isProfilePublic());
     }
     
     /**
