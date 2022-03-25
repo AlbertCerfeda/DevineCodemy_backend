@@ -27,9 +27,9 @@ public class LevelService {
      * @param level_id the level ID string.
      * @param actions the array of actions to be simulated on the Level.
      */
-    public static boolean validateActions(String level_id, List<EAction> actions) {
+    public boolean validateActions(String level_id, List<EAction> actions) {
         // TODO: Change signature and return list of all the TileDTO state changes after performing each move.
-        Optional<Level> level = getLevelById(level_id);
+        Optional<Level> level = getById(level_id);
         
         if(level.isPresent()) {
             return level.get().validateActions(actions);
@@ -82,7 +82,7 @@ public class LevelService {
      * @param level_id the level_id of the level to look for.
      * @return an Optional containing the Level if there is one with the provided ID.
      */
-    public static Optional<Level> getLevelById(String level_id) {
+    public Optional<Level> getById(String level_id) {
         return levelRepository.findById(level_id);
     }
 }
