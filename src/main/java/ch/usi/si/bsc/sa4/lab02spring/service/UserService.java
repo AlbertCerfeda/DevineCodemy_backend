@@ -52,8 +52,8 @@ public class UserService {
     public Optional<User> getById(String id) {
         return userRepository.findById(id);
     }
-    public List<User> searchByNameContaining(String string) {
-        return userRepository.findAllByNameContaining(string);
+    public List<User> searchByNameContainingAndPublicProfileTrue(String string) {
+        return userRepository.findAllByNameContainingAndPublicProfileTrue(string);
     }
     
     //

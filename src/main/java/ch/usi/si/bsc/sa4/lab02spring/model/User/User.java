@@ -13,7 +13,7 @@ public class User {
     private final String name;
     private String hash;
     
-    private boolean public_profile = false;
+    private boolean publicProfile = false;
     
     /* TODO: Add additional fields
     - GitLab specific fields
@@ -44,7 +44,7 @@ public class User {
         return hash;
     }
 
-    public Boolean isProfilePublic() { return public_profile; }
+    public Boolean isProfilePublic() { return publicProfile; }
 
     public void changePassword(String oldPassword, String newPassword) {
         if (oldPassword == null || newPassword == null) {

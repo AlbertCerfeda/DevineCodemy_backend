@@ -51,12 +51,12 @@ public class UserController {
     }
     
     /**
-     * GET /users/search?string
+     * GET /users/search?name=string
      */
     @GetMapping("/search")
     public ResponseEntity<List<UserDTO>> getByNameContaining(@RequestParam("name") String name) {
         // Same as in getAll() but with functional approach
-        List<UserDTO> allUserDTOs = userService.searchByNameContaining(name).stream()
+        List<UserDTO> allUserDTOs = userService.searchByNameContainingAndPublicProfileTrue(name).stream()
                 .map(user -> user.toUserDTO())
                 .collect(Collectors.toList());
         return ResponseEntity.ok(allUserDTOs);

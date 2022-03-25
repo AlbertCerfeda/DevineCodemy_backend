@@ -15,12 +15,12 @@ import java.util.Optional;
 public interface UserRepository extends MongoRepository<User, String> {
     // You can implement complex "predefined" logic with specific conventions by specific method names
     // Documentation link: https://docs.spring.io/spring-data/mongodb/docs/current/reference/html/#mongodb.repositories.queries
-    List<User> findAllByNameContaining(String string);
+    List<User> findAllByNameContainingAndPublicProfileTrue(String string);
     
-    @Query("{'public_profile':true}")
+    @Query("{'publicProfile':true}")
     List<User> findAllPublic();
     
-    @Query(value="{ id : ?0}", fields="{ public_profile : 1 }")
+    @Query(value="{ id : ?0}", fields="{ publicProfile : 1 }")
     Optional<User> isUserPublic(String id);
     
     
