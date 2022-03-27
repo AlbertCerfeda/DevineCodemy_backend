@@ -1,6 +1,7 @@
 package ch.usi.si.bsc.sa4.lab02spring.controller;
 
 import ch.usi.si.bsc.sa4.lab02spring.controller.dto.CreateUserDTO;
+import ch.usi.si.bsc.sa4.lab02spring.controller.dto.UpdateUserDTO;
 import ch.usi.si.bsc.sa4.lab02spring.controller.dto.UserDTO;
 import ch.usi.si.bsc.sa4.lab02spring.model.User.User;
 import ch.usi.si.bsc.sa4.lab02spring.service.UserService;
@@ -48,6 +49,30 @@ public class UserController {
     public ResponseEntity<UserDTO> addUser(@RequestBody CreateUserDTO createUserDTO) {
         User savedUser = userService.createUser(createUserDTO);
         return ResponseEntity.ok(savedUser.toUserDTO());
+    }
+
+    /**
+     * PUT /users
+     */
+    @PutMapping()
+    public ResponseEntity<?> updateUser(@RequestBody UpdateUserDTO updateUserDTO) {
+        Optional<User> optionalUser = userService.getById(updateUserDTO.getId());
+
+        if (optionalUser.isPresent()) {
+            //TODO: Check if request is sent by the authenticated user itself
+            User updatedUser = optionalUser.get();
+
+            if (updateUserDTO.isPublicProfileInitialized()) {
+                updatedUser.setPublicProfile(updateUserDTO.isPublicProfile());
+            }
+
+            //TODO: other field to be modified or updated
+
+            updatedUser = userService.updateUser(updatedUser);
+            return ResponseEntity.ok(updatedUser.toUserDTO());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
     
     /**

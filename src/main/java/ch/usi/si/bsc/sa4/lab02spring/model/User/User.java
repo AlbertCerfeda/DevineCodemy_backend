@@ -61,4 +61,9 @@ public class User {
     public UserDTO toUserDTO() {
         return new UserDTO(this);
     }
+
+    public void setPublicProfile(boolean publicProfile) {
+        this.publicProfile = publicProfile;
+    }
+
 }
