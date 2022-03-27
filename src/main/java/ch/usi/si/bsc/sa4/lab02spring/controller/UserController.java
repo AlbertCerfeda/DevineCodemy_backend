@@ -81,4 +81,13 @@ public class UserController {
         }
     }
 
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable String id) {
+  
+      userService.deleteUserById(id);
+  
+      return ResponseEntity.ok(id);
+    }
+
+
 }

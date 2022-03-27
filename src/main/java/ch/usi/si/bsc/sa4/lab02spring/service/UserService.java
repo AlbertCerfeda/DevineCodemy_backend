@@ -76,6 +76,11 @@ public class UserService {
         optionalUser.get().changePassword(oldPassword, newPassword);
         return Optional.of(this.updateUser(optionalUser.get()));
     }
-    
-    //
+
+    public void deleteUserById(String id) {
+        userRepository.deleteById(id);
+   }
 }
+    
+    
+
