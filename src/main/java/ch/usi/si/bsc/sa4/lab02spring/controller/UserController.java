@@ -52,11 +52,11 @@ public class UserController {
     }
 
     /**
-     * PUT /users
+     * PUT /users/:id
      */
-    @PutMapping()
-    public ResponseEntity<?> updateUser(@RequestBody UpdateUserDTO updateUserDTO) {
-        Optional<User> optionalUser = userService.getById(updateUserDTO.getId());
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable String id ,@RequestBody UpdateUserDTO updateUserDTO) {
+        Optional<User> optionalUser = userService.getById(id);
 
         if (optionalUser.isPresent()) {
             //TODO: Check if request is sent by the authenticated user itself
