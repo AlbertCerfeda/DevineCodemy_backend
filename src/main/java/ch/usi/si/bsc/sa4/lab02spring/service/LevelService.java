@@ -85,4 +85,13 @@ public class LevelService {
     public Optional<Level> getById(String level_id) {
         return levelRepository.findById(level_id);
     }
+
+
+
+    /**
+     * Returns a Level with a specific name.
+     * @param level_name the level_name of the level to look for.
+     * @return an Optional containing the Level if there is one with the provided name.
+     */
+    public Optional<Level> getByName(String level_name) {return levelRepository.findByNameContaining(level_name);}
 }
