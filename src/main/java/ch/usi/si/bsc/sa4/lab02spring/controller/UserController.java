@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -46,9 +47,25 @@ public class UserController {
      * POST /users
      */
     @PostMapping
-    public ResponseEntity<UserDTO> addUser(@RequestBody CreateUserDTO createUserDTO) {
-        User savedUser = userService.createUser(createUserDTO);
-        return ResponseEntity.ok(savedUser.toUserDTO());
+    public ResponseEntity<?> addUser(@RequestBody CreateUserDTO createUserDTO,
+                                     @RequestHeader(value = "accept") String accepts) {
+        if(createUserDTO.getPassword() != null && createUserDTO.getName() != null) {
+            if(userService.userExists(createUserDTO.getName())) {
+                return new ResponseEntity<>("Username is already taken.", HttpStatus.BAD_REQUEST);
+            } else {
+                User savedUser = userService.createUser(createUserDTO);
+                if(Objects.equals(accepts, "application/json")) {
+                    return ResponseEntity.ok(savedUser.toUserDTO());
+                } else if (Objects.equals(accepts, "text/html")) {
+                    return ResponseEntity.ok("User created");
+                } else {
+                    return new ResponseEntity<>("Change accept header", HttpStatus.NOT_ACCEPTABLE);
+                }
+            }
+        } else {
+            return new ResponseEntity<>("Both username and password must be inserted.", HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     /**

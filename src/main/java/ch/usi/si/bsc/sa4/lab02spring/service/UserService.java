@@ -52,6 +52,15 @@ public class UserService {
     public List<User> searchByNameContainingAndPublicProfileTrue(String string) {
         return userRepository.findAllByNameContainingAndPublicProfileTrue(string);
     }
+
+    /**
+     * Returns true if a user with specific name exists.
+     * @param name the name of the user to look for.
+     * @return a Boolean
+     */
+    public Boolean userExists(String name) {
+        return userRepository.existsByName(name);
+    }
     
     //
     

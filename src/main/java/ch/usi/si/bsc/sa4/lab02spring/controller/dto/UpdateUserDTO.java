@@ -10,8 +10,7 @@ public class UpdateUserDTO {
     private boolean publicProfileInitialized;
     private boolean publicProfile;
 
-
-//    public UpdateUserDTO() {}
+    public UpdateUserDTO() {}
 
     public UpdateUserDTO(String id, boolean publicProfileInitialized, boolean publicProfile) {
         this.id = id;
