@@ -53,19 +53,25 @@ public class UserController {
             if(userService.userExists(createUserDTO.getName())) {
                 return new ResponseEntity<>("Username is already taken.", HttpStatus.BAD_REQUEST);
             } else {
-                User savedUser = userService.createUser(createUserDTO);
-                if(Objects.equals(accepts, "application/json")) {
-                    return ResponseEntity.ok(savedUser.toUserDTO());
-                } else if (Objects.equals(accepts, "text/html")) {
-                    return ResponseEntity.ok("User created");
+                if(userService.checkBodyFormat(createUserDTO)) {
+                    if (Objects.equals(accepts, "application/json") ||
+                        Objects.equals(accepts, "*/*")) {
+                        User savedUser = userService.createUser(createUserDTO);
+                        return ResponseEntity.ok(savedUser.toUserDTO());
+                    } else if (Objects.equals(accepts, "text/html")) {
+                        userService.createUser(createUserDTO);
+                        return ResponseEntity.ok("User created");
+                    } else {
+                        return new ResponseEntity<>("Change accept header", HttpStatus.NOT_ACCEPTABLE);
+                    }
                 } else {
-                    return new ResponseEntity<>("Change accept header", HttpStatus.NOT_ACCEPTABLE);
+                    return new ResponseEntity<>("Values of username or password cannot be empty.",
+                            HttpStatus.BAD_REQUEST);
                 }
             }
         } else {
             return new ResponseEntity<>("Both username and password must be inserted.", HttpStatus.BAD_REQUEST);
         }
-
     }
 
     /**

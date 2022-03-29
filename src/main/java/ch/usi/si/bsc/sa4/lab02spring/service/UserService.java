@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -92,6 +93,15 @@ public class UserService {
     public void deleteUserById(String id) {
         userRepository.deleteById(id);
    }
+
+    public boolean checkBodyFormat(CreateUserDTO user) {
+        boolean checkingFlag = true;
+        if((Objects.equals(user.getName(), "")) ||
+                Objects.equals(user.getPassword(), "")) {
+            checkingFlag = false;
+        }
+        return checkingFlag;
+    }
 }
     
     
