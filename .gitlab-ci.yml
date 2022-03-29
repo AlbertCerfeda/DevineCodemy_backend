@@ -6,6 +6,8 @@ image: gradle:jdk11
 # isolated from any previous builds.
 variables:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+  CLIENT-ID: "<client-id-value>"
+  CLIENT-SECRET: "<client-secret-value>"
 
 before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
