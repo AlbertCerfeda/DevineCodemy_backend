@@ -8,14 +8,47 @@ import java.util.Random;
  * All the possible orientations.
  */
 public enum EOrientation {
-    UP(0,-1),
-    DOWN(0,1),
-    LEFT(-1, 0),
-    RIGHT(1,0);
+    UP(0,-1) {
+        @Override
+        public EOrientation getOpposite() { return DOWN; }
+        @Override
+        public EOrientation turnLeft()    { return LEFT; }
+        @Override
+        public EOrientation turnRight()   { return RIGHT; }
+    },
+    DOWN(0,1) {
+        @Override
+        public EOrientation getOpposite() { return UP; }
+        @Override
+        public EOrientation turnLeft()    { return RIGHT; }
+        @Override
+        public EOrientation turnRight()   { return LEFT; }
+    },
+    LEFT(-1, 0) {
+        @Override
+        public EOrientation getOpposite() { return RIGHT; }
+        @Override
+        public EOrientation turnLeft()    { return DOWN; }
+        @Override
+        public EOrientation turnRight()   { return UP; }
+    },
+    RIGHT(1,0) {
+        @Override
+        public EOrientation getOpposite() { return LEFT; }
+        @Override
+        public EOrientation turnLeft()    { return UP; }
+        @Override
+        public EOrientation turnRight()   { return DOWN; }
+    };
 
     private final int delta_x;
     private final int delta_y;
-
+    
+    public abstract EOrientation getOpposite();
+    public abstract EOrientation turnLeft();
+    public abstract EOrientation turnRight();
+    
+    
     /**
      * Private constructor for enum values.
      * Each value is associated with a delta_z and a delta_y which together mathematically represent the direction.
@@ -66,9 +99,9 @@ public enum EOrientation {
         // building the weighted array from which we pick a random orientation
         ArrayList<EOrientation> weighted_list = new ArrayList<>();
         add_n_times_to_list(weighted_list, orientation, 5);
-        add_n_times_to_list(weighted_list, getOppositeDirection(orientation), 1);
-        add_n_times_to_list(weighted_list, turnLeft(orientation), 2);
-        add_n_times_to_list(weighted_list, turnRight(orientation), 2);
+        add_n_times_to_list(weighted_list, orientation.getOpposite(), 1);
+        add_n_times_to_list(weighted_list, orientation.turnLeft(), 2);
+        add_n_times_to_list(weighted_list, orientation.turnRight(), 2);
         // picking random orientation from the weighted list
         Random random = new Random();
         final int r = random.nextInt(weighted_list.size());
@@ -80,64 +113,5 @@ public enum EOrientation {
         for (int i = 0; i <n; i++) {
             list.add(object);
         }
-    }
-
-    /**
-     * Returns the opposite direction to the given one.
-     * @param orientation the given direction.
-     * @return the opposite direction to the given direction.
-     */
-    public static EOrientation getOppositeDirection(EOrientation orientation) {
-        switch (orientation) {
-            case UP:
-                return DOWN;
-            case DOWN:
-                return UP;
-            case LEFT:
-                return RIGHT;
-            case RIGHT:
-                return LEFT;
-        }
-        // else invalid orientation, return UP as default.
-        return EOrientation.UP;
-    }
-    
-    /**
-     * Returns the new direction by turning the given direction to the left.
-     * @param orientation the given direction.
-     * @return the direction turned to the left.
-     */
-    public static EOrientation turnLeft(EOrientation orientation) {
-        switch (orientation) {
-            case UP:
-                return LEFT;
-            case DOWN:
-                return RIGHT;
-            case LEFT:
-                return DOWN;
-            case RIGHT:
-                return UP;
-        }
-        // else invalid orientation, return UP as default.
-        return EOrientation.UP;
-    }
-    /**
-     * Returns the new direction by turning the given direction to the right.
-     * @param orientation the given direction.
-     * @return the direction turned to the right.
-     */
-    public static EOrientation turnRight(EOrientation orientation) {
-        switch (orientation) {
-            case UP:
-                return RIGHT;
-            case DOWN:
-                return LEFT;
-            case LEFT:
-                return UP;
-            case RIGHT:
-                return DOWN;
-        }
-        // else invalid orientation, return UP as default.
-        return EOrientation.UP;
     }
 }
