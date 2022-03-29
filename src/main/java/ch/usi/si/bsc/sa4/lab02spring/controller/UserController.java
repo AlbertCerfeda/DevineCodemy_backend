@@ -30,7 +30,8 @@ public class UserController {
     }
     
     /**
-     * GET  /users
+     * GET /users
+     * Returns list of all public users.
      */
     @GetMapping
     public ResponseEntity<List<UserDTO>> getAll() {
@@ -78,6 +79,7 @@ public class UserController {
 
     /**
      * PUT /users/:id
+     * Updates the user in the database with info passed from UpdateUserDTO in RequestBody
      */
     @PutMapping("/{id}")
     public ResponseEntity<?> updateUser(@PathVariable String id ,@RequestBody UpdateUserDTO updateUserDTO) {
@@ -102,6 +104,8 @@ public class UserController {
     
     /**
      * GET /users/search?name=string
+     * Gets the user with the specific name.
+     * @constraint user's profile is public
      */
     @GetMapping("/search")
     public ResponseEntity<List<UserDTO>> getByNameContaining(@RequestParam("name") String name) {
@@ -114,6 +118,8 @@ public class UserController {
     
     /**
      * GET /users/:id
+     * Gets the user with the specific id.
+     * @constraint user's profile is public
      */
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable("id") String id) {
