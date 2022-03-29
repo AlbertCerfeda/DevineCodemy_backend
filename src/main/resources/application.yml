@@ -8,9 +8,9 @@ spring:
             redirect-uri: 'http://localhost:8080/login/oauth2/code/gitlab'
             client-id: "$CLIENT_ID"  #Need to get the Client-ID
             client-secret : "$CLIENT_SECRET" #Need to get the Client Secret
-            scope : openid , read_user
+            scope : openid , read_user , profile
             provider : gitlab
-            client-authentication-method:
+            client-authentication-method: basic
         provider :
           gitlab :
             authorization-uri: https://gitlab.com/oauth/authorizeF
@@ -18,7 +18,7 @@ spring:
             user-info-uri: https://gitlab.com/oauth/userinfo
             jwk-set-uri: https://gitlab.com/oauth/discovery/keys
 logging :
-level :
-org :
-  springframework :
-  security: DEBUG
+  level :
+    org :
+      springframework :
+        security: DEBUG
