@@ -45,6 +45,8 @@ public class UserController {
     
     /**
      * POST /users
+     * Creates a user in the database.
+     * @constraint username and password cannot be null nor empty.
      */
     @PostMapping
     public ResponseEntity<?> addUser(@RequestBody CreateUserDTO createUserDTO,
@@ -129,12 +131,21 @@ public class UserController {
         }
     }
 
+    /**
+     * DELETE /users/:id
+     * Deletes from the database the user with an id if it exists.
+     */
     @DeleteMapping("{id}")
     public ResponseEntity<String> deleteUser(@PathVariable String id) {
-  
-      userService.deleteUserById(id);
-  
-      return ResponseEntity.ok(id);
+        Optional<User> optionalUser = userService.getById(id);
+        if (optionalUser.isPresent()) {
+            userService.deleteUserById(id);
+            return new ResponseEntity<>("User deleted successfully.",
+                    HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("User with this id does not exist.",
+                    HttpStatus.BAD_REQUEST);
+        }
     }
 
 
