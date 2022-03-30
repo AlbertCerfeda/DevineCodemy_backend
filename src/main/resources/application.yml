@@ -1,11 +1,16 @@
 spring:
+  data:
+    mongodb:
+      database: users_tutorial
+      host: localhost
+      port: 27017
   security:
     oauth2:
       client:
         registration:
           gitlab:
             authorization-grant-type: authorization_code
-            redirect-uri: 'http://localhost:8080/login/oauth2/code/gitlab'
+            redirect-uri: '{baseUrl}/login/oauth2/code/{registrationId}'
             client-id: $CLIENT_ID  #Need to get the Client-ID
             client-secret : $CLIENT_SECRET #Need to get the Client Secret
             scope : openid , read_user , profile
@@ -22,3 +27,4 @@ logging :
     org :
       springframework :
         security: DEBUG
+

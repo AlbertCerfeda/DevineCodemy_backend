@@ -22,35 +22,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        // TODO: Possibly remove when implementing authentication in the project.
-        httpSecurity
-                .authorizeRequests()
-                    .antMatchers( "/","/home").permitAll()
-                    .anyRequest().authenticated()
-                    .and()
-//                .formLogin()
-//                    .loginPage("/login")
-//                    .permitAll()
-//                    .and()
-                .logout()
-                    .permitAll()
-                    .and()
-                .csrf()  // To allow requests other than GET to be handled without authentication
-                    .disable();
-//                .authorizeRequests(a -> a
-//                    .antMatchers("/", "/error", "/webjars/**").permitAll()
-//                    .anyRequest().authenticated()
-//                )
-//                .logout(l -> l
-//                        .logoutSuccessUrl("/").permitAll()
-//                )
-//                .csrf(c -> c
-//                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-//                )
-//                .exceptionHandling(e -> e
-//                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
-//                )
-//                .oauth2Login();
-
+//        httpSecurity.authorizeRequests().anyRequest().permitAll();
+        httpSecurity.authorizeRequests()
+                .anyRequest().authenticated().and().oauth2Login()
+                .and().csrf().disable();
     }
 }
