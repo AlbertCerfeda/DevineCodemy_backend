@@ -16,6 +16,7 @@ import java.util.List;
 
 /**
  * Request router for /levels
+ * Classes affected: Level, LevelDTO
  */
 @RestController
 @RequestMapping("/levels")
@@ -29,6 +30,7 @@ public class LevelController {
 
     /**
      * GET /levels
+     * Gets all levels available in LevelDTO representation
      */
     @GetMapping
     public ResponseEntity<List<LevelDTO>> getAll() {
@@ -43,6 +45,7 @@ public class LevelController {
 
     /**
      * GET /levels/{id}
+     * Gets the level with the specific id
      */
     @GetMapping("/{id}")
     public ResponseEntity<LevelDTO> getById(@PathVariable("id") String id) {
@@ -52,6 +55,7 @@ public class LevelController {
     }
     /**
      * GET /levels/{name}
+     * Gets the level with the specific name
      */
     @GetMapping("/search")
     public ResponseEntity<LevelDTO> getByName(@RequestParam("name") String name){

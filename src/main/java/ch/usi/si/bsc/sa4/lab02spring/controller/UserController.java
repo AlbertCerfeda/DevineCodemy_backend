@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 /**
  *  Request router for  /users
+ *  Classes affected: User, UserDTO, CreateUserDTO, UpdateUserDTO
  */
 @RestController
 @RequestMapping("/users")
