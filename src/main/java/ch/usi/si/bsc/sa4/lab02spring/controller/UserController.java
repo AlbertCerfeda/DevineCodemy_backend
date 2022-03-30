@@ -80,6 +80,10 @@ public class UserController {
     /**
      * PUT /users/:id
      * Updates the user in the database with info passed from UpdateUserDTO in RequestBody
+     * The modifyProfile field of UpdateUserDTO used to indicate whether we are modifying the profile status
+     * of the user or the other user attributes.
+     *
+     * @constraint boolean modifyProfile if true modify profile status, else modify other user fields.
      */
     @PutMapping("/{id}")
     public ResponseEntity<?> updateUser(@PathVariable String id ,@RequestBody UpdateUserDTO updateUserDTO) {
@@ -89,7 +93,7 @@ public class UserController {
             //TODO: Check if request is sent by the authenticated user itself
             User updatedUser = optionalUser.get();
 
-            if (updateUserDTO.isPublicProfileInitialized()) {
+            if (updateUserDTO.shouldModifyProfile()) {
                 updatedUser.setPublicProfile(updateUserDTO.isPublicProfile());
             }
 

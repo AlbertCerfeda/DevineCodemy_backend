@@ -7,14 +7,14 @@ package ch.usi.si.bsc.sa4.lab02spring.controller.dto;
  */
 public class UpdateUserDTO {
     private String id;
-    private boolean publicProfileInitialized;
+    private boolean modifyProfile;
     private boolean publicProfile;
 
     public UpdateUserDTO() {}
 
-    public UpdateUserDTO(String id, boolean publicProfileInitialized, boolean publicProfile) {
+    public UpdateUserDTO(String id, boolean modifyProfile, boolean publicProfile) {
         this.id = id;
-        this.publicProfileInitialized = publicProfileInitialized;
+        this.modifyProfile = modifyProfile;
         this.publicProfile = publicProfile;
     }
 
@@ -22,8 +22,8 @@ public class UpdateUserDTO {
         return id;
     }
 
-    public boolean isPublicProfileInitialized() {
-        return publicProfileInitialized;
+    public boolean shouldModifyProfile() {
+        return modifyProfile;
     }
 
     public boolean isPublicProfile() {
