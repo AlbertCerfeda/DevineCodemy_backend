@@ -25,6 +25,8 @@ public class Board {
     private int difficulty;
     private int n_coins;
 
+    private static final Random random = new Random();
+
     /**
      * Constructor for board objects.
      * @param grid the grid representing the terrain.
@@ -38,8 +40,8 @@ public class Board {
         }
         this.dim_x = grid.length;
         this.dim_y = grid[0].length;
-        this.grid = grid;
-        this.items = items;
+        this.grid = grid.clone();
+        this.items = items.clone();
         this.difficulty = difficulty;
         this.n_coins = n_coins;
     }
@@ -52,15 +54,24 @@ public class Board {
      * @throws IndexOutOfBoundsException if an error occurs, should never happen.
      */
     public Board(final int dim_x, final int dim_y) throws IndexOutOfBoundsException {
-        Random rand = new Random();
-        final int start_x = rand.nextInt(dim_x);
-        final int start_y = rand.nextInt(dim_y);
-        final int n_steps = rand.nextInt(3*dim_x + 3*dim_y);
-        final int water_n_steps = rand.nextInt(2*dim_x*dim_y);
-        final int n_items = rand.nextInt(n_steps/2);
-        final int max_elevation = rand.nextInt((dim_x+dim_y)/3);
+        final int start_x = random.nextInt(dim_x);
+        final int start_y = random.nextInt(dim_y);
+        final int n_steps = random_in_interval(dim_x, (dim_x * dim_y)/2);
+        final int water_n_steps = random_in_interval(dim_x, dim_x + dim_y);
+        final int n_items = random_in_interval(1, n_steps/2);
+        final int max_elevation = random_in_interval(0, dim_x/3);
         System.out.println("n_steps: " + n_steps + "\nwater_n_steps: " + water_n_steps);
         init(dim_x, dim_y, start_x, start_y, n_steps, water_n_steps, n_items, max_elevation);
+    }
+
+    /**
+     * Helper method to get a random integer between the given low and high included.
+     * @param low the lower bound.
+     * @param high the upper bound.
+     * @return an integer between the given low and high included.
+     */
+    private int random_in_interval(final int low, final int high) {
+        return low + random.nextInt(high-low+1);
     }
 
     /**
@@ -72,11 +83,10 @@ public class Board {
      * @throws IndexOutOfBoundsException if an error occurs, should never happen.
      */
     public Board(final int dim_x, final int dim_y, final int start_x, final int start_y) throws IndexOutOfBoundsException {
-        Random rand = new Random();
-        final int n_steps = rand.nextInt(3*dim_x + 3*dim_y);
-        final int water_n_steps = rand.nextInt(dim_x*dim_y);
-        final int n_items = rand.nextInt(n_steps/2);
-        final int max_elevation = rand.nextInt((dim_x+dim_y)/4);
+        final int n_steps = random.nextInt(3*dim_x + 3*dim_y);
+        final int water_n_steps = random.nextInt(dim_x*dim_y);
+        final int n_items = random.nextInt(n_steps/2);
+        final int max_elevation = random.nextInt((dim_x+dim_y)/4);
         init(dim_x, dim_y, start_x, start_y, n_steps, water_n_steps, n_items, max_elevation);
     }
 
@@ -122,7 +132,6 @@ public class Board {
 
         // INIT BOARD -----------------------------------------------------------------------------------------
         int placed_items = 0;
-        Random random = new Random();
 
         // at the beginning all the grid is walkable
         for (int i = 0; i < grid.length; i++) {
@@ -136,12 +145,12 @@ public class Board {
         ArrayList<Tile> path = new ArrayList<>();
         Tile currentTile = grid[start_x][start_y];
         path.add(currentTile);
-        Tile previousTile = currentTile;
 
         // choose direction
         EOrientation currentDirection = EOrientation.getRandom();
         EOrientation previousDirection = currentDirection;
         ArrayList<Tile> turns = new ArrayList<>(); // save all turns;
+        int forward_counter = 0;
 
         // start walking
         for (int step = 0; step < n_steps; step++) {
@@ -150,7 +159,7 @@ public class Board {
             while(true) {
                 try {
                     // get valid tile and add it to the path
-                    currentTile = getNextTileFromPositionAndDirection(previousTile.getPos_x(), previousTile.getPos_y(), currentDirection);
+                    currentTile = getNextTileFromPositionAndDirection(currentTile.getPos_x(), currentTile.getPos_y(), currentDirection);
                     path.add(currentTile);
                     break;  // break out of loop on success
                 } catch (IndexOutOfBoundsException e) {
@@ -163,12 +172,14 @@ public class Board {
             // keep track of each turn
             if(currentDirection != previousDirection) {
                 turns.add(currentTile);
+                forward_counter = 0;
+            } else {
+                forward_counter++;
             }
 
             // compute next direction: continuing straight is more likely than turning, turning back is unlikely but possible.
             previousDirection = currentDirection;
-            currentDirection = EOrientation.getWeightedRandom(previousDirection);
-//            currentDirection = EOrientation.getRandom();
+            currentDirection = EOrientation.getWeightedRandom(previousDirection, forward_counter);
         }
 
 
@@ -214,7 +225,6 @@ public class Board {
         final int water_start_x = random.nextInt(dim_x);
         final int water_start_y = random.nextInt(dim_y);
         Tile water_current_tile = grid[water_start_x][water_start_y];
-        Tile water_previous_tile = water_current_tile;
 
         EOrientation water_current_direction = EOrientation.getRandom();
 
@@ -227,6 +237,7 @@ public class Board {
             if (path.contains(water_current_tile)) {
                 final int z = grid[x][y].getPos_z();
                 grid[x][y] = new BridgeTile(x, y, z);
+                path.set(path.indexOf(water_current_tile), grid[x][y]);  // replace tile in the path
             } else {
                 grid[x][y] = new WaterTile(x, y, 0);
             }
@@ -235,7 +246,7 @@ public class Board {
             int count = 0;
             while(true) {
                 try {
-                    water_current_tile = getNextTileFromPositionAndDirection(water_previous_tile.getPos_x(), water_previous_tile.getPos_y(), water_current_direction);
+                    water_current_tile = getNextTileFromPositionAndDirection(water_current_tile.getPos_x(), water_current_tile.getPos_y(), water_current_direction);
                     break;  // break out of loop on success
                 } catch (IndexOutOfBoundsException e) {
                     // recompute direction and retry, max 100 tries
@@ -266,6 +277,9 @@ public class Board {
                 if (Math.abs(delta_elevation) > 2) {
                     // step too high, retry
                     i = i - delta_elevation;
+                    for (int j = i; j <= i + delta_elevation; j++) {
+                        path.get(j).setVisited(false);
+                    }
                     continue;
                 }
 
@@ -359,4 +373,21 @@ public class Board {
         return n_coins;
     }
 
+    /**
+     * Returns a string representation of the board.
+     * @return a string representing the board.
+     */
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        for (Tile[] tiles : grid) {
+            for (int j = 0; j < grid[0].length; j++) {
+                Tile t = tiles[j];
+                String type = "" + tiles[j].getType();
+                result.append(t.isVisited() ? "." : type.charAt(0));
+//                result += grid[i][j].getPos_z();
+            }
+            result.append("\n");
+        }
+        return result.toString();
+    }
 }
