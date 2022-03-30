@@ -1,5 +1,6 @@
 package ch.usi.si.bsc.sa4.lab02spring.controller;
 
+import ch.usi.si.bsc.sa4.lab02spring.model.Level.Level;
 import ch.usi.si.bsc.sa4.lab02spring.model.User.User;
 import ch.usi.si.bsc.sa4.lab02spring.service.LevelService;
 import ch.usi.si.bsc.sa4.lab02spring.service.UserService;
@@ -46,5 +47,19 @@ public class DevController {
         }
     }
 
-    //TODO: DELETE /levels/:id
+    /**
+     * DELETE /levels/{id}
+     * Deletes the level with the give id, if it exists
+     */
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deleteLevel(@PathVariable String id){
+        Optional<Level> optionalLevel = levelService.getById(id);
+        if(optionalLevel.isPresent()){
+            levelService.deleteLevelById(id);
+            return new ResponseEntity<>("Level deleted successfully.", HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>("Level with the given id does not exist.",HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

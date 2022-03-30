@@ -94,4 +94,10 @@ public class LevelService {
      * @return an Optional containing the Level if there is one with the provided name.
      */
     public Optional<Level> getByName(String level_name) {return levelRepository.findByNameContaining(level_name);}
+
+    /**
+     * Deletes a Level with a specific ID.
+     * @param level_id the level_id of the level to delete.
+     */
+    public void deleteLevelById(String level_id){levelRepository.deleteById(level_id);}
 }
