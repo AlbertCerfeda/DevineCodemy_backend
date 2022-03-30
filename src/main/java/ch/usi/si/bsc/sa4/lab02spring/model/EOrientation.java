@@ -43,6 +43,7 @@ public enum EOrientation {
 
     private final int delta_x;
     private final int delta_y;
+    private static final Random random = new Random();
     
     public abstract EOrientation getOpposite();
     public abstract EOrientation turnLeft();
@@ -98,12 +99,29 @@ public enum EOrientation {
     public static EOrientation getWeightedRandom(EOrientation orientation) {
         // building the weighted array from which we pick a random orientation
         ArrayList<EOrientation> weighted_list = new ArrayList<>();
-        add_n_times_to_list(weighted_list, orientation, 5);
+        add_n_times_to_list(weighted_list, orientation, 10);
         add_n_times_to_list(weighted_list, orientation.getOpposite(), 1);
-        add_n_times_to_list(weighted_list, orientation.turnLeft(), 2);
-        add_n_times_to_list(weighted_list, orientation.turnRight(), 2);
+        add_n_times_to_list(weighted_list, orientation.turnLeft(), 3);
+        add_n_times_to_list(weighted_list, orientation.turnRight(), 3);
         // picking random orientation from the weighted list
-        Random random = new Random();
+        final int r = random.nextInt(weighted_list.size());
+        return weighted_list.get(r);
+    }
+
+    /**
+     * To get a random direction depending on the given direction and on how long the character is proceeding forward.
+     * The more the character is proceeding forward, the more likely it is to turn left or right.
+     * @param orientation the given direction.
+     * @param forward_counter the number of steps the character is proceeding forward.
+     * @return a random direction weighted on the given direction and on how long the character is proceeding forward.
+     */
+    public static EOrientation getWeightedRandom(EOrientation orientation, final int forward_counter) {
+        ArrayList<EOrientation> weighted_list = new ArrayList<>();
+        add_n_times_to_list(weighted_list, orientation, 25);
+        add_n_times_to_list(weighted_list, orientation.getOpposite(), forward_counter);
+        add_n_times_to_list(weighted_list, orientation.turnLeft(), 3*forward_counter);
+        add_n_times_to_list(weighted_list, orientation.turnRight(), 3*forward_counter);
+        // picking random orientation from the weighted list
         final int r = random.nextInt(weighted_list.size());
         return weighted_list.get(r);
     }
