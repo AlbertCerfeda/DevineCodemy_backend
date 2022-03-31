@@ -28,15 +28,12 @@ public class LevelService {
      * @param actions the array of actions to be simulated on the Level.
      */
     public static boolean validateActions(String level_id, List<EAction> actions) {
-        // TODO: Change signature and return list of all the TileDTO state changes after performing each move.
-        Optional<Level> level = getLevelById(level_id);
+        Optional<Level> optionalLevel = getLevelById(level_id);
+        if(optionalLevel.isEmpty())
+            throw new IllegalArgumentException("Level does not exist");
         
-        if(level.isPresent()) {
-            return level.get().validateActions(actions);
-        } else {
-            // throw custom exception
-            return false;
-        }
+        GamePlayer gameplayer = new GamePlayer(optionalLevel.get(), actions);
+        return gameplayer.play();
     }
     
     
