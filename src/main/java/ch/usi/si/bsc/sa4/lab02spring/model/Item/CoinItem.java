@@ -11,6 +11,6 @@ public class CoinItem extends Item {
      * @param pos_y the y position of the coin.
      */
     public CoinItem(int pos_x, int pos_y) {
-        super(pos_x, pos_y);
+        super(EItem.COIN, pos_x, pos_y);
     }
 }
