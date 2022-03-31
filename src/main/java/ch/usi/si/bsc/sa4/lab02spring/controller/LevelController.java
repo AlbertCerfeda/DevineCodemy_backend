@@ -54,7 +54,7 @@ public class LevelController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
     /**
-     * GET /levels/{name}
+     * GET /levels/search?name={name}
      * Gets the level with the specific name
      */
     @GetMapping("/search")

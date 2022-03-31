@@ -51,7 +51,7 @@ public class DevController {
      * DELETE /levels/{id}
      * Deletes the level with the give id, if it exists
      */
-    @DeleteMapping("{id}")
+    @DeleteMapping("/levels/{id}")
     public ResponseEntity<String> deleteLevel(@PathVariable String id){
         Optional<Level> optionalLevel = levelService.getById(id);
         if(optionalLevel.isPresent()){
