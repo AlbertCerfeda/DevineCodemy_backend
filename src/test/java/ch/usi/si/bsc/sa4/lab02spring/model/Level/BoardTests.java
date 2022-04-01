@@ -1,6 +1,5 @@
 package ch.usi.si.bsc.sa4.lab02spring.model.Level;
 
-import java.util.function.Supplier;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -36,9 +35,9 @@ public class BoardTests {
     @MethodSource("dimConstructorTestsArgumentProvider")
     void dimConstructorTest(int dimX, int dimY, boolean shouldThrow) {
         if (shouldThrow) {
-            assertThrows(IllegalArgumentException.class, () -> new Board(dimX, dimY));
+            assertThrows(Exception.class, () -> new Board(dimX, dimY), "constructor should throw");
         } else {
-            assertDoesNotThrow(() -> new Board(dimX, dimY));
+            assertDoesNotThrow(() -> new Board(dimX, dimY), "constructor should not throw");
         }
     }
 
