@@ -32,7 +32,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //                        .defaultSuccessUrl("/loginSuccess")
 //                );
 
-        //        httpSecurity.authorizeRequests().anyRequest().permitAll();
+//                httpSecurity.authorizeRequests().anyRequest().permitAll();
         httpSecurity.authorizeRequests()
                 .anyRequest().authenticated().and().oauth2Login()
                 .and().csrf().disable();

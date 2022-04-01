@@ -8,12 +8,9 @@ import ch.usi.si.bsc.sa4.lab02spring.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -27,17 +24,18 @@ import java.util.stream.Collectors;
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
-    private final InMemoryOAuth2AuthorizedClientService authorizedClientService;
+    private OAuth2AuthorizedClientService authorizedClientService;
 //    private final ClientRegistration cRegistration = new ClientRegistration.Builder();
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, OAuth2AuthorizedClientService authorizedClientService) {
+        this.authorizedClientService = authorizedClientService;
         this.userService = userService;
-        ArrayList<ClientRegistration> clientRegistrations = new ArrayList<ClientRegistration>();
-        clientRegistrations.add(ClientRegistration.Builder);
-        authorizedClientService = new InMemoryOAuth2AuthorizedClientService(
-                new InMemoryClientRegistrationRepository(
-                        new ArrayList<>()));
+//        ArrayList<ClientRegistration> clientRegistrations = new ArrayList<ClientRegistration>();
+//        clientRegistrations.add(ClientRegistration.Builder);
+//        authorizedClientService = new InMemoryOAuth2AuthorizedClientService(
+//                new InMemoryClientRegistrationRepository(
+//                        new ArrayList<>()));
     }
     
     /**
@@ -161,11 +159,10 @@ public class UserController {
                 .loadAuthorizedClient(
                         authentication.getAuthorizedClientRegistrationId(),
                         authentication.getName());
-        if ( client == null) {
+        if (client == null) {
             throw new RuntimeException();
         }
         String accessToken = client.getAccessToken().getTokenValue();
-
 
         System.out.println(accessToken);
         return accessToken;
