@@ -50,27 +50,6 @@ public class Level {
         this.allowed_commands = allowed_commands;
     }
     
-    
-    
-    public boolean validateActions(final List<EAction> commands) {
-        int x = robot.getPos_x();
-        int y = robot.getPos_y();
-
-        int current_orientation;
-
-        for(EAction command : commands) {
-
-            if (command == EAction.MOVE_FORWARD) {
-                // Do something
-            }
-
-            // ...
-        }
-
-
-        return true;
-    }
-    
     public LevelDTO toLevelDTO() { return new LevelDTO(this); }
     
     
