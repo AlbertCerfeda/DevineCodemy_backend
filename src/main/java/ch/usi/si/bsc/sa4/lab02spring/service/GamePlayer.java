@@ -15,14 +15,21 @@ public class GamePlayer {
 
     private final Level level;
     private final String commands;
-    
 
+    /**
+     * Constructor for GamePlayer
+     * @param level the level to play.
+     * @param commands the commands to execute.
+     */
     public GamePlayer(final Level level, final String commands) {
         this.level = level;
         this.commands = commands;
     }
-    
-    
+
+    /**
+     * To validate a gameplay on a level.
+     * @return a LevelValidation object to represent the result of the validation.
+     */
     public LevelValidation play() {
         boolean hasErrors = false;
         boolean canContinueAnimation = true;
@@ -58,6 +65,7 @@ public class GamePlayer {
                     if (command.trim().length() > 0) { // ignore empty commands
                         try {
                             EAction action = EAction.getEActionFromCommand(command.trim());
+                            // TODO: check if action is in the list of possible actions, otherwise new error!
                             // The command is valid: but if the code has errors or the animation cannot continue, we cannot continue the game
                             ++commandsCount;
                             if (canContinueAnimation && !hasErrors) {
