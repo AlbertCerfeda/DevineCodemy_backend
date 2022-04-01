@@ -94,7 +94,7 @@ public class UserController {
             //TODO: Check if request is sent by the authenticated user itself
             User updatedUser = optionalUser.get();
 
-            if (updateUserDTO.shouldModifyProfile()) {
+            if (updateUserDTO.isPublicProfileInitialized()) {
                 updatedUser.setPublicProfile(updateUserDTO.isPublicProfile());
             }
 
