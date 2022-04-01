@@ -6,17 +6,61 @@ import ch.usi.si.bsc.sa4.lab02spring.controller.dto.EActionDTO;
  * All the actions at the disposal of the player.
  */
 public enum EAction {
-    MOVE_FORWARD("Moves Robot forward"),
-    TURN_LEFT   ("Turns Robot left"),
-    TURN_RIGHT  ("Turns Robot right"),
-    COLLECT_COIN("Collects a Coin");
+    MOVE_FORWARD("MoveForward") {
+        @Override
+        public String getDescription() {
+            return "Moves Robot forward";
+        }
+    },
+    TURN_LEFT   ("TurnLeft") {
+        @Override
+        public String getDescription() {
+            return "Turns Robot left";
+        }
+    },
+    TURN_RIGHT  ("TurnRight") {
+        @Override
+        public String getDescription() {
+            return "Turns Robot right";
+        }
+    },
+    COLLECT_COIN("CollectCoin") {
+        @Override
+        public String getDescription() {
+            return "Collects a Coin";
+        }
+    };
 
-    private final String description;
+    private final String name;
 
-    EAction(String description) {
-        this.description = description;
+    EAction(String name) {
+        this.name = name;
     }
-    
-    public String getDescription() { return description;}
+
+    /**
+     * Create a new EAction from a command name.
+     * Example: "MoveForward()" -> EAction.MOVE_FORWARD, name: "MoveForward"
+     * @param command the given command
+     */
+    public static EAction getEActionFromCommand(String command) throws IllegalArgumentException {
+        switch (command) {
+            case "moveForward()":
+                return EAction.MOVE_FORWARD;
+            case "turnLeft()":
+                return EAction.TURN_LEFT;
+            case "turnRight()":
+                return EAction.TURN_RIGHT;
+            case "collectCoin()":
+                return EAction.COLLECT_COIN;
+            default:
+                throw new IllegalArgumentException("Unknown command: " + command);
+        }
+
+    }
+
+    public abstract String getDescription();
+    public String getName() {
+        return this.name;
+    }
     public EActionDTO toEActionDTO() { return new EActionDTO(this); }
 }
