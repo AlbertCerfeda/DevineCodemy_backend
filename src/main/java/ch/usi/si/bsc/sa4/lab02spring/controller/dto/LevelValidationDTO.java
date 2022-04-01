@@ -10,6 +10,10 @@ public class LevelValidationDTO {
     private final List<Pair<Integer, String>> errors;
     private final List<Pair<Integer, String>> animations;
 
+    /**
+     * Constructor for LevelValidationDTO
+     * @param levelValidation the LevelValidation object to convert into a DTO
+     */
     public LevelValidationDTO(LevelValidation levelValidation) {
         completed = levelValidation.isCompleted();
         errors = levelValidation.getErrors();
