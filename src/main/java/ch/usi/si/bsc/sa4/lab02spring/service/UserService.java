@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -36,7 +37,10 @@ public class UserService {
      * @param id the ID of the user to look for.
      * @return an Optional containing, if the user exists, a boolean value that tells if the profile is public o not.
      */
-    public Optional<Boolean> isUserPublic(String id) { return userRepository.isUserPublic(id); }
+    public Optional<Boolean> isUserPublic(String id){
+        Optional<User> optionalUser = userRepository.isUserPublic(id);
+        return optionalUser.map((user)->user.isProfilePublic());
+    }
     
     /**
      * Returns a User with a specific ID.
@@ -46,8 +50,20 @@ public class UserService {
     public Optional<User> getById(String id) {
         return userRepository.findById(id);
     }
-    public List<User> searchByNameContaining(String string) {
-        return userRepository.findAllByNameContaining(string);
+
+    public List<User> searchByNameContaining(String string, boolean publicProfile) {
+        return publicProfile
+                ? userRepository.findAllByNameContainingAndPublicProfileTrue(string)
+                : userRepository.findAllByNameContainingAndPublicProfileFalse(string);
+    }
+
+    /**
+     * Returns true if a user with specific name exists.
+     * @param name the name of the user to look for.
+     * @return a Boolean
+     */
+    public Boolean userExists(String name) {
+        return userRepository.existsByName(name);
     }
     
     //
@@ -73,6 +89,20 @@ public class UserService {
         optionalUser.get().changePassword(oldPassword, newPassword);
         return Optional.of(this.updateUser(optionalUser.get()));
     }
-    
-    //
+
+    public void deleteUserById(String id) {
+        userRepository.deleteById(id);
+   }
+
+    public boolean checkBodyFormat(CreateUserDTO user) {
+        boolean checkingFlag = true;
+        if((Objects.equals(user.getName(), "")) ||
+                Objects.equals(user.getPassword(), "")) {
+            checkingFlag = false;
+        }
+        return checkingFlag;
+    }
 }
+    
+    
+

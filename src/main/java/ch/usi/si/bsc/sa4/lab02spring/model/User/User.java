@@ -13,7 +13,7 @@ public class User {
     private final String name;
     private String hash;
     
-    private boolean public_profile = false;
+    private boolean publicProfile = false;
     
     /* TODO: Add additional fields
     - GitLab specific fields
@@ -44,6 +44,8 @@ public class User {
         return hash;
     }
 
+    public Boolean isProfilePublic() { return publicProfile; }
+
     public void changePassword(String oldPassword, String newPassword) {
         if (oldPassword == null || newPassword == null) {
             throw new IllegalArgumentException("Password cannot be null");
@@ -59,4 +61,9 @@ public class User {
     public UserDTO toUserDTO() {
         return new UserDTO(this);
     }
+
+    public void setPublicProfile(boolean publicProfile) {
+        this.publicProfile = publicProfile;
+    }
+
 }

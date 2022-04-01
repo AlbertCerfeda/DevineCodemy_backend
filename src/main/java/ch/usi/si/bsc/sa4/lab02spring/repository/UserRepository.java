@@ -1,6 +1,7 @@
 package ch.usi.si.bsc.sa4.lab02spring.repository;
 
 import ch.usi.si.bsc.sa4.lab02spring.model.User.User;
+import org.springframework.data.mongodb.repository.ExistsQuery;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -15,13 +16,17 @@ import java.util.Optional;
 public interface UserRepository extends MongoRepository<User, String> {
     // You can implement complex "predefined" logic with specific conventions by specific method names
     // Documentation link: https://docs.spring.io/spring-data/mongodb/docs/current/reference/html/#mongodb.repositories.queries
-    List<User> findAllByNameContaining(String string);
-    
-    @Query("{'public_profile':true}")
+    List<User> findAllByNameContainingAndPublicProfileTrue(String string);
+    List<User> findAllByNameContainingAndPublicProfileFalse(String string);
+
+    @Query("{'publicProfile':true}")
     List<User> findAllPublic();
     
-    @Query(value="{ id : ?0}", fields="{ public_profile : 1 }")
-    Optional<Boolean> isUserPublic(String id);
+    @Query(value="{ id : ?0}", fields="{ publicProfile : 1 }")
+    Optional<User> isUserPublic(String id);
+
+    Boolean existsByName(String name);
+
     
     
     

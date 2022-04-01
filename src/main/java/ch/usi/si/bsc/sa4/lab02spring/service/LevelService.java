@@ -14,11 +14,11 @@ import java.util.Optional;
  */
 @Service
 public class LevelService {
-    private static LevelRepository levelRepository;
+    private LevelRepository levelRepository;
     
     @Autowired
     public LevelService(LevelRepository levelRepository) {
-        LevelService.levelRepository = levelRepository;
+        this.levelRepository = levelRepository;
     }
     
     
@@ -27,9 +27,9 @@ public class LevelService {
      * @param level_id the level ID string.
      * @param actions the array of actions to be simulated on the Level.
      */
-    public static boolean validateActions(String level_id, List<EAction> actions) {
+    public boolean validateActions(String level_id, List<EAction> actions) {
         // TODO: Change signature and return list of all the TileDTO state changes after performing each move.
-        Optional<Level> level = getLevelById(level_id);
+        Optional<Level> level = getById(level_id);
         
         if(level.isPresent()) {
             return level.get().validateActions(actions);
@@ -50,7 +50,7 @@ public class LevelService {
      *  - The List of all playable game Levels by the user.
      *  - An Integer representing the number of Levels in the database.
      */
-    public static Pair<List<Level>,Integer> getAllPlayableLevels(String user_id) {
+    public Pair<List<Level>,Integer> getAllPlayableLevels(String user_id) {
         // TODO: Implement getAllPlayable that returns only the levels playable by the user based on his statistics
         List<Level> levels = getAll();
         return Pair.of(levels, levels.size());
@@ -62,7 +62,7 @@ public class LevelService {
      * Returns all levels in the game.
      * @return List containing all the levels in the game
      */
-    public static List<Level> getAll() {
+    public List<Level> getAll() {
         return levelRepository.findAll();
     }
     
@@ -71,7 +71,7 @@ public class LevelService {
      *  Useful for having a more lightweight message when displaying just the level info.
      * @return List containing all the level infos in the game.
      */
-    public static List<Level> getAllInfo() {
+    public List<Level> getAllInfo() {
         return levelRepository.findAllInfo();
     }
     
@@ -82,7 +82,22 @@ public class LevelService {
      * @param level_id the level_id of the level to look for.
      * @return an Optional containing the Level if there is one with the provided ID.
      */
-    public static Optional<Level> getLevelById(String level_id) {
+    public Optional<Level> getById(String level_id) {
         return levelRepository.findById(level_id);
     }
+
+
+
+    /**
+     * Returns a Level with a specific name.
+     * @param level_name the level_name of the level to look for.
+     * @return an Optional containing the Level if there is one with the provided name.
+     */
+    public Optional<Level> getByName(String level_name) {return levelRepository.findByNameContaining(level_name);}
+
+    /**
+     * Deletes a Level with a specific ID.
+     * @param level_id the level_id of the level to delete.
+     */
+    public void deleteLevelById(String level_id){levelRepository.deleteById(level_id);}
 }
