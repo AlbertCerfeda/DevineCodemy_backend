@@ -83,10 +83,10 @@ public class Board {
      * @throws IndexOutOfBoundsException if an error occurs, should never happen.
      */
     public Board(final int dim_x, final int dim_y, final int start_x, final int start_y) throws IndexOutOfBoundsException {
-        final int n_steps = random.nextInt(3*dim_x + 3*dim_y);
-        final int water_n_steps = random.nextInt(dim_x*dim_y);
-        final int n_items = random.nextInt(n_steps/2);
-        final int max_elevation = random.nextInt((dim_x+dim_y)/4);
+        final int n_steps = random_in_interval(dim_x, (dim_x * dim_y)/2);
+        final int water_n_steps = random_in_interval(dim_x, dim_x + dim_y);
+        final int n_items = random_in_interval(1, n_steps/2);
+        final int max_elevation = random_in_interval(0, dim_x/3);
         init(dim_x, dim_y, start_x, start_y, n_steps, water_n_steps, n_items, max_elevation);
     }
 
@@ -338,8 +338,13 @@ public class Board {
     }
 
     public boolean canStep(final int x, final int y, EOrientation direction) {
-        // FIXME
-        return true;
+        try {
+            Tile nextTile = getNextTileFromPositionAndDirection(x, y, direction);
+            int delta_z = Math.abs(nextTile.getPos_z() - getTileInPosition(x,y).getPos_z());
+            return nextTile.is_walkable() && delta_z <= 1;
+        } catch (IndexOutOfBoundsException e) {
+            return false;
+        }
     }
 
     
@@ -363,6 +368,10 @@ public class Board {
     
     public Item[][] getItems(){
         return items;
+    }
+
+    public boolean containsItemAt(final int x, final int y) {
+        return items[x][y] != null;
     }
 
     public int getDifficulty() {
