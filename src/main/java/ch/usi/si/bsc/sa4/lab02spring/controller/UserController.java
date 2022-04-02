@@ -5,14 +5,21 @@ import ch.usi.si.bsc.sa4.lab02spring.controller.dto.UpdateUserDTO;
 import ch.usi.si.bsc.sa4.lab02spring.controller.dto.UserDTO;
 import ch.usi.si.bsc.sa4.lab02spring.model.User.User;
 import ch.usi.si.bsc.sa4.lab02spring.service.UserService;
+import com.nimbusds.jose.Header;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.*;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
+import javax.xml.crypto.dsig.spec.ExcC14NParameterSpec;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -25,19 +32,13 @@ import java.util.stream.Collectors;
 public class UserController {
     private final UserService userService;
     private OAuth2AuthorizedClientService authorizedClientService;
-//    private final ClientRegistration cRegistration = new ClientRegistration.Builder();
 
     @Autowired
     public UserController(UserService userService, OAuth2AuthorizedClientService authorizedClientService) {
-        this.authorizedClientService = authorizedClientService;
         this.userService = userService;
-//        ArrayList<ClientRegistration> clientRegistrations = new ArrayList<ClientRegistration>();
-//        clientRegistrations.add(ClientRegistration.Builder);
-//        authorizedClientService = new InMemoryOAuth2AuthorizedClientService(
-//                new InMemoryClientRegistrationRepository(
-//                        new ArrayList<>()));
+        this.authorizedClientService = authorizedClientService;
     }
-    
+
     /**
      * GET /users
      * Returns list of all public users.
@@ -150,10 +151,9 @@ public class UserController {
         }
     }
 
-
-
+    /** GET /foo ..*/
     @GetMapping("/foo")
-    public String foo(OAuth2AuthenticationToken authentication) throws RuntimeException{
+    public ResponseEntity<String> foo(OAuth2AuthenticationToken authentication) throws RuntimeException{
 
         OAuth2AuthorizedClient client = authorizedClientService
                 .loadAuthorizedClient(
@@ -165,7 +165,14 @@ public class UserController {
         String accessToken = client.getAccessToken().getTokenValue();
 
         System.out.println(accessToken);
-        return accessToken;
-    }
 
+        URI location = null;
+        try {
+            location = new URI("/users/foo");
+        } catch (URISyntaxException ex) {
+            System.out.println(ex);
+        }
+
+        return ResponseEntity.created(location).header("MyResponseHeader", "MyValue").body("Hello World");
+    }
 }
