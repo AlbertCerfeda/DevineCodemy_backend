@@ -25,6 +25,9 @@ public class Board {
     private int difficulty;
     private int n_coins;
 
+    public Board() {
+    }
+
     /**
      * Constructor for board objects.
      * @param grid the grid representing the terrain.

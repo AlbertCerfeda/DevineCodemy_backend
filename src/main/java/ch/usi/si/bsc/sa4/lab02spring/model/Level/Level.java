@@ -29,6 +29,14 @@ public class Level {
 
     private final List<EAction> allowed_commands;
 
+    public Level() {
+        this.name = "";
+        this.description = "";
+        this.board = null;
+        this.robot = null;
+        this.allowed_commands = List.of();
+    }
+
     @PersistenceConstructor
     public Level(String name, String description, Board board, Robot robot, List<EAction> allowed_commands) {
         this.name = name;

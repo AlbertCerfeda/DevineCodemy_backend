@@ -1,0 +1,42 @@
+[
+  {
+    "_class": "ch.usi.si.bsc.sa4.lab02spring.model.Level.Level",
+    "id": 1,
+    "name": "level1",
+    "description": "apple",
+    "max_steps": 1,
+    "board": {
+      "dim_x": 0,
+      "dim_y": 0,
+      "grid": [[]],
+      "items": [[]],
+      "difficulty": 0,
+      "n_coins": 0
+    },
+    "robot": {
+      "pos_x": 0,
+      "pos_y": 0
+    },
+    "allowed_commands": []
+  },
+  {
+    "_class": "ch.usi.si.bsc.sa4.lab02spring.model.Level.Level",
+    "id": 2,
+    "name": "level2",
+    "description": "guava",
+    "max_steps": 2,
+    "board": {
+      "dim_x": 0,
+      "dim_y": 0,
+      "grid": [[]],
+      "items": [[]],
+      "difficulty": 0,
+      "n_coins": 0
+    },
+    "robot": {
+      "pos_x": 0,
+      "pos_y": 0
+    },
+    "allowed_commands": []
+  }
+]

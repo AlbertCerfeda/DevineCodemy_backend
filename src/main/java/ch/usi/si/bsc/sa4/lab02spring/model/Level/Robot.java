@@ -6,12 +6,15 @@ import ch.usi.si.bsc.sa4.lab02spring.model.EOrientation;
 public class Robot {
     private int pos_x;
     private int pos_y;
-    private EOrientation orientation;
+//    private EOrientation orientation = EOrientation.UP;
+
+    public Robot() {
+    }
 
     public Robot(int start_x, int start_y, EOrientation orientation) {
         this.pos_x= start_x;
         this.pos_y= start_y;
-        this.orientation = orientation;
+//        this.orientation = orientation;
     }
     
     public RobotDTO toRobotDTO() { return new RobotDTO(this); }
@@ -24,5 +27,5 @@ public class Robot {
         return pos_y;
     }
     
-    public EOrientation getOrientation(){ return orientation; }
+//    public EOrientation getOrientation(){ return orientation; }
 }
