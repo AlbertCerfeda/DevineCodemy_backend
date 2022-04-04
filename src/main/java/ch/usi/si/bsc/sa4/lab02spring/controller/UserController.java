@@ -16,6 +16,7 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.xml.crypto.dsig.spec.ExcC14NParameterSpec;
 import java.net.URI;
@@ -158,7 +159,7 @@ public class UserController {
 
     /** GET /foo ..*/
     @GetMapping("/foo")
-    public String foo(OAuth2AuthenticationToken authentication) throws RuntimeException{
+    public RedirectView foo(OAuth2AuthenticationToken authentication) throws RuntimeException{
 
         OAuth2AuthorizedClient client = authorizedClientService
                 .loadAuthorizedClient(
@@ -193,7 +194,10 @@ public class UserController {
 //        return ResponseEntity.created(location).header("MyResponseHeader", "MyValue").body("Hello World");
         System.out.println(result);
 
-        return result;
+        // For redirecting back to Home Page
+        RedirectView redirectView = new RedirectView();
+        redirectView.setUrl("/");
+        return redirectView;
 
 //        @RequestMapping(value = "/username", method = RequestMethod.GET)
 //        @ResponseBody
