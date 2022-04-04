@@ -158,7 +158,7 @@ public class UserController {
 
     /** GET /foo ..*/
     @GetMapping("/foo")
-    public /*ResponseEntity<String>*/ String foo(OAuth2AuthenticationToken authentication) throws RuntimeException{
+    public String foo(OAuth2AuthenticationToken authentication) throws RuntimeException{
 
         OAuth2AuthorizedClient client = authorizedClientService
                 .loadAuthorizedClient(
@@ -174,28 +174,26 @@ public class UserController {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON,MediaType.TEXT_HTML,MediaType.TEXT_PLAIN));
         HttpEntity<String> entity = new HttpEntity<String>(headers);
-        
-        // final String baseUrl = "https:/gitlab.com/api/v4/user";
-        // URI uri = new URI(baseUrl);
-        // ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
+
 
 
 //        ResponseEntity result = restTemplate.exchange("https://gitlab.com/api/v4/user/", HttpMethod.GET, entity,String.class);
         String result = restTemplate.exchange("https://gitlab.com/api/v4/user?access_token=" + accessToken, HttpMethod.GET, entity, String.class).getBody();
-        
-//        HttpHeaders responseHeaders = result.getHeaders();
-//        String body = (String) result.getBody();
-//        if (result.getBody() == null) {
+
         if (result == null) {
             System.out.println("A BIT OF A PROBLEM");
         } else {
             System.out.println("ALLELUIA");
         }
 
+        // final String baseUrl = "https:/gitlab.com/api/v4/user";
+        // URI uri = new URI(baseUrl);
+        // ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
+
 //        return ResponseEntity.created(location).header("MyResponseHeader", "MyValue").body("Hello World");
         System.out.println(result);
 
-        return accessToken;
+        return result;
 
 //        @RequestMapping(value = "/username", method = RequestMethod.GET)
 //        @ResponseBody
