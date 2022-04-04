@@ -25,6 +25,8 @@ public class Board {
     private int difficulty;
     private int n_coins;
 
+    private static final Random random = new Random();
+
     /**
      * Constructor for board objects.
      * @param grid the grid representing the terrain.
@@ -44,7 +46,6 @@ public class Board {
         this.n_coins = n_coins;
     }
 
-
     /**
      * Generate board from given dimensions.
      * @param dim_x the x dimension of the board.
@@ -52,15 +53,24 @@ public class Board {
      * @throws IndexOutOfBoundsException if an error occurs, should never happen.
      */
     public Board(final int dim_x, final int dim_y) throws IndexOutOfBoundsException {
-        Random rand = new Random();
-        final int start_x = rand.nextInt(dim_x);
-        final int start_y = rand.nextInt(dim_y);
-        final int n_steps = rand.nextInt(3*dim_x + 3*dim_y);
-        final int water_n_steps = rand.nextInt(2*dim_x*dim_y);
-        final int n_items = rand.nextInt(n_steps/2);
-        final int max_elevation = rand.nextInt((dim_x+dim_y)/3);
+        final int start_x = random.nextInt(dim_x);
+        final int start_y = random.nextInt(dim_y);
+        final int n_steps = random_in_interval(dim_x, (dim_x * dim_y)/2);
+        final int water_n_steps = random_in_interval(dim_x, dim_x + dim_y);
+        final int n_items = random_in_interval(1, n_steps/2);
+        final int max_elevation = random_in_interval(0, dim_x/3);
         System.out.println("n_steps: " + n_steps + "\nwater_n_steps: " + water_n_steps);
         init(dim_x, dim_y, start_x, start_y, n_steps, water_n_steps, n_items, max_elevation);
+    }
+
+    /**
+     * Helper method to get a random integer between the given low and high included.
+     * @param low the lower bound.
+     * @param high the upper bound.
+     * @return an integer between the given low and high included.
+     */
+    private int random_in_interval(final int low, final int high) {
+        return low + random.nextInt(high-low+1);
     }
 
     /**
@@ -79,10 +89,6 @@ public class Board {
         final int max_elevation = rand.nextInt((dim_x+dim_y)/4);
         init(dim_x, dim_y, start_x, start_y, n_steps, water_n_steps, n_items, max_elevation);
     }
-
-
-
-
 
     /**
      * Generate board from given dimensions, start coordinates, how many steps to perform, how many items to place and the maximum elevation we can reach.
