@@ -32,11 +32,16 @@ import java.util.stream.Collectors;
 public class UserController {
     private final UserService userService;
     private OAuth2AuthorizedClientService authorizedClientService;
+    private final RestTemplate restTemplate;
+    private Object Principal;
+    private CreateUserDTO principal;
+    private Object Authentication;
 
     @Autowired
     public UserController(UserService userService, OAuth2AuthorizedClientService authorizedClientService) {
         this.userService = userService;
         this.authorizedClientService = authorizedClientService;
+        restTemplate = new RestTemplate();
     }
 
     /**
@@ -153,7 +158,7 @@ public class UserController {
 
     /** GET /foo ..*/
     @GetMapping("/foo")
-    public ResponseEntity<String> foo(OAuth2AuthenticationToken authentication) throws RuntimeException{
+    public /*ResponseEntity<String>*/ String foo(OAuth2AuthenticationToken authentication) throws RuntimeException{
 
         OAuth2AuthorizedClient client = authorizedClientService
                 .loadAuthorizedClient(
@@ -166,13 +171,36 @@ public class UserController {
 
         System.out.println(accessToken);
 
-        URI location = null;
-        try {
-            location = new URI("/users/foo");
-        } catch (URISyntaxException ex) {
-            System.out.println(ex);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON,MediaType.TEXT_HTML,MediaType.TEXT_PLAIN));
+        HttpEntity<String> entity = new HttpEntity<String>(headers);
+
+//        ResponseEntity result = restTemplate.exchange("https://gitlab.com/api/v4/user/", HttpMethod.GET, entity,String.class);
+        String result = restTemplate.exchange("https://gitlab.com/api/v4/user", HttpMethod.GET, entity,String.class).getBody();
+//        HttpHeaders responseHeaders = result.getHeaders();
+//        String body = (String) result.getBody();
+//        if (result.getBody() == null) {
+        if (result == null) {
+            System.out.println("A BIT OF A PROBLEM");
+        } else {
+            System.out.println("ALLELUIA");
         }
 
-        return ResponseEntity.created(location).header("MyResponseHeader", "MyValue").body("Hello World");
+//        return ResponseEntity.created(location).header("MyResponseHeader", "MyValue").body("Hello World");
+        return accessToken;
+
+//        @RequestMapping(value = "/username", method = RequestMethod.GET)
+//        @ResponseBody
+//        public String currentUserName(Principal principal) {
+//            return principal.getName();
+//        }
+//
+//        @RequestMapping(value = "/username", method = RequestMethod.GET)
+//        @ResponseBody
+//        public String currentUserName(Authentication authentication) {
+//            return authentication.getName();
+//        }
+
     }
+
 }
