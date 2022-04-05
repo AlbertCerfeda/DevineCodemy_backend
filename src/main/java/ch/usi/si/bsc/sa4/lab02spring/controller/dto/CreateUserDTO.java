@@ -1,12 +1,19 @@
 package ch.usi.si.bsc.sa4.lab02spring.controller.dto;
 
+/**
+ * The create state of a User object.
+ */
 public class CreateUserDTO {
     private String id;
     private String name;
     private String username;
     private String email;
-    private String password;
 
+    /**
+     * Default constructor. Needed by ObjectMapper.readValue() to avoid failures
+     * on the base case as it doesn't know whether the JSON retrieved contains
+     * the required fields.
+     */
     public CreateUserDTO() {
     }
 
@@ -35,13 +42,5 @@ public class CreateUserDTO {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }

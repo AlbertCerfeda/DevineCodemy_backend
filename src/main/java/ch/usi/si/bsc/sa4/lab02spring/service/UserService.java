@@ -21,11 +21,6 @@ public class UserService {
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-    
-    
-    
-    //
-    
     public List<User> getAll() {
         return userRepository.findAll();
     }
@@ -65,32 +60,29 @@ public class UserService {
     public Boolean userExists(String name) {
         return userRepository.existsByName(name);
     }
-    
-    //
-    
+
+    /**
+     * Create the user and saves it into the Database
+     * @param createUserDTO User to be saved
+     * @return User The user which is created
+     */
     public User createUser(CreateUserDTO createUserDTO) {
-//        var hash = PasswordHashingService.getInstance().hashPassword(createUserDTO.getPassword());
-//        var user = new User(createUserDTO.getName(), hash);
         var user = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail());
         return userRepository.save(user);
     }
-    
-    
-    //
-    
+
+    /**
+     * Update the user and save it into the Database
+     * @param user The user to be saved
+     * @return User updated */
     public User updateUser(User user) {
         return userRepository.save(user);
     }
 
-    public Optional<User> changePassword(String userId, String oldPassword, String newPassword) {
-        var optionalUser = this.getById(userId);
-        if (optionalUser.isEmpty()) {
-            return Optional.empty();
-        }
-        optionalUser.get().changePassword(oldPassword, newPassword);
-        return Optional.of(this.updateUser(optionalUser.get()));
-    }
-
+    /**
+     * Deletes the user by getting hte id of it.
+     * @param id takes in the User Id.
+     * */
     public void deleteUserById(String id) {
         userRepository.deleteById(id);
    }
@@ -98,7 +90,9 @@ public class UserService {
     public boolean checkBodyFormat(CreateUserDTO user) {
         boolean checkingFlag = true;
         if((Objects.equals(user.getName(), "")) ||
-                Objects.equals(user.getPassword(), "")) {
+                Objects.equals(user.getEmail(), "") ||
+                Objects.equals(user.getUsername(), "") ||
+                Objects.equals(user.getId(), "")) {
             checkingFlag = false;
         }
         return checkingFlag;

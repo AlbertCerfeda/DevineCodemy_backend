@@ -7,27 +7,15 @@ import ch.usi.si.bsc.sa4.lab02spring.model.User.User;
 import ch.usi.si.bsc.sa4.lab02spring.service.UserService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nimbusds.jose.Header;
-import com.nimbusds.jose.shaded.json.JSONObject;
-import com.nimbusds.jose.shaded.json.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
-import org.springframework.data.mongodb.core.aggregation.ArithmeticOperators;
-import org.springframework.expression.ExpressionException;
 import org.springframework.http.*;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.view.RedirectView;
-
-import javax.xml.crypto.dsig.spec.ExcC14NParameterSpec;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -41,9 +29,6 @@ public class UserController {
     private final UserService userService;
     private OAuth2AuthorizedClientService authorizedClientService;
     private final RestTemplate restTemplate;
-    private Object Principal;
-    private CreateUserDTO principal;
-    private Object Authentication;
 
     @Autowired
     public UserController(UserService userService, OAuth2AuthorizedClientService authorizedClientService) {
@@ -76,7 +61,7 @@ public class UserController {
     @PostMapping
     public ResponseEntity<?> addUser(@RequestBody CreateUserDTO createUserDTO,
                                      @RequestHeader(value = "accept") String accepts) {
-//        if(createUserDTO.getPassword() != null && createUserDTO.getName() != null) {
+        if(createUserDTO.getUsername() != null && createUserDTO.getName() != null && createUserDTO.getId() != null) {
             if(userService.userExists(createUserDTO.getName())) {
                 return new ResponseEntity<>("Username is already taken.", HttpStatus.BAD_REQUEST);
             } else {
@@ -96,9 +81,9 @@ public class UserController {
                             HttpStatus.BAD_REQUEST);
                 }
             }
-//        } else {
-//            return new ResponseEntity<>("Both username and password must be inserted.", HttpStatus.BAD_REQUEST);
-//        }
+        } else {
+            return new ResponseEntity<>("Both username, id and name must be inserted.", HttpStatus.BAD_REQUEST);
+        }
     }
 
     /**
@@ -169,10 +154,12 @@ public class UserController {
      * GET /login
      * Sets new user if it doesn't exist. Finally, redirects to the home page
      * @param authenticationToken Token from GitLab after the Log-in
+     * @return RedirectView Url Redirecting to the home page
      */
     @GetMapping("/login")
     public RedirectView userLogin(OAuth2AuthenticationToken authenticationToken) throws Exception {
 
+        // Retrieves the user token from the GitLab Token
         OAuth2AuthorizedClient client = authorizedClientService
                 .loadAuthorizedClient(
                         authenticationToken.getAuthorizedClientRegistrationId(),
@@ -182,27 +169,30 @@ public class UserController {
         }
         String accessToken = client.getAccessToken().getTokenValue();
 
-        System.out.println(accessToken);
-
+        //Creates a new request to GitLab to retrieve the user data
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON,MediaType.TEXT_HTML,MediaType.TEXT_PLAIN));
         HttpEntity<String> entity = new HttpEntity<String>(headers);
 
-        String plainUser = restTemplate
-                .exchange("https://gitlab.com/api/v4/user?access_token=" + accessToken,
-                        HttpMethod.GET,
-                        entity,
-                        String.class)
-                .getBody();
+        String plainUser;
+        try {
+             plainUser = restTemplate
+                    .exchange("https://gitlab.com/api/v4/user?access_token=" + accessToken,
+                            HttpMethod.GET,
+                            entity,
+                            String.class)
+                    .getBody();
+        } catch (Exception ex) {
+            throw new RestClientException("It couldn't retrieve the user from GitLab");
+        }
 
-        System.out.println("RESULT FROM GITLAB" + plainUser);
-
+        //Converts the received JSON Plain text into CreateUserDTO
         ObjectMapper o = new ObjectMapper()
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         CreateUserDTO newUser;
         try {
             newUser = o.readValue(plainUser, CreateUserDTO.class);
-        } catch (Exception ex) {
+        } catch (Exception ex) { //If JSON received is broken, gives a Server Error
             System.out.println(ex);
             RedirectView r = new RedirectView();
             r.setUrl("/");
@@ -211,17 +201,12 @@ public class UserController {
 
         Optional<User> optionalUser = userService.getById(newUser.getId());
 
-        if (optionalUser.isPresent()) {
-            System.out.println("{'id':'"+newUser.getId() +"'}, PRESENT");
-        } else {
-            System.out.println("{'id':'"+newUser.getId() +"'}, MISSING");
+        // Checks if the user is there, otherwise it adds it in the Database
+        if (!optionalUser.isPresent()) {
             var added = addUser(newUser,"*/*").getBody();
-            if (added.getClass() != String.class) {
-                throw new Exception("Couldn't create the new user");
-            } else {
-                System.out.println("Response: " + added);
+            if (added.getClass() == String.class) {
+                throw new Exception("It couldn't create the new user");
             }
-            // TODO: Handle bad cases
         }
 
         // For redirecting back to Home Page
