@@ -2,6 +2,7 @@ package ch.usi.si.bsc.sa4.lab02spring.repository;
 
 import ch.usi.si.bsc.sa4.lab02spring.model.Level.Level;
 import java.util.List;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,11 @@ public class LevelRepositoryTest {
 
     @Autowired
     private LevelRepository levelRepository;
+
+    @AfterEach
+    void cleanup() {
+        levelRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("should insert record on start")
