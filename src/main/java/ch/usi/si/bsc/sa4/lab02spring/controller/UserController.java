@@ -5,11 +5,18 @@ import ch.usi.si.bsc.sa4.lab02spring.controller.dto.UpdateUserDTO;
 import ch.usi.si.bsc.sa4.lab02spring.controller.dto.UserDTO;
 import ch.usi.si.bsc.sa4.lab02spring.model.User.User;
 import ch.usi.si.bsc.sa4.lab02spring.service.UserService;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.Header;
+import com.nimbusds.jose.shaded.json.JSONObject;
+import com.nimbusds.jose.shaded.json.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.mongodb.core.aggregation.ArithmeticOperators;
+import org.springframework.expression.ExpressionException;
 import org.springframework.http.*;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -59,16 +66,17 @@ public class UserController {
 
         return ResponseEntity.ok(allUserDTOs);
     }
-    
+
     /**
      * POST /users
      * Creates a user in the database.
      * @constraint username and password cannot be null nor empty.
+     * TODO: Remove password related coding
      */
     @PostMapping
     public ResponseEntity<?> addUser(@RequestBody CreateUserDTO createUserDTO,
                                      @RequestHeader(value = "accept") String accepts) {
-        if(createUserDTO.getPassword() != null && createUserDTO.getName() != null) {
+//        if(createUserDTO.getPassword() != null && createUserDTO.getName() != null) {
             if(userService.userExists(createUserDTO.getName())) {
                 return new ResponseEntity<>("Username is already taken.", HttpStatus.BAD_REQUEST);
             } else {
@@ -88,9 +96,9 @@ public class UserController {
                             HttpStatus.BAD_REQUEST);
                 }
             }
-        } else {
-            return new ResponseEntity<>("Both username and password must be inserted.", HttpStatus.BAD_REQUEST);
-        }
+//        } else {
+//            return new ResponseEntity<>("Both username and password must be inserted.", HttpStatus.BAD_REQUEST);
+//        }
     }
 
     /**
@@ -157,14 +165,18 @@ public class UserController {
         }
     }
 
-    /** GET /foo ..*/
-    @GetMapping("/foo")
-    public RedirectView foo(OAuth2AuthenticationToken authentication) throws RuntimeException{
+    /**
+     * GET /login
+     * Sets new user if it doesn't exist. Finally, redirects to the home page
+     * @param authenticationToken Token from GitLab after the Log-in
+     */
+    @GetMapping("/login")
+    public RedirectView userLogin(OAuth2AuthenticationToken authenticationToken) throws Exception {
 
         OAuth2AuthorizedClient client = authorizedClientService
                 .loadAuthorizedClient(
-                        authentication.getAuthorizedClientRegistrationId(),
-                        authentication.getName());
+                        authenticationToken.getAuthorizedClientRegistrationId(),
+                        authenticationToken.getName());
         if (client == null) {
             throw new RuntimeException();
         }
@@ -176,41 +188,46 @@ public class UserController {
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON,MediaType.TEXT_HTML,MediaType.TEXT_PLAIN));
         HttpEntity<String> entity = new HttpEntity<String>(headers);
 
+        String plainUser = restTemplate
+                .exchange("https://gitlab.com/api/v4/user?access_token=" + accessToken,
+                        HttpMethod.GET,
+                        entity,
+                        String.class)
+                .getBody();
 
+        System.out.println("RESULT FROM GITLAB" + plainUser);
 
-//        ResponseEntity result = restTemplate.exchange("https://gitlab.com/api/v4/user/", HttpMethod.GET, entity,String.class);
-        String result = restTemplate.exchange("https://gitlab.com/api/v4/user?access_token=" + accessToken, HttpMethod.GET, entity, String.class).getBody();
-
-        if (result == null) {
-            System.out.println("A BIT OF A PROBLEM");
-        } else {
-            System.out.println("ALLELUIA");
+        ObjectMapper o = new ObjectMapper()
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        CreateUserDTO newUser;
+        try {
+            newUser = o.readValue(plainUser, CreateUserDTO.class);
+        } catch (Exception ex) {
+            System.out.println(ex);
+            RedirectView r = new RedirectView();
+            r.setUrl("/");
+            return r;
         }
 
-        // final String baseUrl = "https:/gitlab.com/api/v4/user";
-        // URI uri = new URI(baseUrl);
-        // ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
+        Optional<User> optionalUser = userService.getById(newUser.getId());
 
-//        return ResponseEntity.created(location).header("MyResponseHeader", "MyValue").body("Hello World");
-        System.out.println(result);
+        if (optionalUser.isPresent()) {
+            System.out.println("{'id':'"+newUser.getId() +"'}, PRESENT");
+        } else {
+            System.out.println("{'id':'"+newUser.getId() +"'}, MISSING");
+            var added = addUser(newUser,"*/*").getBody();
+            if (added.getClass() != String.class) {
+                throw new Exception("Couldn't create the new user");
+            } else {
+                System.out.println("Response: " + added);
+            }
+            // TODO: Handle bad cases
+        }
 
         // For redirecting back to Home Page
         RedirectView redirectView = new RedirectView();
         redirectView.setUrl("/");
         return redirectView;
-
-//        @RequestMapping(value = "/username", method = RequestMethod.GET)
-//        @ResponseBody
-//        public String currentUserName(Principal principal) {
-//            return principal.getName();
-//        }
-//
-//        @RequestMapping(value = "/username", method = RequestMethod.GET)
-//        @ResponseBody
-//        public String currentUserName(Authentication authentication) {
-//            return authentication.getName();
-//        }
-
     }
 
 }

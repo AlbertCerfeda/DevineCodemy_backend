@@ -11,25 +11,59 @@ public class User {
     @Id
     private String id;
     private final String name;
+    private final String email;
+    private final String username;
     private String hash;
     
     private boolean publicProfile = false;
     
-    /* TODO: Add additional fields
+    /* TODO: Add additional fields and remove hash and anything related
     - GitLab specific fields
     - Statistics on completed levels
      */
 
+    /**
+     * Default constructor. Needed by ObjectMapper.readValue() to avoid failures
+     * on the base case as it doesn't know whether the JSON retrieved contains
+     * the required fields.
+     */
+    public User() {
+        this.id = null;
+        this.email = "";
+        this.username = "";
+        this.name = "";
+    }
+
+
+    /**
+     * Main constructor to create the User with GitLab data.
+     * @param id User's id (in GitLab)
+     * @param name User's name
+     * @param username User's GitLab username (unique)
+     * @param email User's email
+     */
     @PersistenceConstructor
+    public User(String id, String name, String username, String email) {
+        this.id = id;
+        this.name = name;
+        this.username = username;
+        this.email = email;
+    }
+
+//    @PersistenceConstructor
     public User(String id, String name, String hash) {
         this.id = id;
         this.name = name;
         this.hash = hash;
+        this.username = ""; //final fields can't be null, this constructor shouldn't exist
+        this.email = ""; //final fields can't be null, this constructor shouldn't exist
     }
 
     public User(String name, String hash) {
         this.name = name;
         this.hash = hash;
+        this.username = ""; //final fields can't be null, this constructor shouldn't exist
+        this.email = ""; //final fields can't be null, this constructor shouldn't exist
     }
 
     public String getId() {

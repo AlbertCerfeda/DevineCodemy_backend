@@ -69,8 +69,9 @@ public class UserService {
     //
     
     public User createUser(CreateUserDTO createUserDTO) {
-        var hash = PasswordHashingService.getInstance().hashPassword(createUserDTO.getPassword());
-        var user = new User(createUserDTO.getName(), hash);
+//        var hash = PasswordHashingService.getInstance().hashPassword(createUserDTO.getPassword());
+//        var user = new User(createUserDTO.getName(), hash);
+        var user = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail());
         return userRepository.save(user);
     }
     
