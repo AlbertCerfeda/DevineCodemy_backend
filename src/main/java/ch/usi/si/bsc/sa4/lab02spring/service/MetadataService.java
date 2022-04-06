@@ -26,7 +26,8 @@ public class MetadataService {
     }
 
 
-    public void updateData(Metadata metadata) {
+    public void updateData(Metadata metadata, AddDataDTO data) {
+        Metadata.updateData(metadata,data);
         metadataRepository.save(metadata);
     }
 

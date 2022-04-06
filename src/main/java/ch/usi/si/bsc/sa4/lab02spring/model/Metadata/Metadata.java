@@ -1,6 +1,7 @@
 package ch.usi.si.bsc.sa4.lab02spring.model.Metadata;
 
 import ch.usi.si.bsc.sa4.lab02spring.controller.dto.AddDataDTO;
+import ch.usi.si.bsc.sa4.lab02spring.controller.dto.MetadataDTO;
 import org.springframework.data.annotation.Id;
 
 import java.util.ArrayList;
@@ -63,6 +64,10 @@ public class Metadata {
 
     public static void updateData(Metadata meta, AddDataDTO data){
         meta.addData(data.getLevel_name(), data.getData());
+    }
+
+    public MetadataDTO toMetadataDTO(){
+        return new MetadataDTO(this);
     }
 
 

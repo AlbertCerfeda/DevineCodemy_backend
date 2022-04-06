@@ -8,8 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 /**
- * Collection of all information for each level played for ach user.
- * Represents a collection of all level data for each user
+ * Represents a collection of all recorded level data for each user
  */
 public interface MetadataRepository extends MongoRepository<Metadata,String>{
 
