@@ -24,11 +24,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
 //                httpSecurity.authorizeRequests().anyRequest().permitAll();
         httpSecurity.authorizeRequests()
-                .antMatchers("/", "/webjars/**").permitAll()
                 .anyRequest().authenticated()
-                .and()
-                .formLogin()
-                    .loginPage("/index.html")
                 .and()
                 .oauth2Login()
                 .defaultSuccessUrl("/users/login", true)
