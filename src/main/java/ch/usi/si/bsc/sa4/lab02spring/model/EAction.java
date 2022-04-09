@@ -6,61 +6,53 @@ import ch.usi.si.bsc.sa4.lab02spring.controller.dto.EActionDTO;
  * All the actions at the disposal of the player.
  */
 public enum EAction {
-    MOVE_FORWARD("MoveForward") {
+    MOVE_FORWARD("moveForward") {
         @Override
         public String getDescription() {
             return "Moves Robot forward";
         }
     },
-    TURN_LEFT   ("TurnLeft") {
+    TURN_LEFT   ("turnLeft") {
         @Override
         public String getDescription() {
             return "Turns Robot left";
         }
     },
-    TURN_RIGHT  ("TurnRight") {
+    TURN_RIGHT  ("turnRight") {
         @Override
         public String getDescription() {
             return "Turns Robot right";
         }
     },
-    COLLECT_COIN("CollectCoin") {
+    COLLECT_COIN("collectCoin") {
         @Override
         public String getDescription() {
             return "Collects a Coin";
         }
     };
+    
+    // The function call for this command (eg 'moveForward' )
+    private final String func_call;
 
-    private final String name;
-
-    EAction(String name) {
-        this.name = name;
+    EAction(String func_call) {
+        this.func_call= func_call;
     }
 
     /**
      * Create a new EAction from a command name.
-     * Example: "MoveForward()" -> EAction.MOVE_FORWARD, name: "MoveForward"
+     * Example: "moveForward" -> EAction.MOVE_FORWARD, name: "moveForward"
      * @param command the given command
+     * @throws IllegalArgumentException if the command does not correspond to a valid function call.
      */
     public static EAction getEActionFromCommand(String command) throws IllegalArgumentException {
-        switch (command) {
-            case "moveForward()":
-                return EAction.MOVE_FORWARD;
-            case "turnLeft()":
-                return EAction.TURN_LEFT;
-            case "turnRight()":
-                return EAction.TURN_RIGHT;
-            case "collectCoin()":
-                return EAction.COLLECT_COIN;
-            default:
-                throw new IllegalArgumentException("Unknown command: " + command);
-        }
-
+        for (EAction action : EAction.values())
+            if(action.name() == command)
+                return action;
+    
+        throw new IllegalArgumentException("Unknown command: '" + command + "'");
     }
 
     public abstract String getDescription();
-    public String getName() {
-        return this.name;
-    }
+    
     public EActionDTO toEActionDTO() { return new EActionDTO(this); }
 }
