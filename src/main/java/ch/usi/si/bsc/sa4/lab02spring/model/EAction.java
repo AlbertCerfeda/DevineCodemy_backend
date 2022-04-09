@@ -29,7 +29,8 @@ public enum EAction {
      */
     public static EAction getEActionFromCommand(String command) throws IllegalArgumentException {
         for (EAction action : EAction.values())
-            if(action.name() == command)
+            
+            if(action.getFunc_call() == command)
                 return action;
     
         throw new IllegalArgumentException("Unknown command: '" + command + "'");

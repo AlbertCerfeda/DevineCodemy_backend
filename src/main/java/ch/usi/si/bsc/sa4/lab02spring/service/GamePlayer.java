@@ -8,6 +8,8 @@ import ch.usi.si.bsc.sa4.lab02spring.model.Level.Level;
 import ch.usi.si.bsc.sa4.lab02spring.model.Level.Robot;
 import ch.usi.si.bsc.sa4.lab02spring.model.LevelValidation.LevelValidation;
 
+import java.util.List;
+
 
 public class GamePlayer {
 
