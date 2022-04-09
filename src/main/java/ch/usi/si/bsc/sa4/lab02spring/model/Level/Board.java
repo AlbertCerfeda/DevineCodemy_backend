@@ -60,7 +60,6 @@ public class Board {
         final int water_n_steps = random_in_interval(dim_x, dim_x + dim_y);
         final int n_items = random_in_interval(1, n_steps/2);
         final int max_elevation = random_in_interval(0, dim_x/3);
-        System.out.println("n_steps: " + n_steps + "\nwater_n_steps: " + water_n_steps);
         init(dim_x, dim_y, start_x, start_y, n_steps, water_n_steps, n_items, max_elevation);
     }
 
