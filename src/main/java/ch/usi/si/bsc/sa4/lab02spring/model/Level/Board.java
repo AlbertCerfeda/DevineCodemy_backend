@@ -326,6 +326,24 @@ public class Board {
         }
         return null;
     }
+    /**
+     * Returns an Item from a given position.
+     *  Returns null if an Item with the given coordinates does not exist.
+     * @param x the x position.
+     * @param y the y position.
+     * @return the item in the given position.
+     * @throws IllegalArgumentException it the coordinates are out of bounds.
+     */
+    public Item getItemAt(final int x, final int y) throws IndexOutOfBoundsException{
+        if(x < 0 || y < 0 || x>=dim_x || y>=dim_y)
+            throw new IndexOutOfBoundsException("Invalid coordinates");
+        
+        for(Item item : items) {
+            if(item.getPos_x() == x && item.getPos_y() == y)
+                return item;
+        }
+        return null;
+    }
 
     /**
      * Returns the next Tile given the coordinates and the moving direction.
