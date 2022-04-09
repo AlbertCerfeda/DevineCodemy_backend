@@ -9,9 +9,7 @@ import ch.usi.si.bsc.sa4.lab02spring.model.Tile.GrassTile;
 import ch.usi.si.bsc.sa4.lab02spring.model.Tile.Tile;
 import ch.usi.si.bsc.sa4.lab02spring.model.Tile.WaterTile;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 
 /**
@@ -36,10 +34,10 @@ public class Board {
         this.dim_x = 0;
         this.dim_y = 0;
         // Derives the dimensions of the board
-        grid.forEach((t)->{this.dim_x = Math.max(this.dim_x, t.getPos_x());});
-        grid.forEach((t)->{this.dim_y = Math.max(this.dim_y, t.getPos_y());});
-        items.forEach((i)->{this.dim_x = Math.max(this.dim_x, i.getPos_x());});
-        items.forEach((i)->{this.dim_y = Math.max(this.dim_y, i.getPos_y());});
+        grid.forEach((t)-> this.dim_x = Math.max(this.dim_x, t.getPos_x()));
+        grid.forEach((t)-> this.dim_y = Math.max(this.dim_y, t.getPos_y()));
+        items.forEach((i)-> this.dim_x = Math.max(this.dim_x, i.getPos_x()));
+        items.forEach((i)-> this.dim_y = Math.max(this.dim_y, i.getPos_y()));
         
         
         this.grid = grid;
@@ -63,7 +61,6 @@ public class Board {
         final int water_n_steps = rand.nextInt(2*dim_x*dim_y);
         final int n_items = rand.nextInt(n_steps/2);
         final int max_elevation = rand.nextInt((dim_x+dim_y)/3);
-        //System.out.println("n_steps: " + n_steps + "\nwater_n_steps: " + water_n_steps);
         init(dim_x, dim_y, start_x, start_y, n_steps, water_n_steps, n_items, max_elevation);
     }
 
@@ -152,7 +149,7 @@ public class Board {
             while(true) {
                 try {
                     // get valid tile and add it to the path
-                    currentTile = getNextTileFromPositionAndDirection(previousTile.getPos_x(), previousTile.getPos_y(), currentDirection);
+                    currentTile = getNextTileFromPositionAndDirection(grid, previousTile.getPos_x(), previousTile.getPos_y(), currentDirection);
                     path.add(currentTile);
                     break;  // break out of loop on success
                 } catch (IndexOutOfBoundsException e) {
@@ -237,7 +234,7 @@ public class Board {
             int count = 0;
             while(true) {
                 try {
-                    water_current_tile = getNextTileFromPositionAndDirection(water_previous_tile.getPos_x(), water_previous_tile.getPos_y(), water_current_direction);
+                    water_current_tile = getNextTileFromPositionAndDirection(grid, water_previous_tile.getPos_x(), water_previous_tile.getPos_y(), water_current_direction);
                     break;  // break out of loop on success
                 } catch (IndexOutOfBoundsException e) {
                     // recompute direction and retry, max 100 tries
@@ -294,15 +291,13 @@ public class Board {
         
         // Converts the matrix of Tiles and Items to their respective Lists.
         //  Assumes 'dim_x' and 'dim_y' are already correctly set.
-        List<Tile> tile_list = List.of();
+        List<Tile> tile_list = new ArrayList<>(List.of());
         for(Tile[] row : grid)
-            for(Tile tile : row)
-                tile_list.add(tile);
+            Collections.addAll(tile_list, row);
         this.grid = tile_list;
-        List<Item> item_list = List.of();
+        List<Item> item_list = new ArrayList<>(List.of());
         for(Item[] row : items)
-            for(Item item : row)
-                item_list.add(item);
+            item_list.addAll(Arrays.asList(row));
         this.items = item_list;
         
     }
@@ -319,8 +314,9 @@ public class Board {
     public Tile getTileAt(final int x, final int y) throws IndexOutOfBoundsException{
         if(x < 0 || y < 0 || x>=dim_x || y>=dim_y)
             throw new IndexOutOfBoundsException("Invalid coordinates");
-        
+        System.out.println("getTileAt("+x+","+y+")");
         for(Tile tile : grid) {
+            System.out.println("Tile: " + tile.getPos_x() + " " + tile.getPos_y());
             if(tile.getPos_x() == x && tile.getPos_y() == y)
                 return tile;
         }
@@ -358,6 +354,22 @@ public class Board {
         int new_x = x + direction.getDelta_x();
         int new_y = y + direction.getDelta_y();
         return getTileAt(new_x, new_y);
+    }
+
+    /**
+     * Returns the next Tile given the coordinates and the moving direction in a given grid of tiles.
+     * This method is used only during the automatic generation of the board.
+     * @param grid the 2d array of Tiles.
+     * @param x the given x position.
+     * @param y the given y position.
+     * @param direction the given direction.
+     * @return the tile we will step on.
+     * @throws IndexOutOfBoundsException if the new computed position is outside the board.
+     */
+    private Tile getNextTileFromPositionAndDirection(final Tile[][] grid, final int x, final int y, EOrientation direction) throws IndexOutOfBoundsException {
+        int new_x = x + direction.getDelta_x();
+        int new_y = y + direction.getDelta_y();
+        return grid[new_x][new_y];
     }
 
     public boolean canStep(final int x, final int y, EOrientation direction) {
