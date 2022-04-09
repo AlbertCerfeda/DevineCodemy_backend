@@ -10,6 +10,7 @@ import ch.usi.si.bsc.sa4.lab02spring.model.Tile.Tile;
 import ch.usi.si.bsc.sa4.lab02spring.model.Tile.WaterTile;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
@@ -20,24 +21,24 @@ import java.util.Random;
 public class Board {
     private int dim_x;
     private int dim_y;
-    private Tile[][] grid;
-    private Item[][] items;
+    private List<Tile> grid;
+    private List<Item> items;
     private int difficulty;
     private int n_coins;
 
     /**
      * Constructor for board objects.
-     * @param grid the grid representing the terrain.
-     * @param items the items to collect.
-     * @throws IllegalArgumentException if 'grid' an 'items' don't have the same size.
+     * @param grid the tiles of the board representing the terrain.
+     * @param items the items present on the board.
      */
-    public Board(Tile[][] grid, Item[][] items, int difficulty, int n_coins) throws IllegalArgumentException {
-        // Throw exception if 'grid' an 'items' don't have the same size
-        if (grid.length != items.length || grid[0].length != items[0].length) {
-            throw new IllegalArgumentException();
-        }
-        this.dim_x = grid.length;
-        this.dim_y = grid[0].length;
+    public Board(List<Tile> grid, List<Item> items, int difficulty, int n_coins) {
+        this.dim_x = 0;
+        this.dim_y = 0;
+        grid.forEach((t)->{this.dim_x = Math.max(this.dim_x, t.getPos_x());});
+        grid.forEach((t)->{this.dim_y = Math.max(this.dim_y, t.getPos_y());});
+        items.forEach((i)->{this.dim_x = Math.max(this.dim_x, i.getPos_x());});
+        items.forEach((i)->{this.dim_y = Math.max(this.dim_y, i.getPos_y());});
+        
         this.grid = grid;
         this.items = items;
         this.difficulty = difficulty;
@@ -59,7 +60,7 @@ public class Board {
         final int water_n_steps = rand.nextInt(2*dim_x*dim_y);
         final int n_items = rand.nextInt(n_steps/2);
         final int max_elevation = rand.nextInt((dim_x+dim_y)/3);
-        System.out.println("n_steps: " + n_steps + "\nwater_n_steps: " + water_n_steps);
+        //System.out.println("n_steps: " + n_steps + "\nwater_n_steps: " + water_n_steps);
         init(dim_x, dim_y, start_x, start_y, n_steps, water_n_steps, n_items, max_elevation);
     }
 
@@ -115,8 +116,8 @@ public class Board {
         // SETUP BOARD ----------------------------------------------------------------------------------------
         this.dim_x = dim_x;
         this.dim_y = dim_y;
-        this.grid = new Tile[dim_x][dim_y];
-        this.items = new Item[dim_x][dim_y];
+        Tile[][] grid = new Tile[dim_x][dim_y];
+        Item[][] items =  new Item[dim_x][dim_y];
         this.difficulty = n_steps;
         this.n_coins = n_items;
 
@@ -288,21 +289,41 @@ public class Board {
         Tile last_tile = path.get(path.size()-1);
         last_tile.setPos_z(new_elevation);
         last_tile.setVisited(true);
+    
+        
+        // Converts the matrix of Tiles and Items to their respective Lists.
+        //  Assumes 'dim_x' and 'dim_y' are already correctly set.
+        List<Tile> tile_list = List.of();
+        for(Tile[] row : grid)
+            for(Tile tile : row)
+                tile_list.add(tile);
+        this.grid = tile_list;
+        List<Item> item_list = List.of();
+        for(Item[] row : items)
+            for(Item item : row)
+                item_list.add(item);
+        this.items = item_list;
+        
     }
 
 
     /**
      * To get a tile from a given position.
+     *  Returns null if a Tile with the given coordinates does not exist.
      * @param x the x position.
      * @param y the y position.
      * @return the tile in the given position.
-     * @throws IllegalArgumentException it the coordinates are not valid.
+     * @throws IllegalArgumentException it the coordinates are out of bounds.
      */
-    public Tile getTileInPosition(final int x, final int y) throws IllegalArgumentException{
-        if (x < 0 || x >= dim_x || y < 0 || y >= dim_y) { // throw exception if position not valid
-            throw new IllegalArgumentException();
+    public Tile getTileAt(final int x, final int y) throws IndexOutOfBoundsException{
+        if(x < 0 || y < 0 || x>=dim_x || y>=dim_y)
+            throw new IndexOutOfBoundsException("Invalid coordinates");
+        
+        for(Tile tile : grid) {
+            if(tile.getPos_x() == x && tile.getPos_y() == y)
+                return tile;
         }
-        return grid[x][y];
+        return null;
     }
 
     /**
@@ -317,10 +338,7 @@ public class Board {
     public Tile getNextTileFromPositionAndDirection(final int x, final int y, EOrientation direction) throws IndexOutOfBoundsException {
         int new_x = x + direction.getDelta_x();
         int new_y = y + direction.getDelta_y();
-        if (new_x < 0 || new_x >= dim_x || new_y < 0 || new_y >= dim_y) { // throw exception if position not valid
-            throw new IndexOutOfBoundsException();
-        }
-        return grid[new_x][new_y];
+        return getTileAt(new_x, new_y);
     }
 
     public boolean canStep(final int x, final int y, EOrientation direction) {
@@ -343,11 +361,11 @@ public class Board {
         return dim_y;
     }
     
-    public Tile[][] getGrid(){
+    public List<Tile> getGrid(){
         return grid;
     }
     
-    public Item[][] getItems(){
+    public List<Item> getItems(){
         return items;
     }
 
