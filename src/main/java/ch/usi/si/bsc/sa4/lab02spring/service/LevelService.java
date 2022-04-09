@@ -25,11 +25,11 @@ public class LevelService {
     /**
      * Simulates a gameplay on a specific level.
      * @param level_id the level ID string.
-     * @param commands the string containing all the commands to play the level.
+     * @param commands the list of commands to play on the level.
      * @return a LevelValidationDTO object containing the result of the gameplay.
      * @throws IllegalArgumentException if the level_id is not valid.
      */
-    public static LevelValidation validateActions(String level_id, String[] commands) throws IllegalArgumentException {
+    public static LevelValidation validateActions(String level_id, List<String> commands) throws IllegalArgumentException {
         Optional<Level> optionalLevel = getLevelById(level_id);
         if(optionalLevel.isEmpty())
             throw new IllegalArgumentException("Level does not exist");

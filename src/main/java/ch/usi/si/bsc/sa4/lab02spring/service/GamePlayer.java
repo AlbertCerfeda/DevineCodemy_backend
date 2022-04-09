@@ -14,14 +14,14 @@ import java.util.List;
 public class GamePlayer {
 
     private final Level level;
-    private final String[] commands;
+    private final List<String> commands;
 
     /**
      * Constructor for GamePlayer
      * @param level the level to play.
      * @param commands the commands to execute.
      */
-    public GamePlayer(final Level level, final String[] commands) {
+    public GamePlayer(final Level level, final List<String> commands) {
         this.level = level;
         this.commands = commands;
     }
@@ -45,7 +45,7 @@ public class GamePlayer {
         int collectedItems = 0;
         int commandsCount = 0; // TODO: implement check for command limit.
 
-
+        
         for (String command : commands) {
             try {
                 EAction action = EAction.getEActionFromCommand(command.trim());
