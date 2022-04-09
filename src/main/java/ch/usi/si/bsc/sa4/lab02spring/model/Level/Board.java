@@ -15,8 +15,8 @@ import java.util.Random;
 
 
 /**
- * A Board represents the terrain on which the player moves.
- * It also contains the items that are distributed on the board.
+ * A Board representing a map.
+ * Contains the terrain on which the player moves and the collectable items.
  */
 public class Board {
     private int dim_x;
@@ -26,6 +26,7 @@ public class Board {
     private int difficulty;
     private int n_coins;
 
+    
     /**
      * Constructor for board objects.
      * @param grid the tiles of the board representing the terrain.
@@ -34,10 +35,12 @@ public class Board {
     public Board(List<Tile> grid, List<Item> items, int difficulty, int n_coins) {
         this.dim_x = 0;
         this.dim_y = 0;
+        // Derives the dimensions of the board
         grid.forEach((t)->{this.dim_x = Math.max(this.dim_x, t.getPos_x());});
         grid.forEach((t)->{this.dim_y = Math.max(this.dim_y, t.getPos_y());});
         items.forEach((i)->{this.dim_x = Math.max(this.dim_x, i.getPos_x());});
         items.forEach((i)->{this.dim_y = Math.max(this.dim_y, i.getPos_y());});
+        
         
         this.grid = grid;
         this.items = items;
@@ -80,10 +83,8 @@ public class Board {
         final int max_elevation = rand.nextInt((dim_x+dim_y)/4);
         init(dim_x, dim_y, start_x, start_y, n_steps, water_n_steps, n_items, max_elevation);
     }
-
-
-
-
+    
+    
 
     /**
      * Generate board from given dimensions, start coordinates, how many steps to perform, how many items to place and the maximum elevation we can reach.
@@ -308,7 +309,7 @@ public class Board {
 
 
     /**
-     * To get a tile from a given position.
+     * Returns a Tile from a given position.
      *  Returns null if a Tile with the given coordinates does not exist.
      * @param x the x position.
      * @param y the y position.
@@ -327,8 +328,8 @@ public class Board {
     }
 
     /**
-     * To get the tile we will step on it from a position in the grid and a direction.
-     * Throws IndexOutOfBoundsException if the new computed position is outside the board.
+     * Returns the next Tile given the coordinates and the moving direction.
+     *  Returns null if the Tile in the given position does not exist.
      * @param x the given x position.
      * @param y the given y position.
      * @param direction the given direction.
