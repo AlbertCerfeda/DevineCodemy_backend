@@ -9,19 +9,18 @@ import ch.usi.si.bsc.sa4.lab02spring.model.Tile.GrassTile;
 import ch.usi.si.bsc.sa4.lab02spring.model.Tile.Tile;
 import ch.usi.si.bsc.sa4.lab02spring.model.Tile.WaterTile;
 
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.*;
 
 
 /**
- * A Board represents the terrain on which the player moves.
- * It also contains the items that are distributed on the board.
+ * A Board representing a map.
+ * Contains the terrain on which the player moves and the collectable items.
  */
 public class Board {
     private int dim_x;
     private int dim_y;
-    private Tile[][] grid;
-    private Item[][] items;
+    private List<Tile> grid;
+    private List<Item> items;
     private int difficulty;
     private int n_coins;
 
@@ -29,19 +28,22 @@ public class Board {
 
     /**
      * Constructor for board objects.
-     * @param grid the grid representing the terrain.
-     * @param items the items to collect.
-     * @throws IllegalArgumentException if 'grid' an 'items' don't have the same size.
+     * @param grid the tiles of the board representing the terrain.
+     * @param items the items present on the board.
      */
-    public Board(Tile[][] grid, Item[][] items, int difficulty, int n_coins) throws IllegalArgumentException {
-        // Throw exception if 'grid' an 'items' don't have the same size
-        if (grid.length != items.length || grid[0].length != items[0].length) {
-            throw new IllegalArgumentException();
-        }
-        this.dim_x = grid.length;
-        this.dim_y = grid[0].length;
-        this.grid = grid.clone();
-        this.items = items.clone();
+
+    public Board(List<Tile> grid, List<Item> items, int difficulty, int n_coins) {
+        this.dim_x = 0;
+        this.dim_y = 0;
+        // Derives the dimensions of the board
+        grid.forEach((t)-> this.dim_x = Math.max(this.dim_x, t.getPos_x()));
+        grid.forEach((t)-> this.dim_y = Math.max(this.dim_y, t.getPos_y()));
+        items.forEach((i)-> this.dim_x = Math.max(this.dim_x, i.getPos_x()));
+        items.forEach((i)-> this.dim_y = Math.max(this.dim_y, i.getPos_y()));
+        
+        
+        this.grid = grid;
+        this.items = items;
         this.difficulty = difficulty;
         this.n_coins = n_coins;
     }
@@ -88,10 +90,8 @@ public class Board {
         final int max_elevation = random_in_interval(0, dim_x/3);
         init(dim_x, dim_y, start_x, start_y, n_steps, water_n_steps, n_items, max_elevation);
     }
-
-
-
-
+    
+    
 
     /**
      * Generate board from given dimensions, start coordinates, how many steps to perform, how many items to place and the maximum elevation we can reach.
@@ -124,8 +124,8 @@ public class Board {
         // SETUP BOARD ----------------------------------------------------------------------------------------
         this.dim_x = dim_x;
         this.dim_y = dim_y;
-        this.grid = new Tile[dim_x][dim_y];
-        this.items = new Item[dim_x][dim_y];
+        Tile[][] grid = new Tile[dim_x][dim_y];
+        Item[][] items =  new Item[dim_x][dim_y];
         this.difficulty = n_steps;
         this.n_coins = n_items;
 
@@ -158,7 +158,8 @@ public class Board {
             while(true) {
                 try {
                     // get valid tile and add it to the path
-                    currentTile = getNextTileFromPositionAndDirection(currentTile.getPos_x(), currentTile.getPos_y(), currentDirection);
+                    currentTile = getNextTileFromPositionAndDirection(grid, currentTile.getPos_x(), currentTile.getPos_y(), currentDirection);
+
                     path.add(currentTile);
                     break;  // break out of loop on success
                 } catch (IndexOutOfBoundsException e) {
@@ -245,7 +246,7 @@ public class Board {
             int count = 0;
             while(true) {
                 try {
-                    water_current_tile = getNextTileFromPositionAndDirection(water_current_tile.getPos_x(), water_current_tile.getPos_y(), water_current_direction);
+                    water_current_tile = getNextTileFromPositionAndDirection(grid,water_current_tile.getPos_x(), water_current_tile.getPos_y(), water_current_direction);
                     break;  // break out of loop on success
                 } catch (IndexOutOfBoundsException e) {
                     // recompute direction and retry, max 100 tries
@@ -301,26 +302,63 @@ public class Board {
         Tile last_tile = path.get(path.size()-1);
         last_tile.setPos_z(new_elevation);
         last_tile.setVisited(true);
+    
+        
+        // Converts the matrix of Tiles and Items to their respective Lists.
+        //  Assumes 'dim_x' and 'dim_y' are already correctly set.
+        List<Tile> tile_list = new ArrayList<>(List.of());
+        for(Tile[] row : grid)
+            Collections.addAll(tile_list, row);
+        this.grid = tile_list;
+        List<Item> item_list = new ArrayList<>(List.of());
+        for(Item[] row : items)
+            item_list.addAll(Arrays.asList(row));
+        this.items = item_list;
+        
     }
 
 
     /**
-     * To get a tile from a given position.
+     * Returns a Tile from a given position.
+     *  Returns null if a Tile with the given coordinates does not exist.
      * @param x the x position.
      * @param y the y position.
      * @return the tile in the given position.
-     * @throws IllegalArgumentException it the coordinates are not valid.
+     * @throws IllegalArgumentException it the coordinates are out of bounds.
      */
-    public Tile getTileInPosition(final int x, final int y) throws IllegalArgumentException{
-        if (x < 0 || x >= dim_x || y < 0 || y >= dim_y) { // throw exception if position not valid
-            throw new IllegalArgumentException();
+    public Tile getTileAt(final int x, final int y) throws IndexOutOfBoundsException{
+        if(x < 0 || y < 0 || x>=dim_x || y>=dim_y)
+            throw new IndexOutOfBoundsException("Invalid coordinates");
+        System.out.println("getTileAt("+x+","+y+")");
+        for(Tile tile : grid) {
+            System.out.println("Tile: " + tile.getPos_x() + " " + tile.getPos_y());
+            if(tile.getPos_x() == x && tile.getPos_y() == y)
+                return tile;
         }
-        return grid[x][y];
+        return null;
+    }
+    /**
+     * Returns an Item from a given position.
+     *  Returns null if an Item with the given coordinates does not exist.
+     * @param x the x position.
+     * @param y the y position.
+     * @return the item in the given position.
+     * @throws IllegalArgumentException it the coordinates are out of bounds.
+     */
+    public Item getItemAt(final int x, final int y) throws IndexOutOfBoundsException{
+        if(x < 0 || y < 0 || x>=dim_x || y>=dim_y)
+            throw new IndexOutOfBoundsException("Invalid coordinates");
+        
+        for(Item item : items) {
+            if(item.getPos_x() == x && item.getPos_y() == y)
+                return item;
+        }
+        return null;
     }
 
     /**
-     * To get the tile we will step on it from a position in the grid and a direction.
-     * Throws IndexOutOfBoundsException if the new computed position is outside the board.
+     * Returns the next Tile given the coordinates and the moving direction.
+     *  Returns null if the Tile in the given position does not exist.
      * @param x the given x position.
      * @param y the given y position.
      * @param direction the given direction.
@@ -330,16 +368,18 @@ public class Board {
     public Tile getNextTileFromPositionAndDirection(final int x, final int y, EOrientation direction) throws IndexOutOfBoundsException {
         int new_x = x + direction.getDelta_x();
         int new_y = y + direction.getDelta_y();
-        if (new_x < 0 || new_x >= dim_x || new_y < 0 || new_y >= dim_y) { // throw exception if position not valid
-            throw new IndexOutOfBoundsException();
-        }
+        return getTileAt(new_x, new_y);
+    }
+    private Tile getNextTileFromPositionAndDirection(final Tile[][] grid, final int x, final int y, EOrientation direction) throws IndexOutOfBoundsException {
+        int new_x = x + direction.getDelta_x();
+        int new_y = y + direction.getDelta_y();
         return grid[new_x][new_y];
     }
 
     public boolean canStep(final int x, final int y, EOrientation direction) {
         try {
             Tile nextTile = getNextTileFromPositionAndDirection(x, y, direction);
-            int delta_z = Math.abs(nextTile.getPos_z() - getTileInPosition(x,y).getPos_z());
+            int delta_z = Math.abs(nextTile.getPos_z() - getTileAt(x,y).getPos_z());
             return nextTile.is_walkable() && delta_z <= 1;
         } catch (IndexOutOfBoundsException e) {
             return false;
@@ -361,16 +401,16 @@ public class Board {
         return dim_y;
     }
     
-    public Tile[][] getGrid(){
+    public List<Tile> getGrid(){
         return grid;
     }
     
-    public Item[][] getItems(){
+    public List<Item> getItems(){
         return items;
     }
 
-    public boolean containsItemAt(final int x, final int y) {
-        return items[x][y] != null;
+    public boolean containsItemAt(final int x, final int y) throws IndexOutOfBoundsException{
+        return getItemAt(x,y) != null ? true : false;
     }
 
     public int getDifficulty() {
@@ -386,16 +426,13 @@ public class Board {
      * @return a string representing the board.
      */
     public String toString() {
-        StringBuilder result = new StringBuilder();
-        for (Tile[] tiles : grid) {
-            for (int j = 0; j < grid[0].length; j++) {
-                Tile t = tiles[j];
-                String type = "" + tiles[j].getType();
-                result.append(t.isVisited() ? "." : type.charAt(0));
-//                result += grid[i][j].getPos_z();
-            }
-            result.append("\n");
+        char[][] result = new char[dim_x][dim_y];
+        for (Tile t : grid) {
+           result[t.getPos_x()][t.getPos_y()] = t.isVisited() ? '.' : t.getType().toString().charAt(0);
         }
-        return result.toString();
+        String res = "";
+        for (char[] line : result)
+            res+=String.valueOf(line)+"\n";
+        return res;
     }
 }
