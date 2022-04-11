@@ -1,10 +1,25 @@
 package ch.usi.si.bsc.sa4.lab02spring.model.Tile;
 
 import ch.usi.si.bsc.sa4.lab02spring.controller.dto.Tile.TileDTO;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * This class represents the general structure of a tile.
  */
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        property = "type"
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = WaterTile.class, name = "WATER"),
+        @JsonSubTypes.Type(value = SandTile.class, name = "SAND"),
+        @JsonSubTypes.Type(value = GrassTile.class, name = "GRASS"),
+        @JsonSubTypes.Type(value = ConcreteTile.class, name = "ROCK"),
+        @JsonSubTypes.Type(value = BridgeTile.class, name = "BRIDGE"),
+})
 public abstract class Tile {
     // Used by the TileDTO to indicate the type of the Tile.
     //  Subclasses of the Tile class are expected to set the value of the type field accordingly.
@@ -81,7 +96,7 @@ public abstract class Tile {
     public int getPos_y() {
         return pos_y;
     }
-    
+
     /**
      * Returns the enum type of the Tile.
      * @return the enum type of the tile.

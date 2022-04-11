@@ -1,44 +1,137 @@
 [
   {
     "_class": "ch.usi.si.bsc.sa4.lab02spring.model.Level.Level",
-    "id": 1,
-    "name": "level1",
-    "description": "apple",
-    "max_steps": 1,
+    "name": "Level 1",
+    "description": "Earth level 1",
+    "max_steps": 5,
     "board": {
-      "dim_x": 0,
-      "dim_y": 0,
-      "grid": [[]],
-      "items": [[]],
-      "difficulty": 0,
-      "n_coins": 0
+      "grid": [
+        { "pos_x": 0, "pos_y": 0, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 1, "pos_y": 0, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 2, "pos_y": 0, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 3, "pos_y": 0, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 4, "pos_y": 0, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 5, "pos_y": 0, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 6, "pos_y": 0, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 7, "pos_y": 0, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 8, "pos_y": 0, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 9, "pos_y": 0, "pos_z": 0, "type": "WATER" },
+
+        { "pos_x": 0, "pos_y": 1, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 1, "pos_y": 1, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 2, "pos_y": 1, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 3, "pos_y": 1, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 4, "pos_y": 1, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 5, "pos_y": 1, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 6, "pos_y": 1, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 7, "pos_y": 1, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 8, "pos_y": 1, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 9, "pos_y": 1, "pos_z": 0, "type": "WATER" },
+
+        { "pos_x": 0, "pos_y": 2, "pos_z": 0, "type": "GRASS" },
+        { "pos_x": 1, "pos_y": 2, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 2, "pos_y": 2, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 3, "pos_y": 2, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 4, "pos_y": 2, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 5, "pos_y": 2, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 6, "pos_y": 2, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 7, "pos_y": 2, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 8, "pos_y": 2, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 9, "pos_y": 2, "pos_z": 0, "type": "GRASS" },
+
+        { "pos_x": 0, "pos_y": 3, "pos_z": 0, "type": "GRASS" },
+        { "pos_x": 1, "pos_y": 3, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 2, "pos_y": 3, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 3, "pos_y": 3, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 4, "pos_y": 3, "pos_z": 0, "type":  "ROCK" },
+        { "pos_x": 5, "pos_y": 3, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 6, "pos_y": 3, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 7, "pos_y": 3, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 8, "pos_y": 3, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 9, "pos_y": 3, "pos_z": 0, "type": "GRASS" },
+
+        { "pos_x": 0, "pos_y": 4, "pos_z": 0, "type": "GRASS" },
+        { "pos_x": 1, "pos_y": 4, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 2, "pos_y": 4, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 3, "pos_y": 4, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 4, "pos_y": 4, "pos_z": 0, "type":  "ROCK" },
+        { "pos_x": 5, "pos_y": 4, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 6, "pos_y": 4, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 7, "pos_y": 4, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 8, "pos_y": 4, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 9, "pos_y": 4, "pos_z": 0, "type": "GRASS" },
+
+        { "pos_x": 0, "pos_y": 5, "pos_z": 0, "type": "GRASS" },
+        { "pos_x": 1, "pos_y": 5, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 2, "pos_y": 5, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 3, "pos_y": 5, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 4, "pos_y": 5, "pos_z": 0, "type":  "ROCK" },
+        { "pos_x": 5, "pos_y": 5, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 6, "pos_y": 5, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 7, "pos_y": 5, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 8, "pos_y": 5, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 9, "pos_y": 5, "pos_z": 0, "type": "GRASS" },
+
+        { "pos_x": 0, "pos_y": 6, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 1, "pos_y": 6, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 2, "pos_y": 6, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 3, "pos_y": 6, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 4, "pos_y": 6, "pos_z": 0, "type":  "ROCK" },
+        { "pos_x": 5, "pos_y": 6, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 6, "pos_y": 6, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 7, "pos_y": 6, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 8, "pos_y": 6, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 9, "pos_y": 6, "pos_z": 0, "type": "GRASS" },
+
+        { "pos_x": 0, "pos_y": 7, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 1, "pos_y": 7, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 2, "pos_y": 7, "pos_z": 0, "type":  "SAND" },
+        { "pos_x": 3, "pos_y": 7, "pos_z": 0, "type": "GRASS" },
+        { "pos_x": 4, "pos_y": 7, "pos_z": 0, "type": "GRASS" },
+        { "pos_x": 5, "pos_y": 7, "pos_z": 0, "type": "GRASS" },
+        { "pos_x": 6, "pos_y": 7, "pos_z": 0, "type": "GRASS" },
+        { "pos_x": 7, "pos_y": 7, "pos_z": 0, "type": "GRASS" },
+        { "pos_x": 8, "pos_y": 7, "pos_z": 0, "type": "GRASS" },
+        { "pos_x": 9, "pos_y": 7, "pos_z": 0, "type": "GRASS" },
+
+        { "pos_x": 0, "pos_y": 8, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 1, "pos_y": 8, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 2, "pos_y": 8, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 3, "pos_y": 8, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 4, "pos_y": 8, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 5, "pos_y": 8, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 6, "pos_y": 8, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 7, "pos_y": 8, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 8, "pos_y": 8, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 9, "pos_y": 8, "pos_z": 0, "type": "GRASS" },
+
+        { "pos_x": 0, "pos_y": 9, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 1, "pos_y": 9, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 2, "pos_y": 9, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 3, "pos_y": 9, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 4, "pos_y": 9, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 5, "pos_y": 9, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 6, "pos_y": 9, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 7, "pos_y": 9, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 8, "pos_y": 9, "pos_z": 0, "type": "WATER" },
+        { "pos_x": 9, "pos_y": 9, "pos_z": 0, "type": "GRASS" }
+      ],
+      "items": [
+        { "pos_x": 4, "pos_y": 7, "type": "COIN" }
+      ],
+      "difficulty": 1,
+      "n_coins": 1
     },
     "robot": {
-      "pos_x": 0,
-      "pos_y": 0,
-      "orientation": "UP"
+      "pos_x": 4,
+      "pos_y": 3,
+      "orientation": "DOWN"
     },
-    "allowed_commands": []
-  },
-  {
-    "_class": "ch.usi.si.bsc.sa4.lab02spring.model.Level.Level",
-    "id": 2,
-    "name": "level2",
-    "description": "guava",
-    "max_steps": 2,
-    "board": {
-      "dim_x": 0,
-      "dim_y": 0,
-      "grid": [[]],
-      "items": [[]],
-      "difficulty": 0,
-      "n_coins": 0
-    },
-    "robot": {
-      "pos_x": 0,
-      "pos_y": 0,
-      "orientation": "UP"
-    },
-    "allowed_commands": []
+    "allowed_commands": [
+      "MOVE_FORWARD",
+      "TURN_LEFT",
+      "TURN_RIGHT",
+      "COLLECT_COIN"
+    ]
   }
 ]
