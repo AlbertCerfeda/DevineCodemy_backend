@@ -6,14 +6,91 @@ image: gradle:jdk11
 # isolated from any previous builds.
 variables:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+  SONARQUBE_PROJECT_KEY: ${CI_PROJECT_ID}:${CI_COMMIT_REF_SLUG}
+  SONARQUBE_PROJECT_NAME: sa4/2022/2-pipelinepredators/backend:${CI_COMMIT_REF_SLUG}
+  SONARQUBE_GROUP_ID: AYAETsxiKvyE7mJiVutx
 
 before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
 
-build:
-  stage: build
-  script: gradle build
+stages:
+  - compile
+  - test
+  - sonarqube
+  - build
+
+compile:
+  stage: compile
+  script: gradle compileJava
+  artifacts:
+    when: always
+    paths:
+      - build/classes
+    expire_in: 1 hour
 
 test:
   stage: test
   script: gradle test
+  artifacts:
+    when: always
+    paths:
+      - build/reports/jacoco/test/*
+      - build/reports/tests/*
+      - build/test-results/test/TEST-*
+      - build/classes
+    expire_in: 1 hour
+    reports:
+      junit: [build/reports/jacoco/test/jacocoTestReport.xml, build/test-results/test/TEST-*]
+
+.sonarqube-check:
+  stage: sonarqube
+  image:
+    name: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/sonarsource/sonar-scanner-cli:latest
+    entrypoint: ['']
+  variables:
+    SONAR_USER_HOME: '${CI_PROJECT_DIR}/.sonar' # Defines the location of the analysis task cache
+    GIT_DEPTH: '0' # Tells git to fetch all the branches of the project, required by the analysis task
+  cache:
+    key: '${CI_JOB_NAME}'
+    paths:
+      - .sonar/cache
+
+# This sonarqube job can be manually run on feature branches.
+# It is allowed to fail.
+sonarqube-check-branch:
+  extends: .sonarqube-check
+  rules:
+      - if: ($CI_PIPELINE_SOURCE == 'push' && $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH && $CI_COMMIT_BRANCH != "main")
+  when: manual
+  allow_failure: true
+  script:
+    - "curl -u ${SONAR_TOKEN}: -X POST \"https://lab.si.usi.ch/sonarqube/api/projects/create?name=${SONARQUBE_PROJECT_NAME}&project=${SONARQUBE_PROJECT_KEY}\" || echo Project already exists"    
+    - "curl -u ${SONAR_TOKEN}: -X POST \"https://lab.si.usi.ch/sonarqube/api/permissions/add_group?projectKey=${SONARQUBE_PROJECT_KEY}&groupId=${SONARQUBE_GROUP_ID}&permission=user\" || echo Project permission already set or has error"
+    - "curl -u ${SONAR_TOKEN}: -X POST \"https://lab.si.usi.ch/sonarqube/api/permissions/add_group?projectKey=${SONARQUBE_PROJECT_KEY}&groupId=${SONARQUBE_GROUP_ID}&permission=codeviewer\" || echo Project permission already set or has error"
+    - sonar-scanner
+
+
+# This sonarqube job is run on main and dev, and it's automatic.
+# Moreover, it is *not* allowed to fail - if the Quality Gate fails,
+# the pipeline fails.
+sonarqube-check:
+  extends: .sonarqube-check
+  rules:
+      - if: ($CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH == "main")
+  allow_failure: false
+  script:
+    - "curl -u ${SONAR_TOKEN}: -X POST \"https://lab.si.usi.ch/sonarqube/api/projects/create?name=${SONARQUBE_PROJECT_NAME}&project=${SONARQUBE_PROJECT_KEY}\" || echo Project already exists"    
+    - "curl -u ${SONAR_TOKEN}: -X POST \"https://lab.si.usi.ch/sonarqube/api/permissions/add_group?projectKey=${SONARQUBE_PROJECT_KEY}&groupId=${SONARQUBE_GROUP_ID}&permission=user\" || echo Project permission already set or has error"
+    - "curl -u ${SONAR_TOKEN}: -X POST \"https://lab.si.usi.ch/sonarqube/api/permissions/add_group?projectKey=${SONARQUBE_PROJECT_KEY}&groupId=${SONARQUBE_GROUP_ID}&permission=codeviewer\" || echo Project permission already set or has error"  
+    - sonar-scanner  
+
+build_jar:
+  rules:
+      - if: ($CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH == "main")
+  stage: build
+  script: gradle build
+  artifacts:
+    when: always
+    paths:
+      - build/libs/*
+    expire_in: 1 hour
