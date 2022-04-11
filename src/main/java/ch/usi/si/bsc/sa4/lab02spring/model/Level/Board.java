@@ -309,10 +309,14 @@ public class Board {
         List<Tile> tile_list = new ArrayList<>(List.of());
         for(Tile[] row : grid)
             Collections.addAll(tile_list, row);
-        this.grid = tile_list;
         List<Item> item_list = new ArrayList<>(List.of());
         for(Item[] row : items)
             item_list.addAll(Arrays.asList(row));
+        
+        // Removes null elements from list
+        tile_list.removeAll(Collections.singleton(null));
+        item_list.removeAll(Collections.singleton(null));
+        this.grid = tile_list;
         this.items = item_list;
         
     }
@@ -348,6 +352,8 @@ public class Board {
     public Item getItemAt(final int x, final int y) throws IndexOutOfBoundsException{
         if(x < 0 || y < 0 || x>=dim_x || y>=dim_y)
             throw new IndexOutOfBoundsException("Invalid coordinates");
+    
+        System.out.println(items);
         
         for(Item item : items) {
             if(item.getPos_x() == x && item.getPos_y() == y)
