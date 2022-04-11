@@ -333,9 +333,9 @@ public class Board {
     public Tile getTileAt(final int x, final int y) throws IndexOutOfBoundsException{
         if(x < 0 || y < 0 || x>=dim_x || y>=dim_y)
             throw new IndexOutOfBoundsException("Invalid coordinates");
-        System.out.println("getTileAt("+x+","+y+")");
+        //System.out.println("getTileAt("+x+","+y+")");
         for(Tile tile : grid) {
-            System.out.println("Tile: " + tile.getPos_x() + " " + tile.getPos_y());
+            //System.out.println("Tile: " + tile.getPos_x() + " " + tile.getPos_y());
             if(tile.getPos_x() == x && tile.getPos_y() == y)
                 return tile;
         }
@@ -352,8 +352,6 @@ public class Board {
     public Item getItemAt(final int x, final int y) throws IndexOutOfBoundsException{
         if(x < 0 || y < 0 || x>=dim_x || y>=dim_y)
             throw new IndexOutOfBoundsException("Invalid coordinates");
-    
-        System.out.println(items);
         
         for(Item item : items) {
             if(item.getPos_x() == x && item.getPos_y() == y)
