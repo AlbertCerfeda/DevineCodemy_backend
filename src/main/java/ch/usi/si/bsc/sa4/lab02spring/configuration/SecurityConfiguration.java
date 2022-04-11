@@ -7,8 +7,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 /**
- * Security Configuration: Seting up which routes can be accessed without
- * being authenticated or with authentiction.
+ * Security Configuration: Setting up which routes can be accessed without
+ * being authenticated or with authentication.
  * **/
 @Configuration
 @EnableWebSecurity
