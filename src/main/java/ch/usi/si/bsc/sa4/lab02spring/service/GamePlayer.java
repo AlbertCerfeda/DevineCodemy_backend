@@ -11,16 +11,18 @@ import ch.usi.si.bsc.sa4.lab02spring.model.LevelValidation.LevelValidation;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Parses a sequence of String commands into EActions and plays them on a level.
+ */
 public class GamePlayer {
 
     private final Level level;
     private final List<String> commands;
 
     /**
-     * Constructor for GamePlayer
+     * Constructor for GamePlayer.
      * @param level the level to play.
-     * @param commands the commands to execute.
+     * @param commands the commands to parse and execute.
      */
     public GamePlayer(final Level level, final List<String> commands) {
         this.level = level;
@@ -28,7 +30,9 @@ public class GamePlayer {
     }
 
     /**
-     * To validate a gameplay on a level.
+     * Validates a sequence of commands on the level.
+     * - Parses the Strings into their corresponding EAction ENUMs and checks for errors.
+     * - Plays (if no errors occurred) the sequence of EActions on the game level.
      * @return a LevelValidation object to represent the result of the validation.
      */
     public LevelValidation play() {

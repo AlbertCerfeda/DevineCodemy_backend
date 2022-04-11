@@ -5,7 +5,12 @@ import ch.usi.si.bsc.sa4.lab02spring.model.EAnimation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+/**
+ * Represents the result of the code validation done by the GamePlayer.
+ * Contains the animations to be performed by the client and eventual parsing errors.
+ */
 public class LevelValidation {
     private boolean completed;
     private final List<String> errors;
@@ -46,9 +51,7 @@ public class LevelValidation {
     }
 
     public List<String> getAnimationsAsStrings() {
-        List<String> result = new ArrayList<>();
-        animations.forEach(animation -> result.add(animation.toString()));
-        return result;
+        return animations.stream().map((a)->a.toString()).collect(Collectors.toList());
     }
 
     public LevelValidationDTO toLevelValidationDTO() {
