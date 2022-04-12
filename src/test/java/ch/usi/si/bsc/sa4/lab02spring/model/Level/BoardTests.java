@@ -1,7 +1,13 @@
 package ch.usi.si.bsc.sa4.lab02spring.model.Level;
 
 import ch.usi.si.bsc.sa4.lab02spring.model.EOrientation;
+import ch.usi.si.bsc.sa4.lab02spring.model.Item.CoinItem;
+import ch.usi.si.bsc.sa4.lab02spring.model.Tile.ConcreteTile;
+import ch.usi.si.bsc.sa4.lab02spring.model.Tile.GrassTile;
+import ch.usi.si.bsc.sa4.lab02spring.model.Tile.SandTile;
 import ch.usi.si.bsc.sa4.lab02spring.model.Tile.Tile;
+import ch.usi.si.bsc.sa4.lab02spring.model.Tile.WaterTile;
+import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -55,7 +61,123 @@ public class BoardTests {
 
     @BeforeEach
     void setup() {
-        board = new Board(10, 12);
+        board = new Board(
+                List.of(
+                        new WaterTile(0, 0, 0),
+                        new WaterTile(1, 0, 0),
+                        new WaterTile(2, 0, 0),
+                        new WaterTile(3, 0, 0),
+                        new WaterTile(4, 0, 0),
+                        new WaterTile(5, 0, 0),
+                        new WaterTile(6, 0, 0),
+                        new WaterTile(7, 0, 0),
+                        new WaterTile(8, 0, 0),
+                        new WaterTile(9, 0, 0),
+
+                        new WaterTile(0, 1, 0),
+                        new WaterTile(1, 1, 0),
+                        new WaterTile(2, 1, 0),
+                        new WaterTile(3, 1, 0),
+                        new WaterTile(4, 1, 0),
+                        new WaterTile(5, 1, 0),
+                        new WaterTile(6, 1, 0),
+                        new WaterTile(7, 1, 0),
+                        new WaterTile(8, 1, 0),
+                        new WaterTile(9, 1, 0),
+
+                        new GrassTile(0, 2, 0),
+                        new WaterTile(1, 2, 0),
+                        new WaterTile(2, 2, 0),
+                        new WaterTile(3, 2, 0),
+                        new WaterTile(4, 2, 0),
+                        new WaterTile(5, 2, 0),
+                        new WaterTile(6, 2, 0),
+                        new WaterTile(7, 2, 0),
+                        new WaterTile(8, 2, 0),
+                        new GrassTile(9, 2, 0),
+
+                        new GrassTile(0, 3, 0),
+                        new WaterTile(1, 3, 0),
+                        new WaterTile(2, 3, 0),
+                        new WaterTile(3, 3, 0),
+                        new ConcreteTile(4, 3, 0),
+                        new WaterTile(5, 3, 0),
+                        new WaterTile(6, 3, 0),
+                        new WaterTile(7, 3, 0),
+                        new WaterTile(8, 3, 0),
+                        new GrassTile(9, 3, 0),
+
+                        new GrassTile(0, 4, 0),
+                        new WaterTile(1, 4, 0),
+                        new WaterTile(2, 4, 0),
+                        new WaterTile(3, 4, 0),
+                        new ConcreteTile(4, 4, 0),
+                        new WaterTile(5, 4, 0),
+                        new WaterTile(6, 4, 0),
+                        new WaterTile(7, 4, 0),
+                        new WaterTile(8, 4, 0),
+                        new GrassTile(9, 4, 0),
+
+                        new GrassTile(0, 5, 0),
+                        new WaterTile(1, 5, 0),
+                        new WaterTile(2, 5, 0),
+                        new WaterTile(3, 5, 0),
+                        new ConcreteTile(4, 5, 0),
+                        new WaterTile(5, 5, 0),
+                        new WaterTile(6, 5, 0),
+                        new WaterTile(7, 5, 0),
+                        new WaterTile(8, 5, 0),
+                        new GrassTile(9, 5, 0),
+
+                        new WaterTile(0, 6, 0),
+                        new WaterTile(1, 6, 0),
+                        new WaterTile(2, 6, 0),
+                        new WaterTile(3, 6, 0),
+                        new ConcreteTile(4, 6, 0),
+                        new WaterTile(5, 6, 0),
+                        new WaterTile(6, 6, 0),
+                        new WaterTile(7, 6, 0),
+                        new WaterTile(8, 6, 0),
+                        new GrassTile(9, 6, 0),
+
+                        new WaterTile(0, 7, 0),
+                        new WaterTile(1, 7, 0),
+                        new SandTile(2, 7, 0),
+                        new GrassTile(3, 7, 0),
+                        new GrassTile(4, 7, 0),
+                        new GrassTile(5, 7, 0),
+                        new GrassTile(6, 7, 0),
+                        new GrassTile(7, 7, 0),
+                        new GrassTile(8, 7, 0),
+                        new GrassTile(9, 7, 0),
+
+                        new WaterTile(0, 8, 0),
+                        new WaterTile(1, 8, 0),
+                        new WaterTile(2, 8, 0),
+                        new WaterTile(3, 8, 0),
+                        new WaterTile(4, 8, 0),
+                        new WaterTile(5, 8, 0),
+                        new WaterTile(6, 8, 0),
+                        new WaterTile(7, 8, 0),
+                        new WaterTile(8, 8, 0),
+                        new GrassTile(9, 8, 0),
+
+                        new WaterTile(0, 9, 0),
+                        new WaterTile(1, 9, 0),
+                        new WaterTile(2, 9, 0),
+                        new WaterTile(3, 9, 0),
+                        new WaterTile(4, 9, 0),
+                        new WaterTile(5, 9, 0),
+                        new WaterTile(6, 9, 0),
+                        new WaterTile(7, 9, 0),
+                        new WaterTile(8, 9, 0),
+                        new GrassTile(9, 9, 0)
+                ),
+                List.of(
+                        new CoinItem(4, 7)
+                ),
+                1,
+                1);
     }
 
     @DisplayName("after creation")
@@ -74,7 +196,7 @@ public class BoardTests {
         @Test
         void testGetDimY() {
             var actualDimY = board.getDim_y();
-            var expectedDimY = 12;
+            var expectedDimY = 10;
             assertEquals(expectedDimY, actualDimY, "dimY is not the one provided in the constructor");
         }
 
