@@ -21,28 +21,6 @@ public class BoardTests {
 
     private Board board;
 
-    public static Stream<Arguments> dimConstructorTestsArgumentProvider() {
-        return Stream.of(
-                arguments(5, 0, true), // test when dimY is zero
-                arguments(0, 5, true), // test when dimX is zero
-                arguments(1, -3, true), // test when dimY is negative
-                arguments(-3, 3, true), // test when dimX is negative
-                arguments(0, 0, true), // test when both are zero
-                arguments(-3, -2, true), // test when both are negative
-                arguments(3, 3, false) // test when both are positive
-        );
-    }
-
-    @ParameterizedTest(name = "the board constructed with {0} and {1} should {2} throw")
-    @MethodSource("dimConstructorTestsArgumentProvider")
-    void dimConstructorTest(int dimX, int dimY,  boolean shouldThrow) {
-        if (shouldThrow) {
-            assertThrows(Exception.class, () -> new Board(dimX, dimY), "constructor should throw");
-        } else {
-            assertDoesNotThrow(() -> new Board(dimX, dimY), "constructor should not throw");
-        }
-    }
-
     public static Stream<Arguments> getNextTileTestsArgumentProvider() {
         return Stream.of(
                 arguments(-1, -2, null, true, 0, 0), // test when both are negative
