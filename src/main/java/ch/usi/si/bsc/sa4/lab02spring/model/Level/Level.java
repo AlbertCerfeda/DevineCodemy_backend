@@ -17,7 +17,7 @@ public class Level {
     private final String name;
     private final String description;
     
-    private int max_steps;
+    private final int max_steps;
     /*
     TODO: Add additional fields
     - Goal of the level in order to complete it
@@ -30,21 +30,23 @@ public class Level {
     private final List<EAction> allowed_commands;
 
     @PersistenceConstructor
-    public Level(String name, String description, Board board, Robot robot, List<EAction> allowed_commands) {
+    public Level(String name, String description, int max_steps, Board board, Robot robot, List<EAction> allowed_commands) {
         this.name = name;
         this.description = description;
+        this.max_steps = max_steps;
         this.board = board;
         this.robot = robot;
         this.allowed_commands = allowed_commands;
     }
 
-    public Level(final String name, final String description, final int dim_x, final int dim_y, List<EAction> allowed_commands) {
+    public Level(final String name, final String description, final int max_steps, final int dim_x, final int dim_y, List<EAction> allowed_commands) {
         Random rand = new Random();
         final int start_x = rand.nextInt(dim_x);
         final int start_y = rand.nextInt(dim_y);
 
         this.name = name;
         this.description = description;
+        this.max_steps = max_steps;
         this.board = new Board(dim_x, dim_y, start_x, start_y);
         this.robot = new Robot(start_x, start_y, EOrientation.getRandom());
         this.allowed_commands = allowed_commands;
