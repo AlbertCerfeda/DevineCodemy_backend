@@ -2,6 +2,7 @@ package ch.usi.si.bsc.sa4.lab02spring.model.Level;
 
 import ch.usi.si.bsc.sa4.lab02spring.model.EOrientation;
 import ch.usi.si.bsc.sa4.lab02spring.model.Item.CoinItem;
+import ch.usi.si.bsc.sa4.lab02spring.model.Item.Item;
 import ch.usi.si.bsc.sa4.lab02spring.model.Tile.ConcreteTile;
 import ch.usi.si.bsc.sa4.lab02spring.model.Tile.GrassTile;
 import ch.usi.si.bsc.sa4.lab02spring.model.Tile.SandTile;
@@ -19,6 +20,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
@@ -26,6 +28,36 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 public class BoardTests {
 
     private Board board;
+
+    public static Stream<Arguments> getItemAtTestsArgumentProvider() {
+        return Stream.of(
+                arguments(-1, -2, true, null), // test when both are negative
+                arguments(34, 333, true, null), // test when both are out of bounds
+                arguments(-1, 0, true, null), // test when x is negative
+                arguments(0, -5, true, null), // test when y is negative
+                arguments(20, 0, true, null), // test when x is out of bounds
+                arguments(0, 29, true, null), // test when y is out of bounds
+                arguments(3, 4, false, null), // test when x and y are both within bounds but no item
+                arguments(4, 7, false, new CoinItem(4, 7)) // test when x and y are both within bounds and yes item
+        );
+    }
+
+    @ParameterizedTest(name = "getting the item at x {0} and y {1} should {2} throw and return item {3}")
+    @MethodSource("getItemAtTestsArgumentProvider")
+    void getItemAtTest(int x, int y, boolean shouldThrow, Item expectedItem) {
+        if (shouldThrow) {
+            assertThrows(Exception.class, () -> board.getItemAt(x, y), "method should throw");
+        } else {
+            assertDoesNotThrow(() -> board.getItemAt(x, y), "method should not throw");
+            final Item actualItem = board.getItemAt(x, y);
+            if (expectedItem == null) {
+                assertNull(actualItem);
+            } else {
+                assertEquals(expectedItem.getPos_x(), actualItem.getPos_x(), "item does not have correct x");
+                assertEquals(expectedItem.getPos_y(), actualItem.getPos_y(), "item does not have correct y");
+            }
+        }
+    }
 
     public static Stream<Arguments> getTileAtTestsArgumentProvider() {
         return Stream.of(
