@@ -27,6 +27,31 @@ public class BoardTests {
 
     private Board board;
 
+    public static Stream<Arguments> getTileAtTestsArgumentProvider() {
+        return Stream.of(
+                arguments(-1, -2, true, 0, 0), // test when both are negative
+                arguments(34, 333, true, 0, 0), // test when both are out of bounds
+                arguments(-1, 0, true, 0, 0), // test when x is negative
+                arguments(0, -5, true, 0, 0), // test when y is negative
+                arguments(20, 0, true, 0, 0), // test when x is out of bounds
+                arguments(0, 29, true, 0, 0), // test when y is out of bounds
+                arguments(3, 4, false, 3, 4) // test when x and y are both within bounds
+        );
+    }
+
+    @ParameterizedTest(name = "getting the tile at x {0} and y {1} should {2} throw and return tile with x {3} and y {4}")
+    @MethodSource("getTileAtTestsArgumentProvider")
+    void getTileAtTest(int x, int y, boolean shouldThrow, int nx, int ny) {
+        if (shouldThrow) {
+            assertThrows(Exception.class, () -> board.getTileAt(x, y), "method should throw");
+        } else {
+            assertDoesNotThrow(() -> board.getTileAt(x, y), "method should not throw");
+            final Tile actualTile = board.getTileAt(x, y);
+            assertEquals(nx, actualTile.getPos_x(), "tile does not have correct x");
+            assertEquals(ny, actualTile.getPos_y(), "tile does not have correct y");
+        }
+    }
+
     public static Stream<Arguments> getNextTileTestsArgumentProvider() {
         return Stream.of(
                 arguments(-1, -2, null, true, 0, 0), // test when both are negative
@@ -198,6 +223,22 @@ public class BoardTests {
             var actualDimY = board.getDim_y();
             var expectedDimY = 10;
             assertEquals(expectedDimY, actualDimY, "dimY is not the one provided in the constructor");
+        }
+
+        @DisplayName("has the same difficulty provided in the constructor")
+        @Test
+        void testGetDifficulty() {
+            var actualDifficulty = board.getDifficulty();
+            var expectedDifficulty = 1;
+            assertEquals(expectedDifficulty, actualDifficulty, "difficulty is not the one provided in the constructor");
+        }
+
+        @DisplayName("has the same number of coins provided in the constructor")
+        @Test
+        void testGetNumberOfCoins() {
+            var actualNumberOfCoins = board.getCoinsNumber();
+            var expectedNumberOfCoins = 1;
+            assertEquals(expectedNumberOfCoins, actualNumberOfCoins, "number of coins is not the one provided in the constructor");
         }
 
     }
