@@ -24,7 +24,6 @@ public class Board {
     private int difficulty;
     private int n_coins;
 
-
     /**
      * Constructor for board objects.
      * @param grid the tiles of the board representing the terrain.
@@ -38,7 +37,6 @@ public class Board {
         grid.forEach((t)-> this.dim_y = Math.max(this.dim_y, t.getPos_y() + 1));
         items.forEach((i)-> this.dim_x = Math.max(this.dim_x, i.getPos_x() + 1));
         items.forEach((i)-> this.dim_y = Math.max(this.dim_y, i.getPos_y() + 1));
-
 
         this.grid = grid;
         this.items = items;
@@ -80,8 +78,6 @@ public class Board {
         final int max_elevation = rand.nextInt((dim_x+dim_y)/4);
         init(dim_x, dim_y, start_x, start_y, n_steps, water_n_steps, n_items, max_elevation);
     }
-
-
 
     /**
      * Generate board from given dimensions, start coordinates, how many steps to perform, how many items to place and the maximum elevation we can reach.
@@ -288,7 +284,6 @@ public class Board {
         last_tile.setPos_z(new_elevation);
         last_tile.setVisited(true);
 
-
         // Converts the matrix of Tiles and Items to their respective Lists.
         //  Assumes 'dim_x' and 'dim_y' are already correctly set.
         List<Tile> tile_list = new ArrayList<>(List.of());
@@ -299,7 +294,6 @@ public class Board {
         for(Item[] row : items)
             item_list.addAll(Arrays.asList(row));
         this.items = item_list;
-
     }
 
 
@@ -333,7 +327,6 @@ public class Board {
     public Item getItemAt(final int x, final int y) throws IndexOutOfBoundsException{
         if(x < 0 || y < 0 || x>=dim_x || y>=dim_y)
             throw new IndexOutOfBoundsException("Invalid coordinates");
-
         for(Item item : items) {
             if(item.getPos_x() == x && item.getPos_y() == y)
                 return item;
