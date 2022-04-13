@@ -5,9 +5,9 @@ import java.util.Objects;
 
 
 public class Robot {
-    private int pos_x;
-    private int pos_y;
-    private EOrientation orientation;
+    private final int pos_x;
+    private final int pos_y;
+    private final EOrientation orientation;
 
     public Robot(int start_x, int start_y, EOrientation orientation) {
         this.pos_x= start_x;
