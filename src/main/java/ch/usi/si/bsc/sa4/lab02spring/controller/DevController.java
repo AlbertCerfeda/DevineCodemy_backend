@@ -7,6 +7,7 @@ import ch.usi.si.bsc.sa4.lab02spring.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,7 +36,7 @@ public class DevController {
      * Deletes from the database the user with an id if it exists.
      */
     @DeleteMapping("/users/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable String id) {
+    public ResponseEntity<String> deleteUser(OAuth2AuthenticationToken authenticationToken, @PathVariable String id) {
         Optional<User> optionalUser = userService.getById(id);
         if (optionalUser.isPresent()) {
             userService.deleteUserById(id);

@@ -95,7 +95,7 @@ public class UserController {
      * @constraint boolean modifyProfile if true modify profile status, else modify other user fields.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable String id ,@RequestBody UpdateUserDTO updateUserDTO) {
+    public ResponseEntity<?> updateUser(OAuth2AuthenticationToken authenticationToken, @PathVariable String id ,@RequestBody UpdateUserDTO updateUserDTO) {
         Optional<User> optionalUser = userService.getById(id);
 
         if (optionalUser.isPresent()) {
@@ -135,7 +135,7 @@ public class UserController {
      * @constraint user's profile is public
      */
     @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable("id") String id) {
+    public ResponseEntity<?> getById(OAuth2AuthenticationToken authenticationToken, @PathVariable("id") String id) {
         Optional<User> optionalUser = userService.getById(id);
         if (optionalUser.isPresent()) {
             //TODO: Check if request is sent by the authenticated user itself
@@ -199,7 +199,7 @@ public class UserController {
             return r;
         }
 
-        Optional<User> optionalUser = userService.getById(newUser.getId());
+        Optional<User> optionalUser = userService.getUserByToken(authenticationToken);
 
         // Checks if the user is there, otherwise it adds it in the Database
         if (!optionalUser.isPresent()) {

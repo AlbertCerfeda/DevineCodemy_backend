@@ -4,7 +4,10 @@ import ch.usi.si.bsc.sa4.lab02spring.controller.dto.CreateUserDTO;
 import ch.usi.si.bsc.sa4.lab02spring.model.User.User;
 import ch.usi.si.bsc.sa4.lab02spring.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.yaml.snakeyaml.events.Event;
 
 import java.util.List;
 import java.util.Objects;
@@ -96,6 +99,22 @@ public class UserService {
             checkingFlag = false;
         }
         return checkingFlag;
+    }
+
+    /**
+     * Return the user matching the given authenticationToken
+     * @param authenticationToken token that belongs to user
+     * @return Optional<user> user
+     */
+    public Optional<User> getUserByToken(OAuth2AuthenticationToken authenticationToken) throws RuntimeException {
+        if (authenticationToken == null) {
+            throw new RuntimeException();
+        }
+
+        // Retrieves the User from the OAuth2
+        OAuth2User u = authenticationToken.getPrincipal();
+        Optional<User> user = getById(u.getName());
+        return user;
     }
 }
     
