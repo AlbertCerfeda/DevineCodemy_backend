@@ -84,7 +84,11 @@ public class Level {
     public String getDescription(){
         return description;
     }
-    
+
+    public int getMaxSteps() {
+        return max_steps;
+    }
+
     public Board getBoard(){
         return board;
     }

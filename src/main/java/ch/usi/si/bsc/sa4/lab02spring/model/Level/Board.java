@@ -408,4 +408,16 @@ public class Board {
         return n_coins;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Board)) return false;
+        Board board = (Board) o;
+        return dim_x == board.dim_x && dim_y == board.dim_y && difficulty == board.difficulty && n_coins == board.n_coins && grid.equals(board.grid) && items.equals(board.items);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(dim_x, dim_y, grid, items, difficulty, n_coins);
+    }
 }

@@ -1,6 +1,7 @@
 package ch.usi.si.bsc.sa4.lab02spring.model.Level;
 import ch.usi.si.bsc.sa4.lab02spring.controller.dto.RobotDTO;
 import ch.usi.si.bsc.sa4.lab02spring.model.EOrientation;
+import java.util.Objects;
 
 
 public class Robot {
@@ -25,4 +26,17 @@ public class Robot {
     }
     
     public EOrientation getOrientation(){ return orientation; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Robot)) return false;
+        Robot robot = (Robot) o;
+        return pos_x == robot.pos_x && pos_y == robot.pos_y && orientation == robot.orientation;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(pos_x, pos_y, orientation);
+    }
 }
