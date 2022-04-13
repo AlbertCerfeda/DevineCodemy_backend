@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A tile made of Water. You can NOT walk on it.
+ * A tile made Sky. You can NOT walk on it.
  */
 public class NormalSkyTile extends Tile {
 
