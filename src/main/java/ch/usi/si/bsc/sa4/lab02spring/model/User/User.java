@@ -1,7 +1,6 @@
 package ch.usi.si.bsc.sa4.lab02spring.model.User;
 
 import ch.usi.si.bsc.sa4.lab02spring.controller.dto.UserDTO;
-import ch.usi.si.bsc.sa4.lab02spring.service.PasswordHashingService;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -11,25 +10,28 @@ public class User {
     @Id
     private String id;
     private final String name;
-    private String hash;
+    private final String email;
+    private final String username;
     
     private boolean publicProfile = false;
     
     /* TODO: Add additional fields
-    - GitLab specific fields
     - Statistics on completed levels
      */
 
+    /**
+     * Main constructor to create the User with GitLab data.
+     * @param id User's id (in GitLab)
+     * @param name User's name
+     * @param username User's GitLab username (unique)
+     * @param email User's email
+     */
     @PersistenceConstructor
-    public User(String id, String name, String hash) {
+    public User(String id, String name, String username, String email) {
         this.id = id;
         this.name = name;
-        this.hash = hash;
-    }
-
-    public User(String name, String hash) {
-        this.name = name;
-        this.hash = hash;
+        this.username = username;
+        this.email = email;
     }
 
     public String getId() {
@@ -40,22 +42,16 @@ public class User {
         return name;
     }
 
-    public String getHash() {
-        return hash;
+    public String getEmail() {
+        return email;
     }
 
-    public Boolean isProfilePublic() { return publicProfile; }
+    public String getUsername() {
+        return username;
+    }
 
-    public void changePassword(String oldPassword, String newPassword) {
-        if (oldPassword == null || newPassword == null) {
-            throw new IllegalArgumentException("Password cannot be null");
-        }
-        if (!PasswordHashingService.getInstance().passwordMatches(oldPassword, this.hash)) {
-            // This should be a domain specific exception (WrongPasswordException)
-            throw new IllegalArgumentException("Wrong password.");
-        }
-        // You can do some checks on the validity here
-        this.hash = PasswordHashingService.getInstance().hashPassword(newPassword);
+    public Boolean isProfilePublic() {
+        return publicProfile;
     }
 
     public UserDTO toUserDTO() {

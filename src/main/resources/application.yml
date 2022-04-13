@@ -1,0 +1,36 @@
+spring:
+  data:
+    mongodb:
+      database: users_tutorial
+      host: localhost
+      port: 27017
+  security:
+    oauth2:
+      client:
+        registration:
+          gitlab:
+            authorization-grant-type: authorization_code
+            redirect-uri: '{baseUrl}/login/oauth2/code/{registrationId}'
+            client-id: ${CLIENT_ID}
+            client-secret: ${CLIENT_SECRET}
+            scope: openid , read_user , profile
+            provider: gitlab
+            client-authentication-method: basic
+        provider:
+          gitlab:
+            authorization-uri: https://gitlab.com/oauth/authorize
+            token-uri: https://gitlab.com/oauth/token
+            user-info-uri: https://gitlab.com/oauth/userinfo
+            jwk-set-uri: https://gitlab.com/oauth/discovery/keys
+            user-name-attribute: sub
+  web:
+    resources:
+      static-locations:
+        classpath: '/resources/static/'
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+
+
