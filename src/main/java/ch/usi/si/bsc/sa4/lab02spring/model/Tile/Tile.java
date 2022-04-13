@@ -1,6 +1,7 @@
 package ch.usi.si.bsc.sa4.lab02spring.model.Tile;
 
 import ch.usi.si.bsc.sa4.lab02spring.controller.dto.Tile.TileDTO;
+import java.util.Objects;
 
 /**
  * This class represents the general structure of a tile.
@@ -111,5 +112,23 @@ public abstract class Tile {
     
     public TileDTO toTileDTO() {
         return new TileDTO(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Tile)) return false;
+        Tile tile = (Tile) o;
+        return pos_x == tile.pos_x
+                && pos_y == tile.pos_y
+                && pos_z == tile.pos_z
+                && is_walkable == tile.is_walkable
+                && visited == tile.visited
+                && type == tile.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, pos_x, pos_y, pos_z, is_walkable, visited);
     }
 }

@@ -1,6 +1,7 @@
 package ch.usi.si.bsc.sa4.lab02spring.model.Item;
 
 import ch.usi.si.bsc.sa4.lab02spring.controller.dto.ItemDTO;
+import java.util.Objects;
 
 /**
  * This class represents the general structure of a tile.
@@ -40,4 +41,17 @@ public abstract class Item {
 
     
     public ItemDTO toItemDTO() { return new ItemDTO(this); }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Item)) return false;
+        Item item = (Item) o;
+        return pos_x == item.pos_x && pos_y == item.pos_y;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(pos_x, pos_y);
+    }
 }
