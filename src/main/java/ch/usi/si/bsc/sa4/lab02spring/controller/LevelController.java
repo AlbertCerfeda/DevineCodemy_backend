@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class LevelController {
      * Gets all levels available in LevelDTO representation
      */
     @GetMapping
-    public ResponseEntity<List<LevelDTO>> getAll() {
+    public ResponseEntity<List<LevelDTO>> getAll(OAuth2AuthenticationToken authenticationToken) {
         ArrayList<LevelDTO> allLevelDTOs = new ArrayList<LevelDTO>();
 
         for(Level level : levelService.getAll()) {
@@ -48,7 +49,7 @@ public class LevelController {
      * Gets the level with the specific id
      */
     @GetMapping("/{id}")
-    public ResponseEntity<LevelDTO> getById(@PathVariable("id") String id) {
+    public ResponseEntity<LevelDTO> getById(OAuth2AuthenticationToken authenticationToken, @PathVariable("id") String id) {
         Optional<Level> optionalLevel = levelService.getById(id);
         return optionalLevel.map(level -> ResponseEntity.ok(level.toLevelDTO()))
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -58,7 +59,7 @@ public class LevelController {
      * Gets the level with the specific name
      */
     @GetMapping("/search")
-    public ResponseEntity<LevelDTO> getByName(@RequestParam("name") String name){
+    public ResponseEntity<LevelDTO> getByName(OAuth2AuthenticationToken authenticationToken, @RequestParam("name") String name){
         Optional<Level> optionalLevel = levelService.getByName(name);
         if (optionalLevel.isPresent()){
             return ResponseEntity.ok(optionalLevel.get().toLevelDTO());

@@ -102,13 +102,13 @@ public class UserService {
     }
 
     /**
-     * Return the user matching the given authenticationToken
-     * @param authenticationToken token that belongs to user
-     * @return Optional<user> user
+     * Return the user matching the given authenticationToken.
+     * @param authenticationToken token that belongs to user.
+     * @return Optional<user> user.
      */
-    public Optional<User> getUserByToken(OAuth2AuthenticationToken authenticationToken) throws RuntimeException {
+    public Optional<User> getUserByToken(OAuth2AuthenticationToken authenticationToken) throws IllegalArgumentException {
         if (authenticationToken == null) {
-            throw new RuntimeException();
+            throw new IllegalArgumentException("Token is null.");
         }
 
         // Retrieves the User from the OAuth2

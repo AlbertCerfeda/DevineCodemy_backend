@@ -36,7 +36,7 @@ public class DevController {
      * Deletes from the database the user with an id if it exists.
      */
     @DeleteMapping("/users/{id}")
-    public ResponseEntity<String> deleteUser(OAuth2AuthenticationToken authenticationToken, @PathVariable String id) {
+    public ResponseEntity<String> deleteUser(@PathVariable String id) {
         Optional<User> optionalUser = userService.getById(id);
         if (optionalUser.isPresent()) {
             userService.deleteUserById(id);
