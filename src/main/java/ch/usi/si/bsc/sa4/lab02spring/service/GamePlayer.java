@@ -71,7 +71,7 @@ public class GamePlayer {
 
         if (actions.size() > level.getMaxCommandsNumber()) {
             hasErrors = true;
-            levelValidation.addError("Too many commands");
+            levelValidation.addError("Too many commands: you can use only " + level.getMaxCommandsNumber() + " commands.");
         }
 
 

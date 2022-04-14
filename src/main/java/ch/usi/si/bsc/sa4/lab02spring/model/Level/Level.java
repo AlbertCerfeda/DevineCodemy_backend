@@ -47,6 +47,7 @@ public class Level {
 //        this.name = name;
 //        this.description = description;
 //        this.board = new Board(dim_x, dim_y, start_x, start_y);
+//        this.maxCommandsNumber = rand.nextInt(2* (dim_x + dim_y)) + dim_x + dim_y;
 //        this.robot = new Robot(start_x, start_y, EOrientation.getRandom());
 //        this.allowed_commands = allowed_commands;
 //    }
