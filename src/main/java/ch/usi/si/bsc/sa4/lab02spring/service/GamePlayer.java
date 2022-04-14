@@ -69,6 +69,13 @@ public class GamePlayer {
                 levelValidation.addError(e.getMessage());
             }
         }
+
+        if (actions.size() > board.getDifficulty()) {
+            hasErrors = true;
+            levelValidation.addError("Too many commands");
+        }
+
+
         if (hasErrors) {
             levelValidation.setCompleted(false);
             levelValidation.clearAnimations();
