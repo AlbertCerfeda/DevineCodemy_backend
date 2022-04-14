@@ -23,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
         @JsonSubTypes.Type(value = GreyCloudTile.class, name = "CLOUDG"),
         @JsonSubTypes.Type(value = BlackCloudTile.class, name = "CLOUDB"),
         @JsonSubTypes.Type(value = StarTile.class, name = "STAR"),
+        @JsonSubTypes.Type(value = StarTile.class, name = "TELEPORT"),
 })
 public abstract class Tile {
     // Used by the TileDTO to indicate the type of the Tile.
