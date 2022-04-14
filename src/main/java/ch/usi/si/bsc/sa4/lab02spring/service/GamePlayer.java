@@ -47,7 +47,6 @@ public class GamePlayer {
         EOrientation current_orientation = robot.getOrientation();
 
         int collectedItems = 0;
-        int commandsCount = 0; // TODO: implement check for command limit.
 
         ////
         //  Parsing phase
@@ -70,7 +69,7 @@ public class GamePlayer {
             }
         }
 
-        if (actions.size() > board.getDifficulty()) {
+        if (actions.size() > level.getMaxCommandsNumber()) {
             hasErrors = true;
             levelValidation.addError("Too many commands");
         }
