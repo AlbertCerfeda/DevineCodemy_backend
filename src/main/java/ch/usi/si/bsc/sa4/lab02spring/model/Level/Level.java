@@ -2,13 +2,11 @@ package ch.usi.si.bsc.sa4.lab02spring.model.Level;
 
 import ch.usi.si.bsc.sa4.lab02spring.controller.dto.LevelDTO;
 import ch.usi.si.bsc.sa4.lab02spring.model.EAction;
-import ch.usi.si.bsc.sa4.lab02spring.model.EOrientation;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
-import java.util.Random;
 
 @Document(collection="levels")
 public class Level {
