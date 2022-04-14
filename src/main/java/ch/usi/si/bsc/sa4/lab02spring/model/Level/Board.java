@@ -125,7 +125,7 @@ public class Board {
         this.dim_x = dim_x;
         this.dim_y = dim_y;
         Tile[][] grid = new Tile[dim_x][dim_y];
-        Item[][] items =  new Item[dim_x][dim_y];
+        this.items = new ArrayList<>();
         this.difficulty = n_steps;
         this.n_coins = n_items;
 
@@ -188,7 +188,7 @@ public class Board {
         ArrayList<Tile> itemsPath = new ArrayList<>(path); // duplicate path
         int new_item_x = currentTile.getPos_x();
         int new_item_y = currentTile.getPos_y();
-        items[new_item_x][new_item_y] = new CoinItem(new_item_x, new_item_y); // TODO: pick random item, for now we just have coins.
+        items.add(new CoinItem(new_item_x, new_item_y)); // TODO: pick random item, for now we just have coins.
         itemsPath.remove(currentTile); // remove tiles that already have items.
         placed_items++; // update placed_items.
 
@@ -199,11 +199,13 @@ public class Board {
             Tile tile = turns.get(index);
             new_item_x = tile.getPos_x();
             new_item_y = tile.getPos_y();
-            items[new_item_x][new_item_y] = new CoinItem(new_item_x, new_item_y); // create new item
+            if (!this.containsItemAt(new_item_x, new_item_y)) {
+                items.add(new CoinItem(new_item_x, new_item_y)); // create new item
+                placed_items++;
+            }
             // update lists and items count
             turns.remove(tile); // remove tiles that already have items.
             itemsPath.remove(tile); // remove tiles that already have items.
-            placed_items++;
         }
 
         // place items randomly on the path
@@ -213,10 +215,12 @@ public class Board {
             Tile tile = itemsPath.get(index);
             new_item_y = tile.getPos_y();
             new_item_x = tile.getPos_x();
-            items[new_item_x][new_item_y] = new CoinItem(new_item_x, new_item_y); // create new item
+            if (!this.containsItemAt(new_item_x, new_item_y)) {
+                items.add(new CoinItem(new_item_x, new_item_y)); // create new item
+                placed_items++;
+            }
             // update list and items count
             itemsPath.remove(tile); // remove tiles that already have items.
-            placed_items++;
         }
 
 
@@ -302,24 +306,17 @@ public class Board {
         Tile last_tile = path.get(path.size()-1);
         last_tile.setPos_z(new_elevation);
         last_tile.setVisited(true);
-    
-        
-        // Converts the matrix of Tiles and Items to their respective Lists.
+
+        // Converts the matrix of Tiles to a list.
         //  Assumes 'dim_x' and 'dim_y' are already correctly set.
         List<Tile> tile_list = new ArrayList<>(List.of());
         for(Tile[] row : grid)
             Collections.addAll(tile_list, row);
-        List<Item> item_list = new ArrayList<>(List.of());
-        for(Item[] row : items)
-            item_list.addAll(Arrays.asList(row));
         
         // Removes null elements from list
         tile_list.removeAll(Collections.singleton(null));
-        item_list.removeAll(Collections.singleton(null));
         this.grid = tile_list;
-        this.items = item_list;
-        
-    }
+}
 
 
     /**
@@ -413,8 +410,12 @@ public class Board {
         return items;
     }
 
-    public boolean containsItemAt(final int x, final int y) throws IndexOutOfBoundsException{
-        return getItemAt(x,y) != null ? true : false;
+    public boolean containsItemAt(final int x, final int y) {
+        try {
+            return getItemAt(x, y) != null;
+        } catch (IndexOutOfBoundsException e) {
+            return false;
+        }
     }
 
     public int getDifficulty() {
@@ -432,7 +433,10 @@ public class Board {
     public String toString() {
         char[][] result = new char[dim_x][dim_y];
         for (Tile t : grid) {
-           result[t.getPos_x()][t.getPos_y()] = t.isVisited() ? '.' : t.getType().toString().charAt(0);
+            result[t.getPos_x()][t.getPos_y()] =
+                    containsItemAt(t.getPos_x(), t.getPos_y()) ? '*' :
+                    t.isVisited() ? '.' :
+                    t.getType().toString().charAt(0);
         }
         String res = "";
         for (char[] line : result)
