@@ -6,6 +6,8 @@ import ch.usi.si.bsc.sa4.lab02spring.model.Level.Level;
 import ch.usi.si.bsc.sa4.lab02spring.model.User.User;
 import ch.usi.si.bsc.sa4.lab02spring.service.LevelService;
 import java.util.Optional;
+
+import ch.usi.si.bsc.sa4.lab02spring.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +25,12 @@ import java.util.List;
 @RequestMapping("/levels")
 public class LevelController {
     private final LevelService levelService;
+    private final UserService userService;
 
     @Autowired
-    public LevelController(LevelService levelService) {
+    public LevelController(UserService userService, LevelService levelService) {
         this.levelService = levelService;
+        this.userService = userService;
     }
 
     /**
@@ -36,6 +40,11 @@ public class LevelController {
     @GetMapping
     public ResponseEntity<List<LevelDTO>> getAll(OAuth2AuthenticationToken authenticationToken) {
         ArrayList<LevelDTO> allLevelDTOs = new ArrayList<LevelDTO>();
+
+        Optional<User> optionalUser = userService.getUserByToken(authenticationToken);
+        if (optionalUser.isPresent()) {
+            // TODO - check which levels can be seen
+        }
 
         for(Level level : levelService.getAll()) {
             allLevelDTOs.add(level.toLevelDTO());
@@ -50,6 +59,10 @@ public class LevelController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<LevelDTO> getById(OAuth2AuthenticationToken authenticationToken, @PathVariable("id") String id) {
+        Optional<User> optionalUser = userService.getUserByToken(authenticationToken);
+        if (optionalUser.isPresent()) {
+            // TODO - check which levels can be seen
+        }
         Optional<Level> optionalLevel = levelService.getById(id);
         return optionalLevel.map(level -> ResponseEntity.ok(level.toLevelDTO()))
                 .orElseGet(() -> ResponseEntity.notFound().build());

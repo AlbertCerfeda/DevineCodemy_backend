@@ -102,6 +102,17 @@ public class UserService {
     }
 
     /**
+     * Return true if ID matches the user of the corresponding token
+     * @param authenticationToken token that belongs to user.
+     * @param id the id of the user
+     * @return result of the comparison between token's user's id and id
+     */
+    public boolean isIdEqualToken(OAuth2AuthenticationToken authenticationToken, String id) {
+        Optional<User> u = getUserByToken(authenticationToken);
+        return u.isPresent() && u.get().getId().equals(id);
+    }
+
+    /**
      * Return the user matching the given authenticationToken.
      * @param authenticationToken token that belongs to user.
      * @return Optional<user> user.

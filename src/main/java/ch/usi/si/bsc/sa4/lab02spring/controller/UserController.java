@@ -99,14 +99,17 @@ public class UserController {
         Optional<User> optionalUser = userService.getById(id);
 
         if (optionalUser.isPresent()) {
-            //TODO: Check if request is sent by the authenticated user itself
+
             User updatedUser = optionalUser.get();
+
+            if (userService.isIdEqualToken(authenticationToken,id)) {
+                //TODO: other field to be modified or updated
+            }
 
             if (updateUserDTO.isPublicProfileInitialized()) {
                 updatedUser.setPublicProfile(updateUserDTO.isPublicProfile());
             }
 
-            //TODO: other field to be modified or updated
 
             updatedUser = userService.updateUser(updatedUser);
             return ResponseEntity.ok(updatedUser.toUserDTO());
@@ -131,16 +134,15 @@ public class UserController {
     
     /**
      * GET /users/:id
-     * Gets the user with the specific id.
+     * Gets the user with the specific id only if it's public or the user itself.
      * @constraint user's profile is public
      */
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(OAuth2AuthenticationToken authenticationToken, @PathVariable("id") String id) {
         Optional<User> optionalUser = userService.getById(id);
         if (optionalUser.isPresent()) {
-            //TODO: Check if request is sent by the authenticated user itself
 
-            if (optionalUser.get().isProfilePublic()) {
+            if (userService.isIdEqualToken(authenticationToken,id) || optionalUser.get().isProfilePublic()) {
                 return ResponseEntity.ok(optionalUser.get().toUserDTO());
             } else {
                 return new ResponseEntity<>("This profile is private.", HttpStatus.UNAUTHORIZED);
