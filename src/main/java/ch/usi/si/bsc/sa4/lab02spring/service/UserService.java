@@ -38,8 +38,8 @@ public class UserService {
     public Optional<Boolean> isUserPublic(String id){
         Optional<User> optionalUser = userRepository.isUserPublic(id);
         return optionalUser.map((user)->user.isProfilePublic());
-    }
-    
+    } //TODO: Function tested but never used
+
     /**
      * Returns a User with a specific ID.
      * @param id the id of the user to look for.
