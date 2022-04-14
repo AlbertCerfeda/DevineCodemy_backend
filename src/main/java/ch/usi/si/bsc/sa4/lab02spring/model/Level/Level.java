@@ -38,17 +38,16 @@ public class Level {
         this.allowed_commands = allowed_commands;
     }
 
-    public Level(final String name, final String description, final int dim_x, final int dim_y, List<EAction> allowed_commands) {
-        Random rand = new Random();
-        final int start_x = rand.nextInt(dim_x);
-        final int start_y = rand.nextInt(dim_y);
-
-        this.name = name;
-        this.description = description;
-        this.board = new Board(dim_x, dim_y, start_x, start_y);
-        this.robot = new Robot(start_x, start_y, EOrientation.getRandom());
-        this.allowed_commands = allowed_commands;
-    }
+//    public Level(final String name, final String description, final int dim_x, final int dim_y, List<EAction> allowed_commands) {
+//        Random rand = new Random();
+//        final int start_x = rand.nextInt(dim_x);
+//        final int start_y = rand.nextInt(dim_y);
+//        this.name = name;
+//        this.description = description;
+//        this.board = new Board(dim_x, dim_y, start_x, start_y);
+//        this.robot = new Robot(start_x, start_y, EOrientation.getRandom());
+//        this.allowed_commands = allowed_commands;
+//    }
     
     public LevelDTO toLevelDTO() { return new LevelDTO(this); }
     
