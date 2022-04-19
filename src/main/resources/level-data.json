@@ -3,7 +3,7 @@
     "_class": "ch.usi.si.bsc.sa4.lab02spring.model.Level.Level",
     "name": "Level 1",
     "description": "Earth level 1",
-    "max_steps": 5,
+    "maxCommandsNumber": 5,
     "board": {
       "grid": [
         { "pos_x": 0, "pos_y": 0, "pos_z": 0, "type": "WATER" },
@@ -137,7 +137,7 @@
     "_class": "ch.usi.si.bsc.sa4.lab02spring.model.Level.Level",
     "name": "Level 2",
     "description": "Earth level 2",
-    "max_steps": 14,
+    "maxCommandsNumber": 14,
     "board": {
       "grid": [
         { "pos_x": 0, "pos_y": 0, "pos_z": 0, "type": "WATER" },
@@ -272,7 +272,7 @@
     "_class": "ch.usi.si.bsc.sa4.lab02spring.model.Level.Level",
     "name": "Level 3",
     "description": "Earth level 3",
-    "max_steps": 12,
+    "maxCommandsNumber": 12,
     "board": {
       "grid": [
         { "pos_x": 0, "pos_y": 0, "pos_z": 0, "type": "WATER" },
@@ -407,7 +407,7 @@
     "_class": "ch.usi.si.bsc.sa4.lab02spring.model.Level.Level",
     "name": "Level 4",
     "description": "Earth level 4",
-    "max_steps": 23,
+    "maxCommandsNumber": 23,
     "board": {
       "grid": [
         { "pos_x": 0, "pos_y": 0, "pos_z": 0, "type": "WATER" },
@@ -544,7 +544,7 @@
     "_class": "ch.usi.si.bsc.sa4.lab02spring.model.Level.Level",
     "name": "Level 5",
     "description": "Earth level 5",
-    "max_steps": 31,
+    "maxCommandsNumber": 31,
     "board": {
       "grid": [
         { "pos_x": 0, "pos_y": 0, "pos_z": 0, "type": "WATER" },
@@ -686,7 +686,7 @@
     "_class": "ch.usi.si.bsc.sa4.lab02spring.model.Level.Level",
     "name": "Level 6",
     "description": "SKY level 1",
-    "max_steps": 37,
+    "maxCommandsNumber": 37,
     "board": {
       "grid": [
         { "pos_x": 0, "pos_y": 0, "pos_z": 0, "type": "NORMALS" },
@@ -826,7 +826,7 @@
     "_class": "ch.usi.si.bsc.sa4.lab02spring.model.Level.Level",
     "name": "Level 7",
     "description": "Sky level 2",
-    "max_steps": 14,
+    "maxCommandsNumber": 14,
     "board": {
       "grid": [
         { "pos_x": 0, "pos_y": 0, "pos_z": 0, "type": "NORMALS" },
@@ -964,7 +964,7 @@
     "_class": "ch.usi.si.bsc.sa4.lab02spring.model.Level.Level",
     "name": "Level 8",
     "description": "Sky level 3",
-    "max_steps": 13,
+    "maxCommandsNumber": 13,
     "board": {
       "grid": [
         { "pos_x": 0, "pos_y": 0, "pos_z": 0, "type": "NORMALS" },
@@ -1102,7 +1102,7 @@
     "_class": "ch.usi.si.bsc.sa4.lab02spring.model.Level.Level",
     "name": "Level 9",
     "description": "Sky level 4",
-    "max_steps": 36,
+    "maxCommandsNumber": 36,
     "board": {
       "grid": [
         { "pos_x": 0, "pos_y": 0, "pos_z": 0, "type": "NORMALS" },
@@ -1241,7 +1241,7 @@
     "_class": "ch.usi.si.bsc.sa4.lab02spring.model.Level.Level",
     "name": "Level 10",
     "description": "Sky level 5",
-    "max_steps": 34,
+    "maxCommandsNumber": 34,
     "board": {
       "grid": [
         { "pos_x": 0, "pos_y": 0, "pos_z": 0, "type": "NORMALS" },

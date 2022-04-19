@@ -34,12 +34,10 @@ public class Level {
     @JsonCreator
     public Level(@JsonProperty("name") String name,
                  @JsonProperty("description") String description,
-                 @JsonProperty("max_steps") int max_steps,
+                 @JsonProperty("maxCommandsNumber") int maxCommandsNumber,
                  @JsonProperty("board") Board board,
                  @JsonProperty("robot") Robot robot,
-                 @JsonProperty("allowed_commands") List<EAction> allowed_commands,
-                 @JsonProperty("maxCommandsNumber") int maxCommandsNumber) {
-    
+                 @JsonProperty("allowed_commands") List<EAction> allowed_commands) {
         this.name = name;
         this.description = description;
         this.maxCommandsNumber = maxCommandsNumber;
