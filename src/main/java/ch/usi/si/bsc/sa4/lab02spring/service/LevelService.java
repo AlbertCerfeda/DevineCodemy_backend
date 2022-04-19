@@ -15,33 +15,42 @@ import java.util.Optional;
 @Service
 public class LevelService {
     private LevelRepository levelRepository;
-    
+    private StatisticsService statisticsService;
+
     @Autowired
-    public LevelService(LevelRepository levelRepository) {
+    public LevelService(LevelRepository levelRepository, StatisticsService statisticsService) {
         this.levelRepository = levelRepository;
+        this.statisticsService = statisticsService;
     }
-    
+
 
     /**
      * Simulates a gameplay on a specific level.
      * @param level_id the level ID string.
+     * @param user_id the ID of the user that is playing the level. Used or saving game statistics.
      * @param commands the list of commands to play on the level.
      * @return a LevelValidationDTO object containing the result of the gameplay.
      * @throws IllegalArgumentException if the level_id is not valid.
      */
-    public LevelValidation validateActions(String level_id, List<String> commands) throws IllegalArgumentException {
+    public LevelValidation playLevel(String level_id, String user_id, List<String> commands) throws IllegalArgumentException {
         Optional<Level> optionalLevel = getById(level_id);
         if(optionalLevel.isEmpty())
             throw new IllegalArgumentException("Level does not exist");
-        
-        GamePlayer gameplayer = new GamePlayer(optionalLevel.get(), commands);
-        return gameplayer.play();
+
+        GamePlayer gameplayer = new GamePlayer(optionalLevel.get());
+
+        LevelValidation validation = gameplayer.play(commands);
+
+        // Here we create the new statistics for the user after playing the game.
+        statisticsService.addStats(user_id, gameplayer);
+
+        return validation;
     }
-    
-    
-    
-    
-    
+
+
+
+
+
     /**
      * Returns all the Levels that are playable by the User.
      * @param user_id the User ID string.
@@ -54,9 +63,9 @@ public class LevelService {
         List<Level> levels = getAll();
         return Pair.of(levels, levels.size());
     }
-    
-    
-    
+
+
+
     /**
      * Returns all levels in the game.
      * @return List containing all the levels in the game
@@ -64,7 +73,7 @@ public class LevelService {
     public List<Level> getAll() {
         return levelRepository.findAll();
     }
-    
+
     /**
      * Returns all level info in the game. The returned levels do not contain data like the game board.
      *  Useful for having a more lightweight message when displaying just the level info.
@@ -73,9 +82,9 @@ public class LevelService {
     public List<Level> getAllInfo() {
         return levelRepository.findAllInfo();
     }
-    
-    
-    
+
+
+
     /**
      * Returns a Level with a specific ID.
      * @param level_id the level_id of the level to look for.
