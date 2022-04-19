@@ -75,4 +75,7 @@ public class Level {
         return allowed_commands;
     }
 
+    public String getId() {
+        return id;
+    }
 }
