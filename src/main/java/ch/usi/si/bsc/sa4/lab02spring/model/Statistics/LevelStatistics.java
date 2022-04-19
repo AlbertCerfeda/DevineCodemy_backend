@@ -17,6 +17,11 @@ public class LevelStatistics {
         return data;
     }
 
+    /**
+     * Adds the list of commands used in a game played.
+     *
+     * @param game the game from which to retrieve the statistics.
+     */
     public void add(GamePlayer game){
         data.add(game.getParsed_commands());
     }

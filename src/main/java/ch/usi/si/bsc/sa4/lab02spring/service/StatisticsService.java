@@ -18,6 +18,12 @@ public class StatisticsService {
     @Autowired
     public StatisticsService(StatisticsRepository statisticsRepository) {this.statisticsRepository = statisticsRepository;}
 
+    /**
+     * Returns a UserStatistics for a single user, with a specific ID.
+     * @param id the id of the user statistics to look for.
+     * @return an Optional containing the UserStatistics if there exists one with the provided ID.
+     */
+
     public Optional<UserStatistics> getById(String id) {return statisticsRepository.findById(id);}
 
 
@@ -42,6 +48,11 @@ public class StatisticsService {
         return statisticsRepository.save(stats);
     }
 
+    /**
+     * Returns all statistics for all users.
+     *
+     * @return List containing the statistics for every user.
+     */
     public List<UserStatistics> getAll() {return statisticsRepository.findAll();}
 
 }

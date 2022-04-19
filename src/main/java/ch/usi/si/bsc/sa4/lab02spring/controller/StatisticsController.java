@@ -34,7 +34,7 @@ public class StatisticsController {
         return ResponseEntity.ok(allData);
     }
 
-    //TODO GET /id - all data for a specific user
+    @GetMapping
     public Optional<UserStatistics> getById(String id) {
         return statisticsService.getById(id);
     }

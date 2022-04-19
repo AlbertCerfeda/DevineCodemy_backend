@@ -23,6 +23,9 @@ public class UserStatistics {
 
     // TODO: Add Javadoc
     /**
+     * Creates object that stores all recorded data for each level and game played by a single user.
+     * The users' id is used in creating the object, so that it can also be identified by it.
+     *
      * @param user_id the id of the user
      */
     public UserStatistics(String user_id) {
