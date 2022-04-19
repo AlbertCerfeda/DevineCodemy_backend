@@ -20,6 +20,8 @@ public class LevelDTO {
     
     private final List<EActionDTO> allowed_commands;
     
+    private final int maxCommandsNumber;
+    
     public LevelDTO(Level level) {
         this.name = level.getName();
         this.description = level.getDescription();
@@ -29,6 +31,9 @@ public class LevelDTO {
         this.robot = level.getRobot().toRobotDTO();
 
         this.allowed_commands = new ArrayList<>();
+        
+        this.maxCommandsNumber = level.getMaxCommandsNumber();
+        
         List<EAction> commands = level.getAllowed_commands();
         for(EAction command : commands) {
             allowed_commands.add(command.toEActionDTO());

@@ -1,6 +1,6 @@
 package ch.usi.si.bsc.sa4.lab02spring.service;
-import ch.usi.si.bsc.sa4.lab02spring.model.EAction;
 import ch.usi.si.bsc.sa4.lab02spring.model.Level.Level;
+import ch.usi.si.bsc.sa4.lab02spring.model.LevelValidation.LevelValidation;
 import ch.usi.si.bsc.sa4.lab02spring.repository.LevelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
@@ -21,22 +21,21 @@ public class LevelService {
         this.levelRepository = levelRepository;
     }
     
-    
+
     /**
-     * Simulates a set of actions on a specific level.
+     * Simulates a gameplay on a specific level.
      * @param level_id the level ID string.
-     * @param actions the array of actions to be simulated on the Level.
+     * @param commands the list of commands to play on the level.
+     * @return a LevelValidationDTO object containing the result of the gameplay.
+     * @throws IllegalArgumentException if the level_id is not valid.
      */
-    public boolean validateActions(String level_id, List<EAction> actions) {
-        // TODO: Change signature and return list of all the TileDTO state changes after performing each move.
-        Optional<Level> level = getById(level_id);
+    public LevelValidation validateActions(String level_id, List<String> commands) throws IllegalArgumentException {
+        Optional<Level> optionalLevel = getById(level_id);
+        if(optionalLevel.isEmpty())
+            throw new IllegalArgumentException("Level does not exist");
         
-        if(level.isPresent()) {
-            return level.get().validateActions(actions);
-        } else {
-            // throw custom exception
-            return false;
-        }
+        GamePlayer gameplayer = new GamePlayer(optionalLevel.get(), commands);
+        return gameplayer.play();
     }
     
     

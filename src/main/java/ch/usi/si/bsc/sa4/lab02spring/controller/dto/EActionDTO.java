@@ -11,7 +11,7 @@ public class EActionDTO {
     private String description;
     
     public EActionDTO (EAction action) {
-        name = action.name();
+        name = action.getFunc_call();
         description = action.getDescription();
     }
 }
