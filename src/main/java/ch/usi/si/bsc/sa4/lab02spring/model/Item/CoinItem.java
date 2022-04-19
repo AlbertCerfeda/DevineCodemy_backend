@@ -16,6 +16,6 @@ public class CoinItem extends Item {
     @JsonCreator
     public CoinItem(@JsonProperty("pos_x") int pos_x,
                     @JsonProperty("pos_y") int pos_y) {
-        super(pos_x, pos_y);
+        super(EItem.COIN, pos_x, pos_y);
     }
 }

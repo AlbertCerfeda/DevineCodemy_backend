@@ -10,6 +10,7 @@ import java.util.Optional;
 /**
  * Represents a collection of all recorded level data for each user
  */
+@Repository
 public interface MetadataRepository extends MongoRepository<Metadata,String>{
 
     Optional<Metadata>findByUsernameContaining(String username);
