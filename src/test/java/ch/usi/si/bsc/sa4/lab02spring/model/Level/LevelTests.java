@@ -32,10 +32,10 @@ public class LevelTests {
         List<Item> items = List.of(
                 new CoinItem(4, 7)
         );
-        var board = new Board(grid, items, 1, 1);
+        var board = new Board(grid, items, 1);
         var robot = new Robot(0, 0, EOrientation.DOWN);
         var commands = List.of(EAction.MOVE_FORWARD);
-        level = new Level("test name", "test description", 10, board, robot, commands);
+        level = new Level("test name", "test description", board, robot, commands, 10);
     }
 
     @DisplayName("after creation")
@@ -61,7 +61,7 @@ public class LevelTests {
         @DisplayName("has the same maxSteps provided in the constructor")
         @Test
         void testGetMaxSteps() {
-            var actualMaxSteps = level.getMaxSteps();
+            var actualMaxSteps = level.getMaxCommandsNumber();
             var expectedMaxSteps = 10;
             assertEquals(expectedMaxSteps, actualMaxSteps, "maxSteps is not the one provided in the constructor");
         }
@@ -76,7 +76,7 @@ public class LevelTests {
             List<Item> items = List.of(
                     new CoinItem(4, 7)
             );
-            var expectedBoard = new Board(grid, items, 1, 1);
+            var expectedBoard = new Board(grid, items, 1);
             assertEquals(expectedBoard, actualBoard, "board is not the one provided in the constructor");
         }
 

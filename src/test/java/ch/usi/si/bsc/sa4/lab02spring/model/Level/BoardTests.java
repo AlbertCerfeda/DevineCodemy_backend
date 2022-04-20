@@ -235,7 +235,7 @@ public class BoardTests {
         List<Item> items = List.of(
                 new CoinItem(4, 7)
         );
-        board = new Board(grid, items, 1, 1);
+        board = new Board(grid, items, 1);
     }
 
     @DisplayName("after creation")
@@ -385,14 +385,7 @@ public class BoardTests {
             );
             assertEquals(expectedItems, actualItems, "items is not the one provided in the constructor");
         }
-
-        @DisplayName("has the same difficulty provided in the constructor")
-        @Test
-        void testGetDifficulty() {
-            var actualDifficulty = board.getDifficulty();
-            var expectedDifficulty = 1;
-            assertEquals(expectedDifficulty, actualDifficulty, "difficulty is not the one provided in the constructor");
-        }
+        
 
         @DisplayName("has the same number of coins provided in the constructor")
         @Test

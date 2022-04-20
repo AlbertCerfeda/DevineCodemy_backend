@@ -22,7 +22,6 @@ public abstract class Tile {
 //    protected final String material;
 //    protected final String shape;
 
-    private boolean visited = false;
 
     /**
      * Constructor for abstract class Tile.
@@ -96,18 +95,7 @@ public abstract class Tile {
      * Useful when creating board.
      * @return true if visited, false otherwise.
      */
-    public boolean isVisited() {
-        return visited;
-    }
 
-    /**
-     * To set if the tile has been already visited or not.
-     * Useful when creating board.
-     * @param visited the value to set.
-     */
-    public void setVisited(boolean visited) {
-        this.visited = visited;
-    }
     
     
     public TileDTO toTileDTO() {
@@ -123,12 +111,11 @@ public abstract class Tile {
                 && pos_y == tile.pos_y
                 && pos_z == tile.pos_z
                 && is_walkable == tile.is_walkable
-                && visited == tile.visited
                 && type == tile.type;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, pos_x, pos_y, pos_z, is_walkable, visited);
+        return Objects.hash(type, pos_x, pos_y, pos_z, is_walkable);
     }
 }
