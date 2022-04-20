@@ -2,6 +2,8 @@ package ch.usi.si.bsc.sa4.lab02spring.model.Level;
 
 import ch.usi.si.bsc.sa4.lab02spring.controller.dto.LevelDTO;
 import ch.usi.si.bsc.sa4.lab02spring.model.EAction;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -29,26 +31,21 @@ public class Level {
     private final List<EAction> allowed_commands;
 
     @PersistenceConstructor
-    public Level(String name, String description, Board board, Robot robot, List<EAction> allowed_commands, int maxCommandsNumber) {
+    @JsonCreator
+    public Level(@JsonProperty("name") String name,
+                 @JsonProperty("description") String description,
+                 @JsonProperty("maxCommandsNumber") int maxCommandsNumber,
+                 @JsonProperty("board") Board board,
+                 @JsonProperty("robot") Robot robot,
+                 @JsonProperty("allowed_commands") List<EAction> allowed_commands) {
         this.name = name;
         this.description = description;
+        this.maxCommandsNumber = maxCommandsNumber;
         this.board = board;
         this.robot = robot;
         this.allowed_commands = allowed_commands;
-        this.maxCommandsNumber = maxCommandsNumber;
     }
-
-//    public Level(final String name, final String description, final int dim_x, final int dim_y, List<EAction> allowed_commands) {
-//        Random rand = new Random();
-//        final int start_x = rand.nextInt(dim_x);
-//        final int start_y = rand.nextInt(dim_y);
-//        this.name = name;
-//        this.description = description;
-//        this.board = new Board(dim_x, dim_y, start_x, start_y);
-//        this.maxCommandsNumber = rand.nextInt(2* (dim_x + dim_y)) + dim_x + dim_y;
-//        this.robot = new Robot(start_x, start_y, EOrientation.getRandom());
-//        this.allowed_commands = allowed_commands;
-//    }
+    
     
     public LevelDTO toLevelDTO() { return new LevelDTO(this); }
     
@@ -78,4 +75,7 @@ public class Level {
         return allowed_commands;
     }
 
+    public String getId() {
+        return id;
+    }
 }

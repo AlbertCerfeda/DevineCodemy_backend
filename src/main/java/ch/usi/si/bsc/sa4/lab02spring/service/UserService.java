@@ -104,7 +104,7 @@ public class UserService {
     /**
      * Return the user matching the given authenticationToken.
      * @param authenticationToken token that belongs to user.
-     * @return Optional<user> user.
+     * @return Optional<User> user.
      */
     public Optional<User> getUserByToken(OAuth2AuthenticationToken authenticationToken) throws IllegalArgumentException {
         if (authenticationToken == null) {

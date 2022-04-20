@@ -11,5 +11,10 @@ public enum ETile {
     CONCRETE,
     GRASS,
     SAND,
-    WATER
+    WATER,
+    NORMALS,
+    CLOUDB,
+    CLOUDG,
+    STAR,
+    TELEPORT
 }

@@ -5,7 +5,9 @@ import ch.usi.si.bsc.sa4.lab02spring.model.EOrientation;
 import ch.usi.si.bsc.sa4.lab02spring.model.Item.Item;
 import ch.usi.si.bsc.sa4.lab02spring.model.Tile.Tile;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.*;
+import org.springframework.data.annotation.PersistenceConstructor;
 
 
 /**
@@ -18,15 +20,16 @@ public class Board {
     private List<Tile> grid;
     private List<Item> items;
     private int n_coins;
-
-
+    
     /**
      * Constructor for board objects.
      * @param grid the tiles of the board representing the terrain.
      * @param items the items present on the board.
      */
-
-    public Board(List<Tile> grid, List<Item> items, int n_coins) {
+    @PersistenceConstructor
+    public Board(@JsonProperty("grid") List<Tile> grid,
+                 @JsonProperty("items") List<Item> items,
+                 @JsonProperty("n_coins") int n_coins) {
         this.dim_x = 0;
         this.dim_y = 0;
         // Derives the dimensions of the board
@@ -156,4 +159,5 @@ public class Board {
             res+=String.valueOf(line)+"\n";
         return res;
     }
+    
 }
