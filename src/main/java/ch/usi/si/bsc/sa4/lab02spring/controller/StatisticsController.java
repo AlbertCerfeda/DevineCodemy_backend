@@ -34,8 +34,8 @@ public class StatisticsController {
         return ResponseEntity.ok(allData);
     }
 
-    @GetMapping
-    public Optional<UserStatistics> getById(String id) {
+    @GetMapping("/{id}")
+    public Optional<UserStatistics> getById(@PathVariable String id) {
         return statisticsService.getById(id);
     }
 
