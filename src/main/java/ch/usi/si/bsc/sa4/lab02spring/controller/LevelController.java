@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import ch.usi.si.bsc.sa4.lab02spring.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -43,11 +44,10 @@ public class LevelController {
 
         Optional<User> optionalUser = userService.getUserByToken(authenticationToken);
         if (optionalUser.isPresent()) {
-            // TODO - check which levels can be seen
-        }
-
-        for(Level level : levelService.getAll()) {
-            allLevelDTOs.add(level.toLevelDTO());
+            Pair<List<Level>,Integer> levels = levelService.getAllPlayableLevels(optionalUser.get().getId());
+            for(Level level : levels.getFirst()) {
+                allLevelDTOs.add(level.toLevelDTO());
+            }
         }
 
         return ResponseEntity.ok(allLevelDTOs);
