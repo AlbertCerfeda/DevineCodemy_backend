@@ -61,12 +61,19 @@ public class LevelController {
     public ResponseEntity<LevelDTO> getById(OAuth2AuthenticationToken authenticationToken, @PathVariable("id") String id) {
         Optional<User> optionalUser = userService.getUserByToken(authenticationToken);
         if (optionalUser.isPresent()) {
-            // TODO - check which levels can be seen
+            String userId = optionalUser.get().getId();
+            Optional<Level> level = levelService.getByIdIfPlayable(id,userId);
+            if (!level.isPresent()) {
+                return ResponseEntity.status(405).build();
+            }
+            Level l = level.get();
+            return ResponseEntity.ok(l.toLevelDTO());
         }
         Optional<Level> optionalLevel = levelService.getById(id);
         return optionalLevel.map(level -> ResponseEntity.ok(level.toLevelDTO()))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
     /**
      * GET /levels/search?name={name}
      * Gets the level with the specific name

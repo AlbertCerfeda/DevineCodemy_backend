@@ -95,15 +95,15 @@ public class UserController {
      * @constraint boolean modifyProfile if true modify profile status, else modify other user fields.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(OAuth2AuthenticationToken authenticationToken, @PathVariable String id ,@RequestBody UpdateUserDTO updateUserDTO) {
+    public ResponseEntity<?> updateUser(OAuth2AuthenticationToken authenticationToken, @PathVariable String id ,@RequestBody UpdateUserDTO updateUserDTO) throws IllegalArgumentException {
         Optional<User> optionalUser = userService.getById(id);
 
         if (optionalUser.isPresent()) {
 
             User updatedUser = optionalUser.get();
 
-            if (userService.isIdEqualToken(authenticationToken,id)) {
-                //TODO: other field to be modified or updated
+            if (!userService.isIdEqualToken(authenticationToken,id)) {
+                throw new IllegalArgumentException("User not authenticated");
             }
 
             if (updateUserDTO.isPublicProfileInitialized()) {
@@ -135,7 +135,7 @@ public class UserController {
     /**
      * GET /users/:id
      * Gets the user with the specific id only if it's public or the user itself.
-     * @constraint user's profile is public
+     * @constraint user's profile is public or of the user itself
      */
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(OAuth2AuthenticationToken authenticationToken, @PathVariable("id") String id) {

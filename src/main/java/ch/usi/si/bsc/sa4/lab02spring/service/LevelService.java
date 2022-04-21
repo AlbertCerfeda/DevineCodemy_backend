@@ -5,12 +5,15 @@ import ch.usi.si.bsc.sa4.lab02spring.model.Statistics.LevelStatistics;
 import ch.usi.si.bsc.sa4.lab02spring.model.Statistics.UserStatistics;
 import ch.usi.si.bsc.sa4.lab02spring.repository.LevelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Optionals;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static java.util.Optional.empty;
 
 /**
  * Provides all operations relating game levels.
@@ -98,7 +101,26 @@ public class LevelService {
         return levelRepository.findAllInfo();
     }
 
-
+    /**
+     * Returns a level with a specific ID only if playable for the given user
+     * @param levelId the levelId of the level to look for
+     * @param userId the userID of the user to match
+     * @return The level with the given levelId
+     */
+    public Optional<Level> getByIdIfPlayable(String levelId, String userId) {
+        Optional<Level> EmptyResult = Optional.empty();
+        Optional<Level> l = getById(levelId);
+        if (!l.isPresent()) {
+            return EmptyResult;
+        }
+        Level level = l.get();
+        for (Level lev : getAllPlayableLevels(userId).getFirst()) {
+            if (lev.equals(level)) {
+                return Optional.of(level);
+            }
+        }
+        return EmptyResult;
+    }
 
     /**
      * Returns a Level with a specific ID.
