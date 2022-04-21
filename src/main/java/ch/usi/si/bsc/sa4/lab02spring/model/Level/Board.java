@@ -5,7 +5,9 @@ import ch.usi.si.bsc.sa4.lab02spring.model.EOrientation;
 import ch.usi.si.bsc.sa4.lab02spring.model.Item.Item;
 import ch.usi.si.bsc.sa4.lab02spring.model.Tile.Tile;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.*;
+import org.springframework.data.annotation.PersistenceConstructor;
 
 
 /**
@@ -18,14 +20,16 @@ public class Board {
     private List<Tile> grid;
     private List<Item> items;
     private int n_coins;
-
+    
     /**
      * Constructor for board objects.
      * @param grid the tiles of the board representing the terrain.
      * @param items the items present on the board.
      */
-
-    public Board(List<Tile> grid, List<Item> items, int n_coins) {
+    @PersistenceConstructor
+    public Board(@JsonProperty("grid") List<Tile> grid,
+                 @JsonProperty("items") List<Item> items,
+                 @JsonProperty("n_coins") int n_coins) {
         this.dim_x = 0;
         this.dim_y = 0;
         // Derives the dimensions of the board
@@ -33,13 +37,13 @@ public class Board {
         grid.forEach((t)-> this.dim_y = Math.max(this.dim_y, t.getPos_y() + 1));
         items.forEach((i)-> this.dim_x = Math.max(this.dim_x, i.getPos_x() + 1));
         items.forEach((i)-> this.dim_y = Math.max(this.dim_y, i.getPos_y() + 1));
-
+        
+        
         this.grid = grid;
         this.items = items;
         this.n_coins = n_coins;
     }
-    
-    
+
     /**
      * Returns a Tile from a given position.
      *  Returns null if a Tile with the given coordinates does not exist.
@@ -70,6 +74,7 @@ public class Board {
     public Item getItemAt(final int x, final int y) throws IndexOutOfBoundsException{
         if(x < 0 || y < 0 || x>=dim_x || y>=dim_y)
             throw new IndexOutOfBoundsException("Invalid coordinates");
+        
         for(Item item : items) {
             if(item.getPos_x() == x && item.getPos_y() == y)
                 return item;
@@ -102,25 +107,25 @@ public class Board {
         }
     }
 
-
+    
     public BoardDTO toBoardDTO() {
         return new BoardDTO(this);
     }
-
+    
     // Getters and setters below
-
+    
     public int getDim_x(){
         return dim_x;
     }
-
+    
     public int getDim_y(){
         return dim_y;
     }
-
+    
     public List<Tile> getGrid(){
         return grid;
     }
-
+    
     public List<Item> getItems(){
         return items;
     }
@@ -138,19 +143,6 @@ public class Board {
         return n_coins;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Board)) return false;
-        Board board = (Board) o;
-        return dim_x == board.dim_x && dim_y == board.dim_y && n_coins == board.n_coins && grid.equals(board.grid) && items.equals(board.items);
-    }
-
-    @Override
-    public int hashCode(){
-        return Objects.hash(dim_x, dim_y, grid, items, n_coins);
-    }
-    
     /**
      * Returns a string representation of the board.
      * @return a string representing the board.
@@ -166,5 +158,18 @@ public class Board {
         for (char[] line : result)
             res+=String.valueOf(line)+"\n";
         return res;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Board)) return false;
+        Board board = (Board) o;
+        return dim_x == board.dim_x && dim_y == board.dim_y && n_coins == board.n_coins && Objects.equals(grid, board.grid) && Objects.equals(items, board.items);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(dim_x, dim_y, grid, items, n_coins);
     }
 }

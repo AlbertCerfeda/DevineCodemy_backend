@@ -17,25 +17,32 @@ import java.util.List;
 public class GamePlayer {
 
     private final Level level;
-    private final List<String> commands;
+    private final List<EAction> parsed_commands = new ArrayList<>();
 
     /**
      * Constructor for GamePlayer.
      * @param level the level to play.
-     * @param commands the commands to parse and execute.
      */
-    public GamePlayer(final Level level, final List<String> commands) {
+    public GamePlayer(final Level level) {
         this.level = level;
-        this.commands = commands;
+    }
+
+    public Level getLevel() {
+        return level;
+    }
+
+    public List<EAction> getParsed_commands() {
+        return parsed_commands;
     }
 
     /**
      * Validates a sequence of commands on the level.
      * - Parses the Strings into their corresponding EAction ENUMs and checks for errors.
      * - Plays (if no errors occurred) the sequence of EActions on the game level.
+     * @param commands the commands to parse and execute.
      * @return a LevelValidation object to represent the result of the validation.
      */
-    public LevelValidation play() {
+    public LevelValidation play(final List<String> commands) {
         boolean isDead = false;
 
         LevelValidation levelValidation = new LevelValidation();
@@ -74,14 +81,15 @@ public class GamePlayer {
             levelValidation.addError("Too many commands: you can use only " + level.getMaxCommandsNumber() + " commands.");
         }
 
-
         if (hasErrors) {
             levelValidation.setCompleted(false);
             levelValidation.clearAnimations();
             levelValidation.addAnimation(EAnimation.EMOTE_DEATH);
             return levelValidation;
         }
-        
+
+        parsed_commands.addAll(actions);
+
         ////
         // Game playing phase
         
@@ -131,7 +139,7 @@ public class GamePlayer {
             levelValidation.addAnimation(EAnimation.IDLE);
             levelValidation.setCompleted(false);
         } // level not completed and the player is dead
-        
+
         return levelValidation;
     }
 }

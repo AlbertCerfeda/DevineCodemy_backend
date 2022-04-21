@@ -35,7 +35,7 @@ public class LevelTests {
         var board = new Board(grid, items, 1);
         var robot = new Robot(0, 0, EOrientation.DOWN);
         var commands = List.of(EAction.MOVE_FORWARD);
-        level = new Level("test name", "test description", board, robot, commands, 10);
+        level = new Level("test name", "test description", 10, board, robot, commands);
     }
 
     @DisplayName("after creation")

@@ -1,17 +1,22 @@
 package ch.usi.si.bsc.sa4.lab02spring.model.Level;
 import ch.usi.si.bsc.sa4.lab02spring.controller.dto.RobotDTO;
 import ch.usi.si.bsc.sa4.lab02spring.model.EOrientation;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
 
 
 public class Robot {
     private final int pos_x;
     private final int pos_y;
-    private final EOrientation orientation;
+    private EOrientation orientation = EOrientation.UP;
 
-    public Robot(int start_x, int start_y, EOrientation orientation) {
-        this.pos_x= start_x;
-        this.pos_y= start_y;
+    @JsonCreator
+    public Robot(@JsonProperty("start_x") int pos_x,
+                 @JsonProperty("start_y") int pos_y,
+                 @JsonProperty("orientation") EOrientation orientation) {
+        this.pos_x= pos_x;
+        this.pos_y= pos_y;
         this.orientation = orientation;
     }
     

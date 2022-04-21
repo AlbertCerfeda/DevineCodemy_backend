@@ -1,18 +1,26 @@
 package ch.usi.si.bsc.sa4.lab02spring.model.Item;
 
 import ch.usi.si.bsc.sa4.lab02spring.controller.dto.ItemDTO;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import java.util.Objects;
 
 /**
  * This class represents the general structure of a tile.
  */
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        property = "type"
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = CoinItem.class, name = "COIN"),
+})
 public abstract class Item {
     protected EItem type = EItem.PLACEHOLDER;
     
     // position
     protected final int pos_x;
     protected final int pos_y;
-
 
     /**
      * Constructor for abstract class Tile.
@@ -53,11 +61,11 @@ public abstract class Item {
         if (this == o) return true;
         if (!(o instanceof Item)) return false;
         Item item = (Item) o;
-        return pos_x == item.pos_x && pos_y == item.pos_y;
+        return pos_x == item.pos_x && pos_y == item.pos_y && type == item.type;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pos_x, pos_y);
+        return Objects.hash(type, pos_x, pos_y);
     }
 }
