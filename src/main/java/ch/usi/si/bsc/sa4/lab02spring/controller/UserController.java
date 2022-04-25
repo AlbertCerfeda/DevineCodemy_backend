@@ -155,7 +155,7 @@ public class UserController {
         try {
             return ResponseEntity.ok(userService.getUserByToken(authenticationToken));
         } catch (Exception ex) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(401).build();
         }
     }
 
