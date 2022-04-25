@@ -11,11 +11,11 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -117,5 +117,17 @@ public class UserServiceTests {
 
         assertEquals(true, userService.checkBodyFormat(createUserDTO0), "The body format is correct");
         assertEquals(false, userService.checkBodyFormat(createUserDTO), "The body format is not incorrect");
+    }
+
+    @Test
+    public void testGetUserByToken() {
+        OAuth2AuthenticationToken token = mock(OAuth2AuthenticationToken.class);
+        OAuth2User oAuth2User = mock(OAuth2User.class);
+        Optional<User> user = userService.getById("an id");
+        given(token.getPrincipal()).willReturn(oAuth2User);
+        assertEquals(user, userService.getUserByToken(token), "It didn't get the right user");
+
+        OAuth2AuthenticationToken tokenNull = null;
+        assertThrows(IllegalArgumentException.class, () -> userService.getUserByToken(tokenNull), "Exception has been thrown: The token is null");
     }
 }
