@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Objects;
 
 /**
  * This class represents the general structure of a tile.
@@ -114,10 +115,20 @@ public abstract class Tile {
      * Useful when creating board.
      * @return true if visited, false otherwise.
      */
-
-    
-    
     public TileDTO toTileDTO() {
         return new TileDTO(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Tile)) return false;
+        Tile tile = (Tile) o;
+        return pos_x == tile.pos_x && pos_y == tile.pos_y && pos_z == tile.pos_z && is_walkable == tile.is_walkable && type == tile.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, pos_x, pos_y, pos_z, is_walkable);
     }
 }
