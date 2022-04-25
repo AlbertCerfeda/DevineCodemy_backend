@@ -91,8 +91,9 @@ public class UserController {
     public ResponseEntity<?> updateUser(OAuth2AuthenticationToken authenticationToken, @PathVariable String id ,@RequestBody UpdateUserDTO updateUserDTO) throws IllegalArgumentException {
         Optional<User> optionalUser = userService.getById(id);
         
-        if(optionalUser.isEmpty())
+        if(optionalUser.isEmpty()) {
             return ResponseEntity.status(404).build();
+        }
 
         User updatedUser = optionalUser.get();
 
@@ -133,8 +134,9 @@ public class UserController {
     public ResponseEntity<?> getById(OAuth2AuthenticationToken authenticationToken, @PathVariable("id") String id) {
         Optional<User> optionalUser = userService.getById(id);
         
-        if(optionalUser.isEmpty())
+        if(optionalUser.isEmpty()) {
             return ResponseEntity.status(404).build();
+        }
 
         if (userService.isIdEqualToken(authenticationToken,id) || optionalUser.get().isProfilePublic()) {
             return ResponseEntity.ok(optionalUser.get().toUserDTO());
