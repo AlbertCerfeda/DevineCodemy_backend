@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 
 /**
  * Request router for /levels
- * Classes affected: Level, LevelDTO
  */
 @RestController
 @RequestMapping("/levels")
