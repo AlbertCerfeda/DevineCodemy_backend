@@ -85,7 +85,7 @@ public class UserServiceTests {
         CreateUserDTO createUserDTO = new CreateUserDTO("an id0", "a name0", "a username0", "an email0");
         User user0 = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail());
         when(userRepository.save(any())).then(AdditionalAnswers.returnsFirstArg());
-        User answer = userService.createUser(createUserDTO);
+        User answer = userService.addUser(createUserDTO);
 
         assertEquals(user0.getId(), answer.getId(), "It didn't create the user");
     }
