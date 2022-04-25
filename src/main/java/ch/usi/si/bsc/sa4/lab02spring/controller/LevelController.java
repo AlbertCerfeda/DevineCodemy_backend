@@ -68,6 +68,7 @@ public class LevelController {
      */
     @GetMapping("/search")
     public ResponseEntity<LevelDTO> getByName(OAuth2AuthenticationToken authenticationToken, @RequestParam("name") String name){
+        // TODO: Doesnt check whether the level is playable
         Optional<Level> optionalLevel = levelService.getByName(name);
         if (optionalLevel.isPresent()){
             return ResponseEntity.ok(optionalLevel.get().toLevelDTO());
