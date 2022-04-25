@@ -90,14 +90,10 @@ public class UserService {
    }
 
     public boolean checkBodyFormat(CreateUserDTO user) {
-        boolean checkingFlag = true;
-        if((Objects.equals(user.getName(), "")) ||
+        return  !Objects.equals(user.getName(), "") ||
                 Objects.equals(user.getEmail(), "") ||
                 Objects.equals(user.getUsername(), "") ||
-                Objects.equals(user.getId(), "")) {
-            checkingFlag = false;
-        }
-        return checkingFlag;
+                Objects.equals(user.getId(), "");
     }
 
     /**
