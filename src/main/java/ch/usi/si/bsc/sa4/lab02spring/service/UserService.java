@@ -61,10 +61,17 @@ public class UserService {
      * @param userId the userId of the user to look for.
      * @return a Boolean
      */
-    public Boolean userExists(String userId) {
+    public Boolean userIdExists(String userId) {
         return userRepository.existsById(userId);
     }
-
+    
+    /**
+     * Returns true if a user with specific name exists.
+     * @param name the name of the user to look for.
+     * @return a Boolean
+     */
+    public boolean userNameExists(String name) { return userRepository.existsByName(name); }
+    
     /**
      * Create the user and saves it into the Database.
      * @param createUserDTO User to be saved
@@ -76,7 +83,7 @@ public class UserService {
             throw new IllegalArgumentException("Both username, id and name must be inserted.");
         } else if(!checkBodyFormat(createUserDTO)){
             throw new IllegalArgumentException("Values of username or password cannot be empty.");
-        } else if(userExists(createUserDTO.getId())) {
+        } else if(userIdExists(createUserDTO.getId())) {
             throw new IllegalArgumentException("ID is already taken.");
         }
         

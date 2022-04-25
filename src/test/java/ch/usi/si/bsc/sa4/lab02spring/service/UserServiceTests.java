@@ -6,6 +6,7 @@ import ch.usi.si.bsc.sa4.lab02spring.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -81,7 +82,7 @@ public class UserServiceTests {
     public void testUserExists() {
         given(userRepository.existsByName("a name")).willReturn(true);
 
-        assertTrue(userService.userExists("a name"), "A user with the given name doesn't exists");
+        assertTrue(userService.userNameExists("a name"), "A user with the given name doesn't exists");
     }
 
     @Test
