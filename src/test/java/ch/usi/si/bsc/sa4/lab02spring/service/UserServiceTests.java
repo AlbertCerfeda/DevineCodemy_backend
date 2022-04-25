@@ -8,12 +8,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class UserServiceTests {
@@ -95,5 +97,23 @@ public class UserServiceTests {
     public void testUpdateUser() {
         when(userRepository.save(any())).then(AdditionalAnswers.returnsFirstArg());
         assertEquals(user, userService.updateUser(user), "It didn't update the user");
+    }
+
+    @Test
+    public void testDeleteUser() {
+        userService.deleteUserById("an id");
+        verify(userRepository).deleteById("an id");
+    }
+
+    @Test
+    public void testcheckBodyFormat() {
+        CreateUserDTO createUserDTO = new CreateUserDTO("", "a name", "a username", "an email");
+        CreateUserDTO createUserDTO0 = new CreateUserDTO("an id0", "a name0", "a username0", "an email0");
+
+        User user = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail());
+        User user0 = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail());
+
+        assertEquals(true, userService.checkBodyFormat(createUserDTO), "The body format is correct");
+        assertEquals(false, userService.checkBodyFormat(createUserDTO0), "The body format is not incorrect");
     }
 }
