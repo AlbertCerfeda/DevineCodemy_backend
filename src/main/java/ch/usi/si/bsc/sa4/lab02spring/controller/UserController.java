@@ -3,6 +3,7 @@ package ch.usi.si.bsc.sa4.lab02spring.controller;
 import ch.usi.si.bsc.sa4.lab02spring.controller.dto.UpdateUserDTO;
 import ch.usi.si.bsc.sa4.lab02spring.controller.dto.UserDTO;
 import ch.usi.si.bsc.sa4.lab02spring.model.User.User;
+import ch.usi.si.bsc.sa4.lab02spring.service.StatisticsService;
 import ch.usi.si.bsc.sa4.lab02spring.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -20,12 +21,14 @@ import java.util.stream.Collectors;
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
+    private final StatisticsService statisticsService;
     private OAuth2AuthorizedClientService authorizedClientService;
     private final RestTemplate restTemplate;
 
     @Autowired
-    public UserController(UserService userService, OAuth2AuthorizedClientService authorizedClientService) {
+    public UserController(UserService userService, StatisticsService statisticsService, OAuth2AuthorizedClientService authorizedClientService) {
         this.userService = userService;
+        this.statisticsService = statisticsService;
         this.authorizedClientService = authorizedClientService;
         restTemplate = new RestTemplate();
     }

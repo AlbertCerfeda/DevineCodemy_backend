@@ -41,8 +41,11 @@ public class StatisticsService {
             stats = userStats.get();
         else
             stats = new UserStatistics(user_id);
-
-        stats.addData(game);
+        
+        if (game != null) {
+            stats.addData(game);
+        }
+        
         return statisticsRepository.save(stats);
     }
 

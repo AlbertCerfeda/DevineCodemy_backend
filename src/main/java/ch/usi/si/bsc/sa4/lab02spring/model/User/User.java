@@ -12,7 +12,6 @@ public class User {
     private final String name;
     private final String email;
     private final String username;
-    
     private boolean publicProfile = false;
     
 
