@@ -18,6 +18,8 @@ import static org.mockito.Mockito.when;
 public class UserServiceTests {
     UserRepository userRepository;
     UserService userService;
+    StatisticsService statisticsService;
+    
     User user;
     User user1;
     User user2;
@@ -25,7 +27,9 @@ public class UserServiceTests {
     @BeforeEach
     void beforeAllTests() {
         userRepository = Mockito.mock(UserRepository.class);
-        userService = new UserService(userRepository);
+        statisticsService = Mockito.mock(StatisticsService.class);
+        
+        userService = new UserService(userRepository, statisticsService);
         user = new User("an id", "a name", "a username", "an email");
         user1 = new User("an id1", "a name1", "a username1", "an email1");
         user2 = new User("an id2", "a name2", "a username2", "an email2");

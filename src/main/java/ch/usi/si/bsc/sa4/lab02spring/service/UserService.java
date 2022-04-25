@@ -18,10 +18,12 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-
+    private final StatisticsService statisticsService;
+    
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, StatisticsService statisticsService) {
         this.userRepository = userRepository;
+        this.statisticsService = statisticsService;
     }
     public List<User> getAll() {
         return userRepository.findAll();
@@ -78,7 +80,10 @@ public class UserService {
             throw new IllegalArgumentException("ID is already taken.");
         }
         
-        return userRepository.save(new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail()));
+        User user = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail());
+        userRepository.save(user);
+        statisticsService.addStats(user.getId(),null);
+        return user;
     }
 
     /**
