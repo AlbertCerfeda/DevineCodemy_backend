@@ -15,9 +15,6 @@ public class User {
     
     private boolean publicProfile = false;
     
-    /* TODO: Add additional fields
-    - Statistics on completed levels
-     */
 
     /**
      * Main constructor to create the User with GitLab data.
