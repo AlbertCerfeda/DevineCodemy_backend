@@ -146,6 +146,19 @@ public class UserController {
     }
 
     /**
+     * returns whether the user isAuthenticated or not by returning an Optional<User>.
+     * @param authenticationToken token that belongs to user.
+     * @return Optional<User> user.
+     */
+    public ResponseEntity<Optional<User>> isAuthenticated (OAuth2AuthenticationToken authenticationToken) {
+        try {
+            return ResponseEntity.ok(userService.getUserByToken(authenticationToken));
+        } catch (Exception ex) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    /**
      * GET /login
      * Sets new user if it doesn't exist. Finally, redirects to the home page
      * @param authenticationToken Token from GitLab after the Log-in
