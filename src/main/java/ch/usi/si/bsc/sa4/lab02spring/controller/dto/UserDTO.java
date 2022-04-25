@@ -7,10 +7,14 @@ import  ch.usi.si.bsc.sa4.lab02spring.model.User.User;
 public class UserDTO {
     private String id;
     private String name;
+    private String username;
+    private String email;
     
     public UserDTO(User user) {
         this.id   = user.getId();
         this.name = user.getName();
+        this.username = user.getUsername();
+        this.email = user.getEmail();
     }
     
     
@@ -30,5 +34,21 @@ public class UserDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
