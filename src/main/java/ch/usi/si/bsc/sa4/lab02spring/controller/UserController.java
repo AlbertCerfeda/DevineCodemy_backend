@@ -45,39 +45,7 @@ public class UserController {
     public ResponseEntity<List<UserDTO>> getAll() {
         return ResponseEntity.ok(userService.getAllPublic().stream().map(User::toUserDTO).collect(Collectors.toList()));
     }
-
-    /**
-     * POST /users
-     * Creates a user in the database.
-     * @constraint username and password cannot be null nor empty.
-     */
-    @PostMapping
-    public ResponseEntity<?> addUser(@RequestBody CreateUserDTO createUserDTO,
-                                     @RequestHeader(value = "accept") String accepts) {
-        if(createUserDTO.getUsername() != null && createUserDTO.getName() != null && createUserDTO.getId() != null) {
-            if(userService.userExists(createUserDTO.getName())) {
-                return new ResponseEntity<>("Username is already taken.", HttpStatus.BAD_REQUEST);
-            } else {
-                if(userService.checkBodyFormat(createUserDTO)) {
-                    if (Objects.equals(accepts, "application/json") ||
-                        Objects.equals(accepts, "*/*")) {
-                        User savedUser = userService.createUser(createUserDTO);
-                        return ResponseEntity.ok(savedUser.toUserDTO());
-                    } else if (Objects.equals(accepts, "text/html")) {
-                        userService.createUser(createUserDTO);
-                        return ResponseEntity.ok("User created");
-                    } else {
-                        return new ResponseEntity<>("Change accept header", HttpStatus.NOT_ACCEPTABLE);
-                    }
-                } else {
-                    return new ResponseEntity<>("Values of username or password cannot be empty.",
-                            HttpStatus.BAD_REQUEST);
-                }
-            }
-        } else {
-            return new ResponseEntity<>("Both username, id and name must be inserted.", HttpStatus.BAD_REQUEST);
-        }
-    }
+    
 
     /**
      * PUT /users/:id
@@ -146,6 +114,7 @@ public class UserController {
     }
 
     /**
+     * GET /users/check
      * returns whether the user isAuthenticated or not by returning an Optional<User>.
      * @param authenticationToken token that belongs to user.
      * @return Optional<User> user.
@@ -160,7 +129,7 @@ public class UserController {
     }
 
     /**
-     * GET /login
+     * GET /users/login
      * Sets new user if it doesn't exist. Finally, redirects to the home page
      * @param authenticationToken Token from GitLab after the Log-in
      * @return RedirectView Url Redirecting to the home page
@@ -210,12 +179,9 @@ public class UserController {
 
         Optional<User> optionalUser = userService.getUserByToken(authenticationToken);
 
-        // Checks if the user is there, otherwise it adds it in the Database
-        if (!optionalUser.isPresent()) {
-            var added = addUser(newUser,"*/*").getBody();
-            if (added.getClass() == String.class) {
-                throw new Exception("It couldn't create the new user");
-            }
+        // If the user does not exist yet in the database, it creates it.
+        if (optionalUser.isEmpty()) {
+            userService.addUser(newUser);
         }
 
         // For redirecting back to Home Page

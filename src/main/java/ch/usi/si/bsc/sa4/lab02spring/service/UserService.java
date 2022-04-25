@@ -55,22 +55,30 @@ public class UserService {
     }
 
     /**
-     * Returns true if a user with specific name exists.
-     * @param name the name of the user to look for.
+     * Returns true if a user with specific ID exists.
+     * @param userId the userId of the user to look for.
      * @return a Boolean
      */
-    public Boolean userExists(String name) {
-        return userRepository.existsByName(name);
+    public Boolean userExists(String userId) {
+        return userRepository.existsById(userId);
     }
 
     /**
-     * Create the user and saves it into the Database
+     * Create the user and saves it into the Database.
      * @param createUserDTO User to be saved
      * @return User The user which is created
+     * @throws IllegalArgumentException if a user with the same ID already exists
      */
-    public User createUser(CreateUserDTO createUserDTO) {
-        var user = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail());
-        return userRepository.save(user);
+    public User addUser(CreateUserDTO createUserDTO) {
+        if (createUserDTO.getUsername() == null || createUserDTO.getName() == null || createUserDTO.getId() == null) {
+            throw new IllegalArgumentException("Both username, id and name must be inserted.");
+        } else if(!checkBodyFormat(createUserDTO)){
+            throw new IllegalArgumentException("Values of username or password cannot be empty.");
+        } else if(userExists(createUserDTO.getId())) {
+            throw new IllegalArgumentException("ID is already taken.");
+        }
+        
+        return userRepository.save(new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail()));
     }
 
     /**
