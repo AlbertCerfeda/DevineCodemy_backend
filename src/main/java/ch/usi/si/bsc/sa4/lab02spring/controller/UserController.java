@@ -71,7 +71,7 @@ public class UserController {
                         User savedUser = userService.createUser(createUserDTO);
                         return ResponseEntity.ok(savedUser.toUserDTO());
                     } else if (Objects.equals(accepts, "text/html")) {
-                        userService.createUser(createUserDTO);
+                        statisticsService.addStats(userService.createUser(createUserDTO).getId(),null);
                         return ResponseEntity.ok("User created");
                     } else {
                         return new ResponseEntity<>("Change accept header", HttpStatus.NOT_ACCEPTABLE);
