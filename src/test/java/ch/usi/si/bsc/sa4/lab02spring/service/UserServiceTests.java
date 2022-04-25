@@ -7,6 +7,9 @@ import ch.usi.si.bsc.sa4.lab02spring.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -15,8 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class UserServiceTests {
     UserRepository userRepository;
@@ -27,7 +29,7 @@ public class UserServiceTests {
 
     @BeforeEach
     void beforeAllTests() {
-        userRepository = Mockito.mock(UserRepository.class);
+        userRepository = mock(UserRepository.class);
         userService = new UserService(userRepository);
         user = new User("an id", "a name", "a username", "an email");
         user1 = new User("an id1", "a name1", "a username1", "an email1");
@@ -113,7 +115,7 @@ public class UserServiceTests {
         User user = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail());
         User user0 = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail());
 
-        assertEquals(true, userService.checkBodyFormat(createUserDTO), "The body format is correct");
-        assertEquals(false, userService.checkBodyFormat(createUserDTO0), "The body format is not incorrect");
+        assertEquals(true, userService.checkBodyFormat(createUserDTO0), "The body format is correct");
+        assertEquals(false, userService.checkBodyFormat(createUserDTO), "The body format is not incorrect");
     }
 }
