@@ -27,13 +27,13 @@ import java.util.List;
 public class LevelController {
     private final LevelService levelService;
     private final UserService userService;
-
+    
     @Autowired
     public LevelController(UserService userService, LevelService levelService) {
         this.levelService = levelService;
         this.userService = userService;
     }
-
+    
     /**
      * GET /levels
      * Gets all levels available in LevelDTO representation
@@ -41,7 +41,7 @@ public class LevelController {
     @GetMapping
     public ResponseEntity<List<LevelDTO>> getAll(OAuth2AuthenticationToken authenticationToken) {
         ArrayList<LevelDTO> allLevelDTOs = new ArrayList<LevelDTO>();
-
+        
         Optional<User> optionalUser = userService.getUserByToken(authenticationToken);
         if (optionalUser.isPresent()) {
             Pair<List<Level>,Integer> levels = levelService.getAllPlayableLevels(optionalUser.get().getId());
@@ -49,10 +49,10 @@ public class LevelController {
                 allLevelDTOs.add(level.toLevelDTO());
             }
         }
-
+        
         return ResponseEntity.ok(allLevelDTOs);
     }
-
+    
     /**
      * GET /levels/{id}
      * Gets the level with the specific id
@@ -60,20 +60,14 @@ public class LevelController {
     @GetMapping("/{id}")
     public ResponseEntity<LevelDTO> getById(OAuth2AuthenticationToken authenticationToken, @PathVariable("id") String id) {
         Optional<User> optionalUser = userService.getUserByToken(authenticationToken);
-        if (optionalUser.isPresent()) {
-            String userId = optionalUser.get().getId();
-            Optional<Level> level = levelService.getByIdIfPlayable(id,userId);
-            if (!level.isPresent()) {
-                return ResponseEntity.status(405).build();
-            }
-            Level l = level.get();
-            return ResponseEntity.ok(l.toLevelDTO());
-        }
-        Optional<Level> optionalLevel = levelService.getById(id);
-        return optionalLevel.map(level -> ResponseEntity.ok(level.toLevelDTO()))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        if (optionalUser.isEmpty())
+            return ResponseEntity.status(404).build();
+        
+        String userId = optionalUser.get().getId();
+        Optional<Level> level = levelService.getByIdIfPlayable(id,userId);
+        return level.isPresent() ? ResponseEntity.ok(level.get().toLevelDTO()) : ResponseEntity.status(405).build();
     }
-
+    
     /**
      * GET /levels/search?name={name}
      * Gets the level with the specific name
@@ -86,7 +80,7 @@ public class LevelController {
         }else {
             return ResponseEntity.notFound().build();
         }
-
+        
     }
-
+    
 }
