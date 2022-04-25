@@ -63,7 +63,7 @@ public class LevelService {
      * @throws IllegalArgumentException if the user with userId doesn't exist.
      */
     public Pair<List<Level>,Integer> getAllPlayableLevels(String userId) throws IllegalArgumentException{
-        ArrayList<Level> playableLevels = new ArrayList<Level>();
+        ArrayList<Level> playableLevels = new ArrayList<>();
         Optional<UserStatistics> stats = statisticsService.getById(userId);
         List<Level> allLevels = getAll();
         if (stats.isEmpty()) {
@@ -112,18 +112,17 @@ public class LevelService {
      * @return The level with the given levelId
      */
     public Optional<Level> getByIdIfPlayable(String levelId, String userId) {
-        Optional<Level> EmptyResult = Optional.empty();
         Optional<Level> l = getById(levelId);
-        if (!l.isPresent()) {
-            return EmptyResult;
-        }
+        if (l.isEmpty())
+            return Optional.empty();
+        
         Level level = l.get();
         for (Level lev : getAllPlayableLevels(userId).getFirst()) {
             if (lev.equals(level)) {
                 return Optional.of(level);
             }
         }
-        return EmptyResult;
+        return Optional.empty();
     }
 
     /**
