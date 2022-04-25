@@ -134,21 +134,20 @@ public class UserController {
     
     /**
      * GET /users/:id
-     * Gets the user with the specific id only if it's public or the user itself.
+     * Gets the user with the specific id only if it's public or the user making the request.
      * @constraint user's profile is public or of the user itself
      */
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(OAuth2AuthenticationToken authenticationToken, @PathVariable("id") String id) {
         Optional<User> optionalUser = userService.getById(id);
-        if (optionalUser.isPresent()) {
+        
+        if(optionalUser.isEmpty())
+            return ResponseEntity.status(404).build();
 
-            if (userService.isIdEqualToken(authenticationToken,id) || optionalUser.get().isProfilePublic()) {
-                return ResponseEntity.ok(optionalUser.get().toUserDTO());
-            } else {
-                return new ResponseEntity<>("This profile is private.", HttpStatus.UNAUTHORIZED);
-            }
+        if (userService.isIdEqualToken(authenticationToken,id) || optionalUser.get().isProfilePublic()) {
+            return ResponseEntity.ok(optionalUser.get().toUserDTO());
         } else {
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<>("This profile is private.", HttpStatus.UNAUTHORIZED);
         }
     }
 
