@@ -150,6 +150,7 @@ public class UserController {
      * @param authenticationToken token that belongs to user.
      * @return Optional<User> user.
      */
+    @GetMapping("/check")
     public ResponseEntity<Optional<User>> isAuthenticated (OAuth2AuthenticationToken authenticationToken) {
         try {
             return ResponseEntity.ok(userService.getUserByToken(authenticationToken));
