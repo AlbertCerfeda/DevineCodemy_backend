@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-import org.yaml.snakeyaml.events.Event;
 
 import java.util.List;
 import java.util.Objects;
@@ -19,10 +18,12 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-
+    private final StatisticsService statisticsService;
+    
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, StatisticsService statisticsService) {
         this.userRepository = userRepository;
+        this.statisticsService = statisticsService;
     }
     public List<User> getAll() {
         return userRepository.findAll();
@@ -56,22 +57,40 @@ public class UserService {
     }
 
     /**
+     * Returns true if a user with specific ID exists.
+     * @param userId the userId of the user to look for.
+     * @return a Boolean
+     */
+    public Boolean userIdExists(String userId) {
+        return userRepository.existsById(userId);
+    }
+    
+    /**
      * Returns true if a user with specific name exists.
      * @param name the name of the user to look for.
      * @return a Boolean
      */
-    public Boolean userExists(String name) {
-        return userRepository.existsByName(name);
-    }
-
+    public boolean userNameExists(String name) { return userRepository.existsByName(name); }
+    
     /**
-     * Create the user and saves it into the Database
+     * Create the user and saves it into the Database.
      * @param createUserDTO User to be saved
      * @return User The user which is created
+     * @throws IllegalArgumentException if a user with the same ID already exists
      */
-    public User createUser(CreateUserDTO createUserDTO) {
-        var user = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail());
-        return userRepository.save(user);
+    public User addUser(CreateUserDTO createUserDTO) {
+        if (createUserDTO.getUsername() == null || createUserDTO.getName() == null || createUserDTO.getId() == null) {
+            throw new IllegalArgumentException("Both username, id and name must be inserted.");
+        } else if(!checkBodyFormat(createUserDTO)){
+            throw new IllegalArgumentException("Values of username or password cannot be empty.");
+        } else if(userIdExists(createUserDTO.getId())) {
+            throw new IllegalArgumentException("ID is already taken.");
+        }
+        
+        User user = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail());
+        userRepository.save(user);
+        statisticsService.addStats(user.getId(),null);
+        return user;
     }
 
     /**
@@ -91,14 +110,21 @@ public class UserService {
    }
 
     public boolean checkBodyFormat(CreateUserDTO user) {
-        boolean checkingFlag = true;
-        if((Objects.equals(user.getName(), "")) ||
+        return  !Objects.equals(user.getName(), "") ||
                 Objects.equals(user.getEmail(), "") ||
                 Objects.equals(user.getUsername(), "") ||
-                Objects.equals(user.getId(), "")) {
-            checkingFlag = false;
-        }
-        return checkingFlag;
+                Objects.equals(user.getId(), "");
+    }
+
+    /**
+     * Return true if ID matches the user of the corresponding token
+     * @param authenticationToken token that belongs to user.
+     * @param id the id of the user
+     * @return result of the comparison between token's user's id and id
+     */
+    public boolean isIdEqualToken(OAuth2AuthenticationToken authenticationToken, String id) {
+        Optional<User> u = getUserByToken(authenticationToken);
+        return u.isPresent() && u.get().getId().equals(id);
     }
 
     /**
