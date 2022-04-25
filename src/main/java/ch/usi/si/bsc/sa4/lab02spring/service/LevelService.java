@@ -5,15 +5,12 @@ import ch.usi.si.bsc.sa4.lab02spring.model.Statistics.LevelStatistics;
 import ch.usi.si.bsc.sa4.lab02spring.model.Statistics.UserStatistics;
 import ch.usi.si.bsc.sa4.lab02spring.repository.LevelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Optionals;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import static java.util.Optional.empty;
 
 /**
  * Provides all operations relating game levels.
@@ -69,9 +66,10 @@ public class LevelService {
         ArrayList<Level> playableLevels = new ArrayList<Level>();
         Optional<UserStatistics> stats = statisticsService.getById(userId);
         List<Level> allLevels = getAll();
-        if (!stats.isPresent()) {
-            throw new IllegalArgumentException("User Id doesn't exist");
+        if (stats.isEmpty()) {
+            throw new IllegalArgumentException("Statistics for user ID do not exist");
         }
+        
         UserStatistics statistics = stats.get();
         for (Level level : allLevels) {
             LevelStatistics actualLevel = statistics.getData().get(level.getId());
@@ -79,6 +77,12 @@ public class LevelService {
                 playableLevels.add(level);
             }
         }
+        
+        /*
+            TODO: Wrong. Needs to add the next unplayed level aswell.
+                Otherwise, we wont ever be able to play even the first level.
+        */
+        
         return Pair.of(playableLevels, allLevels.size());
     }
 
