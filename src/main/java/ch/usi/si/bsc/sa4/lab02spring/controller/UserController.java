@@ -50,7 +50,6 @@ public class UserController {
      * POST /users
      * Creates a user in the database.
      * @constraint username and password cannot be null nor empty.
-     * TODO: Remove password related coding
      */
     @PostMapping
     public ResponseEntity<?> addUser(@RequestBody CreateUserDTO createUserDTO,
@@ -91,25 +90,24 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateUser(OAuth2AuthenticationToken authenticationToken, @PathVariable String id ,@RequestBody UpdateUserDTO updateUserDTO) throws IllegalArgumentException {
         Optional<User> optionalUser = userService.getById(id);
+        
+        if(optionalUser.isEmpty())
+            return ResponseEntity.status(404).build();
 
-        if (optionalUser.isPresent()) {
+        User updatedUser = optionalUser.get();
 
-            User updatedUser = optionalUser.get();
-
-            if (!userService.isIdEqualToken(authenticationToken,id)) {
-                throw new IllegalArgumentException("User not authenticated");
-            }
-
-            if (updateUserDTO.isPublicProfileInitialized()) {
-                updatedUser.setPublicProfile(updateUserDTO.isPublicProfile());
-            }
-
-
-            updatedUser = userService.updateUser(updatedUser);
-            return ResponseEntity.ok(updatedUser.toUserDTO());
-        } else {
-            return ResponseEntity.notFound().build();
+        if (!userService.isIdEqualToken(authenticationToken,id)) {
+            throw new IllegalArgumentException("Authenticated user does not match user in PUT request.");
         }
+
+        if (updateUserDTO.isPublicProfileInitialized()) {
+            updatedUser.setPublicProfile(updateUserDTO.isPublicProfile());
+        }
+
+
+        updatedUser = userService.updateUser(updatedUser);
+        return ResponseEntity.ok(updatedUser.toUserDTO());
+
     }
     
     /**
