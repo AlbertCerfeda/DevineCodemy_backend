@@ -43,13 +43,7 @@ public class UserController {
      */
     @GetMapping
     public ResponseEntity<List<UserDTO>> getAll() {
-        ArrayList<UserDTO> allUserDTOs = new ArrayList<UserDTO>();
-
-        for (User user : userService.getAllPublic()) {
-                allUserDTOs.add(user.toUserDTO());
-        }
-
-        return ResponseEntity.ok(allUserDTOs);
+        return ResponseEntity.ok(userService.getAllPublic().stream().map(User::toUserDTO).collect(Collectors.toList()));
     }
 
     /**
