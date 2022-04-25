@@ -10,13 +10,13 @@ import java.util.Optional;
 import ch.usi.si.bsc.sa4.lab02spring.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Request router for /levels
@@ -40,17 +40,11 @@ public class LevelController {
      */
     @GetMapping
     public ResponseEntity<List<LevelDTO>> getAll(OAuth2AuthenticationToken authenticationToken) {
-        ArrayList<LevelDTO> allLevelDTOs = new ArrayList<LevelDTO>();
-        
         Optional<User> optionalUser = userService.getUserByToken(authenticationToken);
-        if (optionalUser.isPresent()) {
-            Pair<List<Level>,Integer> levels = levelService.getAllPlayableLevels(optionalUser.get().getId());
-            for(Level level : levels.getFirst()) {
-                allLevelDTOs.add(level.toLevelDTO());
-            }
-        }
-        
-        return ResponseEntity.ok(allLevelDTOs);
+        if(optionalUser.isEmpty())
+            return ResponseEntity.status(404).build();
+            
+        return ResponseEntity.ok(levelService.getAllPlayableLevels(optionalUser.get().getId()).getFirst().stream().map(Level::toLevelDTO).collect(Collectors.toList()));
     }
     
     /**
