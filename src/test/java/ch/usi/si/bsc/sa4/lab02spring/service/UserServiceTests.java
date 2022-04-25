@@ -1,6 +1,7 @@
 package ch.usi.si.bsc.sa4.lab02spring.service;
 
 import ch.usi.si.bsc.sa4.lab02spring.controller.dto.CreateUserDTO;
+import ch.usi.si.bsc.sa4.lab02spring.controller.dto.UpdateUserDTO;
 import ch.usi.si.bsc.sa4.lab02spring.model.User.User;
 import ch.usi.si.bsc.sa4.lab02spring.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -88,5 +89,11 @@ public class UserServiceTests {
         User answer = userService.createUser(createUserDTO);
 
         assertEquals(user0.getId(), answer.getId(), "It didn't create the user");
+    }
+
+    @Test
+    public void testUpdateUser() {
+        when(userRepository.save(any())).then(AdditionalAnswers.returnsFirstArg());
+        assertEquals(user, userService.updateUser(user), "It didn't update the user");
     }
 }
