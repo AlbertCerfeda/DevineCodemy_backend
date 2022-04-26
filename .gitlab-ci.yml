@@ -77,7 +77,7 @@ sonarqube-check:
   extends: .sonarqube-check
   rules:
       - if: ($CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH == "main")
-  allow_failure: false
+  allow_failure: true
   script:
     - "curl -u ${SONAR_TOKEN}: -X POST \"https://lab.si.usi.ch/sonarqube/api/projects/create?name=${SONARQUBE_PROJECT_NAME}&project=${SONARQUBE_PROJECT_KEY}\" || echo Project already exists"    
     - "curl -u ${SONAR_TOKEN}: -X POST \"https://lab.si.usi.ch/sonarqube/api/permissions/add_group?projectKey=${SONARQUBE_PROJECT_KEY}&groupId=${SONARQUBE_GROUP_ID}&permission=user\" || echo Project permission already set or has error"
