@@ -6,8 +6,9 @@ plugins {
 	id 'jacoco'
 }
 
-jacoco {
-	toolVersion = "0.8.8"
+ext {
+	jacoco_version = '0.8.8'
+	checkstyle_version = '10.2'
 }
 
 group = 'ch.usi.si.bsc.sa4'
@@ -17,6 +18,7 @@ sourceCompatibility = '11'
 repositories {
 	mavenCentral()
 }
+
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
@@ -34,28 +36,32 @@ dependencies {
 	implementation 'org.springframework.security:spring-security-oauth2-client'
 }
 
+
+jacoco {
+	toolVersion = jacoco_version
+}
+
 test {
 	useJUnitPlatform()
   finalizedBy jacocoTestReport
 }
 
-checkstyle {
-	toolVersion '10.2'
-	configFile rootProject.file(".build_config/checkstyle/checkstyle.xml")
+jacocoTestReport {
+	dependsOn test
+	reports {
+		xml.required = true
+	}
 }
 
+
+
+checkstyle {
+	toolVersion checkstyle_version
+	configFile rootProject.file(".build_config/checkstyle/checkstyle.xml")
+}
 checkstyleMain {
 	source ='src/main/java'
 }
 checkstyleTest {
 	source ='src/test/java'
 }
-
-
-jacocoTestReport {
-  dependsOn test
-	reports {
-    xml.required = true
-	}
-}
-
