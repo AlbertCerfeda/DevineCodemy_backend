@@ -18,6 +18,7 @@ stages:
   - build
   - test
   - sonarqube
+  - checkstyle
 
 compile:
   stage: compile
@@ -52,6 +53,15 @@ test:
     expire_in: 1 hour
     reports:
       junit: [build/reports/jacoco/test/jacocoTestReport.xml, build/test-results/test/TEST-*]
+
+checkstyle:
+  stage: checkstyle
+  script: gradle checkstyleMain
+  artifacts:
+    when: always
+    paths:
+      - build/reports/checkstyle/test.html
+
 
 .sonarqube-check:
   stage: sonarqube
