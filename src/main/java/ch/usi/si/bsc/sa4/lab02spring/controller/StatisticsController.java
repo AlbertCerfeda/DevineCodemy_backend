@@ -12,9 +12,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-
+/**
+ * Request router for /stats
+ */
 @RestController
-
 @RequestMapping("/stats")
 public class StatisticsController {
     private final StatisticsService statisticsService;
@@ -44,4 +45,3 @@ public class StatisticsController {
 
 
 }
-

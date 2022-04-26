@@ -1,7 +1,7 @@
 spring:
   data:
     mongodb:
-      database: users_tutorial
+      database: devinecodemy
       host: localhost
       port: 27017
   security:

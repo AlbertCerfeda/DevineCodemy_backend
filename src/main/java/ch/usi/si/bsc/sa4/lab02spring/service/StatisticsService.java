@@ -35,16 +35,17 @@ public class StatisticsService {
      *
      */
     public UserStatistics addStats(String user_id, GamePlayer game) {
-        // TODO: Check if ID is of a valid user.
-
         Optional<UserStatistics> userStats = statisticsRepository.findById(user_id);
         UserStatistics stats;
         if(userStats.isPresent())
             stats = userStats.get();
         else
             stats = new UserStatistics(user_id);
-
-        stats.addData(game);
+        
+        if (game != null) {
+            stats.addData(game);
+        }
+        
         return statisticsRepository.save(stats);
     }
 

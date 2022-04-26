@@ -2,6 +2,11 @@ plugins {
 	id 'org.springframework.boot' version '2.6.4'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'jacoco'
+}
+
+jacoco {
+	toolVersion = "0.8.8"
 }
 
 group = 'ch.usi.si.bsc.sa4'
@@ -28,6 +33,15 @@ dependencies {
 	implementation 'org.springframework.security:spring-security-oauth2-client'
 }
 
-tasks.named('test') {
+test {
 	useJUnitPlatform()
+  finalizedBy jacocoTestReport
 }
+
+jacocoTestReport {
+  dependsOn test
+	reports {
+    xml.required = true
+	}
+}
+

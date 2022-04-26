@@ -21,7 +21,6 @@ public class UserStatistics {
     private int levels_completed;
 
 
-    // TODO: Add Javadoc
     /**
      * Creates object that stores all recorded data for each level and game played by a single user.
      * The users' id is used in creating the object, so that it can also be identified by it.
@@ -41,7 +40,6 @@ public class UserStatistics {
         return this.level_data;
     }
 
-    // TODO: Add Javadoc
 
     /**
      * Adds the commands used by a user while playing a level. If there was no existing data for that level,

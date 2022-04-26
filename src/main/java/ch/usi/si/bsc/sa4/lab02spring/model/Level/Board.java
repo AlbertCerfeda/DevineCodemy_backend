@@ -33,10 +33,10 @@ public class Board {
         this.dim_x = 0;
         this.dim_y = 0;
         // Derives the dimensions of the board
-        grid.forEach((t)-> this.dim_x = Math.max(this.dim_x, t.getPos_x()));
-        grid.forEach((t)-> this.dim_y = Math.max(this.dim_y, t.getPos_y()));
-        items.forEach((i)-> this.dim_x = Math.max(this.dim_x, i.getPos_x()));
-        items.forEach((i)-> this.dim_y = Math.max(this.dim_y, i.getPos_y()));
+        grid.forEach((t)-> this.dim_x = Math.max(this.dim_x, t.getPos_x() + 1));
+        grid.forEach((t)-> this.dim_y = Math.max(this.dim_y, t.getPos_y() + 1));
+        items.forEach((i)-> this.dim_x = Math.max(this.dim_x, i.getPos_x() + 1));
+        items.forEach((i)-> this.dim_y = Math.max(this.dim_y, i.getPos_y() + 1));
         
         
         this.grid = grid;
@@ -159,5 +159,17 @@ public class Board {
             res+=String.valueOf(line)+"\n";
         return res;
     }
-    
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Board)) return false;
+        Board board = (Board) o;
+        return dim_x == board.dim_x && dim_y == board.dim_y && n_coins == board.n_coins && Objects.equals(grid, board.grid) && Objects.equals(items, board.items);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(dim_x, dim_y, grid, items, n_coins);
+    }
 }
