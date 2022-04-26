@@ -142,6 +142,37 @@ public class UserService {
         Optional<User> user = getById(u.getName());
         return user;
     }
+
+    /**
+     * Returns the user when registered with the given username.
+     * @param createUserDTO the user to be saved
+     * @return User The user which is created
+     */
+    public Object register(CreateUserDTO createUserDTO) {
+        if (createUserDTO.getUsername() == null || createUserDTO.getName() == null || createUserDTO.getId() == null) {
+            throw new IllegalArgumentException("Error: Both username, id and name must be inserted.");
+        } else if(!checkBodyFormat(createUserDTO)){
+            throw new IllegalArgumentException("Error: Values of username or password cannot be empty.");
+        } else if(userIdExists(createUserDTO.getId())) {
+            throw new IllegalArgumentException("Error: This ID is already taken.");
+        }
+
+        User user = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail());
+        userRepository.save(user);
+        statisticsService.addStats(user.getId(),null);
+        return user;
+    }
+
+    /**
+     * logs out the user by deleting the token.
+     * @param authenticationToken token that belongs to user.
+     */
+    public void logout(OAuth2AuthenticationToken authenticationToken) {
+        Optional<User> u = getUserByToken(authenticationToken);
+        if (u.isPresent()) {
+            statisticsService.addStats(u.get().getId(),null);
+        }
+    }
 }
     
     

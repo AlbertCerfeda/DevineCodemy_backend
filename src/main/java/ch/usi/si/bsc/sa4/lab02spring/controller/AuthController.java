@@ -53,6 +53,72 @@ public class AuthController {
     }
 
     /**
+     * POST /auth/register
+     * Registers a new user.
+     * @param createUserDTO user to register.
+     * @return ResponseEntity<User> user.
+     * If the user is unauthenticated, returns HTTP status 401 (Unauthorized)
+     */
+    @PostMapping("/register")
+    public ResponseEntity<Object> register(@RequestBody CreateUserDTO createUserDTO) {
+        try {
+            return ResponseEntity.ok(userService.register(createUserDTO));
+        } catch (Exception ex) {
+            return ResponseEntity.status(401).build();
+        }
+    }
+
+    /**
+     * GET /auth/logout
+     * Logs out the user.
+     * @param authenticationToken token that belongs to user.
+     * @return ResponseEntity<Void>
+     *  If the user is unauthenticated, returns HTTP status 401 (Unauthorized)
+     */
+    @GetMapping("/logout")
+    public ResponseEntity<Void> logout(OAuth2AuthenticationToken authenticationToken) {
+        try {
+            userService.logout(authenticationToken);
+            return ResponseEntity.ok().build();
+        } catch (Exception ex) {
+            return ResponseEntity.status(401).build();
+        }
+    }
+
+    /**
+     * GET /auth/gitlab
+     * Redirects to the GitLab login page
+     * @return RedirectView Url Redirecting to the GitLab login page
+     */
+    @GetMapping("/gitlab")
+    public RedirectView gitlabLogin() {
+        //get the client id
+        OAuth2AuthorizedClient authorizedClient = authorizedClientService.loadAuthorizedClient("gitlab", "client");
+        String clientId = authorizedClient.getClientRegistration().getClientId();
+        //get the client secret
+        String clientSecret = authorizedClient.getClientRegistration().getClientSecret();
+
+        RedirectView redirectView = new RedirectView();
+        // get the redirect url
+        //redirectView.setUrl(String.valueOf(authorizedClient.getClientRegistration()) + "?client_id=" + clientId + "&client_secret=" + clientSecret);
+        redirectView.setUrl("https://gitlab.com/oauth/authorize?client_id=" + clientId + "&client_secret=" + clientSecret);
+        return redirectView;
+    }
+
+    /**
+     * GET /auth/gitlab/callback
+     * Redirects to the GitLab login page
+     * @return RedirectView Url Redirecting to the GitLab login page
+     */
+    @GetMapping("/gitlab/callback")
+    public RedirectView gitlabCallback(@RequestParam("code") String code) {
+        RedirectView redirectView = new RedirectView();
+        redirectView.setUrl("/auth/login");
+        return redirectView;
+    }
+
+
+    /**
      * GET /auth/login
      * Creates a new user if it doesn't exist. Finally, redirects to the home page
      * @param authenticationToken Token from GitLab after the Log-in
@@ -113,4 +179,5 @@ public class AuthController {
         redirectView.setUrl("/");
         return redirectView;
     }
+
 }
