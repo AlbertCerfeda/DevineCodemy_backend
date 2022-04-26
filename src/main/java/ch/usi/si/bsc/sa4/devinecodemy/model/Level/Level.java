@@ -1,12 +1,13 @@
-package ch.usi.si.bsc.sa4.lab02spring.model.Level;
+package ch.usi.si.bsc.sa4.devinecodemy.model.Level;
 
-import ch.usi.si.bsc.sa4.lab02spring.controller.dto.LevelDTO;
-import ch.usi.si.bsc.sa4.lab02spring.model.EAction;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.LevelDTO;
+import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
 
 import java.util.List;
 

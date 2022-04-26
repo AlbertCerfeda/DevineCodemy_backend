@@ -1,4 +1,4 @@
-package ch.usi.si.bsc.sa4.lab02spring;
+package ch.usi.si.bsc.sa4.devinecodemy;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

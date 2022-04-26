@@ -1,6 +1,6 @@
-package ch.usi.si.bsc.sa4.lab02spring.controller.dto;
+package ch.usi.si.bsc.sa4.devinecodemy.controller.dto;
 
-import ch.usi.si.bsc.sa4.lab02spring.model.EAction;
+import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
 
 /**
  * Represents the state of a usable command that the client can use.

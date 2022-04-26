@@ -1,10 +1,12 @@
-package ch.usi.si.bsc.sa4.lab02spring.model.Tile;
+package ch.usi.si.bsc.sa4.devinecodemy.model.Tile;
 
-import ch.usi.si.bsc.sa4.lab02spring.controller.dto.Tile.TileDTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonValue;
+
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.Tile.TileDTO;
+
 import java.util.Objects;
 
 /**

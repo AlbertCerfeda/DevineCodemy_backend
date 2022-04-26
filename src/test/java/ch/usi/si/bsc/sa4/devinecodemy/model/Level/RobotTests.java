@@ -1,10 +1,12 @@
-package ch.usi.si.bsc.sa4.lab02spring.model.Level;
+package ch.usi.si.bsc.sa4.devinecodemy.model.Level;
 
-import ch.usi.si.bsc.sa4.lab02spring.model.EOrientation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+
+import ch.usi.si.bsc.sa4.devinecodemy.model.EOrientation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Robot;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

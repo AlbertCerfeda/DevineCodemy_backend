@@ -1,12 +1,13 @@
-package ch.usi.si.bsc.sa4.lab02spring.service;
-import ch.usi.si.bsc.sa4.lab02spring.model.Level.Level;
-import ch.usi.si.bsc.sa4.lab02spring.model.LevelValidation.LevelValidation;
-import ch.usi.si.bsc.sa4.lab02spring.model.Statistics.LevelStatistics;
-import ch.usi.si.bsc.sa4.lab02spring.model.Statistics.UserStatistics;
-import ch.usi.si.bsc.sa4.lab02spring.repository.LevelRepository;
+package ch.usi.si.bsc.sa4.devinecodemy.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
+
+import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level;
+import ch.usi.si.bsc.sa4.devinecodemy.model.LevelValidation.LevelValidation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Statistics.LevelStatistics;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Statistics.UserStatistics;
+import ch.usi.si.bsc.sa4.devinecodemy.repository.LevelRepository;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package ch.usi.si.bsc.sa4.lab02spring.configuration;
+package ch.usi.si.bsc.sa4.devinecodemy.configuration;
 
 import org.springframework.context.annotation.Configuration;
 

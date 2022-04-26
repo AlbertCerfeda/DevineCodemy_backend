@@ -1,15 +1,15 @@
-package ch.usi.si.bsc.sa4.lab02spring.service;
-
-import ch.usi.si.bsc.sa4.lab02spring.model.EAction;
-import ch.usi.si.bsc.sa4.lab02spring.model.EAnimation;
-import ch.usi.si.bsc.sa4.lab02spring.model.EOrientation;
-import ch.usi.si.bsc.sa4.lab02spring.model.Level.Board;
-import ch.usi.si.bsc.sa4.lab02spring.model.Level.Level;
-import ch.usi.si.bsc.sa4.lab02spring.model.Level.Robot;
-import ch.usi.si.bsc.sa4.lab02spring.model.LevelValidation.LevelValidation;
+package ch.usi.si.bsc.sa4.devinecodemy.service;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
+import ch.usi.si.bsc.sa4.devinecodemy.model.EAnimation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.EOrientation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Board;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Robot;
+import ch.usi.si.bsc.sa4.devinecodemy.model.LevelValidation.LevelValidation;
 
 /**
  * Parses a sequence of String commands into EActions and plays them on a level.

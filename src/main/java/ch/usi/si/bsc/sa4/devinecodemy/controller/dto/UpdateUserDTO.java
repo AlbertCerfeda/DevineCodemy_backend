@@ -1,4 +1,4 @@
-package ch.usi.si.bsc.sa4.lab02spring.controller.dto;
+package ch.usi.si.bsc.sa4.devinecodemy.controller.dto;
 
 
 /**

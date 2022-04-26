@@ -1,9 +1,10 @@
-package ch.usi.si.bsc.sa4.lab02spring.model.User;
+package ch.usi.si.bsc.sa4.devinecodemy.model.User;
 
-import ch.usi.si.bsc.sa4.lab02spring.controller.dto.UserDTO;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.UserDTO;
 
 @Document(collection="users")
 public class User {

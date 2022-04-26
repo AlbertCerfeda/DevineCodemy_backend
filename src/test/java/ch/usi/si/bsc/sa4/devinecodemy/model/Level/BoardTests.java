@@ -1,13 +1,5 @@
-package ch.usi.si.bsc.sa4.lab02spring.model.Level;
+package ch.usi.si.bsc.sa4.devinecodemy.model.Level;
 
-import ch.usi.si.bsc.sa4.lab02spring.model.EOrientation;
-import ch.usi.si.bsc.sa4.lab02spring.model.Item.CoinItem;
-import ch.usi.si.bsc.sa4.lab02spring.model.Item.Item;
-import ch.usi.si.bsc.sa4.lab02spring.model.Tile.ConcreteTile;
-import ch.usi.si.bsc.sa4.lab02spring.model.Tile.GrassTile;
-import ch.usi.si.bsc.sa4.lab02spring.model.Tile.SandTile;
-import ch.usi.si.bsc.sa4.lab02spring.model.Tile.Tile;
-import ch.usi.si.bsc.sa4.lab02spring.model.Tile.WaterTile;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,6 +11,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import ch.usi.si.bsc.sa4.devinecodemy.model.EOrientation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Item.CoinItem;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Item.Item;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Board;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Tile.ConcreteTile;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Tile.GrassTile;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Tile.SandTile;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Tile.Tile;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Tile.WaterTile;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;

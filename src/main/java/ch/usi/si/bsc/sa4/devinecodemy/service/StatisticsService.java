@@ -1,9 +1,10 @@
-package ch.usi.si.bsc.sa4.lab02spring.service;
+package ch.usi.si.bsc.sa4.devinecodemy.service;
 
-import ch.usi.si.bsc.sa4.lab02spring.model.Statistics.UserStatistics;
-import ch.usi.si.bsc.sa4.lab02spring.repository.StatisticsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import ch.usi.si.bsc.sa4.devinecodemy.model.Statistics.UserStatistics;
+import ch.usi.si.bsc.sa4.devinecodemy.repository.StatisticsRepository;
 
 import java.util.List;
 import java.util.Optional;

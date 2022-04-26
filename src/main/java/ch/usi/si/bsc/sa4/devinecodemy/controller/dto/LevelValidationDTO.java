@@ -1,8 +1,8 @@
-package ch.usi.si.bsc.sa4.lab02spring.controller.dto;
-
-import ch.usi.si.bsc.sa4.lab02spring.model.LevelValidation.LevelValidation;
+package ch.usi.si.bsc.sa4.devinecodemy.controller.dto;
 
 import java.util.List;
+
+import ch.usi.si.bsc.sa4.devinecodemy.model.LevelValidation.LevelValidation;
 
 public class LevelValidationDTO {
     private final boolean completed;

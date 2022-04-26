@@ -1,9 +1,10 @@
-package ch.usi.si.bsc.sa4.lab02spring.model.Statistics;
+package ch.usi.si.bsc.sa4.devinecodemy.model.Statistics;
 
-import ch.usi.si.bsc.sa4.lab02spring.controller.dto.UserStatisticsDTO;
-import ch.usi.si.bsc.sa4.lab02spring.service.GamePlayer;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.UserStatisticsDTO;
+import ch.usi.si.bsc.sa4.devinecodemy.service.GamePlayer;
 
 import java.util.HashMap;
 

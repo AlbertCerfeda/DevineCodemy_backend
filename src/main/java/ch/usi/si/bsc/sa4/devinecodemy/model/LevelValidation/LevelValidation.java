@@ -1,11 +1,11 @@
-package ch.usi.si.bsc.sa4.lab02spring.model.LevelValidation;
-
-import ch.usi.si.bsc.sa4.lab02spring.controller.dto.LevelValidationDTO;
-import ch.usi.si.bsc.sa4.lab02spring.model.EAnimation;
+package ch.usi.si.bsc.sa4.devinecodemy.model.LevelValidation;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.LevelValidationDTO;
+import ch.usi.si.bsc.sa4.devinecodemy.model.EAnimation;
 
 /**
  * Represents the result of the code validation done by the GamePlayer.

@@ -1,8 +1,9 @@
-package ch.usi.si.bsc.sa4.lab02spring.repository;
+package ch.usi.si.bsc.sa4.devinecodemy.repository;
 
-import ch.usi.si.bsc.sa4.lab02spring.model.Statistics.UserStatistics;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
+
+import ch.usi.si.bsc.sa4.devinecodemy.model.Statistics.UserStatistics;
 
 /**
  * Collection of statistics for all users.

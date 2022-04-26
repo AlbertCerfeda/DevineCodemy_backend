@@ -1,6 +1,6 @@
-package ch.usi.si.bsc.sa4.lab02spring.controller.dto;
+package ch.usi.si.bsc.sa4.devinecodemy.controller.dto;
 
-import ch.usi.si.bsc.sa4.lab02spring.model.Item.Item;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Item.Item;
 
 public class ItemDTO {
     // Field 'type' is needed by the client for him to distinguish the different type of Items

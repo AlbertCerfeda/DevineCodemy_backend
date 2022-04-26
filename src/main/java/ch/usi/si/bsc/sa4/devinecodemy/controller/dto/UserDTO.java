@@ -1,5 +1,5 @@
-package ch.usi.si.bsc.sa4.lab02spring.controller.dto;
-import  ch.usi.si.bsc.sa4.lab02spring.model.User.User;
+package ch.usi.si.bsc.sa4.devinecodemy.controller.dto;
+import ch.usi.si.bsc.sa4.devinecodemy.model.User.User;
 
 /**
  * The stripped down state of a User object.

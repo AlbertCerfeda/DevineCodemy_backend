@@ -1,7 +1,7 @@
-package ch.usi.si.bsc.sa4.lab02spring.controller.dto.Tile;
+package ch.usi.si.bsc.sa4.devinecodemy.controller.dto.Tile;
 
-import ch.usi.si.bsc.sa4.lab02spring.model.Tile.ETile;
-import ch.usi.si.bsc.sa4.lab02spring.model.Tile.Tile;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Tile.ETile;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Tile.Tile;
 
 /**
  * Encapsulates a Tile state to be sent to the client.

@@ -1,11 +1,12 @@
-package ch.usi.si.bsc.sa4.lab02spring.controller;
+package ch.usi.si.bsc.sa4.devinecodemy.controller;
 
-import ch.usi.si.bsc.sa4.lab02spring.controller.dto.UserStatisticsDTO;
-import ch.usi.si.bsc.sa4.lab02spring.model.Statistics.UserStatistics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ch.usi.si.bsc.sa4.lab02spring.service.StatisticsService;
+
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.UserStatisticsDTO;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Statistics.UserStatistics;
+import ch.usi.si.bsc.sa4.devinecodemy.service.StatisticsService;
 
 import java.util.ArrayList;
 import java.util.List;

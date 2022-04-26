@@ -1,4 +1,4 @@
-package ch.usi.si.bsc.sa4.lab02spring.model.Tile;
+package ch.usi.si.bsc.sa4.devinecodemy.model.Tile;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

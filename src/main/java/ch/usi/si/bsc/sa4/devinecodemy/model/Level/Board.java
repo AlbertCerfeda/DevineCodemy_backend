@@ -1,13 +1,13 @@
-package ch.usi.si.bsc.sa4.lab02spring.model.Level;
-
-import ch.usi.si.bsc.sa4.lab02spring.controller.dto.BoardDTO;
-import ch.usi.si.bsc.sa4.lab02spring.model.EOrientation;
-import ch.usi.si.bsc.sa4.lab02spring.model.Item.Item;
-import ch.usi.si.bsc.sa4.lab02spring.model.Tile.Tile;
+package ch.usi.si.bsc.sa4.devinecodemy.model.Level;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.*;
 import org.springframework.data.annotation.PersistenceConstructor;
+
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.BoardDTO;
+import ch.usi.si.bsc.sa4.devinecodemy.model.EOrientation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Item.Item;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Tile.Tile;
 
 
 /**

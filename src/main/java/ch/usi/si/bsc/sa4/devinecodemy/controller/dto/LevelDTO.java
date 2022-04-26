@@ -1,14 +1,14 @@
-package ch.usi.si.bsc.sa4.lab02spring.controller.dto;
+package ch.usi.si.bsc.sa4.devinecodemy.controller.dto;
 
-
-import ch.usi.si.bsc.sa4.lab02spring.controller.dto.BoardDTO;
-import ch.usi.si.bsc.sa4.lab02spring.controller.dto.EActionDTO;
-import ch.usi.si.bsc.sa4.lab02spring.controller.dto.RobotDTO;
-import ch.usi.si.bsc.sa4.lab02spring.model.EAction;
-import ch.usi.si.bsc.sa4.lab02spring.model.Level.Level;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.BoardDTO;
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.EActionDTO;
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.RobotDTO;
+import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level;
 
 
 public class LevelDTO {

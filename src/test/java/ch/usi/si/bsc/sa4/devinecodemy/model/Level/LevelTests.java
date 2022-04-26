@@ -1,20 +1,24 @@
-package ch.usi.si.bsc.sa4.lab02spring.model.Level;
+package ch.usi.si.bsc.sa4.devinecodemy.model.Level;
 
-import ch.usi.si.bsc.sa4.lab02spring.model.EAction;
-import ch.usi.si.bsc.sa4.lab02spring.model.EOrientation;
-import ch.usi.si.bsc.sa4.lab02spring.model.Item.CoinItem;
-import ch.usi.si.bsc.sa4.lab02spring.model.Item.Item;
-import ch.usi.si.bsc.sa4.lab02spring.model.Tile.ConcreteTile;
-import ch.usi.si.bsc.sa4.lab02spring.model.Tile.GrassTile;
-import ch.usi.si.bsc.sa4.lab02spring.model.Tile.SandTile;
-import ch.usi.si.bsc.sa4.lab02spring.model.Tile.Tile;
-import ch.usi.si.bsc.sa4.lab02spring.model.Tile.WaterTile;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+
+import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
+import ch.usi.si.bsc.sa4.devinecodemy.model.EOrientation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Item.CoinItem;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Item.Item;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Board;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Robot;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Tile.ConcreteTile;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Tile.GrassTile;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Tile.SandTile;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Tile.Tile;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Tile.WaterTile;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;

@@ -1,8 +1,5 @@
-package ch.usi.si.bsc.sa4.lab02spring.controller;
+package ch.usi.si.bsc.sa4.devinecodemy.controller;
 
-import ch.usi.si.bsc.sa4.lab02spring.controller.dto.CreateUserDTO;
-import ch.usi.si.bsc.sa4.lab02spring.model.User.User;
-import ch.usi.si.bsc.sa4.lab02spring.service.UserService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +11,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.view.RedirectView;
+
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.CreateUserDTO;
+import ch.usi.si.bsc.sa4.devinecodemy.model.User.User;
+import ch.usi.si.bsc.sa4.devinecodemy.service.UserService;
 
 import java.util.Arrays;
 import java.util.Optional;

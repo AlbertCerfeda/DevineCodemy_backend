@@ -1,6 +1,6 @@
-package ch.usi.si.bsc.sa4.lab02spring.controller.dto;
+package ch.usi.si.bsc.sa4.devinecodemy.controller.dto;
 
-import ch.usi.si.bsc.sa4.lab02spring.model.Level.Robot;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Robot;
 
 public class RobotDTO {
     private int pos_x;

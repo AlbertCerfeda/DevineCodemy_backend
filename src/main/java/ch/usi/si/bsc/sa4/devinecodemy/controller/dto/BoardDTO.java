@@ -1,12 +1,12 @@
-package ch.usi.si.bsc.sa4.lab02spring.controller.dto;
-
-import ch.usi.si.bsc.sa4.lab02spring.controller.dto.Tile.TileDTO;
-import ch.usi.si.bsc.sa4.lab02spring.model.Item.Item;
-import ch.usi.si.bsc.sa4.lab02spring.model.Level.Board;
-import ch.usi.si.bsc.sa4.lab02spring.model.Tile.Tile;
+package ch.usi.si.bsc.sa4.devinecodemy.controller.dto;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.Tile.TileDTO;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Item.Item;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Board;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Tile.Tile;
 
 public class BoardDTO {
     private int dim_x;

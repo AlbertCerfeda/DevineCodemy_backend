@@ -1,4 +1,4 @@
-package ch.usi.si.bsc.sa4.lab02spring.model.Item;
+package ch.usi.si.bsc.sa4.devinecodemy.model.Item;
 
 /**
  * All the items in the game.

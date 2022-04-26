@@ -1,12 +1,13 @@
-package ch.usi.si.bsc.sa4.lab02spring.service;
+package ch.usi.si.bsc.sa4.devinecodemy.service;
 
-import ch.usi.si.bsc.sa4.lab02spring.controller.dto.CreateUserDTO;
-import ch.usi.si.bsc.sa4.lab02spring.model.User.User;
-import ch.usi.si.bsc.sa4.lab02spring.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.CreateUserDTO;
+import ch.usi.si.bsc.sa4.devinecodemy.model.User.User;
+import ch.usi.si.bsc.sa4.devinecodemy.repository.UserRepository;
 
 import java.util.List;
 import java.util.Objects;

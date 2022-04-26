@@ -1,8 +1,8 @@
-package ch.usi.si.bsc.sa4.lab02spring.controller.dto;
-
-import ch.usi.si.bsc.sa4.lab02spring.model.Statistics.UserStatistics;
+package ch.usi.si.bsc.sa4.devinecodemy.controller.dto;
 
 import java.util.HashMap;
+
+import ch.usi.si.bsc.sa4.devinecodemy.model.Statistics.UserStatistics;
 
 public class UserStatisticsDTO {
     private final String id;

@@ -1,8 +1,10 @@
-package ch.usi.si.bsc.sa4.lab02spring.model.Item;
+package ch.usi.si.bsc.sa4.devinecodemy.model.Item;
 
-import ch.usi.si.bsc.sa4.lab02spring.controller.dto.ItemDTO;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.ItemDTO;
+
 import java.util.Objects;
 
 /**

@@ -1,4 +1,4 @@
-package ch.usi.si.bsc.sa4.lab02spring.model;
+package ch.usi.si.bsc.sa4.devinecodemy.model;
 
 /**
  * Animations recognized by the frontend.

@@ -1,4 +1,4 @@
-package ch.usi.si.bsc.sa4.lab02spring.model;
+package ch.usi.si.bsc.sa4.devinecodemy.model;
 
 import java.util.ArrayList;
 import java.util.List;

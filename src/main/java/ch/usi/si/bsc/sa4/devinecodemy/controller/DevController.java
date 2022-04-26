@@ -1,9 +1,5 @@
-package ch.usi.si.bsc.sa4.lab02spring.controller;
+package ch.usi.si.bsc.sa4.devinecodemy.controller;
 
-import ch.usi.si.bsc.sa4.lab02spring.model.Level.Level;
-import ch.usi.si.bsc.sa4.lab02spring.model.User.User;
-import ch.usi.si.bsc.sa4.lab02spring.service.LevelService;
-import ch.usi.si.bsc.sa4.lab02spring.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +8,11 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level;
+import ch.usi.si.bsc.sa4.devinecodemy.model.User.User;
+import ch.usi.si.bsc.sa4.devinecodemy.service.LevelService;
+import ch.usi.si.bsc.sa4.devinecodemy.service.UserService;
 
 import java.util.Optional;
 

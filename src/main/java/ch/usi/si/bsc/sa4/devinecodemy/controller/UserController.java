@@ -1,16 +1,18 @@
-package ch.usi.si.bsc.sa4.lab02spring.controller;
+package ch.usi.si.bsc.sa4.devinecodemy.controller;
 
-import ch.usi.si.bsc.sa4.lab02spring.controller.dto.UpdateUserDTO;
-import ch.usi.si.bsc.sa4.lab02spring.controller.dto.UserDTO;
-import ch.usi.si.bsc.sa4.lab02spring.model.User.User;
-import ch.usi.si.bsc.sa4.lab02spring.service.StatisticsService;
-import ch.usi.si.bsc.sa4.lab02spring.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.UpdateUserDTO;
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.UserDTO;
+import ch.usi.si.bsc.sa4.devinecodemy.model.User.User;
+import ch.usi.si.bsc.sa4.devinecodemy.service.StatisticsService;
+import ch.usi.si.bsc.sa4.devinecodemy.service.UserService;
+
 import java.util.*;
 import java.util.stream.Collectors;
 

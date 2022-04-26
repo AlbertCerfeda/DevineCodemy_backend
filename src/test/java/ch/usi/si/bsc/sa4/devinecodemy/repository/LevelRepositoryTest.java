@@ -1,11 +1,13 @@
-package ch.usi.si.bsc.sa4.lab02spring.repository;
+package ch.usi.si.bsc.sa4.devinecodemy.repository;
 
-import ch.usi.si.bsc.sa4.lab02spring.model.Level.Level;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level;
+import ch.usi.si.bsc.sa4.devinecodemy.repository.LevelRepository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

@@ -1,15 +1,18 @@
-package ch.usi.si.bsc.sa4.lab02spring.service;
+package ch.usi.si.bsc.sa4.devinecodemy.service;
 
-import ch.usi.si.bsc.sa4.lab02spring.controller.dto.CreateUserDTO;
-import ch.usi.si.bsc.sa4.lab02spring.controller.dto.UpdateUserDTO;
-import ch.usi.si.bsc.sa4.lab02spring.model.User.User;
-import ch.usi.si.bsc.sa4.lab02spring.repository.StatisticsRepository;
-import ch.usi.si.bsc.sa4.lab02spring.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.CreateUserDTO;
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.UpdateUserDTO;
+import ch.usi.si.bsc.sa4.devinecodemy.model.User.User;
+import ch.usi.si.bsc.sa4.devinecodemy.repository.StatisticsRepository;
+import ch.usi.si.bsc.sa4.devinecodemy.repository.UserRepository;
+import ch.usi.si.bsc.sa4.devinecodemy.service.StatisticsService;
+import ch.usi.si.bsc.sa4.devinecodemy.service.UserService;
 
 import java.util.List;
 import java.util.Optional;

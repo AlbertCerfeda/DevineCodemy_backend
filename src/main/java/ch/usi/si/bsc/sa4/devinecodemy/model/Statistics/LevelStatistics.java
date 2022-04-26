@@ -1,11 +1,11 @@
-package ch.usi.si.bsc.sa4.lab02spring.model.Statistics;
-
-import ch.usi.si.bsc.sa4.lab02spring.model.EAction;
-import ch.usi.si.bsc.sa4.lab02spring.model.Level.Level;
-import ch.usi.si.bsc.sa4.lab02spring.service.GamePlayer;
+package ch.usi.si.bsc.sa4.devinecodemy.model.Statistics;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level;
+import ch.usi.si.bsc.sa4.devinecodemy.service.GamePlayer;
 
 /**
  * Represents all the statistics data for a specific level.
