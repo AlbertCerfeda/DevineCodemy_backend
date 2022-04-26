@@ -15,9 +15,9 @@ before_script:
 
 stages:
   - compile
+  - build
   - test
   - sonarqube
-  - build
 
 compile:
   stage: compile
@@ -26,6 +26,17 @@ compile:
     when: always
     paths:
       - build/classes
+    expire_in: 1 hour
+
+build_jar:
+  rules:
+    - if: ($CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH == "main")
+  stage: build
+  script: gradle build
+  artifacts:
+    when: always
+    paths:
+      - build/libs/*
     expire_in: 1 hour
 
 test:
@@ -83,14 +94,3 @@ sonarqube-check:
     - "curl -u ${SONAR_TOKEN}: -X POST \"https://lab.si.usi.ch/sonarqube/api/permissions/add_group?projectKey=${SONARQUBE_PROJECT_KEY}&groupId=${SONARQUBE_GROUP_ID}&permission=user\" || echo Project permission already set or has error"
     - "curl -u ${SONAR_TOKEN}: -X POST \"https://lab.si.usi.ch/sonarqube/api/permissions/add_group?projectKey=${SONARQUBE_PROJECT_KEY}&groupId=${SONARQUBE_GROUP_ID}&permission=codeviewer\" || echo Project permission already set or has error"  
     - sonar-scanner  
-
-build_jar:
-  rules:
-      - if: ($CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH == "main")
-  stage: build
-  script: gradle build
-  artifacts:
-    when: always
-    paths:
-      - build/libs/*
-    expire_in: 1 hour
