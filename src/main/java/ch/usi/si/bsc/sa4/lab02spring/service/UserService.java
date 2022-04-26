@@ -110,10 +110,10 @@ public class UserService {
    }
 
     public boolean checkBodyFormat(CreateUserDTO user) {
-        return  !Objects.equals(user.getName(), "") ||
+        return  !(Objects.equals(user.getName(), "") ||
                 Objects.equals(user.getEmail(), "") ||
                 Objects.equals(user.getUsername(), "") ||
-                Objects.equals(user.getId(), "");
+                Objects.equals(user.getId(), ""));
     }
 
     /**
