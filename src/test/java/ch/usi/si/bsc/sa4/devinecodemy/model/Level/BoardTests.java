@@ -1,9 +1,9 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.Level;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Stream;
+import ch.usi.si.bsc.sa4.devinecodemy.model.EOrientation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Item.CoinItem;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Item.Item;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Tile.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -12,21 +12,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.EOrientation;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Item.CoinItem;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Item.Item;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Board;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Tile.ConcreteTile;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Tile.GrassTile;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Tile.SandTile;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Tile.Tile;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Tile.WaterTile;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 @DisplayName("The board")

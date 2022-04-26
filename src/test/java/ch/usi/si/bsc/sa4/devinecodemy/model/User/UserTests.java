@@ -1,12 +1,10 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.User;
 
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.UserDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.UserDTO;
-import ch.usi.si.bsc.sa4.devinecodemy.model.User.User;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DisplayName("The user")
 public class UserTests {
