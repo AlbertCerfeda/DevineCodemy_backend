@@ -17,7 +17,6 @@ import java.util.Optional;
 
 /**
  * Router for developer requests
- * Classes affected: User, UserDTO, Level, LevelDTO
  */
 @RestController
 @RequestMapping("/dev")

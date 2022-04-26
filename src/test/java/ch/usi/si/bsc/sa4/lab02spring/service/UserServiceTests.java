@@ -3,6 +3,7 @@ package ch.usi.si.bsc.sa4.lab02spring.service;
 import ch.usi.si.bsc.sa4.lab02spring.controller.dto.CreateUserDTO;
 import ch.usi.si.bsc.sa4.lab02spring.controller.dto.UpdateUserDTO;
 import ch.usi.si.bsc.sa4.lab02spring.model.User.User;
+import ch.usi.si.bsc.sa4.lab02spring.repository.StatisticsRepository;
 import ch.usi.si.bsc.sa4.lab02spring.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,8 +12,6 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,7 +21,11 @@ import static org.mockito.Mockito.*;
 
 public class UserServiceTests {
     UserRepository userRepository;
+    StatisticsRepository statisticsRepository;
+    
     UserService userService;
+    StatisticsService statisticsService;
+    
     User user;
     User user1;
     User user2;
@@ -30,7 +33,11 @@ public class UserServiceTests {
     @BeforeEach
     void beforeAllTests() {
         userRepository = mock(UserRepository.class);
-        userService = new UserService(userRepository);
+        statisticsRepository = mock(StatisticsRepository.class);
+        
+        statisticsService = new StatisticsService(statisticsRepository);
+        userService = new UserService(userRepository,statisticsService);
+        
         user = new User("an id", "a name", "a username", "an email");
         user1 = new User("an id1", "a name1", "a username1", "an email1");
         user2 = new User("an id2", "a name2", "a username2", "an email2");
@@ -82,7 +89,7 @@ public class UserServiceTests {
     public void testUserExists() {
         given(userRepository.existsByName("a name")).willReturn(true);
 
-        assertTrue(userService.userExists("a name"), "A user with the given name doesn't exists");
+        assertTrue(userService.userNameExists("a name"), "A user with the given name doesn't exists");
     }
 
     @Test
@@ -90,7 +97,7 @@ public class UserServiceTests {
         CreateUserDTO createUserDTO = new CreateUserDTO("an id0", "a name0", "a username0", "an email0");
         User user0 = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail());
         when(userRepository.save(any())).then(AdditionalAnswers.returnsFirstArg());
-        User answer = userService.createUser(createUserDTO);
+        User answer = userService.addUser(createUserDTO);
 
         assertEquals(user0.getId(), answer.getId(), "It didn't create the user");
     }
