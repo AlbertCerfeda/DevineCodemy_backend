@@ -60,7 +60,7 @@ checkstyle:
   artifacts:
     when: always
     paths:
-      - build/reports/checkstyle/test.html
+      - build/reports/checkstyle/*
 
 
 .sonarqube-check:
