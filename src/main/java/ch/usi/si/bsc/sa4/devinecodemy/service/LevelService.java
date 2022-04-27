@@ -30,14 +30,14 @@ public class LevelService {
 
     /**
      * Simulates a gameplay on a specific level.
-     * @param levelId the level ID string.
+     * @param levelNumber the level number.
      * @param userId the ID of the user that is playing the level. Used or saving game statistics.
      * @param commands the list of commands to play on the level.
      * @return a LevelValidationDTO object containing the result of the gameplay.
-     * @throws IllegalArgumentException if the levelId is not valid.
+     * @throws IllegalArgumentException if the levelNumber is not valid.
      */
-    public LevelValidation playLevel(String levelId, String userId, List<String> commands) throws IllegalArgumentException {
-        Optional<Level> optionalLevel = getById(levelId);
+    public LevelValidation playLevel(int levelNumber, String userId, List<String> commands) throws IllegalArgumentException {
+        Optional<Level> optionalLevel = getByLevelNumber(levelNumber);
         if(optionalLevel.isEmpty())
             throw new IllegalArgumentException("Level does not exist");
 
@@ -104,13 +104,13 @@ public class LevelService {
     }
 
     /**
-     * Returns a level with a specific ID only if playable for the given user
-     * @param levelId the levelId of the level to look for
+     * Returns a level with a specific levelNumber if playable for the given user
+     * @param levelNumber the levelNumber of the level to look for
      * @param userId the userID of the user to match
-     * @return The level with the given levelId
+     * @return The level with the given levelNumber
      */
-    public Optional<Level> getByIdIfPlayable(String levelId, String userId) {
-        Optional<Level> l = getById(levelId);
+    public Optional<Level> getByIdIfPlayable(int levelNumber, String userId) {
+        Optional<Level> l = getByLevelNumber(levelNumber);
         if (l.isEmpty())
             return Optional.empty();
         
@@ -124,26 +124,18 @@ public class LevelService {
     }
 
     /**
-     * Returns a Level with a specific ID.
-     * @param levelId the level_id of the level to look for.
-     * @return an Optional containing the Level if there is one with the provided ID.
+     * Returns a Level with a specific level number.
+     * @param levelNumber the level number of the level to look for.
+     * @return an Optional containing the Level if there is one with the provided level number.
      */
-    public Optional<Level> getById(String levelId) {
-        return levelRepository.findById(levelId);
+    public Optional<Level> getByLevelNumber(int levelNumber) {
+        return levelRepository.findByLevelNumber(levelNumber);
     }
-
-
-
+    
+    
     /**
-     * Returns a Level with a specific name.
-     * @param levelName the level_name of the level to look for.
-     * @return an Optional containing the Level if there is one with the provided name.
+     * Deletes a Level with a specific level number.
+     * @param levelNumber the number of the level to delete.
      */
-    public Optional<Level> getByName(String levelName) {return levelRepository.findByNameContaining(levelName);}
-
-    /**
-     * Deletes a Level with a specific ID.
-     * @param levelId the level_id of the level to delete.
-     */
-    public void deleteLevelById(String levelId){levelRepository.deleteById(levelId);}
+    public void deleteByLevelNumber(int levelNumber){levelRepository.deleteByLevelNumber(levelNumber);}
 }
