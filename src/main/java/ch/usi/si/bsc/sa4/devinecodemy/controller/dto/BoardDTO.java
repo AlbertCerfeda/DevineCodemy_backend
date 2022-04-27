@@ -26,4 +26,22 @@ public class BoardDTO {
         // Converts the grid of Items to ItemDTOs
         items = board.getItems().stream().map(Item::toItemDTO).collect(Collectors.toList());
     }
+
+
+
+    public int getDim_x() {
+        return dim_x;
+    }
+
+    public int getDim_y() {
+        return dim_y;
+    }
+
+    public List<TileDTO> getGrid() {
+        return grid;
+    }
+
+    public List<ItemDTO> getItems() {
+        return items;
+    }
 }

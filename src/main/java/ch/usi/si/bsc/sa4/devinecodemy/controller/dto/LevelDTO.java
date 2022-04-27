@@ -35,4 +35,32 @@ public class LevelDTO {
         
         allowed_commands = level.getAllowed_commands().stream().map(EAction::toEActionDTO).collect(Collectors.toList());
     }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public BoardDTO getBoard() {
+        return board;
+    }
+
+    public RobotDTO getRobot() {
+        return robot;
+    }
+
+    public List<EActionDTO> getAllowed_commands() {
+        return allowed_commands;
+    }
+
+    public int getMaxCommandsNumber() {
+        return maxCommandsNumber;
+    }
+
+    public int getLevelNumber() {
+        return levelNumber;
+    }
 }

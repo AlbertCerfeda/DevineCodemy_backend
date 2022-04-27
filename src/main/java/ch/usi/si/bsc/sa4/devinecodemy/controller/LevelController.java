@@ -1,6 +1,7 @@
 package ch.usi.si.bsc.sa4.devinecodemy.controller;
 
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,8 @@ public class LevelController {
             return ResponseEntity.status(404).build();
         }
 
-        return ResponseEntity.ok(levelService.getAllPlayableLevels(optionalUser.get().getId()).getFirst().stream().map(Level::toLevelDTO).collect(Collectors.toList()));
+        return ResponseEntity.ok(levelService.getAllPlayableLevels(optionalUser.get().getId()).getFirst().stream().map(Level::toLevelDTO)
+                .collect(Collectors.toList()));
     }
     
     /**

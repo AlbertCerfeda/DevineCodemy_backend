@@ -14,4 +14,14 @@ public class EActionDTO {
         name = action.getFunc_call();
         description = action.getDescription();
     }
+
+
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }
