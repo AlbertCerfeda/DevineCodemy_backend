@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level;
 import ch.usi.si.bsc.sa4.devinecodemy.model.LevelValidation.LevelValidation;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Statistics.LevelStatistics;
 import ch.usi.si.bsc.sa4.devinecodemy.model.Statistics.UserStatistics;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.LevelRepository;
 
