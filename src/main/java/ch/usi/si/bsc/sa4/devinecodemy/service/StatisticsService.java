@@ -31,18 +31,19 @@ public class StatisticsService {
     /**
      * Creates an entry in the statistics database for a specified user
      *
-     * @param user_id the user whose statistics we want to keep track of.
+     * @param userId the user whose statistics we want to keep track of.
      * @param game the game from which to retrieve the statistics.
      *
      */
-    public UserStatistics addStats(String user_id, GamePlayer game) {
-        Optional<UserStatistics> userStats = statisticsRepository.findById(user_id);
+    public UserStatistics addStats(String userId, GamePlayer game) {
+        Optional<UserStatistics> userStats = statisticsRepository.findById(userId);
         UserStatistics stats;
-        if(userStats.isPresent())
+        if(userStats.isPresent()) {
             stats = userStats.get();
-        else
-            stats = new UserStatistics(user_id);
-        
+        } else {
+            stats = new UserStatistics(userId);
+        }
+
         if (game != null) {
             stats.addData(game);
         }

@@ -70,7 +70,7 @@ public class LevelService {
         if (stats.isEmpty()) {
             throw new IllegalArgumentException("Statistics for user ID do not exist");
         }
-        
+
         UserStatistics statistics = stats.get();
         for (Level level : allLevels) {
             LevelStatistics actualLevel = statistics.getData().get(level.getId());
@@ -78,11 +78,8 @@ public class LevelService {
                 playableLevels.add(level);
             }
         }
-        
-        /*
-            TODO: Wrong. Needs to add the next unplayed level aswell.
-                Otherwise, we wont ever be able to play even the first level.
-        */
+
+
         
         return Pair.of(playableLevels, allLevels.size());
     }

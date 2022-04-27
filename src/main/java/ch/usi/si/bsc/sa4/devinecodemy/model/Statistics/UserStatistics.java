@@ -19,17 +19,15 @@ public class UserStatistics {
 
     private HashMap<String, LevelStatistics> level_data; // maps the ID of the Level to a LevelData object
 
-    private int levels_completed;
-
 
     /**
      * Creates object that stores all recorded data for each level and game played by a single user.
      * The users' id is used in creating the object, so that it can also be identified by it.
      *
-     * @param user_id the id of the user
+     * @param id the id of the user
      */
-    public UserStatistics(String user_id) {
-        this.id = user_id;
+    public UserStatistics(String id) {
+        this.id = id;
         this.level_data = new HashMap<>();
     }
 
@@ -62,6 +60,12 @@ public class UserStatistics {
         level_data.put(level_id, level);
     }
 
+    /**
+     *
+     */
+    public void getCompletedLevels() {
+
+    }
 
     public UserStatisticsDTO toUserStatisticsDTO() {
         return new UserStatisticsDTO(this);

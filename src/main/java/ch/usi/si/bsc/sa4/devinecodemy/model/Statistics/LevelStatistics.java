@@ -6,15 +6,24 @@ import java.util.List;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
 import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level;
 import ch.usi.si.bsc.sa4.devinecodemy.service.GamePlayer;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Represents all the statistics data for a specific level.
  */
 public class LevelStatistics {
-    private List<List<EAction>> data = new ArrayList<>();
+
+    private boolean completed;
+
+    private List<List<EAction>> data;
 
     public List<List<EAction>> getAll_attempts() {
         return data;
+    }
+
+    public LevelStatistics () {
+        this.completed = false;
+        this.data = new ArrayList<>();
     }
 
     /**
