@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level;
 import ch.usi.si.bsc.sa4.devinecodemy.service.GamePlayer;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Represents all the statistics data for a specific level.
