@@ -26,16 +26,22 @@ public class StatisticsController {
 
     /**
      * GET  /stats
+     * @return returns all the stats as DTOs.
      */
     @GetMapping
     public ResponseEntity<List<UserStatisticsDTO>> getAll() {
-        List<UserStatisticsDTO> allData = new ArrayList<UserStatisticsDTO>();
+        List<UserStatisticsDTO> allData;
 
         allData = statisticsService.getAll().stream().map((stat)->stat.toUserStatisticsDTO()).collect(Collectors.toList());
 
         return ResponseEntity.ok(allData);
     }
 
+    /**
+     * GET /stats/{id}
+     * @param id id of the user of stat to retrieve.
+     * @return an Optional<UserStatistics> containing the UserStatistics if present.
+     */
     @GetMapping("/{id}")
     public Optional<UserStatistics> getById(@PathVariable String id) {
         return statisticsService.getById(id);
