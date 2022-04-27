@@ -88,7 +88,7 @@ public class UserService {
             throw new IllegalArgumentException("ID is already taken.");
         }
         
-        User user = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail());
+        User user = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail(), createUserDTO.getAvatar_url());
         userRepository.save(user);
         statisticsService.addStats(user.getId(),null);
         return user;

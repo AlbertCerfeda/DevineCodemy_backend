@@ -37,9 +37,9 @@ public class UserServiceTests {
         statisticsService = new StatisticsService(statisticsRepository);
         userService = new UserService(userRepository,statisticsService);
         
-        user = new User("an id", "a name", "a username", "an email");
-        user1 = new User("an id1", "a name1", "a username1", "an email1");
-        user2 = new User("an id2", "a name2", "a username2", "an email2");
+        user = new User("an id", "a name", "a username", "an email", "an avatar");
+        user1 = new User("an id1", "a name1", "a username1", "an email1", "an avatar1");
+        user2 = new User("an id2", "a name2", "a username2", "an email2", "an avatar2");
     }
 
     @Test
@@ -93,8 +93,8 @@ public class UserServiceTests {
 
     @Test
     public void testCreateUser() {
-        CreateUserDTO createUserDTO = new CreateUserDTO("an id0", "a name0", "a username0", "an email0");
-        User user0 = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail());
+        CreateUserDTO createUserDTO = new CreateUserDTO("an id0", "a name0", "a username0", "an email0", "an avatar0");
+        User user0 = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail(), createUserDTO.getAvatar_url());
         when(userRepository.save(any())).then(AdditionalAnswers.returnsFirstArg());
         User answer = userService.addUser(createUserDTO);
 
@@ -115,11 +115,11 @@ public class UserServiceTests {
 
     @Test
     public void testcheckBodyFormat() {
-        CreateUserDTO createUserDTO = new CreateUserDTO("", "a name", "a username", "an email");
-        CreateUserDTO createUserDTO0 = new CreateUserDTO("an id0", "a name0", "a username0", "an email0");
+        CreateUserDTO createUserDTO = new CreateUserDTO("", "a name", "a username", "an email", "an avatar");
+        CreateUserDTO createUserDTO0 = new CreateUserDTO("an id0", "a name0", "a username0", "an email0", "an avatar0");
 
-        User user = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail());
-        User user0 = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail());
+        User user = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail(),createUserDTO.getAvatar_url());
+        User user0 = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail(),createUserDTO.getAvatar_url());
 
         assertEquals(true, userService.checkBodyFormat(createUserDTO0), "The body format is correct");
         assertEquals(false, userService.checkBodyFormat(createUserDTO), "The body format is not incorrect");
