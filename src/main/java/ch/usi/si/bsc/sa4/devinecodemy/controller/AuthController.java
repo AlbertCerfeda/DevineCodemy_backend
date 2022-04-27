@@ -77,13 +77,8 @@ public class AuthController {
      *  If the user is unauthenticated, returns HTTP status 401 (Unauthorized)
      */
     @GetMapping("/logout")
-    public ResponseEntity<Void> logout(OAuth2AuthenticationToken authenticationToken) {
-        try {
-            userService.logout(authenticationToken);
-            return ResponseEntity.ok().build();
-        } catch (Exception ex) {
-            return ResponseEntity.status(401).build();
-        }
+    public void logout(OAuth2AuthenticationToken authenticationToken) {
+        // TODO: Implement logout
     }
 
     /**

@@ -163,17 +163,6 @@ public class UserService {
         statisticsService.addStats(user.getId(),null);
         return user;
     }
-
-    /**
-     * logs out the user by deleting the token.
-     * @param authenticationToken token that belongs to user.
-     */
-    public void logout(OAuth2AuthenticationToken authenticationToken) {
-        Optional<User> u = getUserByToken(authenticationToken);
-        if (u.isPresent()) {
-            statisticsService.addStats(u.get().getId(),null);
-        }
-    }
 }
     
     
