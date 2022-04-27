@@ -26,6 +26,11 @@ public class LevelStatistics {
         this.data = new ArrayList<>();
     }
 
+    public LevelStatistics (boolean completed) {
+        this.completed = completed;
+        this.data = new ArrayList<>();
+    }
+
     /**
      * Adds the list of commands used in a game played.
      *

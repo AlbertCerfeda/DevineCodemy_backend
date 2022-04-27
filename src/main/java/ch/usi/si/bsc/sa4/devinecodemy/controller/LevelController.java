@@ -58,7 +58,7 @@ public class LevelController {
         }
         
         String userId = optionalUser.get().getId();
-        Optional<Level> level = levelService.getByIdIfPlayable(levelNumber,userId);
+        Optional<Level> level = levelService.getByLevelNumberIfPlayable(levelNumber,userId);
         return level.isPresent() ? ResponseEntity.ok(level.get().toLevelDTO()) : ResponseEntity.status(405).build();
     }
 }

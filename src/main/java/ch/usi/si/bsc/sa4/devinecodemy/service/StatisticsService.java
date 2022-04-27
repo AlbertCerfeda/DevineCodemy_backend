@@ -53,10 +53,21 @@ public class StatisticsService {
     }
 
     /**
+     *
+     * @param levelNumber
+     * @return
+     */
+    public boolean isLevelCompletedByNumber(int levelNumber) {
+        return false;
+    }
+
+    /**
      * Returns all statistics for all users.
      *
      * @return List containing the statistics for every user.
      */
     public List<UserStatistics> getAll() {return statisticsRepository.findAll();}
+
+
 
 }

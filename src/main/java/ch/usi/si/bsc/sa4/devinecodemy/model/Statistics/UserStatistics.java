@@ -18,7 +18,7 @@ public class UserStatistics {
     @Id
     private String id;
 
-    private HashMap<String, LevelStatistics> level_data; // maps the ID of the Level to a LevelData object
+    private HashMap<Integer, LevelStatistics> level_data; // maps the ID of the Level to a LevelData object
 
 
     /**
@@ -36,7 +36,7 @@ public class UserStatistics {
         return this.id;
     }
 
-    public HashMap<String, LevelStatistics> getData() {
+    public HashMap<Integer, LevelStatistics> getData() {
         return this.level_data;
     }
 
@@ -49,27 +49,21 @@ public class UserStatistics {
      * @param game the game from which to retrieve the statistics.
      */
     public void addData(GamePlayer game, LevelValidation levelValidation) {
-        String levelId = game.getLevel().getId();
+        Integer levelNumber = game.getLevel().getLevelNumber();
 
         LevelStatistics level;
-        if (level_data.containsKey(levelId)) {
-            level = level_data.get(levelId);
+        if (level_data.containsKey(levelNumber)) {
+            level = level_data.get(levelNumber);
             if(!level.isCompleted()){
                 level.setCompleted(levelValidation.isCompleted());
             }
         } else {
-            level = new LevelStatistics();
+            level = new LevelStatistics(levelValidation.isCompleted());
         }
         level.add(game);
-        level_data.put(levelId, level);
+        level_data.put(levelNumber, level);
     }
 
-    /**
-     *
-     */
-    public void getCompletedLevels() {
-
-    }
 
     public UserStatisticsDTO toUserStatisticsDTO() {
         return new UserStatisticsDTO(this);

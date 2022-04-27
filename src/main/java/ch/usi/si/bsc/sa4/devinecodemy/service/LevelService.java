@@ -9,9 +9,7 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.Statistics.LevelStatistics;
 import ch.usi.si.bsc.sa4.devinecodemy.model.Statistics.UserStatistics;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.LevelRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -65,24 +63,29 @@ public class LevelService {
      * @throws IllegalArgumentException if the user with userId doesn't exist.
      */
     public Pair<List<Level>,Integer> getAllPlayableLevels(String userId) throws IllegalArgumentException{
-        ArrayList<Level> playableLevels = new ArrayList<>();
         Optional<UserStatistics> stats = statisticsService.getById(userId);
-        List<Level> allLevels = getAll();
         if (stats.isEmpty()) {
             throw new IllegalArgumentException("Statistics for user ID do not exist");
         }
 
+        int max = 1;
         UserStatistics statistics = stats.get();
-        for (Level level : allLevels) {
-            LevelStatistics actualLevel = statistics.getData().get(level.getId());
-            if (actualLevel != null) {
-                playableLevels.add(level);
+        List<Integer> keys = statistics.getData().keySet().stream().collect(Collectors.toList());
+
+        for (Integer key : keys) {
+            if (key > max) {
+                max = key;
             }
         }
 
+        if (keys.size() > 0 && statistics.getData().get(max).isCompleted()) {
+           if (getByLevelNumber(max + 1).isPresent()) {
+               max = max + 1;
+           }
+        }
 
-        
-        return Pair.of(playableLevels, allLevels.size());
+        int size = getAll().size();
+        return Pair.of(getRange(1, max), size);
     }
 
 
@@ -125,11 +128,12 @@ public class LevelService {
      * @param userId the userID of the user to match
      * @return The level with the given levelNumber
      */
-    public Optional<Level> getByIdIfPlayable(int levelNumber, String userId) {
+    public Optional<Level> getByLevelNumberIfPlayable(int levelNumber, String userId) {
         Optional<Level> l = getByLevelNumber(levelNumber);
-        if (l.isEmpty())
+        if (l.isEmpty()) {
             return Optional.empty();
-        
+        }
+
         Level level = l.get();
         for (Level lev : getAllPlayableLevels(userId).getFirst()) {
             if (lev.equals(level)) {
