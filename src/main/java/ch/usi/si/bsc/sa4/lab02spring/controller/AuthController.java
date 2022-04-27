@@ -102,6 +102,7 @@ public class AuthController {
         // get the redirect url
         //redirectView.setUrl(String.valueOf(authorizedClient.getClientRegistration()) + "?client_id=" + clientId + "&client_secret=" + clientSecret);
         redirectView.setUrl("https://gitlab.com/oauth/authorize?client_id=" + clientId + "&client_secret=" + clientSecret);
+        //redirectView.setUrl("localhost:3000/profile");
         return redirectView;
     }
 
@@ -176,7 +177,7 @@ public class AuthController {
 
         // For redirecting back to Home Page
         RedirectView redirectView = new RedirectView();
-        redirectView.setUrl("/");
+        redirectView.setUrl("http://localhost:3000/profile");
         return redirectView;
     }
 
