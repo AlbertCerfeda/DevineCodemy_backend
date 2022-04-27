@@ -12,6 +12,7 @@ import ch.usi.si.bsc.sa4.devinecodemy.repository.LevelRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Provides all operations relating game levels.
@@ -92,6 +93,16 @@ public class LevelService {
      */
     private List<Level> getAll() {
         return levelRepository.findAll();
+    }
+    
+    /**
+     * Returns a list of Levels whose levelNumber lies in between the provided range.
+     * @param start the lower bound of the range.
+     * @param end the upper bound of the range.
+     * @return list of Levels whose levelNumber lies in between the provided range.
+     */
+    private List<Level> getRange(int start, int end) {
+        return getAll().stream().filter((Level l)->l.getLevelNumber() >= start && l.getLevelNumber() <= end).collect(Collectors.toList());
     }
 
     /**
