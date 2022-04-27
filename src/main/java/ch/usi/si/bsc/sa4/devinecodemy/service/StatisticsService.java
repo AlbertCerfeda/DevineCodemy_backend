@@ -60,8 +60,12 @@ public class StatisticsService {
      * @return the saved statistic in the database
      */
     public UserStatistics addStats(String userId) {
-        UserStatistics stats = new UserStatistics(userId);
-        return statisticsRepository.save(stats);
+        Optional<UserStatistics> userStats = statisticsRepository.findById(userId);
+        if(userStats.isEmpty()) {
+            return statisticsRepository.save(new UserStatistics(userId));
+        }
+        
+        return userStats.get();
     }
 
     /**
