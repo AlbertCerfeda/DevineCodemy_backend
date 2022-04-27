@@ -21,9 +21,9 @@ public class BoardDTO {
         dim_y = board.getDim_y();
         
         // Converts the board made of Tile to TileDTOs
-        grid = board.getGrid().stream().map((Tile tile)->tile.toTileDTO()).collect(Collectors.toList());
+        grid = board.getGrid().stream().map(Tile::toTileDTO).collect(Collectors.toList());
         
         // Converts the grid of Items to ItemDTOs
-        items = board.getItems().stream().map((Item tile)->tile.toItemDTO()).collect(Collectors.toList());
+        items = board.getItems().stream().map(Item::toItemDTO).collect(Collectors.toList());
     }
 }
