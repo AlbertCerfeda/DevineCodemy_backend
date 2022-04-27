@@ -65,39 +65,7 @@ public class AuthController {
     public void logout(OAuth2AuthenticationToken authenticationToken) {
         // TODO: Implement logout
     }
-
-    /**
-     * GET /auth/gitlab
-     * Redirects to the GitLab login page
-     * @return RedirectView Url Redirecting to the GitLab login page
-     */
-    @GetMapping("/gitlab")
-    public RedirectView gitlabLogin() {
-        //get the client id
-        OAuth2AuthorizedClient authorizedClient = authorizedClientService.loadAuthorizedClient("gitlab", "client");
-        String clientId = authorizedClient.getClientRegistration().getClientId();
-        //get the client secret
-        String clientSecret = authorizedClient.getClientRegistration().getClientSecret();
-
-        RedirectView redirectView = new RedirectView();
-        // get the redirect url
-        //redirectView.setUrl(String.valueOf(authorizedClient.getClientRegistration()) + "?client_id=" + clientId + "&client_secret=" + clientSecret);
-        redirectView.setUrl("https://gitlab.com/oauth/authorize?client_id=" + clientId + "&client_secret=" + clientSecret);
-        //redirectView.setUrl("localhost:3000/profile");
-        return redirectView;
-    }
-
-    /**
-     * GET /auth/gitlab/callback
-     * Redirects to the GitLab login page
-     * @return RedirectView Url Redirecting to the GitLab login page
-     */
-    @GetMapping("/gitlab/callback")
-    public RedirectView gitlabCallback(@RequestParam("code") String code) {
-        RedirectView redirectView = new RedirectView();
-        redirectView.setUrl("/auth/login");
-        return redirectView;
-    }
+    
 
 
     /**
