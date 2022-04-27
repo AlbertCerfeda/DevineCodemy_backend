@@ -99,9 +99,14 @@ public class LevelService {
      * Returns a list of Levels whose levelNumber lies in between the provided range.
      * @param start the lower bound of the range.
      * @param end the upper bound of the range.
+     * @throws IllegalArgumentException if the provided range is not valid.
      * @return list of Levels whose levelNumber lies in between the provided range.
      */
-    private List<Level> getRange(int start, int end) {
+    private List<Level> getRange(int start, int end) throws IllegalArgumentException {
+        if(start > end) {
+            throw new IllegalArgumentException("Parameter 'start' needs to be less or equal to 'end'");
+        }
+        
         return getAll().stream().filter((Level l)->l.getLevelNumber() >= start && l.getLevelNumber() <= end).collect(Collectors.toList());
     }
 
