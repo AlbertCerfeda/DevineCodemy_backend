@@ -52,22 +52,7 @@ public class AuthController {
             return ResponseEntity.status(401).build();
         }
     }
-
-    /**
-     * POST /auth/register
-     * Registers a new user.
-     * @param createUserDTO user to register.
-     * @return ResponseEntity<User> user.
-     * If the user is unauthenticated, returns HTTP status 401 (Unauthorized)
-     */
-    @PostMapping("/register")
-    public ResponseEntity<Object> register(@RequestBody CreateUserDTO createUserDTO) {
-        try {
-            return ResponseEntity.ok(userService.register(createUserDTO));
-        } catch (Exception ex) {
-            return ResponseEntity.status(401).build();
-        }
-    }
+    
 
     /**
      * GET /auth/logout
