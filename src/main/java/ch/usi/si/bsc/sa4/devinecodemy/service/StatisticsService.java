@@ -25,15 +25,15 @@ public class StatisticsService {
      * @param id the id of the user statistics to look for.
      * @return an Optional containing the UserStatistics if there exists one with the provided ID.
      */
-
     public Optional<UserStatistics> getById(String id) {return statisticsRepository.findById(id);}
 
 
     /**
-     * Creates an entry in the statistics database for a specified user
+     * Updates the statistics of a user
      *
      * @param userId the user whose statistics we want to keep track of.
      * @param game the game from which to retrieve the statistics.
+     * @param levelValidation the result of the validation of the game
      *
      */
     public UserStatistics addStats(String userId, GamePlayer game, LevelValidation levelValidation) {
@@ -53,12 +53,15 @@ public class StatisticsService {
     }
 
     /**
+     * Creates an entry in the statistics database for a specified user
      *
-     * @param levelNumber
-     * @return
+     * @param userId the user whose statistics we want to keep track of.
+     *
+     * @return the saved statistic in the database
      */
-    public boolean isLevelCompletedByNumber(int levelNumber) {
-        return false;
+    public UserStatistics addStats(String userId) {
+        UserStatistics stats = new UserStatistics(userId);
+        return statisticsRepository.save(stats);
     }
 
     /**

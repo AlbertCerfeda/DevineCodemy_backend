@@ -21,11 +21,6 @@ public class LevelStatistics {
         return data;
     }
 
-    public LevelStatistics () {
-        this.completed = false;
-        this.data = new ArrayList<>();
-    }
-
     public LevelStatistics (boolean completed) {
         this.completed = completed;
         this.data = new ArrayList<>();
