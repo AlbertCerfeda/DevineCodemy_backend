@@ -34,4 +34,12 @@ public class LevelStatistics {
     public void add(GamePlayer game){
         data.add(game.getParsed_commands());
     }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
 }

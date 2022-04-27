@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.LevelDTO;
@@ -17,6 +18,9 @@ public class Level {
     private String id;
     private final String name;
     private final String description;
+
+    @Indexed(unique = true)
+    private int levelNumber;
     
     private final int maxCommandsNumber;
     
@@ -35,12 +39,14 @@ public class Level {
     @JsonCreator
     public Level(@JsonProperty("name") String name,
                  @JsonProperty("description") String description,
+                 @JsonProperty("levelNumber") int levelNumber,
                  @JsonProperty("maxCommandsNumber") int maxCommandsNumber,
                  @JsonProperty("board") Board board,
                  @JsonProperty("robot") Robot robot,
                  @JsonProperty("allowed_commands") List<EAction> allowed_commands) {
         this.name = name;
         this.description = description;
+        this.levelNumber = levelNumber;
         this.maxCommandsNumber = maxCommandsNumber;
         this.board = board;
         this.robot = robot;
@@ -79,4 +85,6 @@ public class Level {
     public String getId() {
         return id;
     }
+
+    public int getLevelNumber() {return levelNumber;}
 }

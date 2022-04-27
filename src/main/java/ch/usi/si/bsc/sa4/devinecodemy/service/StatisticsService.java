@@ -1,5 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.service;
 
+import ch.usi.si.bsc.sa4.devinecodemy.model.LevelValidation.LevelValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +36,7 @@ public class StatisticsService {
      * @param game the game from which to retrieve the statistics.
      *
      */
-    public UserStatistics addStats(String userId, GamePlayer game) {
+    public UserStatistics addStats(String userId, GamePlayer game, LevelValidation levelValidation) {
         Optional<UserStatistics> userStats = statisticsRepository.findById(userId);
         UserStatistics stats;
         if(userStats.isPresent()) {
@@ -45,7 +46,7 @@ public class StatisticsService {
         }
 
         if (game != null) {
-            stats.addData(game);
+            stats.addData(game, levelValidation);
         }
         
         return statisticsRepository.save(stats);

@@ -21,6 +21,8 @@ public class LevelDTO {
     private final List<EActionDTO> allowed_commands;
     
     private final int maxCommandsNumber;
+
+    private int levelNumber;
     
     public LevelDTO(Level level) {
         this.name = level.getName();
@@ -33,6 +35,8 @@ public class LevelDTO {
         this.allowed_commands = new ArrayList<>();
         
         this.maxCommandsNumber = level.getMaxCommandsNumber();
+
+        this.levelNumber = level.getLevelNumber();
         
         List<EAction> commands = level.getAllowed_commands();
         for(EAction command : commands) {

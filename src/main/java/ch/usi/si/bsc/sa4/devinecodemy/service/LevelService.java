@@ -46,7 +46,7 @@ public class LevelService {
         LevelValidation validation = gameplayer.play(commands);
 
         // Here we create the new statistics for the user after playing the game.
-        statisticsService.addStats(userId, gameplayer);
+        statisticsService.addStats(userId, gameplayer, validation);
 
         return validation;
     }

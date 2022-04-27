@@ -1,5 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.Statistics;
 
+import ch.usi.si.bsc.sa4.devinecodemy.model.LevelValidation.LevelValidation;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -47,17 +48,20 @@ public class UserStatistics {
      *
      * @param game the game from which to retrieve the statistics.
      */
-    public void addData(GamePlayer game) {
-        String level_id = game.getLevel().getId();
+    public void addData(GamePlayer game, LevelValidation levelValidation) {
+        String levelId = game.getLevel().getId();
 
         LevelStatistics level;
-        if (level_data.containsKey(level_id)) {
-            level = level_data.get(level_id);
+        if (level_data.containsKey(levelId)) {
+            level = level_data.get(levelId);
+            if(!level.isCompleted()){
+                level.setCompleted(levelValidation.isCompleted());
+            }
         } else {
             level = new LevelStatistics();
         }
         level.add(game);
-        level_data.put(level_id, level);
+        level_data.put(levelId, level);
     }
 
     /**

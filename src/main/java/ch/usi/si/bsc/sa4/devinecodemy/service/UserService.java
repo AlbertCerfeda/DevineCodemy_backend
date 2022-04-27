@@ -90,7 +90,7 @@ public class UserService {
         
         User user = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail());
         userRepository.save(user);
-        statisticsService.addStats(user.getId(),null);
+        statisticsService.addStats(user.getId(),null, null);
         return user;
     }
 
