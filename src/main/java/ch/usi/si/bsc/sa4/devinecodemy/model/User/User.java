@@ -50,9 +50,21 @@ public class User {
     public Boolean isProfilePublic() {
         return publicProfile;
     }
-
-    public UserDTO toUserDTO() {
-        return new UserDTO(this);
+    
+    /**
+     * Returns the UserDTO containing ALL the user data.
+     * @return the UserDTO.
+     */
+    public UserDTO toPublicUserDTO() {
+        return new UserDTO(this, false);
+    }
+    
+    /**
+     * Returns the UserDTo containing the essential data if the User is private.
+     * @return the UserDTO.
+     */
+    public UserDTO toPrivateUserDTO() {
+        return new UserDTO(this, true);
     }
 
     public void setPublicProfile(boolean publicProfile) {

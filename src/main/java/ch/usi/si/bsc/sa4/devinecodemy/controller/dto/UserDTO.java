@@ -10,11 +10,20 @@ public class UserDTO {
     private String username;
     private String email;
     
-    public UserDTO(User user) {
+    /**
+     * Constructor of UserDTO.
+     * @param user the User from which to retrieve the DTO data.
+     * @param checkPrivate if true keeps only the essential data if the profile is private.
+     */
+    public UserDTO(User user, boolean checkPrivate) {
         this.id   = user.getId();
         this.name = user.getName();
         this.username = user.getUsername();
         this.email = user.getEmail();
+        
+        if(checkPrivate && !user.isProfilePublic()) {
+            this.email = null;
+        }
     }
     
     
