@@ -1,6 +1,5 @@
 package ch.usi.si.bsc.sa4.devinecodemy.controller;
 
-import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.UserDTO;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,11 +46,9 @@ public class AuthController {
      */
     @GetMapping("/check")
     public ResponseEntity<Optional<User>> isAuthenticated (OAuth2AuthenticationToken authenticationToken) {
-        System.out.println("It is entering in the check");
         try {
             return ResponseEntity.ok(userService.getUserByToken(authenticationToken));
         } catch (Exception ex) {
-            System.out.println("It is entering here");
             return ResponseEntity.status(401).build();
         }
     }
@@ -61,8 +58,6 @@ public class AuthController {
      * GET /auth/logout
      * Logs out the user.
      * @param authenticationToken token that belongs to user.
-     * @return ResponseEntity<Void>
-     *  If the user is unauthenticated, returns HTTP status 401 (Unauthorized)
      */
     @GetMapping("/logout")
     public void logout(OAuth2AuthenticationToken authenticationToken) {
