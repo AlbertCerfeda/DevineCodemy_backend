@@ -54,37 +54,28 @@ public class LevelService {
 
 
     /**
-     * Returns all the Levels that are playable by the User.
+     * Returns all the Levels playable by a user.
      * @param userId the User ID string.
-     * @return Pair object with:
-     *  - The List of all playable game Levels by the user.
-     *  - An Integer representing the number of Levels in the database.
+     * @return a List of all playable game Levels.
      * @throws IllegalArgumentException if the user with userId doesn't exist.
      */
-    public Pair<List<Level>,Integer> getAllPlayableLevels(String userId) throws IllegalArgumentException{
+    public List<Level> getAllPlayableLevels(String userId) throws IllegalArgumentException{
         Optional<UserStatistics> stats = statisticsService.getById(userId);
+        // If there no stats yet for this user, create empty statistics for the user in the db.
         if (stats.isEmpty()) {
-            throw new IllegalArgumentException("Statistics for user ID do not exist");
+            statisticsService.addStats(userId);
         }
-
-        int max = 1;
+        
         UserStatistics statistics = stats.get();
-        List<Integer> keys = statistics.getData().keySet().stream().collect(Collectors.toList());
-
-        for (Integer key : keys) {
-            if (key > max) {
+        int max = 0;
+        // Finds the highest levelNumber among the completed levels.
+        for (Integer key : statistics.getData().keySet()) {
+            if (statistics.getData().get(key).isCompleted() && key > max) {
                 max = key;
             }
         }
 
-        if (keys.size() > 0 && statistics.getData().get(max).isCompleted()) {
-           if (getByLevelNumber(max + 1).isPresent()) {
-               max = max + 1;
-           }
-        }
-
-        int size = getAll().size();
-        return Pair.of(getRange(1, max), size);
+        return getRange(1, max+1);
     }
 
 
@@ -93,7 +84,7 @@ public class LevelService {
      * Returns all levels in the game.
      * @return List containing all the levels in the game.
      */
-    private List<Level> getAll() {
+    public List<Level> getAll() {
         return levelRepository.findAll();
     }
     
@@ -126,15 +117,16 @@ public class LevelService {
      * @param levelNumber the levelNumber of the level to look for
      * @param userId the userID of the user to match
      * @return The level with the given levelNumber
+     * @throws IllegalArgumentException if level with specified number is not found
      */
-    public Optional<Level> getByLevelNumberIfPlayable(int levelNumber, String userId) {
+    public Optional<Level> getByLevelNumberIfPlayable(int levelNumber, String userId) throws IllegalArgumentException{
         Optional<Level> l = getByLevelNumber(levelNumber);
         if (l.isEmpty()) {
-            return Optional.empty();
+            throw new IllegalArgumentException("Level " + levelNumber + " not found.");
         }
 
         Level level = l.get();
-        for (Level lev : getAllPlayableLevels(userId).getFirst()) {
+        for (Level lev : getAllPlayableLevels(userId)) {
             if (lev.equals(level)) {
                 return Optional.of(level);
             }
