@@ -61,7 +61,7 @@ public class LevelService {
      *  - An Integer representing the number of Levels in the database.
      * @throws IllegalArgumentException if the user with userId doesn't exist.
      */
-    public Pair<List<Level>,Integer> getAllPlayableLevels(String userId) throws IllegalArgumentException{
+    public List<Level> getAllPlayableLevels(String userId) throws IllegalArgumentException{
         Optional<UserStatistics> stats = statisticsService.getById(userId);
         if (stats.isEmpty()) {
             throw new IllegalArgumentException("Statistics for user ID do not exist");
@@ -83,8 +83,7 @@ public class LevelService {
            }
         }
 
-        int size = getAll().size();
-        return Pair.of(getRange(1, max), size);
+        return getRange(1, max);
     }
 
 
@@ -93,7 +92,7 @@ public class LevelService {
      * Returns all levels in the game.
      * @return List containing all the levels in the game.
      */
-    private List<Level> getAll() {
+    public List<Level> getAll() {
         return levelRepository.findAll();
     }
     
@@ -134,7 +133,7 @@ public class LevelService {
         }
 
         Level level = l.get();
-        for (Level lev : getAllPlayableLevels(userId).getFirst()) {
+        for (Level lev : getAllPlayableLevels(userId)) {
             if (lev.equals(level)) {
                 return Optional.of(level);
             }
