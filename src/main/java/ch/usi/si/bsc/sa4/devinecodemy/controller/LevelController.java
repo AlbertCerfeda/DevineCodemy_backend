@@ -35,8 +35,9 @@ public class LevelController {
     }
     
     /**
-     * GET /levels?onlyinfo=
+     * GET /levels?onlyinfo=.
      * Gets all Levels available to the user, subdivided in playable and unplayable levels.
+     * The unplayable levels contain only the level infos.
      * @param authenticationToken Token from GitLab after the Log-in.
      * @param onlyinfo Boolean query parameter that indicates whether the playable levels should include only their essential infos.
      */
@@ -49,17 +50,15 @@ public class LevelController {
         List<Level> playableLevels = levelService.getAllPlayableLevels(optionalUser.get().getId());
         List<Level> unplayableLevels = new ArrayList<>(levelService.getAll());
         unplayableLevels.removeAll(playableLevels);
-        return onlyinfo ?
-                        ResponseEntity.ok(Pair.of(
-                                playableLevels.stream().map(Level::toLevelDTO).collect(Collectors.toList()),
-                                unplayableLevels.stream().map(Level::toLevelDTO).collect(Collectors.toList()))):
-                        ResponseEntity.ok(Pair.of(
-                            playableLevels.stream().map(Level::toLevelDTO).collect(Collectors.toList()),
-                            unplayableLevels.stream().map(Level::toLevelDTO).collect(Collectors.toList())));
+        return  ResponseEntity.ok(Pair.of(onlyinfo ? playableLevels.stream().map(Level::toLevelInfoDTO).collect(Collectors.toList()) :
+                                                     playableLevels.stream().map(Level::toLevelDTO).collect(Collectors.toList()),
+                                            // Unplayable levels just contain the level infos
+                                            unplayableLevels.stream().map(Level::toLevelInfoDTO).collect(Collectors.toList())));
     }
 
     /**
      * GET /levels/{levelNumber}?onlyinfo=
+     * If the level is not playable, returns just the level info.
      * @param authenticationToken Token from GitLab after the Log-in.
      * @param onlyinfo Boolean query parameter that indicates whether the Level should only include his essential info.
      * @return the level with the specific levelNumber
@@ -75,11 +74,13 @@ public class LevelController {
         Optional<Level> level;
         try {
             level = levelService.getByLevelNumberIfPlayable(levelNumber,userId);
-        } catch (Exception ex) {
-            return ResponseEntity.notFound().build();
+        } catch (IllegalArgumentException ex) {
+            // Level does not exist
+            return ResponseEntity.status(404).build();
         }
-        return level.isPresent() ?  ResponseEntity.ok(onlyinfo? level.get().toLevelDTO():
+        return level.isPresent() ?  ResponseEntity.ok(onlyinfo? level.get().toLevelInfoDTO():
                                                                 level.get().toLevelDTO()):
-                                    ResponseEntity.status(401).build();
+                                    // If the level is not playable, returns just the Level info
+                                    ResponseEntity.ok(levelService.getByLevelNumber(levelNumber).get().toLevelInfoDTO());
     }
 }

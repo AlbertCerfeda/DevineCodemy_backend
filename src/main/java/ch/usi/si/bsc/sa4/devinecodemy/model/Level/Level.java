@@ -53,9 +53,18 @@ public class Level {
         this.allowed_commands = allowed_commands;
     }
     
+    /**
+     * Returns a LevelDTO containing ALL the data.
+     * @return the LevelDTO.
+     */
+    public LevelDTO toLevelDTO() { return new LevelDTO(this, false); }
     
-    public LevelDTO toLevelDTO() { return new LevelDTO(this); }
-
+    /**
+     * Returns a LevelDTO containing only the Level info.
+     * @return the LevelDTO.
+     */
+    public LevelDTO toLevelInfoDTO() { return new LevelDTO(this, true); }
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) {
