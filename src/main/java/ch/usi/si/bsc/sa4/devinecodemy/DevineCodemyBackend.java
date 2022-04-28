@@ -1,6 +1,5 @@
 package ch.usi.si.bsc.sa4.devinecodemy;
 
-import ch.usi.si.bsc.sa4.devinecodemy.configuration.CustomJackson2RepositoryPopulatorFactoryBean;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.LevelRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.SpringApplication;
@@ -16,15 +15,6 @@ public class DevineCodemyBackend {
 
 	public static void main(String[] args) {
 		SpringApplication.run(DevineCodemyBackend.class, args);
-	}
-	
-	@Bean
-	public AbstractRepositoryPopulatorFactoryBean repositoryPopulator(ObjectMapper objectMapper, LevelRepository levelRepository) {
-		Jackson2RepositoryPopulatorFactoryBean factory = new CustomJackson2RepositoryPopulatorFactoryBean();
-		levelRepository.deleteAll();
-		factory.setMapper(objectMapper);
-		factory.setResources(new Resource[]{new ClassPathResource("level-data.json")});
-		return factory;
 	}
 
 }
