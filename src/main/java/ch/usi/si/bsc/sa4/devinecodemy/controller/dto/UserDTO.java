@@ -5,6 +5,8 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.User.User;
  * The stripped down state of a User object.
  */
 public class UserDTO {
+    // The visible variable indicates whether the data about the user has been hidden (eg if its private)
+    private boolean visible;
     private String id;
     private String name;
     private String username;
@@ -20,9 +22,11 @@ public class UserDTO {
         this.name = user.getName();
         this.username = user.getUsername();
         this.email = user.getEmail();
+        this.visible = true;
         
         if(checkPrivate && !user.isProfilePublic()) {
             this.email = null;
+            this.visible = false;
         }
     }
     
