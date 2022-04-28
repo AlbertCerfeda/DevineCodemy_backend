@@ -19,6 +19,8 @@ public class LevelDTO {
     private final RobotDTO robot;
     
     private final List<EActionDTO> allowed_commands;
+
+    private final String src;
     
     private final int maxCommandsNumber;
     
@@ -38,5 +40,7 @@ public class LevelDTO {
         for(EAction command : commands) {
             allowed_commands.add(command.toEActionDTO());
         }
+
+        this.src = level.getSrc();
     }
 }

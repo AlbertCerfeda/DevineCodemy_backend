@@ -19,7 +19,8 @@ public class Level {
     private final String description;
     
     private final int maxCommandsNumber;
-    
+
+    private final String src;
     /*
     TODO: Add additional fields
     - Goal of the level in order to complete it
@@ -38,13 +39,15 @@ public class Level {
                  @JsonProperty("maxCommandsNumber") int maxCommandsNumber,
                  @JsonProperty("board") Board board,
                  @JsonProperty("robot") Robot robot,
-                 @JsonProperty("allowed_commands") List<EAction> allowed_commands) {
+                 @JsonProperty("allowed_commands") List<EAction> allowed_commands,
+                 @JsonProperty("src") String src) {
         this.name = name;
         this.description = description;
         this.maxCommandsNumber = maxCommandsNumber;
         this.board = board;
         this.robot = robot;
         this.allowed_commands = allowed_commands;
+        this.src = src;
     }
     
     
@@ -79,4 +82,6 @@ public class Level {
     public String getId() {
         return id;
     }
+
+    public String getSrc() {return src; }
 }
