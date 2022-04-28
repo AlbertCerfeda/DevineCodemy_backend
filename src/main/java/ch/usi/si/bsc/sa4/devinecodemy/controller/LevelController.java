@@ -46,7 +46,6 @@ public class LevelController {
         if(optionalUser.isEmpty()) {
             return ResponseEntity.status(404).build();
         }
-        System.out.println(onlyinfo);
         List<Level> playableLevels = levelService.getAllPlayableLevels(optionalUser.get().getId());
         List<Level> unplayableLevels = new ArrayList<>(levelService.getAll());
         unplayableLevels.removeAll(playableLevels);
@@ -60,12 +59,13 @@ public class LevelController {
     }
 
     /**
-     * GET /levels/{levelNumber}
-     * @param authenticationToken Token from GitLab after the Log-in
+     * GET /levels/{levelNumber}?onlyinfo=
+     * @param authenticationToken Token from GitLab after the Log-in.
+     * @param onlyinfo Boolean query parameter that indicates whether the Level should only include his essential info.
      * @return the level with the specific levelNumber
      */
     @GetMapping("/{levelNumber}")
-    public ResponseEntity<LevelDTO> getByLevelNumber(OAuth2AuthenticationToken authenticationToken, @PathVariable("levelNumber") int levelNumber) {
+    public ResponseEntity<LevelDTO> getByLevelNumber(OAuth2AuthenticationToken authenticationToken, @PathVariable("levelNumber") int levelNumber,@RequestParam(name="onlyinfo", required=false, defaultValue="false") boolean onlyinfo) {
         Optional<User> optionalUser = userService.getUserByToken(authenticationToken);
         if (optionalUser.isEmpty()) {
             return ResponseEntity.status(404).build();
@@ -73,6 +73,8 @@ public class LevelController {
         
         String userId = optionalUser.get().getId();
         Optional<Level> level = levelService.getByLevelNumberIfPlayable(levelNumber,userId);
-        return level.isPresent() ? ResponseEntity.ok(level.get().toLevelDTO()) : ResponseEntity.status(405).build();
+        return level.isPresent() ?  ResponseEntity.ok(onlyinfo? level.get().toLevelDTO():
+                                                                level.get().toLevelDTO()):
+                                    ResponseEntity.status(405).build();
     }
 }
