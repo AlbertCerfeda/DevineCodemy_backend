@@ -13,4 +13,16 @@ public class RobotDTO {
         pos_y = robot.getPos_y();
         orientation = robot.getOrientation().name();
     }
+
+    public int getPos_x() {
+        return pos_x;
+    }
+
+    public int getPos_y() {
+        return pos_y;
+    }
+
+    public String getOrientation() {
+        return orientation;
+    }
 }

@@ -1,5 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.Statistics;
 
+import ch.usi.si.bsc.sa4.devinecodemy.model.LevelValidation.LevelValidation;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -17,19 +18,17 @@ public class UserStatistics {
     @Id
     private String id;
 
-    private HashMap<String, LevelStatistics> level_data; // maps the ID of the Level to a LevelData object
-
-    private int levels_completed;
+    private HashMap<Integer, LevelStatistics> level_data; // maps the ID of the Level to a LevelData object
 
 
     /**
      * Creates object that stores all recorded data for each level and game played by a single user.
      * The users' id is used in creating the object, so that it can also be identified by it.
      *
-     * @param user_id the id of the user
+     * @param id the id of the user
      */
-    public UserStatistics(String user_id) {
-        this.id = user_id;
+    public UserStatistics(String id) {
+        this.id = id;
         this.level_data = new HashMap<>();
     }
 
@@ -37,7 +36,7 @@ public class UserStatistics {
         return this.id;
     }
 
-    public HashMap<String, LevelStatistics> getData() {
+    public HashMap<Integer, LevelStatistics> getData() {
         return this.level_data;
     }
 
@@ -49,17 +48,20 @@ public class UserStatistics {
      *
      * @param game the game from which to retrieve the statistics.
      */
-    public void addData(GamePlayer game) {
-        String level_id = game.getLevel().getId();
+    public void addData(GamePlayer game, LevelValidation levelValidation) {
+        Integer levelNumber = game.getLevel().getLevelNumber();
 
         LevelStatistics level;
-        if (level_data.containsKey(level_id)) {
-            level = level_data.get(level_id);
+        if (level_data.containsKey(levelNumber)) {
+            level = level_data.get(levelNumber);
+            if(!level.isCompleted()){
+                level.setCompleted(levelValidation.isCompleted());
+            }
         } else {
-            level = new LevelStatistics();
+            level = new LevelStatistics(levelValidation.isCompleted());
         }
         level.add(game);
-        level_data.put(level_id, level);
+        level_data.put(levelNumber, level);
     }
 
 
