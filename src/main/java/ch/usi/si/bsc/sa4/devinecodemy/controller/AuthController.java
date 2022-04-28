@@ -46,9 +46,11 @@ public class AuthController {
      */
     @GetMapping("/check")
     public ResponseEntity<Optional<User>> isAuthenticated (OAuth2AuthenticationToken authenticationToken) {
+        System.out.println("It is entering in the check");
         try {
             return ResponseEntity.ok(userService.getUserByToken(authenticationToken));
         } catch (Exception ex) {
+            System.out.println("It is entering here");
             return ResponseEntity.status(401).build();
         }
     }

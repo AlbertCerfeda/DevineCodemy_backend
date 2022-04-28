@@ -24,6 +24,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
 //                httpSecurity.authorizeRequests().anyRequest().permitAll().and().csrf().disable();
         httpSecurity.authorizeRequests()
+                .antMatchers("/auth/check").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .oauth2Login()
