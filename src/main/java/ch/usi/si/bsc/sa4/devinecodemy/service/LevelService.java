@@ -117,11 +117,12 @@ public class LevelService {
      * @param levelNumber the levelNumber of the level to look for
      * @param userId the userID of the user to match
      * @return The level with the given levelNumber
+     * @throws IllegalArgumentException if level with specified number is not found
      */
-    public Optional<Level> getByLevelNumberIfPlayable(int levelNumber, String userId) {
+    public Optional<Level> getByLevelNumberIfPlayable(int levelNumber, String userId) throws IllegalArgumentException{
         Optional<Level> l = getByLevelNumber(levelNumber);
         if (l.isEmpty()) {
-            return Optional.empty();
+            throw new IllegalArgumentException("Level " + levelNumber + " not found.");
         }
 
         Level level = l.get();
