@@ -1,5 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.service;
 
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;

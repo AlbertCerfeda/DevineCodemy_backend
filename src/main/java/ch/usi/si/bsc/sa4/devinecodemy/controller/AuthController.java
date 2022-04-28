@@ -1,5 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.controller;
 
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.UserDTO;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,6 +125,8 @@ public class AuthController {
         // If the user does not exist yet in the database, it creates it.
         if (optionalUser.isEmpty()) {
             userService.addUser(newUser);
+        } else {
+            userService.updateUser(new User(newUser.getId(),newUser.getName(),newUser.getUsername(),newUser.getEmail()));
         }
 
         // For redirecting back to Home Page
