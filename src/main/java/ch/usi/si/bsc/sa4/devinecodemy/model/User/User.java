@@ -13,8 +13,9 @@ public class User {
     private final String name;
     private final String email;
     private final String username;
-    private final String avatar_url;
+    private final String avatarUrl;
     private boolean publicProfile = false;
+    private String bio;
     
 
     /**
@@ -25,15 +26,16 @@ public class User {
      * @param email User's email
      */
     @PersistenceConstructor
-    public User(String id, String name, String username, String email, String avatar_url) {
+    public User(String id, String name, String username, String email, String avatarUrl, String bio) {
         this.id = id;
         this.name = name;
         this.username = username;
         this.email = email;
-        this.avatar_url = avatar_url;
+        this.avatarUrl = avatarUrl;
+        this.bio = bio;
     }
 
-    public String getAvatar_url() { return avatar_url; }
+    public String getAvatarUrl() { return avatarUrl; }
 
     public String getId() {
         return id;
@@ -57,6 +59,14 @@ public class User {
 
     public UserDTO toUserDTO() {
         return new UserDTO(this);
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
     }
 
     public void setPublicProfile(boolean publicProfile) {

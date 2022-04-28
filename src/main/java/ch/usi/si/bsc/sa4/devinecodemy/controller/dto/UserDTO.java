@@ -9,12 +9,18 @@ public class UserDTO {
     private String name;
     private String username;
     private String email;
+    private String avatarUrl;
+    private String bio;
+    private boolean publicProfile;
     
     public UserDTO(User user) {
         this.id   = user.getId();
         this.name = user.getName();
         this.username = user.getUsername();
         this.email = user.getEmail();
+        this.avatarUrl = user.getAvatarUrl();
+        this.bio = user.getBio();
+        this.publicProfile = user.isProfilePublic();
     }
     
     
@@ -50,5 +56,28 @@ public class UserDTO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public boolean isPublicProfile() {
+        return publicProfile;
+    }
+
+    public void setPublicProfile(boolean publicProfile) {
+        this.publicProfile = publicProfile;
     }
 }
