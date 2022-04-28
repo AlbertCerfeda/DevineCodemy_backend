@@ -21,7 +21,6 @@ public class DevineCodemyBackend {
 	@Bean
 	public AbstractRepositoryPopulatorFactoryBean repositoryPopulator(ObjectMapper objectMapper, LevelRepository levelRepository) {
 		Jackson2RepositoryPopulatorFactoryBean factory = new CustomJackson2RepositoryPopulatorFactoryBean();
-		levelRepository.deleteAll();
 		factory.setMapper(objectMapper);
 		factory.setResources(new Resource[]{new ClassPathResource("level-data.json")});
 		return factory;
