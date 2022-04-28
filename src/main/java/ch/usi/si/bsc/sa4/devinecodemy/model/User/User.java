@@ -16,6 +16,9 @@ public class User {
     private final String avatarUrl;
     private boolean publicProfile = false;
     private String bio;
+    private String twitter;
+    private String skype;
+    private String linkedin;
     
 
     /**
@@ -26,13 +29,16 @@ public class User {
      * @param email User's email
      */
     @PersistenceConstructor
-    public User(String id, String name, String username, String email, String avatarUrl, String bio) {
+    public User(String id, String name, String username, String email, String avatarUrl, String bio, String linkedin, String twitter, String skype) {
         this.id = id;
         this.name = name;
         this.username = username;
         this.email = email;
         this.avatarUrl = avatarUrl;
         this.bio = bio;
+        this.skype = skype;
+        this.twitter = twitter;
+        this.skype = linkedin;
     }
 
     public String getAvatarUrl() { return avatarUrl; }
@@ -67,6 +73,30 @@ public class User {
 
     public void setBio(String bio) {
         this.bio = bio;
+    }
+
+    public String getTwitter() {
+        return twitter;
+    }
+
+    public void setTwitter(String twitter) {
+        this.twitter = twitter;
+    }
+
+    public String getSkype() {
+        return skype;
+    }
+
+    public void setSkype(String skype) {
+        this.skype = skype;
+    }
+
+    public String getLinkedin() {
+        return linkedin;
+    }
+
+    public void setLinkedin(String linkedin) {
+        this.linkedin = linkedin;
     }
 
     public void setPublicProfile(boolean publicProfile) {

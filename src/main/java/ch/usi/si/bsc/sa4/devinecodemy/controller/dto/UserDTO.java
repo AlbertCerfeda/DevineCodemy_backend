@@ -12,6 +12,9 @@ public class UserDTO {
     private String avatarUrl;
     private String bio;
     private boolean publicProfile;
+    private String twitter;
+    private String skype;
+    private String linkedin;
     
     public UserDTO(User user) {
         this.id   = user.getId();
@@ -21,6 +24,9 @@ public class UserDTO {
         this.avatarUrl = user.getAvatarUrl();
         this.bio = user.getBio();
         this.publicProfile = user.isProfilePublic();
+        this.linkedin = user.getLinkedin();
+        this.skype = user.getSkype();
+        this.twitter = user.getTwitter();
     }
     
     
@@ -79,5 +85,29 @@ public class UserDTO {
 
     public void setPublicProfile(boolean publicProfile) {
         this.publicProfile = publicProfile;
+    }
+
+    public String getTwitter() {
+        return twitter;
+    }
+
+    public void setTwitter(String twitter) {
+        this.twitter = twitter;
+    }
+
+    public String getSkype() {
+        return skype;
+    }
+
+    public void setSkype(String skype) {
+        this.skype = skype;
+    }
+
+    public String getLinkedin() {
+        return linkedin;
+    }
+
+    public void setLinkedin(String linkedin) {
+        this.linkedin = linkedin;
     }
 }
