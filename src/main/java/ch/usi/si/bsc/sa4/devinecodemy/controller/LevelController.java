@@ -80,6 +80,6 @@ public class LevelController {
         }
         return level.isPresent() ?  ResponseEntity.ok(onlyinfo? level.get().toLevelDTO():
                                                                 level.get().toLevelDTO()):
-                                    ResponseEntity.status(405).build();
+                                    ResponseEntity.status(401).build();
     }
 }
