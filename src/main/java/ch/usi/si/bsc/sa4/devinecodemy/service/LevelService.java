@@ -54,36 +54,28 @@ public class LevelService {
 
 
     /**
-     * Returns all the Levels that are playable by the User.
+     * Returns all the Levels playable by a user.
      * @param userId the User ID string.
-     * @return Pair object with:
-     *  - The List of all playable game Levels by the user.
-     *  - An Integer representing the number of Levels in the database.
+     * @return a List of all playable game Levels.
      * @throws IllegalArgumentException if the user with userId doesn't exist.
      */
     public List<Level> getAllPlayableLevels(String userId) throws IllegalArgumentException{
         Optional<UserStatistics> stats = statisticsService.getById(userId);
+        // If there no stats yet for this user, create empty statistics for the user in the db.
         if (stats.isEmpty()) {
-            throw new IllegalArgumentException("Statistics for user ID do not exist");
+            statisticsService.addStats(userId);
         }
-
-        int max = 1;
+        
         UserStatistics statistics = stats.get();
-        List<Integer> keys = statistics.getData().keySet().stream().collect(Collectors.toList());
-
-        for (Integer key : keys) {
-            if (key > max) {
+        int max = 0;
+        // Finds the highest levelNumber among the completed levels.
+        for (Integer key : statistics.getData().keySet()) {
+            if (statistics.getData().get(key).isCompleted() && key > max) {
                 max = key;
             }
         }
 
-        if (keys.size() > 0 && statistics.getData().get(max).isCompleted()) {
-           if (getByLevelNumber(max + 1).isPresent()) {
-               max = max + 1;
-           }
-        }
-
-        return getRange(1, max);
+        return getRange(1, max+1);
     }
 
 
