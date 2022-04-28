@@ -53,9 +53,30 @@ public class Level {
         this.allowed_commands = allowed_commands;
     }
     
+    /**
+     * Returns a LevelDTO containing ALL the data.
+     * @return the LevelDTO.
+     */
+    public LevelDTO toLevelDTO() { return new LevelDTO(this, false); }
     
-    public LevelDTO toLevelDTO() { return new LevelDTO(this); }
+    /**
+     * Returns a LevelDTO containing only the Level info.
+     * @return the LevelDTO.
+     */
+    public LevelDTO toLevelInfoDTO() { return new LevelDTO(this, true); }
     
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Level)) {
+            return false;
+        }
+        Level level = (Level) o;
+        return this.id.equals(level.id) && this.name.equals(level.name) && this.description.equals(level.description) && this.levelNumber == level.levelNumber &&
+                this.allowed_commands.equals(this.allowed_commands) && level.board.equals(this.board) && level.robot.equals(this.robot) && this.maxCommandsNumber == level.maxCommandsNumber;
+    }
     
     // Getters and setters
     public String getName(){
