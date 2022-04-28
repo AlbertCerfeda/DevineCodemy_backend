@@ -1,6 +1,7 @@
 [
   {
     "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level",
+    "id": 1,
     "name": "Level 1",
     "description": "Earth level 1",
     "levelNumber": 1,
@@ -136,6 +137,7 @@
   },
   {
     "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level",
+    "id": 2,
     "name": "Level 2",
     "description": "Earth level 2",
     "levelNumber": 2,
@@ -272,6 +274,7 @@
   },
   {
     "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level",
+    "id": 3,
     "name": "Level 3",
     "description": "Earth level 3",
     "levelNumber": 3,
@@ -408,6 +411,7 @@
   },
   {
     "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level",
+    "id": 4,
     "name": "Level 4",
     "description": "Earth level 4",
     "levelNumber": 4,
@@ -546,6 +550,7 @@
   },
   {
     "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level",
+    "id": 5,
     "name": "Level 5",
     "description": "Earth level 5",
     "levelNumber": 5,
@@ -689,6 +694,7 @@
 
   {
     "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level",
+    "id": 6,
     "name": "Level 6",
     "description": "SKY level 1",
     "levelNumber": 6,
@@ -809,7 +815,7 @@
         { "pos_x": 3, "pos_y": 0, "type": "COIN" },
         { "pos_x": 6, "pos_y": 2, "type": "COIN" },
         { "pos_x": 3, "pos_y": 5, "type": "COIN" }
-       
+
       ],
       "n_coins": 3
     },
@@ -824,12 +830,13 @@
       "TURN_RIGHT",
       "COLLECT_COIN"
     ]
-  }, 
+  },
 
 
 
   {
     "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level",
+    "id": 7,
     "name": "Level 7",
     "description": "Sky level 2",
     "levelNumber": 7,
@@ -948,8 +955,8 @@
       ],
       "items": [
         { "pos_x": 2, "pos_y": 3, "type": "COIN" }
-       
-       
+
+
       ],
       "n_coins": 1
     },
@@ -969,6 +976,7 @@
 
   {
     "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level",
+    "id": 8,
     "name": "Level 8",
     "description": "Sky level 3",
     "levelNumber": 8,
@@ -1088,8 +1096,8 @@
       "items": [
         { "pos_x": 7, "pos_y": 4, "type": "COIN" },
         { "pos_x": 1, "pos_y": 5, "type": "COIN" }
-       
-       
+
+
       ],
       "n_coins": 2
     },
@@ -1108,6 +1116,7 @@
 
   {
     "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level",
+    "id": 9,
     "name": "Level 9",
     "description": "Sky level 4",
     "levelNumber": 9,
@@ -1228,8 +1237,8 @@
         { "pos_x": 8, "pos_y": 2, "type": "COIN" },
         { "pos_x": 3, "pos_y": 5, "type": "COIN" },
         { "pos_x": 1, "pos_y": 6, "type": "COIN" }
-       
-       
+
+
       ],
       "n_coins": 3
     },
@@ -1244,10 +1253,10 @@
       "TURN_RIGHT",
       "COLLECT_COIN"
     ]
-  }, 
-
+  },
   {
     "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level",
+    "id": 10,
     "name": "Level 10",
     "description": "Sky level 5",
     "levelNumber": 10,
@@ -1368,8 +1377,6 @@
         { "pos_x": 6, "pos_y": 3, "type": "COIN" },
         { "pos_x": 8, "pos_y": 1, "type": "COIN" },
         { "pos_x": 7, "pos_y": 9, "type": "COIN" }
-       
-       
       ],
       "n_coins": 3
     },
