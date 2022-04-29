@@ -23,6 +23,7 @@ import java.util.Optional;
 /**
  *  Request router for  /auth
  */
+@CrossOrigin(origins = "http://localhost200 >= response.status || response.status >= 300:3000")
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
