@@ -30,12 +30,12 @@ public class UserTests {
     @Test
     void testToUserDTO() {
         User user = new User("an id", "a name", "a username", "an email");
-        UserDTO userDTO = user.toUserDTO();
+        UserDTO userDTO = user.toPublicUserDTO();
         assertEquals("an id", userDTO.getId(), "the id field wasn't set correctly");
         assertEquals("a name", userDTO.getName(), "the name field wasn't set correctly");
 
         User user2 = new User("another id", "another name", "another username", "another email");
-        UserDTO userDTO2 = user2.toUserDTO();
+        UserDTO userDTO2 = user2.toPublicUserDTO();
         assertEquals("another name", userDTO2.getName(), "the name field wasn't set correctly");
     }
 

@@ -52,6 +52,19 @@ public class AuthController {
             return ResponseEntity.status(401).build();
         }
     }
+    
+
+    /**
+     * GET /auth/logout
+     * Logs out the user.
+     * @param authenticationToken token that belongs to user.
+     */
+    @GetMapping("/logout")
+    public void logout(OAuth2AuthenticationToken authenticationToken) {
+        // TODO: Implement logout
+    }
+    
+
 
     /**
      * GET /auth/login
@@ -107,11 +120,14 @@ public class AuthController {
         // If the user does not exist yet in the database, it creates it.
         if (optionalUser.isEmpty()) {
             userService.addUser(newUser);
+        } else {
+            userService.updateUser(new User(newUser.getId(),newUser.getName(),newUser.getUsername(),newUser.getEmail()));
         }
 
         // For redirecting back to Home Page
         RedirectView redirectView = new RedirectView();
-        redirectView.setUrl("/");
+        redirectView.setUrl("http://localhost:3000/profile");
         return redirectView;
     }
+
 }

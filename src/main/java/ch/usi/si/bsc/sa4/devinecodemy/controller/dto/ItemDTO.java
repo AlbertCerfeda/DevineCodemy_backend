@@ -14,4 +14,16 @@ public class ItemDTO {
         pos_x = item.getPos_x();
         pos_y = item.getPos_y();
     }
+
+    public String getType() {
+        return type;
+    }
+
+    public int getPos_x() {
+        return pos_x;
+    }
+
+    public int getPos_y() {
+        return pos_y;
+    }
 }
