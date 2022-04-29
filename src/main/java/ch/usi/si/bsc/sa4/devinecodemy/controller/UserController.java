@@ -112,4 +112,25 @@ public class UserController {
             return new ResponseEntity<>("This profile is private.", HttpStatus.UNAUTHORIZED);
         }
     }
+
+    /**
+     * GET /users/user
+     * Gets the user
+     */
+    @GetMapping("/user")
+    public ResponseEntity<?> getUser(OAuth2AuthenticationToken authenticationToken) {
+
+
+        Optional<User> optionalUser;
+        try {
+            optionalUser = userService.getUserByToken(authenticationToken);
+        } catch (Exception ex) {
+            return new ResponseEntity<>("User not logged in.", HttpStatus.UNAUTHORIZED);
+        }
+        if (optionalUser.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(optionalUser.get().toUserDTO());
+
+    }
 }
