@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 /**
  * Request router for /levels
  */
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/levels")
 public class LevelController {
@@ -45,6 +46,7 @@ public class LevelController {
     public ResponseEntity<Pair<List<LevelDTO>,List<LevelDTO>>> getPlayableAndUnplayableLevels(OAuth2AuthenticationToken authenticationToken,@RequestParam(name="onlyinfo", required=false, defaultValue="false") boolean onlyinfo) {
         Optional<User> optionalUser = userService.getUserByToken(authenticationToken);
         if(optionalUser.isEmpty()) {
+            System.out.println("ITs Unfortunatly entering here");
             return ResponseEntity.status(404).build();
         }
         List<Level> playableLevels = levelService.getAllPlayableLevels(optionalUser.get().getId());
