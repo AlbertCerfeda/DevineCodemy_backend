@@ -4,6 +4,7 @@ package ch.usi.si.bsc.sa4.devinecodemy.controller;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.LevelInexistentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.http.ResponseEntity;
@@ -74,7 +75,7 @@ public class LevelController {
         Optional<Level> level;
         try {
             level = levelService.getByLevelNumberIfPlayable(levelNumber,userId);
-        } catch (IllegalArgumentException ex) {
+        } catch (LevelInexistentException ex) {
             // Level does not exist
             return ResponseEntity.status(404).build();
         }
