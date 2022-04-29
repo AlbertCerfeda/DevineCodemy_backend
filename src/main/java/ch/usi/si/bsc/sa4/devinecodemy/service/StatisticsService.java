@@ -27,7 +27,7 @@ public class StatisticsService {
      */
     public Optional<UserStatistics> getById(String id) {return statisticsRepository.findById(id);}
 
-
+    
     /**
      * Updates the statistics of a user.
      *

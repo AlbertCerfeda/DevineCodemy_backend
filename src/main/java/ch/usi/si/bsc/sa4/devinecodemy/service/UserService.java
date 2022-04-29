@@ -1,7 +1,9 @@
 package ch.usi.si.bsc.sa4.devinecodemy.service;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.InvalidAuthTokenException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.LevelInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.UserAlreadyExistsException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.UserInexistentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -82,7 +84,7 @@ public class UserService {
      * @throws IllegalArgumentException if the createUserDTO contains invalid values.
      * @throws UserAlreadyExistsException if the user we are trying to add already exists.
      */
-    public User addUser(CreateUserDTO createUserDTO) throws IllegalArgumentException, UserAlreadyExistsException{
+    public User addUser(CreateUserDTO createUserDTO) throws IllegalArgumentException, UserAlreadyExistsException {
         if (createUserDTO.getUsername() == null || createUserDTO.getName() == null || createUserDTO.getId() == null) {
             throw new IllegalArgumentException("Both username, id and name must be inserted.");
         } else if(!checkBodyFormat(createUserDTO)){
@@ -127,31 +129,39 @@ public class UserService {
      * @return result of the comparison between token's user's id and id
      */
     public boolean isIdEqualToken(OAuth2AuthenticationToken authenticationToken, String id) {
-        Optional<User> u;
+        User u;
         try {
             u = getUserByToken(authenticationToken);
         } catch (InvalidAuthTokenException e) {
             e.printStackTrace();
             return false;
+        } catch (UserInexistentException e) {
+            return false;
         }
         
-        return u.isPresent() && u.get().getId().equals(id);
+        return u.getId() == id;
     }
 
     /**
      * Return the user matching the given authenticationToken.
      * @param authenticationToken token that belongs to user.
+     * @throws UserInexistentException if the user does not exist.
+     * @throws InvalidAuthTokenException if the auth token is invalid.
      * @return Optional<User> user.
      */
-    public Optional<User> getUserByToken(OAuth2AuthenticationToken authenticationToken) throws InvalidAuthTokenException{
+    public User getUserByToken(OAuth2AuthenticationToken authenticationToken) throws InvalidAuthTokenException, UserInexistentException{
         if (authenticationToken == null) {
-            throw new InvalidAuthTokenException("Token is null.");
+            throw new InvalidAuthTokenException();
         }
 
         // Retrieves the User from the OAuth2
         OAuth2User u = authenticationToken.getPrincipal();
         Optional<User> user = getById(u.getName());
-        return user;
+        if(user.isEmpty()) {
+            throw new UserInexistentException(u.getName());
+        } else {
+            return user.get();
+        }
     }
 }
     

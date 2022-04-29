@@ -4,7 +4,9 @@ package ch.usi.si.bsc.sa4.devinecodemy.controller;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.InvalidAuthTokenException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.LevelInexistentException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.UserInexistentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.http.ResponseEntity;
@@ -44,18 +46,23 @@ public class LevelController {
      */
     @GetMapping
     public ResponseEntity<Pair<List<LevelDTO>,List<LevelDTO>>> getPlayableAndUnplayableLevels(OAuth2AuthenticationToken authenticationToken,@RequestParam(name="onlyinfo", required=false, defaultValue="false") boolean onlyinfo) {
-        Optional<User> optionalUser = userService.getUserByToken(authenticationToken);
-        if(optionalUser.isEmpty()) {
+        try {
+            User user = userService.getUserByToken(authenticationToken);
+            List<Level> playableLevels = levelService.getAllPlayableLevels(user.getId());
+            List<Level> unplayableLevels = new ArrayList<>(levelService.getAll());
+            unplayableLevels.removeAll(playableLevels);
+            return  ResponseEntity.ok(Pair.of(onlyinfo ? playableLevels.stream().map(Level::toLevelInfoDTO).collect(Collectors.toList()) :
+                            playableLevels.stream().map(Level::toLevelDTO).collect(Collectors.toList()),
+                    // Unplayable levels just contain the level infos
+                    unplayableLevels.stream().map(Level::toLevelInfoDTO).collect(Collectors.toList())));
+    
+    
+        } catch (InvalidAuthTokenException e) {
+            return ResponseEntity.status(401).build();
+        } catch (UserInexistentException e) {
             return ResponseEntity.status(404).build();
         }
-        List<Level> playableLevels = levelService.getAllPlayableLevels(optionalUser.get().getId());
-        List<Level> unplayableLevels = new ArrayList<>(levelService.getAll());
-        unplayableLevels.removeAll(playableLevels);
-        return  ResponseEntity.ok(Pair.of(onlyinfo ? playableLevels.stream().map(Level::toLevelInfoDTO).collect(Collectors.toList()) :
-                                                     playableLevels.stream().map(Level::toLevelDTO).collect(Collectors.toList()),
-                                            // Unplayable levels just contain the level infos
-                                            unplayableLevels.stream().map(Level::toLevelInfoDTO).collect(Collectors.toList())));
-    }
+}
 
     /**
      * GET /levels/{levelNumber}?onlyinfo=
@@ -66,22 +73,23 @@ public class LevelController {
      */
     @GetMapping("/{levelNumber}")
     public ResponseEntity<LevelDTO> getByLevelNumber(OAuth2AuthenticationToken authenticationToken, @PathVariable("levelNumber") int levelNumber,@RequestParam(name="onlyinfo", required=false, defaultValue="false") boolean onlyinfo) {
-        Optional<User> optionalUser = userService.getUserByToken(authenticationToken);
-        if (optionalUser.isEmpty()) {
-            return ResponseEntity.status(404).build();
-        }
-        
-        String userId = optionalUser.get().getId();
-        Optional<Level> level;
         try {
-            level = levelService.getByLevelNumberIfPlayable(levelNumber,userId);
-        } catch (LevelInexistentException ex) {
-            // Level does not exist
+            User user = userService.getUserByToken(authenticationToken);
+            
+            String userId = user.getId();
+            Optional<Level> level = levelService.getByLevelNumberIfPlayable(levelNumber,userId);
+            
+            return level.isPresent() ?  ResponseEntity.ok(onlyinfo? level.get().toLevelInfoDTO():
+                                                                    level.get().toLevelDTO()):
+                                        // If the level is not playable, returns just the Level info
+                                        ResponseEntity.ok(levelService.getByLevelNumber(levelNumber).get().toLevelInfoDTO());
+        
+        } catch (InvalidAuthTokenException e) {
+            return ResponseEntity.status(401).build();
+        } catch (UserInexistentException e) {
+            return ResponseEntity.status(404).build();
+        } catch (LevelInexistentException e) {
             return ResponseEntity.status(404).build();
         }
-        return level.isPresent() ?  ResponseEntity.ok(onlyinfo? level.get().toLevelInfoDTO():
-                                                                level.get().toLevelDTO()):
-                                    // If the level is not playable, returns just the Level info
-                                    ResponseEntity.ok(levelService.getByLevelNumber(levelNumber).get().toLevelInfoDTO());
     }
 }

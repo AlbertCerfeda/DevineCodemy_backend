@@ -13,6 +13,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -97,9 +98,10 @@ public class UserServiceTests {
         CreateUserDTO createUserDTO = new CreateUserDTO("an id0", "a name0", "a username0", "an email0");
         User user0 = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail());
         when(userRepository.save(any())).then(AdditionalAnswers.returnsFirstArg());
-        User answer = userService.addUser(createUserDTO);
-
-        assertEquals(user0.getId(), answer.getId(), "It didn't create the user");
+        
+        assertDoesNotThrow(()-> {
+            assertEquals(user0.getId(), userService.addUser(createUserDTO).getId(), "It didn't create the user");
+        });
     }
 
     @Test
@@ -132,7 +134,10 @@ public class UserServiceTests {
         OAuth2User oAuth2User = mock(OAuth2User.class);
         Optional<User> user = userService.getById("an id");
         given(token.getPrincipal()).willReturn(oAuth2User);
-        assertEquals(user, userService.getUserByToken(token), "It didn't get the right user");
+        
+        assertDoesNotThrow(()->{
+            assertEquals(user, userService.getUserByToken(token), "It didn't get the right user");
+        });
 
         OAuth2AuthenticationToken tokenNull = null;
         assertThrows(InvalidAuthTokenException.class, () -> userService.getUserByToken(tokenNull), "Exception has been thrown: The token is null");
