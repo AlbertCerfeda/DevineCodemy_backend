@@ -1,6 +1,7 @@
 package ch.usi.si.bsc.sa4.devinecodemy.service;
 
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.CreateUserDTO;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.InvalidAuthTokenException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.User.User;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.StatisticsRepository;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.UserRepository;
@@ -134,6 +135,6 @@ public class UserServiceTests {
         assertEquals(user, userService.getUserByToken(token), "It didn't get the right user");
 
         OAuth2AuthenticationToken tokenNull = null;
-        assertThrows(IllegalArgumentException.class, () -> userService.getUserByToken(tokenNull), "Exception has been thrown: The token is null");
+        assertThrows(InvalidAuthTokenException.class, () -> userService.getUserByToken(tokenNull), "Exception has been thrown: The token is null");
     }
 }

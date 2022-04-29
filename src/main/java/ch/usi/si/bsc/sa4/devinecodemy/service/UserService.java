@@ -1,5 +1,7 @@
 package ch.usi.si.bsc.sa4.devinecodemy.service;
 
+import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.InvalidAuthTokenException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.UserAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -40,7 +42,7 @@ public class UserService {
     public Optional<Boolean> isUserPublic(String id){
         Optional<User> optionalUser = userRepository.isUserPublic(id);
         return optionalUser.map((user)->user.isProfilePublic());
-    } //TODO: Function tested but never used
+    }
 
     /**
      * Returns a User with a specific ID.
@@ -77,15 +79,16 @@ public class UserService {
      * Create the user and saves it into the Database.
      * @param createUserDTO User to be saved
      * @return User The user which is created
-     * @throws IllegalArgumentException if a user with the same ID already exists
+     * @throws IllegalArgumentException if the createUserDTO contains invalid values.
+     * @throws UserAlreadyExistsException if the user we are trying to add already exists.
      */
-    public User addUser(CreateUserDTO createUserDTO) {
+    public User addUser(CreateUserDTO createUserDTO) throws IllegalArgumentException, UserAlreadyExistsException{
         if (createUserDTO.getUsername() == null || createUserDTO.getName() == null || createUserDTO.getId() == null) {
             throw new IllegalArgumentException("Both username, id and name must be inserted.");
         } else if(!checkBodyFormat(createUserDTO)){
             throw new IllegalArgumentException("Values of username or password cannot be empty.");
         } else if(userIdExists(createUserDTO.getId())) {
-            throw new IllegalArgumentException("ID is already taken.");
+            throw new UserAlreadyExistsException("ID is already taken.");
         }
         
         User user = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail());
@@ -124,7 +127,14 @@ public class UserService {
      * @return result of the comparison between token's user's id and id
      */
     public boolean isIdEqualToken(OAuth2AuthenticationToken authenticationToken, String id) {
-        Optional<User> u = getUserByToken(authenticationToken);
+        Optional<User> u;
+        try {
+            u = getUserByToken(authenticationToken);
+        } catch (InvalidAuthTokenException e) {
+            e.printStackTrace();
+            return false;
+        }
+        
         return u.isPresent() && u.get().getId().equals(id);
     }
 
@@ -133,9 +143,9 @@ public class UserService {
      * @param authenticationToken token that belongs to user.
      * @return Optional<User> user.
      */
-    public Optional<User> getUserByToken(OAuth2AuthenticationToken authenticationToken) throws IllegalArgumentException {
+    public Optional<User> getUserByToken(OAuth2AuthenticationToken authenticationToken) throws InvalidAuthTokenException{
         if (authenticationToken == null) {
-            throw new IllegalArgumentException("Token is null.");
+            throw new InvalidAuthTokenException("Token is null.");
         }
 
         // Retrieves the User from the OAuth2
