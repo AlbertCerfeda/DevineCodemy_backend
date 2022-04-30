@@ -146,6 +146,6 @@ public class UserServiceTests {
 
         assertThrows(InvalidAuthTokenException.class, () -> userService.getUserByToken(tokenNull),"Exception has been thrown: The token is null");
 
-        assertEquals(user, userService.getUserByToken(token), "asdf");
+        assertEquals(user, userService.getUserByToken(token), "Given a token, the user has not been returned");
     }
 }
