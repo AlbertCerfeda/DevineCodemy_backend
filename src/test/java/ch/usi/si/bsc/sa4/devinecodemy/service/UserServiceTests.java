@@ -2,6 +2,7 @@ package ch.usi.si.bsc.sa4.devinecodemy.service;
 
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.CreateUserDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.InvalidAuthTokenException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.UserInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.User.User;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.StatisticsRepository;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.UserRepository;
@@ -117,7 +118,7 @@ public class UserServiceTests {
     }
 
     @Test
-    public void testcheckBodyFormat() {
+    public void testCheckBodyFormat() {
         CreateUserDTO createUserDTO = new CreateUserDTO("", "a name", "a username", "an email");
         CreateUserDTO createUserDTO0 = new CreateUserDTO("an id0", "a name0", "a username0", "an email0");
 
@@ -131,15 +132,20 @@ public class UserServiceTests {
     @Test
     public void testGetUserByToken() {
         OAuth2AuthenticationToken token = mock(OAuth2AuthenticationToken.class);
-        OAuth2User oAuth2User = mock(OAuth2User.class);
-        Optional<User> user = userService.getById("an id");
-        given(token.getPrincipal()).willReturn(oAuth2User);
-        
-        assertDoesNotThrow(()->{
-            assertEquals(user, userService.getUserByToken(token), "It didn't get the right user");
-        });
-
+        OAuth2AuthenticationToken tokenInvalid = mock(OAuth2AuthenticationToken.class);
         OAuth2AuthenticationToken tokenNull = null;
-        assertThrows(InvalidAuthTokenException.class, () -> userService.getUserByToken(tokenNull), "Exception has been thrown: The token is null");
+        OAuth2User oAuth2User = mock(OAuth2User.class);
+        OAuth2User oAuth2UserInvalid = mock(OAuth2User.class);
+        given(oAuth2User.getName()).willReturn("an id");
+        given(oAuth2UserInvalid.getName()).willReturn("an invalid id");
+        given(token.getPrincipal()).willReturn(oAuth2User);
+        given(tokenInvalid.getPrincipal()).willReturn(oAuth2UserInvalid);
+        given(userRepository.findById("an id")).willReturn(Optional.of(user));
+
+        assertThrows(UserInexistentException.class, ()-> userService.getUserByToken(tokenInvalid), "Exception has been thrown: The user does not exist");
+
+        assertThrows(InvalidAuthTokenException.class, () -> userService.getUserByToken(tokenNull),"Exception has been thrown: The token is null");
+
+        assertEquals(user, userService.getUserByToken(token), "asdf");
     }
 }
