@@ -1,7 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.service;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.InvalidAuthTokenException;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.LevelInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.UserAlreadyExistsException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.UserInexistentException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -145,8 +144,8 @@ public class UserService {
     /**
      * Return the user matching the given authenticationToken.
      * @param authenticationToken token that belongs to user.
-     * @throws UserInexistentException if the user does not exist.
      * @throws InvalidAuthTokenException if the auth token is invalid.
+     * @throws UserInexistentException if the user does not exist.
      * @return Optional<User> user.
      */
     public User getUserByToken(OAuth2AuthenticationToken authenticationToken) throws InvalidAuthTokenException, UserInexistentException{
