@@ -9,7 +9,7 @@ public class UserDTO {
     private String name;
     private String username;
     private String email;
-    private String avatarUrl;
+    private String avatar_url;
     private String bio;
     private boolean publicProfile;
     private String twitter;
@@ -21,7 +21,7 @@ public class UserDTO {
         this.name = user.getName();
         this.username = user.getUsername();
         this.email = user.getEmail();
-        this.avatarUrl = user.getAvatarUrl();
+        this.avatar_url = user.getAvatar_url();
         this.bio = user.getBio();
         this.publicProfile = user.isProfilePublic();
         this.linkedin = user.getLinkedin();
@@ -64,11 +64,11 @@ public class UserDTO {
         this.email = email;
     }
 
-    public String getAvatarUrl() {
-        return avatarUrl;
+    public String getAvatar_url() {
+        return avatar_url;
     }
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
+    public void setAvatar_url(String avatar_url) {
+        this.avatar_url = avatar_url;
     }
 
     public String getBio() {
