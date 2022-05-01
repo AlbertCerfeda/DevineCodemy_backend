@@ -1,5 +1,7 @@
 package ch.usi.si.bsc.sa4.devinecodemy.controller;
 
+import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.InvalidAuthTokenException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.UserInexistentException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,13 +47,28 @@ public class AuthController {
      *  If the user is not authenticated, returns HTTP status 401 (Unauthorized)
      */
     @GetMapping("/check")
-    public ResponseEntity<Optional<User>> isAuthenticated (OAuth2AuthenticationToken authenticationToken) {
+    public ResponseEntity<User> isAuthenticated (OAuth2AuthenticationToken authenticationToken) {
         try {
             return ResponseEntity.ok(userService.getUserByToken(authenticationToken));
-        } catch (Exception ex) {
+        } catch (InvalidAuthTokenException ex) {
             return ResponseEntity.status(401).build();
+        } catch (UserInexistentException e) {
+            return ResponseEntity.status(404).build();
         }
     }
+    
+
+    /**
+     * GET /auth/logout
+     * Logs out the user.
+     * @param authenticationToken token that belongs to user.
+     */
+    @GetMapping("/logout")
+    public void logout(OAuth2AuthenticationToken authenticationToken) {
+        // TODO: Implement logout
+    }
+    
+
 
     /**
      * GET /auth/login
@@ -86,7 +103,7 @@ public class AuthController {
                             String.class)
                     .getBody();
         } catch (Exception ex) {
-            throw new RestClientException("It couldn't retrieve the user from GitLab");
+            throw new RestClientException("Couldn't retrieve the user from GitLab");
         }
 
         //Converts the received JSON Plain text into CreateUserDTO
@@ -102,16 +119,27 @@ public class AuthController {
             return r;
         }
 
-        Optional<User> optionalUser = userService.getUserByToken(authenticationToken);
-
         // If the user does not exist yet in the database, it creates it.
-        if (optionalUser.isEmpty()) {
+        try {
+            userService.getUserByToken(authenticationToken);
+      userService.updateUser(
+          new User(newUser.getId(),
+              newUser.getName(),
+              newUser.getUsername(),
+              newUser.getEmail(),
+              newUser.getAvatar_url(),
+              newUser.getBio(),
+              newUser.getLinkedin(),
+              newUser.getTwitter(),
+              newUser.getSkype()));
+        } catch (UserInexistentException e) {
             userService.addUser(newUser);
         }
 
         // For redirecting back to Home Page
         RedirectView redirectView = new RedirectView();
-        redirectView.setUrl("/");
+        redirectView.setUrl("http://localhost:3000/profile");
         return redirectView;
     }
+
 }

@@ -1,5 +1,7 @@
 package ch.usi.si.bsc.sa4.devinecodemy.controller;
 
+import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.InvalidAuthTokenException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.UserInexistentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
@@ -42,7 +44,7 @@ public class UserController {
      */
     @GetMapping
     public ResponseEntity<List<UserDTO>> getAll() {
-        return ResponseEntity.ok(userService.getAllPublic().stream().map(User::toUserDTO).collect(Collectors.toList()));
+        return ResponseEntity.ok(userService.getAllPublic().stream().map(User::toPublicUserDTO).collect(Collectors.toList()));
     }
     
 
@@ -74,7 +76,7 @@ public class UserController {
 
 
         updatedUser = userService.updateUser(updatedUser);
-        return ResponseEntity.ok(updatedUser.toUserDTO());
+        return ResponseEntity.ok(updatedUser.toPublicUserDTO());
 
     }
     
@@ -87,7 +89,7 @@ public class UserController {
     public ResponseEntity<List<UserDTO>> getByNameContaining(@RequestParam("name") String name) {
         // Same as in getAll() but with functional approach
         List<UserDTO> allUserDTOs = userService.searchByNameContaining(name, true).stream()
-                .map(User::toUserDTO)
+                .map(User::toPublicUserDTO)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(allUserDTOs);
     }
@@ -107,9 +109,9 @@ public class UserController {
         }
 
         if (userService.isIdEqualToken(authenticationToken,id) || optionalUser.get().isProfilePublic()) {
-            return ResponseEntity.ok(optionalUser.get().toUserDTO());
+            return ResponseEntity.ok(optionalUser.get().toPublicUserDTO());
         } else {
-            return new ResponseEntity<>("This profile is private.", HttpStatus.UNAUTHORIZED);
+            return ResponseEntity.ok(optionalUser.get().toPrivateUserDTO());
         }
     }
 
@@ -119,18 +121,13 @@ public class UserController {
      */
     @GetMapping("/user")
     public ResponseEntity<?> getUser(OAuth2AuthenticationToken authenticationToken) {
-
-
-        Optional<User> optionalUser;
         try {
-            optionalUser = userService.getUserByToken(authenticationToken);
-        } catch (Exception ex) {
-            return new ResponseEntity<>("User not logged in.", HttpStatus.UNAUTHORIZED);
+            User u = userService.getUserByToken(authenticationToken);
+            return ResponseEntity.ok(u.toPublicUserDTO());
+        } catch (InvalidAuthTokenException e) {
+            return ResponseEntity.status(401).build();
+        } catch (UserInexistentException e) {
+            return ResponseEntity.status(404).build();
         }
-        if (optionalUser.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(optionalUser.get().toUserDTO());
-
     }
 }

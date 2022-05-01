@@ -1,6 +1,8 @@
 package ch.usi.si.bsc.sa4.devinecodemy.service;
 
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.CreateUserDTO;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.InvalidAuthTokenException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.UserInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.User.User;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.StatisticsRepository;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.UserRepository;
@@ -12,6 +14,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -97,9 +100,10 @@ public class UserServiceTests {
         User user0 = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail(), createUserDTO.getAvatar_url(),
                 createUserDTO.getBio(), createUserDTO.getLinkedin(), createUserDTO.getTwitter(), createUserDTO.getSkype());
         when(userRepository.save(any())).then(AdditionalAnswers.returnsFirstArg());
-        User answer = userService.addUser(createUserDTO);
-
-        assertEquals(user0.getId(), answer.getId(), "It didn't create the user");
+        
+        assertDoesNotThrow(()-> {
+            assertEquals(user0.getId(), userService.addUser(createUserDTO).getId(), "It didn't create the user");
+        });
     }
 
     @Test
@@ -115,9 +119,10 @@ public class UserServiceTests {
     }
 
     @Test
-    public void testcheckBodyFormat() {
+
+    public void testCheckBodyFormat() {
         CreateUserDTO createUserDTO = new CreateUserDTO("", "a name", "a username", "an email", "an avatar", "a bio", "linkedin", "twitter", "skype");
-        CreateUserDTO createUserDTO0 = new CreateUserDTO("an id0", "a name0", "a username0", "an email0", "an avatar0", "a bio0", "linkedin0", "twitter0", "skype0");
+        CreateUserDTO createUserDTO0 = new CreateUserDTO("an id0", "a name0", "a username0", "an email0", "an avatar", "a bio", "linkedin", "twitter", "skype");
 
         User user = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail(),createUserDTO.getAvatar_url(), createUserDTO.getBio(),
                 createUserDTO0.getLinkedin(), createUserDTO.getTwitter(), createUserDTO0.getSkype());
@@ -131,12 +136,20 @@ public class UserServiceTests {
     @Test
     public void testGetUserByToken() {
         OAuth2AuthenticationToken token = mock(OAuth2AuthenticationToken.class);
-        OAuth2User oAuth2User = mock(OAuth2User.class);
-        Optional<User> user = userService.getById("an id");
-        given(token.getPrincipal()).willReturn(oAuth2User);
-        assertEquals(user, userService.getUserByToken(token), "It didn't get the right user");
-
+        OAuth2AuthenticationToken tokenInvalid = mock(OAuth2AuthenticationToken.class);
         OAuth2AuthenticationToken tokenNull = null;
-        assertThrows(IllegalArgumentException.class, () -> userService.getUserByToken(tokenNull), "Exception has been thrown: The token is null");
+        OAuth2User oAuth2User = mock(OAuth2User.class);
+        OAuth2User oAuth2UserInvalid = mock(OAuth2User.class);
+        given(oAuth2User.getName()).willReturn("an id");
+        given(oAuth2UserInvalid.getName()).willReturn("an invalid id");
+        given(token.getPrincipal()).willReturn(oAuth2User);
+        given(tokenInvalid.getPrincipal()).willReturn(oAuth2UserInvalid);
+        given(userRepository.findById("an id")).willReturn(Optional.of(user));
+
+        assertThrows(UserInexistentException.class, ()-> userService.getUserByToken(tokenInvalid), "Exception has been thrown: The user does not exist");
+
+        assertThrows(InvalidAuthTokenException.class, () -> userService.getUserByToken(tokenNull),"Exception has been thrown: The token is null");
+
+        assertEquals(user, userService.getUserByToken(token), "Given a token, the user has not been returned");
     }
 }

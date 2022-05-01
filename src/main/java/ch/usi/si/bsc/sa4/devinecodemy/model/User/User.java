@@ -20,7 +20,6 @@ public class User {
     private String skype;
     private String linkedin;
     
-
     /**
      * Main constructor to create the User with GitLab data.
      * @param id User's id (in GitLab)
@@ -40,6 +39,8 @@ public class User {
         this.twitter = twitter;
         this.linkedin = linkedin;
     }
+    
+    
 
     public String getAvatar_url() { return avatar_url; }
 
@@ -62,9 +63,21 @@ public class User {
     public Boolean isProfilePublic() {
         return publicProfile;
     }
-
-    public UserDTO toUserDTO() {
-        return new UserDTO(this);
+    
+    /**
+     * Returns the UserDTO containing ALL the user data.
+     * @return the UserDTO.
+     */
+    public UserDTO toPublicUserDTO() {
+        return new UserDTO(this, false);
+    }
+    
+    /**
+     * Returns the UserDTo containing the essential data if the User is private.
+     * @return the UserDTO.
+     */
+    public UserDTO toPrivateUserDTO() {
+        return new UserDTO(this, true);
     }
 
     public String getBio() {

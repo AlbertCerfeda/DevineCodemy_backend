@@ -1,5 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.controller;
 
+import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.LevelInexistentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,7 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level;
 import ch.usi.si.bsc.sa4.devinecodemy.model.User.User;
 import ch.usi.si.bsc.sa4.devinecodemy.service.LevelService;
 import ch.usi.si.bsc.sa4.devinecodemy.service.UserService;
@@ -53,12 +53,11 @@ public class DevController {
      */
     @DeleteMapping("/levels/{levelNumber}")
     public ResponseEntity<String> deleteLevel(@PathVariable int levelNumber){
-        Optional<Level> optionalLevel = levelService.getByLevelNumber(levelNumber);
-        if(optionalLevel.isPresent()){
+        try {
             levelService.deleteByLevelNumber(levelNumber);
-            return new ResponseEntity<>("Level deleted successfully.", HttpStatus.OK);
-        }else {
-            return new ResponseEntity<>("Level with the given id does not exist.",HttpStatus.BAD_REQUEST);
+            return ResponseEntity.ok("Level deleted successfully.");
+        } catch (LevelInexistentException e) {
+            return ResponseEntity.status(404).build();
         }
     }
 
