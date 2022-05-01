@@ -15,10 +15,9 @@ import java.util.Optional;
 @Repository
 public interface LevelRepository extends MongoRepository<Level, String> {
     
-    @Query(value="{}",fields="{ board : 0 }")
-    List<Level> findAllInfo();
-
     Optional<Level> findByLevelNumber(int levelNumber);
-    void deleteByLevelNumber(int LevelNumber);
     
+    boolean existsByLevelNumber(int levelNumber);
+    
+    void deleteByLevelNumber(int LevelNumber);
 }
