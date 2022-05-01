@@ -27,9 +27,9 @@ public class StatisticsService {
      */
     public Optional<UserStatistics> getById(String id) {return statisticsRepository.findById(id);}
 
-
+    
     /**
-     * Updates the statistics of a user
+     * Updates the statistics of a user.
      *
      * @param userId the user whose statistics we want to keep track of.
      * @param game the game from which to retrieve the statistics.
@@ -53,7 +53,8 @@ public class StatisticsService {
     }
 
     /**
-     * Creates an entry in the statistics database for a specified user
+     * Creates an empty entry in the statistics database for a specified user.
+     * Returns new or existing statistics of they exist already.
      *
      * @param userId the user whose statistics we want to keep track of.
      *
