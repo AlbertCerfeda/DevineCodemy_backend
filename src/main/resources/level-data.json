@@ -133,7 +133,8 @@
       "TURN_LEFT",
       "TURN_RIGHT",
       "COLLECT_COIN"
-    ]
+    ],
+    "thumbnailSrc": "../assets/level1.png"
   },
   {
     "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level",
@@ -270,7 +271,8 @@
       "TURN_LEFT",
       "TURN_RIGHT",
       "COLLECT_COIN"
-    ]
+    ],
+    "thumbnailSrc": "../assets/level2.png"
   },
   {
     "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level",
@@ -407,7 +409,8 @@
       "TURN_LEFT",
       "TURN_RIGHT",
       "COLLECT_COIN"
-    ]
+    ],
+    "thumbnailSrc": "../assets/level3.png"
   },
   {
     "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level",
@@ -546,7 +549,8 @@
       "TURN_LEFT",
       "TURN_RIGHT",
       "COLLECT_COIN"
-    ]
+    ],
+    "thumbnailSrc": "../assets/level4.png"
   },
   {
     "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level",
@@ -685,7 +689,8 @@
       "TURN_LEFT",
       "TURN_RIGHT",
       "COLLECT_COIN"
-    ]
+    ],
+    "thumbnailSrc": "../assets/level5.png"
   },
 
 
@@ -829,9 +834,9 @@
       "TURN_LEFT",
       "TURN_RIGHT",
       "COLLECT_COIN"
-    ]
+    ],
+    "thumbnailSrc": "../assets/level6.png"
   },
-
 
 
   {
@@ -970,7 +975,8 @@
       "TURN_LEFT",
       "TURN_RIGHT",
       "COLLECT_COIN"
-    ]
+    ],
+    "thumbnailSrc": "../assets/level7.png"
   },
 
 
@@ -1111,7 +1117,8 @@
       "TURN_LEFT",
       "TURN_RIGHT",
       "COLLECT_COIN"
-    ]
+    ],
+    "thumbnailSrc": "../assets/level8.png"
   },
 
   {
@@ -1252,7 +1259,8 @@
       "TURN_LEFT",
       "TURN_RIGHT",
       "COLLECT_COIN"
-    ]
+    ],
+    "thumbnailSrc": "../assets/level9.png"
   },
   {
     "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level",
@@ -1390,6 +1398,7 @@
       "TURN_LEFT",
       "TURN_RIGHT",
       "COLLECT_COIN"
-    ]
+    ],
+    "thumbnailSrc": "../assets/level10.png"
   }
 ]
