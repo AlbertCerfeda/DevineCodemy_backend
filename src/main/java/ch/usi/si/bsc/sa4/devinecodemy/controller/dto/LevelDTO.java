@@ -17,7 +17,7 @@ public class LevelDTO {
     
     private final List<EActionDTO> allowed_commands;
 
-    private final String src;
+    private final String thumbnailSrc;
     
     private final int maxCommandsNumber;
 
@@ -48,7 +48,7 @@ public class LevelDTO {
             
         }
 
-        this.src = level.getSrc();
+        this.thumbnailSrc= level.getThumbnailSrc();
     }
 
     public String getName() {
@@ -77,5 +77,9 @@ public class LevelDTO {
 
     public int getLevelNumber() {
         return levelNumber;
+    }
+    
+    public String getThumbnailSrc(){
+        return thumbnailSrc;
     }
 }

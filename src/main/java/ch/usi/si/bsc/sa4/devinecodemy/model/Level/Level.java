@@ -24,7 +24,7 @@ public class Level {
     
     private final int maxCommandsNumber;
 
-    private final String src;
+    private final String thumbnailSrc;
     /*
     TODO: Add additional fields
     - Goal of the level in order to complete it
@@ -45,7 +45,7 @@ public class Level {
                  @JsonProperty("board") Board board,
                  @JsonProperty("robot") Robot robot,
                  @JsonProperty("allowed_commands") List<EAction> allowed_commands,
-                 @JsonProperty("src") String src) {
+                 @JsonProperty("thumbnailSrc") String thumbnailSrc) {
         this.name = name;
         this.description = description;
         this.levelNumber = levelNumber;
@@ -53,7 +53,7 @@ public class Level {
         this.board = board;
         this.robot = robot;
         this.allowed_commands = allowed_commands;
-        this.src = src;
+        this.thumbnailSrc=thumbnailSrc;
     }
     
     /**
@@ -110,7 +110,7 @@ public class Level {
         return id;
     }
 
-    public String getSrc() {return src; }
+    public String getThumbnailSrc() {return thumbnailSrc; }
 
     public int getLevelNumber() {return levelNumber;}
 }
