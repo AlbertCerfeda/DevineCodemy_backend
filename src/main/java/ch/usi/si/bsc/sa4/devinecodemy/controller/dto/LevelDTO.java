@@ -16,6 +16,8 @@ public class LevelDTO {
     private RobotDTO robot;
     
     private final List<EActionDTO> allowed_commands;
+
+    private final String thumbnailSrc;
     
     private final int maxCommandsNumber;
 
@@ -45,6 +47,8 @@ public class LevelDTO {
             this.robot = null;
             
         }
+
+        this.thumbnailSrc= level.getThumbnailSrc();
     }
 
     public String getName() {
@@ -73,5 +77,9 @@ public class LevelDTO {
 
     public int getLevelNumber() {
         return levelNumber;
+    }
+    
+    public String getThumbnailSrc(){
+        return thumbnailSrc;
     }
 }
