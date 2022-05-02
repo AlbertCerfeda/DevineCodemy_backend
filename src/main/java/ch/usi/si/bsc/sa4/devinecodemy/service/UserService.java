@@ -138,8 +138,8 @@ public class UserService {
         } catch (UserInexistentException e) {
             return false;
         }
-        
-        return u.getId() == id;
+
+        return u.getId().equals(id);
     }
 
     /**
