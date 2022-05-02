@@ -4,6 +4,7 @@ spring:
       database: devinecodemy
       host: localhost
       port: 27017
+      auto-index-creation: true
   security:
     oauth2:
       client:
@@ -32,5 +33,6 @@ logging:
     org:
       springframework:
         security: DEBUG
+
 
 

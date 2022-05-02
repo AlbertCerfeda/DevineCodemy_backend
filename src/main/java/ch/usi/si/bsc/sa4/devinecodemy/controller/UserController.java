@@ -41,7 +41,7 @@ public class UserController {
      */
     @GetMapping
     public ResponseEntity<List<UserDTO>> getAll() {
-        return ResponseEntity.ok(userService.getAllPublic().stream().map(User::toUserDTO).collect(Collectors.toList()));
+        return ResponseEntity.ok(userService.getAllPublic().stream().map(User::toPublicUserDTO).collect(Collectors.toList()));
     }
     
 
@@ -73,7 +73,7 @@ public class UserController {
 
 
         updatedUser = userService.updateUser(updatedUser);
-        return ResponseEntity.ok(updatedUser.toUserDTO());
+        return ResponseEntity.ok(updatedUser.toPublicUserDTO());
 
     }
     
@@ -86,7 +86,7 @@ public class UserController {
     public ResponseEntity<List<UserDTO>> getByNameContaining(@RequestParam("name") String name) {
         // Same as in getAll() but with functional approach
         List<UserDTO> allUserDTOs = userService.searchByNameContaining(name, true).stream()
-                .map(User::toUserDTO)
+                .map(User::toPublicUserDTO)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(allUserDTOs);
     }
@@ -105,9 +105,9 @@ public class UserController {
         }
 
         if (userService.isIdEqualToken(authenticationToken,id) || optionalUser.get().isProfilePublic()) {
-            return ResponseEntity.ok(optionalUser.get().toUserDTO());
+            return ResponseEntity.ok(optionalUser.get().toPublicUserDTO());
         } else {
-            return new ResponseEntity<>("This profile is private.", HttpStatus.UNAUTHORIZED);
+            return ResponseEntity.ok(optionalUser.get().toPrivateUserDTO());
         }
     }
 }

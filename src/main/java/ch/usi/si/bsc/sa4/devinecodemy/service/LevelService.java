@@ -1,52 +1,61 @@
 package ch.usi.si.bsc.sa4.devinecodemy.service;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.LevelInexistentException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.UserInexistentException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.UserNotAllowedException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level;
 import ch.usi.si.bsc.sa4.devinecodemy.model.LevelValidation.LevelValidation;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Statistics.LevelStatistics;
 import ch.usi.si.bsc.sa4.devinecodemy.model.Statistics.UserStatistics;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.LevelRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Provides all operations relating game levels.
  */
 @Service
 public class LevelService {
+    private final UserService userService;
     private LevelRepository levelRepository;
     private StatisticsService statisticsService;
 
     @Autowired
-    public LevelService(LevelRepository levelRepository, StatisticsService statisticsService) {
+    public LevelService(LevelRepository levelRepository, StatisticsService statisticsService, UserService userService) {
         this.levelRepository = levelRepository;
         this.statisticsService = statisticsService;
+        this.userService = userService;
     }
 
 
     /**
      * Simulates a gameplay on a specific level.
-     * @param levelId the level ID string.
+     * @param levelNumber the level number.
      * @param userId the ID of the user that is playing the level. Used or saving game statistics.
      * @param commands the list of commands to play on the level.
      * @return a LevelValidationDTO object containing the result of the gameplay.
-     * @throws IllegalArgumentException if the levelId is not valid.
+     * @throws LevelInexistentException if the level does not exist.
+     * @throws UserInexistentException if the user with the given userId does not exist.
+     * @throws UserNotAllowedException if the user is not allowed to play this level.
      */
-    public LevelValidation playLevel(String levelId, String userId, List<String> commands) throws IllegalArgumentException {
-        Optional<Level> optionalLevel = getById(levelId);
-        if(optionalLevel.isEmpty())
-            throw new IllegalArgumentException("Level does not exist");
+    public LevelValidation playLevel(int levelNumber, String userId, List<String> commands) throws LevelInexistentException, UserInexistentException, UserNotAllowedException {
+        Optional<Level> optionalLevel = getByLevelNumber(levelNumber);
+        if(optionalLevel.isEmpty()) {
+            throw new LevelInexistentException(levelNumber);
+        } else if(!userService.userIdExists(userId)) {
+            throw new UserInexistentException(userId);
+        } else if(!isLevelPlayable(levelNumber, userId)) {
+            throw new UserNotAllowedException("Level #"+levelNumber+" is not playable by user '"+userId+"' !");
+        }
 
         GamePlayer gameplayer = new GamePlayer(optionalLevel.get());
 
         LevelValidation validation = gameplayer.play(commands);
 
         // Here we create the new statistics for the user after playing the game.
-        statisticsService.addStats(userId, gameplayer);
+        statisticsService.addStats(userId, gameplayer, validation);
 
         return validation;
     }
@@ -56,35 +65,32 @@ public class LevelService {
 
 
     /**
-     * Returns all the Levels that are playable by the User.
+     * Returns all the Levels playable by a user.
      * @param userId the User ID string.
-     * @return Pair object with:
-     *  - The List of all playable game Levels by the user.
-     *  - An Integer representing the number of Levels in the database.
-     * @throws IllegalArgumentException if the user with userId doesn't exist.
+     * @return a List of all playable game Levels.
+     * @throws UserInexistentException if the user with userId doesn't exist.
      */
-    public Pair<List<Level>,Integer> getAllPlayableLevels(String userId) throws IllegalArgumentException{
-        ArrayList<Level> playableLevels = new ArrayList<>();
+    public List<Level> getAllPlayableLevels(String userId) throws UserInexistentException {
+        if(!userService.userIdExists(userId)) {
+            throw new UserInexistentException(userId);
+        }
+        
         Optional<UserStatistics> stats = statisticsService.getById(userId);
-        List<Level> allLevels = getAll();
+        // If there no stats yet for this user, create empty statistics for the user in the db.
         if (stats.isEmpty()) {
-            throw new IllegalArgumentException("Statistics for user ID do not exist");
+            statisticsService.addStats(userId);
         }
         
         UserStatistics statistics = stats.get();
-        for (Level level : allLevels) {
-            LevelStatistics actualLevel = statistics.getData().get(level.getId());
-            if (actualLevel != null) {
-                playableLevels.add(level);
+        int max = 0;
+        // Finds the highest levelNumber among the completed levels.
+        for (Integer key : statistics.getData().keySet()) {
+            if (statistics.getData().get(key).isCompleted() && key > max) {
+                max = key;
             }
         }
-        
-        /*
-            TODO: Wrong. Needs to add the next unplayed level aswell.
-                Otherwise, we wont ever be able to play even the first level.
-        */
-        
-        return Pair.of(playableLevels, allLevels.size());
+
+        return getRange(1, max+1);
     }
 
 
@@ -93,60 +99,100 @@ public class LevelService {
      * Returns all levels in the game.
      * @return List containing all the levels in the game.
      */
-    private List<Level> getAll() {
+    public List<Level> getAll() {
         return levelRepository.findAll();
     }
-
+    
     /**
-     * Returns all level info in the game. The returned levels do not contain data like the game board.
-     *  Useful for having a more lightweight message when displaying just the level info.
-     * @return List containing all the level infos in the game.
+     * Returns a list of Levels whose levelNumber lies in between the provided range.
+     * @param start the lower bound of the range.
+     * @param end the upper bound of the range.
+     * @throws IllegalArgumentException if the provided range is not valid.
+     * @return list of Levels whose levelNumber lies in between the provided range.
      */
-    public List<Level> getAllInfo() {
-        return levelRepository.findAllInfo();
+    private List<Level> getRange(int start, int end) throws IllegalArgumentException {
+        if(start > end) {
+            throw new IllegalArgumentException("Parameter 'start' needs to be less or equal to 'end'");
+        }
+        
+        return getAll().stream().filter((Level l)->l.getLevelNumber() >= start && l.getLevelNumber() <= end).collect(Collectors.toList());
     }
 
     /**
-     * Returns a level with a specific ID only if playable for the given user
-     * @param levelId the levelId of the level to look for
+     * Returns a level with a specific levelNumber if playable for the given user
+     * @param levelNumber the levelNumber of the level to look for
      * @param userId the userID of the user to match
-     * @return The level with the given levelId
+     * @return The level with the given levelNumber
+     * @throws LevelInexistentException if level with specified number is not found.
+     * @throws UserInexistentException if the user does not exist.
      */
-    public Optional<Level> getByIdIfPlayable(String levelId, String userId) {
-        Optional<Level> l = getById(levelId);
-        if (l.isEmpty())
-            return Optional.empty();
-        
-        Level level = l.get();
-        for (Level lev : getAllPlayableLevels(userId).getFirst()) {
-            if (lev.equals(level)) {
-                return Optional.of(level);
-            }
+    public Optional<Level> getByLevelNumberIfPlayable(int levelNumber, String userId) throws LevelInexistentException, UserInexistentException {
+        Optional<Level> l = getByLevelNumber(levelNumber);
+        if (l.isEmpty()) {
+            throw new LevelInexistentException(levelNumber);
+        } else if(!userService.userIdExists(userId)) {
+            throw new UserInexistentException(userId);
+        }
+
+        if(isLevelPlayable(levelNumber, userId)) {
+            return Optional.of(getByLevelNumber(levelNumber).get());
         }
         return Optional.empty();
     }
-
+    
     /**
-     * Returns a Level with a specific ID.
-     * @param levelId the level_id of the level to look for.
-     * @return an Optional containing the Level if there is one with the provided ID.
+     * Returns whether a level is playable by a user.
+     * @param levelNumber the number of the level.
+     * @param userId the ID of the user.
+     * @return whether the level is playable by a user.
+     * @throws LevelInexistentException if the level does not exist.
+     * @throws UserInexistentException if the user does not exist.
      */
-    public Optional<Level> getById(String levelId) {
-        return levelRepository.findById(levelId);
+    public boolean isLevelPlayable(int levelNumber, String userId) throws LevelInexistentException, UserInexistentException {
+        if(!levelExists(levelNumber)) {
+            throw new LevelInexistentException(levelNumber);
+        } else if(!userService.userIdExists(userId)) {
+            throw new UserInexistentException(userId);
+        }
+    
+        for (Level lev : getAllPlayableLevels(userId)) {
+            if (lev.getLevelNumber() == levelNumber) {
+                return true;
+            }
+        }
+        
+        return false;
     }
-
-
-
+    
     /**
-     * Returns a Level with a specific name.
-     * @param levelName the level_name of the level to look for.
-     * @return an Optional containing the Level if there is one with the provided name.
+     * Returns whether a level exists given the levelNumber.
+     * @param levelNumber the number of the level.
+     * @return whether a level exists given the levelNumber.
      */
-    public Optional<Level> getByName(String levelName) {return levelRepository.findByNameContaining(levelName);}
-
+    public boolean levelExists(int levelNumber) {
+        return levelRepository.existsByLevelNumber(levelNumber);
+    }
+    
     /**
-     * Deletes a Level with a specific ID.
-     * @param levelId the level_id of the level to delete.
+     * Returns a Level with a specific level number.
+     * @param levelNumber the level number of the level to look for.
+     * @return an Optional containing the Level if there is one with the provided level number.
      */
-    public void deleteLevelById(String levelId){levelRepository.deleteById(levelId);}
+    public Optional<Level> getByLevelNumber(int levelNumber) {
+        return levelRepository.findByLevelNumber(levelNumber);
+    }
+    
+    
+    /**
+     * Deletes a Level with a specific level number.
+     * @throws LevelInexistentException if the level with the given levelNumber does not exist.
+     * @param levelNumber the number of the level to delete.
+     */
+    public void deleteByLevelNumber(int levelNumber) throws LevelInexistentException {
+        if(!levelExists(levelNumber)) {
+            throw new LevelInexistentException(levelNumber);
+        }
+        
+        levelRepository.deleteByLevelNumber(levelNumber);
+    }
 }

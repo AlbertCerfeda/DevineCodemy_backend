@@ -1,15 +1,14 @@
 package ch.usi.si.bsc.sa4.devinecodemy.controller;
 
+import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.LevelInexistentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level;
 import ch.usi.si.bsc.sa4.devinecodemy.model.User.User;
 import ch.usi.si.bsc.sa4.devinecodemy.service.LevelService;
 import ch.usi.si.bsc.sa4.devinecodemy.service.UserService;
@@ -49,17 +48,16 @@ public class DevController {
     }
 
     /**
-     * DELETE /levels/{id}
-     * Deletes the level with the give id, if it exists
+     * DELETE /levels/{levelNumber}
+     * Deletes the level with the given level number, if it exists
      */
-    @DeleteMapping("/levels/{id}")
-    public ResponseEntity<String> deleteLevel(@PathVariable String id){
-        Optional<Level> optionalLevel = levelService.getById(id);
-        if(optionalLevel.isPresent()){
-            levelService.deleteLevelById(id);
-            return new ResponseEntity<>("Level deleted successfully.", HttpStatus.OK);
-        }else {
-            return new ResponseEntity<>("Level with the given id does not exist.",HttpStatus.BAD_REQUEST);
+    @DeleteMapping("/levels/{levelNumber}")
+    public ResponseEntity<String> deleteLevel(@PathVariable int levelNumber){
+        try {
+            levelService.deleteByLevelNumber(levelNumber);
+            return ResponseEntity.ok("Level deleted successfully.");
+        } catch (LevelInexistentException e) {
+            return ResponseEntity.status(404).build();
         }
     }
 
