@@ -9,25 +9,18 @@ public class PlayLevelDTO {
 
     private int levelNumber;
 
-    private String userId;
-
     private List<String> commands;
 
-    public PlayLevelDTO (int levelNumber, String userId, List<String> commands) {
+    public PlayLevelDTO (int levelNumber, List<String> commands) {
         this.levelNumber = levelNumber;
-        this.userId = userId;
         this.commands = commands;
-    }
-
-    public int getLevelNumber() {
-        return levelNumber;
-    }
-
-    public String getUserId() {
-        return userId;
     }
 
     public List<String> getCommands() {
         return commands;
+    }
+
+    public int getLevelNumber() {
+        return levelNumber;
     }
 }
