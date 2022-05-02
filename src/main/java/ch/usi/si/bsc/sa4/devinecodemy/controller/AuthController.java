@@ -123,7 +123,16 @@ public class AuthController {
         // If the user does not exist yet in the database, it creates it.
         try {
             userService.getUserByToken(authenticationToken);
-            userService.updateUser(new User(newUser.getId(),newUser.getName(),newUser.getUsername(),newUser.getEmail()));
+      userService.updateUser(
+          new User(newUser.getId(),
+              newUser.getName(),
+              newUser.getUsername(),
+              newUser.getEmail(),
+              newUser.getAvatar_url(),
+              newUser.getBio(),
+              newUser.getLinkedin(),
+              newUser.getTwitter(),
+              newUser.getSkype()));
         } catch (UserInexistentException e) {
             userService.addUser(newUser);
         }
