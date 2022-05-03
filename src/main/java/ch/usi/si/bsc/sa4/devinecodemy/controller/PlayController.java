@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
- * Controller for playing the level with the input commands
+ * Controller that enables the user to play a level.
  */
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -29,7 +29,14 @@ public class PlayController {
         this.levelService = levelService;
         this.userService = userService;
     }
-
+    
+    /**
+     * PUT /play/
+     *
+     * @param authenticationToken the users auth token.
+     * @param playLevelDTO the needed parameters passed in the body.
+     * @return a LevelValidationDTO containing the results of the play.
+     */
     @PutMapping()
     @ResponseBody
     public ResponseEntity<LevelValidationDTO>play(OAuth2AuthenticationToken authenticationToken, @RequestBody PlayLevelDTO playLevelDTO) { // Fix how parameters are passed

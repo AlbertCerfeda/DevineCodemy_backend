@@ -20,24 +20,24 @@ public class LevelValidationDTO {
     }
 
     /**
-     * To get if the level is completed
-     * @return true if the level is completed, false otherwise
+     * To get if the level is completed.
+     * @return true if the level is completed, false otherwise.
      */
     public boolean isCompleted() {
         return completed;
     }
 
     /**
-     * To get the list of errors
-     * @return the list of errors
+     * To get the list of errors.
+     * @return the list of errors.
      */
     public List<String> getErrors() {
         return errors;
     }
 
     /**
-     * To get the list of animations
-     * @return the list of animations
+     * To get the list of animations.
+     * @return the list of animations.
      */
     public List<String> getAnimations() {
         return animations;
