@@ -1,5 +1,7 @@
 package ch.usi.si.bsc.sa4.devinecodemy.controller.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -7,11 +9,12 @@ import java.util.List;
  */
 public class PlayLevelDTO {
 
-    private int levelNumber;
+    private final int levelNumber;
 
-    private List<String> commands;
+    private final List<String> commands;
 
-    public PlayLevelDTO (int levelNumber, List<String> commands) {
+    public PlayLevelDTO (@JsonProperty("levelNumber") int levelNumber,
+                         @JsonProperty("commands") List<String> commands) {
         this.levelNumber = levelNumber;
         this.commands = commands;
     }
