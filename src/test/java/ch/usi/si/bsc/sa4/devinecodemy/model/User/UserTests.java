@@ -14,8 +14,8 @@ public class UserTests {
 
     @BeforeEach
     void beforeAllTests() {
-        user = new User("an id", "a name", "a username", "an email");
-        user2 = new User("another id", "another name", "another username", "another email");
+        user = new User("an id", "a name", "a username", "an email","an avatar","a bio","a linkedin","a twitter","a skype");
+        user2 = new User("another id", "another name", "another username", "another email","another avatar","another bio","another linkedin","another twitter","another skype");
     }
 
     @Test
@@ -24,6 +24,11 @@ public class UserTests {
         assertEquals("a name", user.getName(), "the name field isn't set correctly");
         assertEquals("a username", user.getUsername(), "the username field isn't set correctly");
         assertEquals("an email", user.getEmail(), "the email field isn't set correctly");
+        assertEquals("an avatar", user.getAvatar_url(), "the avatar_url field isn't set correctly");
+        assertEquals("a bio", user.getBio(), "the bio field isn't set correctly");
+        assertEquals("a skype", user.getSkype(), "the skype field isn't set correctly");
+        assertEquals("a linkedin", user.getLinkedin(), "the linkedin field isn't set correctly");
+        assertEquals("a twitter", user.getTwitter(), "the twitter field isn't set correctly");
     }
 
     @Test
