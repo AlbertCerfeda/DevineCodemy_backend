@@ -131,7 +131,6 @@ public class GamePlayer {
         }
         
         if (collectedItems == board.getCoinsNumber()) {     // level completed
-            levelValidation.addAnimation(EAnimation.EMOTE_THUMBS_UP);
             levelValidation.addAnimation(EAnimation.EMOTE_DANCE);
             levelValidation.setCompleted(true);
         } else if (!isDead) { // level not completed but the player is not dead
