@@ -3,7 +3,6 @@ package ch.usi.si.bsc.sa4.devinecodemy.model.User;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
-
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.UserDTO;
 
 @Document(collection="users")
@@ -30,7 +29,6 @@ public class User {
      * @param bio User's bio
      * @param twitter User's twitter
      * @param skype User's skype
-     * @param twitter User's linkedin
      * @param linkedin User's linkedin
      */
     @PersistenceConstructor
@@ -41,8 +39,8 @@ public class User {
         this.email = email;
         this.avatar_url = avatar_url;
         this.bio = bio;
-        this.skype = skype;
         this.twitter = twitter;
+        this.skype = skype;
         this.linkedin = linkedin;
     }
 
@@ -70,6 +68,10 @@ public class User {
      * @return user's bio */
     public String getBio() { return bio;}
 
+    /** Retrieves the Twitter of a user, in case having a Twitter account
+     * @return user's Twitter*/
+    public String getTwitter() { return twitter;}
+
     /** Retrieves the Skype of a user, in case having a Skype account
      * @return user's Skype */
     public String getSkype() { return skype;}
@@ -77,10 +79,6 @@ public class User {
     /** Retrieves the LinkedIn of a user, in case having a LinkedIn account
      * @return user's linkedIn*/
     public String getLinkedin() { return linkedin; }
-
-    /** Retrieves the Twitter of a user, in case having a Twitter account
-     * @return user's Twitter*/
-    public String getTwitter() { return twitter;}
 
     /** Retrieves the profile status. It is true if the profile is public
      * @return true if user's Profile is public */
@@ -93,15 +91,15 @@ public class User {
 
 //    public void setBio(String bio) { this.bio = bio; }
 
+//    public void setTwitter(String twitter) { this.twitter = twitter;}
+
 //    public void setSkype(String skype) { this.skype = skype; }
 
 //    public void setLinkedin(String linkedin) { this.linkedin = linkedin; }
 
-//    public void setTwitter(String twitter) { this.twitter = twitter;}
-
     /**
      * Returns the UserDTO containing ALL the user data.
-     * @return the UserDTO.
+     * @return the UserDTO with a public profile.
      */
     public UserDTO toPublicUserDTO() {
         return new UserDTO(this, false);
@@ -109,10 +107,9 @@ public class User {
 
     /**
      * Returns the UserDTo containing the essential data if the User is private.
-     * @return the UserDTO.
+     * @return the UserDTO with a private profile.
      */
     public UserDTO toPrivateUserDTO() {
         return new UserDTO(this, true);
     }
-
 }

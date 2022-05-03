@@ -31,16 +31,16 @@ public class UserDTO {
         this.avatar_url = user.getAvatar_url();
         this.bio = user.getBio();
         this.publicProfile = user.isProfilePublic();
-        this.linkedin = user.getLinkedin();
-        this.skype = user.getSkype();
         this.twitter = user.getTwitter();
+        this.skype = user.getSkype();
+        this.linkedin = user.getLinkedin();
         this.visible = true;
         
         if(checkPrivate && !user.isProfilePublic()) {
             this.email = null;
-            this.linkedin = null;
-            this.skype = null;
             this.twitter = null;
+            this.skype = null;
+            this.linkedin = null;
             this.visible = false;
         }
     }
@@ -126,4 +126,6 @@ public class UserDTO {
     public void setLinkedin(String linkedin) {
         this.linkedin = linkedin;
     }
+
+    public boolean visible() {return visible;}
 }
