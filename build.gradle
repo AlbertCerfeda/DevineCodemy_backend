@@ -1,7 +1,14 @@
 plugins {
 	id 'org.springframework.boot' version '2.6.4'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'checkstyle'
 	id 'java'
+	id 'jacoco'
+}
+
+ext {
+	jacoco_version = '0.8.8'
+	checkstyle_version = '10.2'
 }
 
 group = 'ch.usi.si.bsc.sa4'
@@ -12,15 +19,49 @@ repositories {
 	mavenCentral()
 }
 
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
+	testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo:3.4.3'
 	implementation 'org.springframework.boot:spring-boot-starter-security:2.6.4'
+	implementation 'org.springframework.security:spring-security-test'
+	
+	implementation 'org.webjars:jquery:3.4.1' // not really needed
+	implementation 'org.webjars:bootstrap:4.3.1' // not really needed
+	implementation 'org.webjars:webjars-locator-core' // not really needed
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client' //needed for authentication
+	implementation 'org.springframework.security:spring-security-oauth2-client'
 }
 
-tasks.named('test') {
+
+jacoco {
+	toolVersion = jacoco_version
+}
+
+test {
 	useJUnitPlatform()
+  finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+	dependsOn test
+	reports {
+		xml.required = true
+	}
+}
+
+
+
+checkstyle {
+	toolVersion checkstyle_version
+	configFile rootProject.file(".build_config/checkstyle/checkstyle.xml")
+}
+checkstyleMain {
+	source ='src/main/java'
+}
+checkstyleTest {
+	source ='src/test/java'
 }
