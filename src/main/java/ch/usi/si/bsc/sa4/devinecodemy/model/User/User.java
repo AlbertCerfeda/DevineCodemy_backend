@@ -4,7 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.UserDTO;
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.User.UserDTO;
 
 @Document(collection="users")
 public class User {

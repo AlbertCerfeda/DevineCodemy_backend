@@ -1,18 +1,11 @@
-package ch.usi.si.bsc.sa4.devinecodemy.controller.dto;
+package ch.usi.si.bsc.sa4.devinecodemy.controller.dto.User;
 
 /**
  * The create state of a User object.
  */
-public class CreateUserDTO {
-    private String id;
-    private String name;
-    private String username;
-    private String email;
+public class CreateUserDTO extends GeneralUserDTO {
+
     private String avatar_url;
-    private String bio;
-    private String twitter;
-    private String skype;
-    private String linkedin;
 
     /**
      * Default constructor. Needed by ObjectMapper.readValue() to avoid failures
@@ -20,18 +13,12 @@ public class CreateUserDTO {
      * the required fields.
      */
     public CreateUserDTO() {
+        super();
     }
 
-    public CreateUserDTO(String id, String name, String username, String email, String avatarUrl, String bio,  String linkedin, String twitter, String skype) {
-        this.id = id;
-        this.name = name;
-        this.username = username;
-        this.email = email;
+    public CreateUserDTO(String id, String name, String username, String email, String bio, String twitter, String skype, String linkedin, String avatarUrl) {
+        super(id,name,username,email,bio,twitter,skype,linkedin);
         this.avatar_url = avatarUrl;
-        this.bio = bio;
-        this.linkedin = linkedin;
-        this.skype = skype;
-        this.twitter = twitter;
     }
 
     public String getAvatar_url() {

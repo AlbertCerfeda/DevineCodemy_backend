@@ -1,22 +1,14 @@
-package ch.usi.si.bsc.sa4.devinecodemy.controller.dto;
+package ch.usi.si.bsc.sa4.devinecodemy.controller.dto.User;
 import ch.usi.si.bsc.sa4.devinecodemy.model.User.User;
 
 /**
  * The stripped down state of a User object.
  */
-public class UserDTO {
+public class UserDTO extends GeneralUserDTO {
     // The visible variable indicates whether the data about the user has been hidden (eg if its private)
     private boolean visible;
-    private String id;
-    private String name;
-    private String username;
-    private String email;
     private String avatarUrl;
-    private String bio;
     private boolean publicProfile;
-    private String twitter;
-    private String skype;
-    private String linkedin;
     
     /**
      * Constructor of UserDTO.
@@ -24,16 +16,9 @@ public class UserDTO {
      * @param checkPrivate if true keeps only the essential data if the profile is private.
      */
     public UserDTO(User user, boolean checkPrivate) {
-        this.id   = user.getId();
-        this.name = user.getName();
-        this.username = user.getUsername();
-        this.email = user.getEmail();
+        super(user.getId(),user.getName(),user.getUsername(),user.getEmail(),user.getBio(),user.getTwitter(),user.getSkype(),user.getLinkedin());
         this.avatarUrl = user.getAvatar_url();
-        this.bio = user.getBio();
         this.publicProfile = user.isProfilePublic();
-        this.linkedin = user.getLinkedin();
-        this.skype = user.getSkype();
-        this.twitter = user.getTwitter();
         this.visible = true;
         
         if(checkPrivate && !user.isProfilePublic()) {

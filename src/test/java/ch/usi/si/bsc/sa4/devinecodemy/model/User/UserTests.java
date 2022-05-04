@@ -1,6 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.User;
 
-import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.UserDTO;
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.User.UserDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
