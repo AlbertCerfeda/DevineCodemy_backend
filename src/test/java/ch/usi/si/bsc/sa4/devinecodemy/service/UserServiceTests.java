@@ -14,7 +14,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;

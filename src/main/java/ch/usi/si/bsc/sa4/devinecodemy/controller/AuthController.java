@@ -19,7 +19,6 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.User.User;
 import ch.usi.si.bsc.sa4.devinecodemy.service.UserService;
 
 import java.util.Arrays;
-import java.util.Optional;
 
 
 /**

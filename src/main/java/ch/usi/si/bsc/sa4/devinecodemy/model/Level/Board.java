@@ -55,9 +55,7 @@ public class Board {
     public Tile getTileAt(final int x, final int y) throws IndexOutOfBoundsException{
         if(x < 0 || y < 0 || x>= dimX || y>= dimY)
             throw new IndexOutOfBoundsException("Invalid coordinates");
-        //System.out.println("getTileAt("+x+","+y+")");
         for(Tile tile : grid) {
-            //System.out.println("Tile: " + tile.getPosX() + " " + tile.getPosY());
             if(tile.getPosX() == x && tile.getPosY() == y)
                 return tile;
         }

@@ -39,9 +39,6 @@ public abstract class Tile {
     
     protected boolean isWalkable;
 
-//    protected final String material;
-//    protected final String shape;
-
 
     /**
      * Constructor for abstract class Tile.
@@ -51,7 +48,7 @@ public abstract class Tile {
      * @param posZ the z position of the tile.
      * @param isWalkable true if the tile is walkable, false otherwise.
      */
-    public Tile(ETile type, final int posX, final int posY, final int posZ, final boolean isWalkable) {
+    protected Tile(ETile type, final int posX, final int posY, final int posZ, final boolean isWalkable) {
         this.type = type;
         this.posX = posX;
         this.posY = posY;

@@ -22,12 +22,12 @@ public class CreateUserDTO {
     public CreateUserDTO() {
     }
 
-    public CreateUserDTO(String id, String name, String username, String email, String avatar_url, String bio,  String linkedin, String twitter, String skype) {
+    public CreateUserDTO(String id, String name, String username, String email, String avatarUrl, String bio,  String linkedin, String twitter, String skype) {
         this.id = id;
         this.name = name;
         this.username = username;
         this.email = email;
-        this.avatar_url = avatar_url;
+        this.avatar_url = avatarUrl;
         this.bio = bio;
         this.linkedin = linkedin;
         this.skype = skype;

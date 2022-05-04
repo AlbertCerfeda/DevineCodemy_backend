@@ -4,7 +4,7 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.Item.Item;
 
 public class ItemDTO {
     /** 'type' is needed by the client for him to distinguish the different type of Items.  */
-    final String type;
+    private final String type;
     
     private final int posX;
     private final int posY;
