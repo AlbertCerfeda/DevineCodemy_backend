@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DisplayName("The robot")
 public class RobotTests {
@@ -44,6 +45,15 @@ public class RobotTests {
             var actualOrientation = robot.getOrientation();
             var expectedOrientation = EOrientation.DOWN;
             assertEquals(expectedOrientation, actualOrientation, "orientation is not the one provided in the constructor");
+        }
+
+        @DisplayName("can return the correct robotDTO")
+        @Test
+        void testToRobotDTO() {
+            var actualRobotDTO = robot.toRobotDTO();
+            assertEquals(robot.getPos_x(), actualRobotDTO.getPos_x(), "robotDTO does not have the same posX as its robot");
+            assertEquals(robot.getPos_y(), actualRobotDTO.getPos_y(), "robotDTO does not have the same posY as its robot");
+            assertEquals(robot.getOrientation().toString(), actualRobotDTO.getOrientation(), "robotDTO does not have the same orientation as its robot");
         }
 
     }

@@ -442,8 +442,8 @@ public class BoardTests {
             var actualBoardDTO = board.toBoardDTO();
             assertEquals(board.getDim_x(), actualBoardDTO.getDim_x(), "boardDTO does not have the same dimX as its board");
             assertEquals(board.getDim_x(), actualBoardDTO.getDim_y(), "boardDTO does not have the same dimY as its board");
-            assertNotNull(actualBoardDTO.getGrid(), "boardDTO board is null");
-            assertNotNull(actualBoardDTO.getItems(), "boardDTO robot is null");
+            assertNotNull(actualBoardDTO.getGrid(), "boardDTO grid is null");
+            assertNotNull(actualBoardDTO.getItems(), "boardDTO items is null");
         }
 
     }
