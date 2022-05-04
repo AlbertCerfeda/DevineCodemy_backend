@@ -82,7 +82,6 @@ public enum EOrientation {
      * @return a random direction.
      */
     public static EOrientation getRandom() {
-        Random random = new Random();
         final int r = random.nextInt(values().length);
         return values()[r];
     }

@@ -126,4 +126,8 @@ public class UserDTO {
     public void setLinkedin(String linkedin) {
         this.linkedin = linkedin;
     }
+
+    public boolean getVisible() { return this.visible; }
+
+    public void setVisible(boolean visible) { this.visible = visible; }
 }
