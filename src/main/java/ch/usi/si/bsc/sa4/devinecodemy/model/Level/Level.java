@@ -11,6 +11,7 @@ import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.LevelDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
 
 import java.util.List;
+import java.util.Objects;
 
 @Document(collection="levels")
 public class Level {
@@ -80,7 +81,12 @@ public class Level {
         return this.id.equals(level.id) && this.name.equals(level.name) && this.description.equals(level.description) && this.levelNumber == level.levelNumber &&
                 this.allowed_commands.equals(level.allowed_commands) && level.board.equals(this.board) && level.robot.equals(this.robot) && this.maxCommandsNumber == level.maxCommandsNumber;
     }
-    
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id,name,description,levelNumber,maxCommandsNumber,thumbnailSrc,board,robot,allowed_commands);
+    }
+
     // Getters and setters
     public String getName(){
         return name;

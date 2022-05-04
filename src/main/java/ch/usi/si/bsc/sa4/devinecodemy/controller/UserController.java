@@ -48,7 +48,7 @@ public class UserController {
      * @constraint boolean modifyProfile if true modify profile status, else modify other user fields.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(OAuth2AuthenticationToken authenticationToken, @PathVariable String id ,@RequestBody UpdateUserDTO updateUserDTO) throws IllegalArgumentException {
+    public ResponseEntity<UserDTO> updateUser(OAuth2AuthenticationToken authenticationToken, @PathVariable String id ,@RequestBody UpdateUserDTO updateUserDTO) throws IllegalArgumentException {
         Optional<User> optionalUser = userService.getById(id);
         
         if(optionalUser.isEmpty()) {
@@ -92,7 +92,7 @@ public class UserController {
      */
     @GetMapping("/{id}")
     @CrossOrigin(origins = "http://localhost:3000/")
-    public ResponseEntity<?> getById(OAuth2AuthenticationToken authenticationToken, @PathVariable("id") String id) {
+    public ResponseEntity<UserDTO> getById(OAuth2AuthenticationToken authenticationToken, @PathVariable("id") String id) {
         Optional<User> optionalUser = userService.getById(id);
         
         if(optionalUser.isEmpty()) {
@@ -111,7 +111,7 @@ public class UserController {
      * Gets the user
      */
     @GetMapping("/user")
-    public ResponseEntity<?> getUser(OAuth2AuthenticationToken authenticationToken) {
+    public ResponseEntity<UserDTO> getUser(OAuth2AuthenticationToken authenticationToken) {
         try {
             User u = userService.getUserByToken(authenticationToken);
             return ResponseEntity.ok(u.toPublicUserDTO());

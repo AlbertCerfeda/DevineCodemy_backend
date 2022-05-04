@@ -48,8 +48,8 @@ public class BoardTests {
             if (expectedItem == null) {
                 assertNull(actualItem);
             } else {
-                assertEquals(expectedItem.getPos_x(), actualItem.getPos_x(), "item does not have correct x");
-                assertEquals(expectedItem.getPos_y(), actualItem.getPos_y(), "item does not have correct y");
+                assertEquals(expectedItem.getPosX(), actualItem.getPosX(), "item does not have correct x");
+                assertEquals(expectedItem.getPosY(), actualItem.getPosY(), "item does not have correct y");
             }
         }
     }

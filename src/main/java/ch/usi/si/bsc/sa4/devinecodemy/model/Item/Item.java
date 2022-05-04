@@ -21,35 +21,35 @@ public abstract class Item {
     protected EItem type = EItem.PLACEHOLDER;
     
     // position
-    protected final int pos_x;
-    protected final int pos_y;
+    protected final int posX;
+    protected final int posY;
 
     /**
      * Constructor for abstract class Tile.
      * @param type the EItem enum type.
-     * @param pos_x the x position of the tile.
-     * @param pos_y the y position of the tile.
+     * @param posX the x position of the tile.
+     * @param posY the y position of the tile.
      */
-    public Item(EItem type, final int pos_x, final int pos_y) {
+    public Item(EItem type, final int posX, final int posY) {
         this.type = type;
-        this.pos_x = pos_x;
-        this.pos_y = pos_y;
+        this.posX = posX;
+        this.posY = posY;
     }
 
     /**
      * To get x position of the tile.
      * @return the x position of the tile.
      */
-    public int getPos_x() {
-        return pos_x;
+    public int getPosX() {
+        return posX;
     }
 
     /**
      * To get y position of the tile.
      * @return the y position of the tile.
      */
-    public int getPos_y() {
-        return pos_y;
+    public int getPosY() {
+        return posY;
     }
     
     public EItem getType(){
@@ -63,11 +63,11 @@ public abstract class Item {
         if (this == o) return true;
         if (!(o instanceof Item)) return false;
         Item item = (Item) o;
-        return pos_x == item.pos_x && pos_y == item.pos_y && type == item.type;
+        return posX == item.posX && posY == item.posY && type == item.type;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, pos_x, pos_y);
+        return Objects.hash(type, posX, posY);
     }
 }

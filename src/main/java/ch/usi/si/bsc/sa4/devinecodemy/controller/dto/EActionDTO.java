@@ -7,8 +7,8 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
  */
 public class EActionDTO {
     
-    private String name;
-    private String description;
+    private final String name;
+    private final String description;
     
     public EActionDTO (EAction action) {
         name = action.getFunc_call();

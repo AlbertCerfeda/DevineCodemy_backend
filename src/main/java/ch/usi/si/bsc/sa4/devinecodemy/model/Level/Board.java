@@ -35,8 +35,8 @@ public class Board {
         // Derives the dimensions of the board
         grid.forEach((t)-> this.dim_x = Math.max(this.dim_x, t.getPos_x() + 1));
         grid.forEach((t)-> this.dim_y = Math.max(this.dim_y, t.getPos_y() + 1));
-        items.forEach((i)-> this.dim_x = Math.max(this.dim_x, i.getPos_x() + 1));
-        items.forEach((i)-> this.dim_y = Math.max(this.dim_y, i.getPos_y() + 1));
+        items.forEach((i)-> this.dim_x = Math.max(this.dim_x, i.getPosX() + 1));
+        items.forEach((i)-> this.dim_y = Math.max(this.dim_y, i.getPosY() + 1));
         
         
         this.grid = grid;
@@ -76,7 +76,7 @@ public class Board {
             throw new IndexOutOfBoundsException("Invalid coordinates");
         
         for(Item item : items) {
-            if(item.getPos_x() == x && item.getPos_y() == y)
+            if(item.getPosX() == x && item.getPosY() == y)
                 return item;
         }
         return null;
