@@ -94,7 +94,7 @@ public class AuthController {
         //Creates a new request to GitLab to retrieve the user data
         final HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON,MediaType.TEXT_HTML,MediaType.TEXT_PLAIN));
-        final HttpEntity<String> entity = new HttpEntity<String>(headers);
+        final HttpEntity<String> entity = new HttpEntity<>(headers);
 
         String plainUser;
         try {

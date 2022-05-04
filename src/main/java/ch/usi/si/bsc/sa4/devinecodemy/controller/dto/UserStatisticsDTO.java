@@ -1,24 +1,25 @@
 package ch.usi.si.bsc.sa4.devinecodemy.controller.dto;
 
 import java.util.HashMap;
+import java.util.Map;
 
+import ch.usi.si.bsc.sa4.devinecodemy.model.Statistics.LevelStatistics;
 import ch.usi.si.bsc.sa4.devinecodemy.model.Statistics.UserStatistics;
 
 public class UserStatisticsDTO {
     private final String id;
-    private final HashMap level_data;
+    private final HashMap<Integer, LevelStatistics> level_data;
 
     public UserStatisticsDTO(UserStatistics userStatistics){
         this.id = userStatistics.getId();
         this.level_data = userStatistics.getData();
-
     }
 
     public String getId(){
         return this.id;
     }
 
-    public HashMap getData(){
+    public Map<Integer, LevelStatistics> getData(){
         return this.level_data;
     }
 

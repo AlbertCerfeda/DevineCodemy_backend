@@ -5,7 +5,7 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Robot;
 public class RobotDTO {
     private int pos_x;
     private int pos_y;
-    private String orientation;
+    private final String orientation;
     
     
     public RobotDTO (Robot robot) {
