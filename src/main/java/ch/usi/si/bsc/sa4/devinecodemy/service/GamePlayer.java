@@ -2,6 +2,7 @@ package ch.usi.si.bsc.sa4.devinecodemy.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EAnimation;
@@ -125,7 +126,8 @@ public class GamePlayer {
                     }
                     break;
                 default:
-                    System.out.println("[X] '" + action.name() +"' action unhandled !!");
+                    Logger logger = Logger.getLogger(this.getClass().getName());
+                    logger.severe("[X] '" + action.name() +"' action unhandled !!");
                     break;
             }
         }

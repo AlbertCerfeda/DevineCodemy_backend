@@ -19,6 +19,7 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.User.User;
 import ch.usi.si.bsc.sa4.devinecodemy.service.UserService;
 
 import java.util.Arrays;
+import java.util.logging.Logger;
 
 
 /**
@@ -114,7 +115,8 @@ public class AuthController {
         try {
             newUser = o.readValue(plainUser, CreateUserDTO.class);
         } catch (Exception ex) { //If JSON received is broken, gives a Server Error
-            System.out.println(ex);
+            Logger logger = Logger.getLogger(this.getClass().getName());
+            logger.severe(ex.getMessage());
             RedirectView r = new RedirectView();
             r.setUrl("/");
             return r;
