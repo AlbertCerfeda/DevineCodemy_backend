@@ -2,6 +2,7 @@ package ch.usi.si.bsc.sa4.devinecodemy.model.Level;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Objects;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -15,12 +16,12 @@ import java.util.List;
 @Document(collection="levels")
 public class Level {
     @Id
-    private String id;
+    private final String id;
     private final String name;
     private final String description;
 
     @Indexed(unique = true)
-    private int levelNumber;
+    private final int levelNumber;
     
     private final int maxCommandsNumber;
 
@@ -38,7 +39,8 @@ public class Level {
 
     @PersistenceConstructor
     @JsonCreator
-    public Level(@JsonProperty("name") String name,
+    public Level(@JsonProperty("id") String id,
+                 @JsonProperty("name") String name,
                  @JsonProperty("description") String description,
                  @JsonProperty("levelNumber") int levelNumber,
                  @JsonProperty("maxCommandsNumber") int maxCommandsNumber,
@@ -46,6 +48,7 @@ public class Level {
                  @JsonProperty("robot") Robot robot,
                  @JsonProperty("allowed_commands") List<EAction> allowed_commands,
                  @JsonProperty("thumbnailSrc") String thumbnailSrc) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.levelNumber = levelNumber;
@@ -53,7 +56,7 @@ public class Level {
         this.board = board;
         this.robot = robot;
         this.allowed_commands = allowed_commands;
-        this.thumbnailSrc=thumbnailSrc;
+        this.thumbnailSrc = thumbnailSrc;
     }
     
     /**
@@ -67,19 +70,6 @@ public class Level {
      * @return the LevelDTO.
      */
     public LevelDTO toLevelInfoDTO() { return new LevelDTO(this, true); }
-    
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Level)) {
-            return false;
-        }
-        Level level = (Level) o;
-        return this.id.equals(level.id) && this.name.equals(level.name) && this.description.equals(level.description) && this.levelNumber == level.levelNumber &&
-                this.allowed_commands.equals(this.allowed_commands) && level.board.equals(this.board) && level.robot.equals(this.robot) && this.maxCommandsNumber == level.maxCommandsNumber;
-    }
     
     // Getters and setters
     public String getName(){
@@ -113,4 +103,17 @@ public class Level {
     public String getThumbnailSrc() {return thumbnailSrc; }
 
     public int getLevelNumber() {return levelNumber;}
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Level)) return false;
+        Level level = (Level) o;
+        return levelNumber == level.levelNumber && maxCommandsNumber == level.maxCommandsNumber && Objects.equals(id, level.id) && Objects.equals(name, level.name) && Objects.equals(description, level.description) && Objects.equals(thumbnailSrc, level.thumbnailSrc) && Objects.equals(board, level.board) && Objects.equals(robot, level.robot) && Objects.equals(allowed_commands, level.allowed_commands);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, levelNumber, maxCommandsNumber, thumbnailSrc, board, robot, allowed_commands);
+    }
 }

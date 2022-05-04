@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
 import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level;
 
-
 public class LevelDTO {
     private final String name;
     private final String description;
@@ -21,7 +20,7 @@ public class LevelDTO {
     
     private final int maxCommandsNumber;
 
-    private int levelNumber;
+    private final int levelNumber;
     
     /**
      * Constructor for the LevelDTO object.
@@ -45,7 +44,6 @@ public class LevelDTO {
         if(onlyinfo) {
             this.board = null;
             this.robot = null;
-            
         }
 
         this.thumbnailSrc= level.getThumbnailSrc();
