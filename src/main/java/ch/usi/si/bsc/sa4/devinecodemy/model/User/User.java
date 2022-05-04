@@ -13,7 +13,7 @@ public class User {
     private final String name;
     private final String email;
     private final String username;
-    private final String avatarUrl;
+    private final String avatar_url;
     private boolean publicProfile;
     private String bio;
     private String twitter;
@@ -33,7 +33,7 @@ public class User {
         this.name = name;
         this.username = username;
         this.email = email;
-        this.avatarUrl = avatar_url;
+        this.avatar_url = avatar_url;
         this.bio = bio;
         this.skype = skype;
         this.twitter = twitter;
@@ -42,7 +42,7 @@ public class User {
     
     
 
-    public String getAvatarUrl() { return avatarUrl; }
+    public String getAvatar_url() { return avatar_url; }
 
     public String getId() {
         return id;

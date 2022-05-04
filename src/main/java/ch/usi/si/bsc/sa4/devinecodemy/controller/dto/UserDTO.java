@@ -28,7 +28,7 @@ public class UserDTO {
         this.name = user.getName();
         this.username = user.getUsername();
         this.email = user.getEmail();
-        this.avatarUrl = user.getAvatarUrl();
+        this.avatarUrl = user.getAvatar_url();
         this.bio = user.getBio();
         this.publicProfile = user.isProfilePublic();
         this.linkedin = user.getLinkedin();
@@ -37,10 +37,10 @@ public class UserDTO {
         this.visible = true;
         
         if(checkPrivate && !user.isProfilePublic()) {
-            this.email = null;
-            this.linkedin = null;
-            this.skype = null;
-            this.twitter = null;
+            this.email = "";
+            this.linkedin = "";
+            this.skype = "";
+            this.twitter = "";
             this.visible = false;
         }
     }
