@@ -1,8 +1,5 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 /**
  * All the possible orientations.

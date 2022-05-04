@@ -129,5 +129,5 @@ public class UserDTO {
 
     public boolean getVisible() { return this.visible; }
 
-    public void setVisible(boolean visible) { this.visible = visible; }
+    public void isVisible(boolean visible) { this.visible = visible; }
 }

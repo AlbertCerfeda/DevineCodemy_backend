@@ -30,7 +30,7 @@ import java.util.Optional;
 @RequestMapping("/auth")
 public class AuthController {
     private final UserService userService;
-    private OAuth2AuthorizedClientService authorizedClientService;
+    private final OAuth2AuthorizedClientService authorizedClientService;
     private final RestTemplate restTemplate;
 
     @Autowired
@@ -42,7 +42,8 @@ public class AuthController {
 
     /**
      * GET /auth/check
-     * Returns whether the user is authenticated or not by returning an Optional<User>.
+     * Returns whether the user is authenticated or not
+     * by returning an Optional<User>.
      * @param authenticationToken token that belongs to user.
      * @return Optional<User> user.
      *  If the user is not authenticated, returns HTTP status 401 (Unauthorized)
@@ -81,19 +82,19 @@ public class AuthController {
     public RedirectView userLogin(OAuth2AuthenticationToken authenticationToken) {
 
         // Retrieves the user token from the GitLab Token
-        OAuth2AuthorizedClient client = authorizedClientService
+        final OAuth2AuthorizedClient client = authorizedClientService
                 .loadAuthorizedClient(
                         authenticationToken.getAuthorizedClientRegistrationId(),
                         authenticationToken.getName());
         if (client == null) {
             throw new IllegalArgumentException("The token is null !");
         }
-        String accessToken = client.getAccessToken().getTokenValue();
+        final String accessToken = client.getAccessToken().getTokenValue();
 
         //Creates a new request to GitLab to retrieve the user data
-        HttpHeaders headers = new HttpHeaders();
+        final HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON,MediaType.TEXT_HTML,MediaType.TEXT_PLAIN));
-        HttpEntity<String> entity = new HttpEntity<String>(headers);
+        final HttpEntity<String> entity = new HttpEntity<String>(headers);
 
         String plainUser;
         try {
@@ -108,7 +109,7 @@ public class AuthController {
         }
 
         //Converts the received JSON Plain text into CreateUserDTO
-        ObjectMapper o = new ObjectMapper()
+        final ObjectMapper o = new ObjectMapper()
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         CreateUserDTO newUser;
         try {
@@ -138,7 +139,7 @@ public class AuthController {
         }
 
         // For redirecting back to Home Page
-        RedirectView redirectView = new RedirectView();
+        final RedirectView redirectView = new RedirectView();
         redirectView.setUrl("http://localhost:3000/profile");
         return redirectView;
     }
