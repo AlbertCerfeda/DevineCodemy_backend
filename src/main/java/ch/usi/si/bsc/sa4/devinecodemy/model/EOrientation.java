@@ -43,7 +43,6 @@ public enum EOrientation {
 
     private final int delta_x;
     private final int delta_y;
-    private static final Random random = new Random();
     
     public abstract EOrientation getOpposite();
     public abstract EOrientation turnLeft();
@@ -75,14 +74,5 @@ public enum EOrientation {
      */
     public int getDelta_y() {
         return delta_y;
-    }
-
-    /**
-     * To get a random direction.
-     * @return a random direction.
-     */
-    public static EOrientation getRandom() {
-        final int r = random.nextInt(values().length);
-        return values()[r];
     }
 }
