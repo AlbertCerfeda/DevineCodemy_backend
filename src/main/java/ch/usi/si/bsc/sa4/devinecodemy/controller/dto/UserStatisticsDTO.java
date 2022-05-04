@@ -8,11 +8,11 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.Statistics.UserStatistics;
 
 public class UserStatisticsDTO {
     private final String id;
-    private final HashMap<Integer, LevelStatistics> level_data;
+    private final HashMap<Integer, LevelStatistics> levelData;
 
     public UserStatisticsDTO(UserStatistics userStatistics){
         this.id = userStatistics.getId();
-        this.level_data = userStatistics.getData();
+        this.levelData = userStatistics.getData();
     }
 
     public String getId(){
@@ -20,7 +20,7 @@ public class UserStatisticsDTO {
     }
 
     public Map<Integer, LevelStatistics> getData(){
-        return this.level_data;
+        return this.levelData;
     }
 
 }
