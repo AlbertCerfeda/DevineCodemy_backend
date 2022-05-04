@@ -14,8 +14,8 @@ public class UserTests {
 
     @BeforeEach
     void beforeAllTests() {
-        user = new User("an id", "a name", "a username", "an email");
-        user2 = new User("another id", "another name", "another username", "another email");
+        user = new User("an id", "a name", "a username", "an email", "an avatar", "a bio", "linkedin", "twitter", "skype");
+        user2 = new User("another id", "another name", "another username", "another email", "an avatar", "a bio", "linkedin", "twitter", "skype");
     }
 
     @Test

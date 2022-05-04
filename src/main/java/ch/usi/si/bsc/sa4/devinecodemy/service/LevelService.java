@@ -1,6 +1,8 @@
 package ch.usi.si.bsc.sa4.devinecodemy.service;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.LevelInexistentException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.UserInexistentException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.UserNotAllowedException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level;
@@ -16,13 +18,15 @@ import java.util.stream.Collectors;
  */
 @Service
 public class LevelService {
+    private final UserService userService;
     private LevelRepository levelRepository;
     private StatisticsService statisticsService;
 
     @Autowired
-    public LevelService(LevelRepository levelRepository, StatisticsService statisticsService) {
+    public LevelService(LevelRepository levelRepository, StatisticsService statisticsService, UserService userService) {
         this.levelRepository = levelRepository;
         this.statisticsService = statisticsService;
+        this.userService = userService;
     }
 
 
@@ -32,12 +36,19 @@ public class LevelService {
      * @param userId the ID of the user that is playing the level. Used or saving game statistics.
      * @param commands the list of commands to play on the level.
      * @return a LevelValidationDTO object containing the result of the gameplay.
-     * @throws IllegalArgumentException if the levelNumber is not valid.
+     * @throws LevelInexistentException if the level does not exist.
+     * @throws UserInexistentException if the user with the given userId does not exist.
+     * @throws UserNotAllowedException if the user is not allowed to play this level.
      */
-    public LevelValidation playLevel(int levelNumber, String userId, List<String> commands) throws IllegalArgumentException {
+    public LevelValidation playLevel(int levelNumber, String userId, List<String> commands) throws LevelInexistentException, UserInexistentException, UserNotAllowedException {
         Optional<Level> optionalLevel = getByLevelNumber(levelNumber);
-        if(optionalLevel.isEmpty())
-            throw new IllegalArgumentException("Level does not exist");
+        if(optionalLevel.isEmpty()) {
+            throw new LevelInexistentException(levelNumber);
+        } else if(!userService.userIdExists(userId)) {
+            throw new UserInexistentException(userId);
+        } else if(!isLevelPlayable(levelNumber, userId)) {
+            throw new UserNotAllowedException("Level #"+levelNumber+" is not playable by user '"+userId+"' !");
+        }
 
         GamePlayer gameplayer = new GamePlayer(optionalLevel.get());
 
@@ -57,9 +68,13 @@ public class LevelService {
      * Returns all the Levels playable by a user.
      * @param userId the User ID string.
      * @return a List of all playable game Levels.
-     * @throws IllegalArgumentException if the user with userId doesn't exist.
+     * @throws UserInexistentException if the user with userId doesn't exist.
      */
-    public List<Level> getAllPlayableLevels(String userId) throws IllegalArgumentException{
+    public List<Level> getAllPlayableLevels(String userId) throws UserInexistentException {
+        if(!userService.userIdExists(userId)) {
+            throw new UserInexistentException(userId);
+        }
+        
         Optional<UserStatistics> stats = statisticsService.getById(userId);
         // If there no stats yet for this user, create empty statistics for the user in the db.
         if (stats.isEmpty()) {
@@ -104,36 +119,60 @@ public class LevelService {
     }
 
     /**
-     * Returns all level info in the game. The returned levels do not contain data like the game board.
-     *  Useful for having a more lightweight message when displaying just the level info.
-     * @return List containing all the level infos in the game.
-     */
-    public List<Level> getAllInfo() {
-        return levelRepository.findAllInfo();
-    }
-
-    /**
      * Returns a level with a specific levelNumber if playable for the given user
      * @param levelNumber the levelNumber of the level to look for
      * @param userId the userID of the user to match
      * @return The level with the given levelNumber
-     * @throws IllegalArgumentException if level with specified number is not found
+     * @throws LevelInexistentException if level with specified number is not found.
+     * @throws UserInexistentException if the user does not exist.
      */
-    public Optional<Level> getByLevelNumberIfPlayable(int levelNumber, String userId) throws IllegalArgumentException{
+    public Optional<Level> getByLevelNumberIfPlayable(int levelNumber, String userId) throws LevelInexistentException, UserInexistentException {
         Optional<Level> l = getByLevelNumber(levelNumber);
         if (l.isEmpty()) {
-            throw new IllegalArgumentException("Level " + levelNumber + " not found.");
+            throw new LevelInexistentException(levelNumber);
+        } else if(!userService.userIdExists(userId)) {
+            throw new UserInexistentException(userId);
         }
 
-        Level level = l.get();
-        for (Level lev : getAllPlayableLevels(userId)) {
-            if (lev.equals(level)) {
-                return Optional.of(level);
-            }
+        if(isLevelPlayable(levelNumber, userId)) {
+            return Optional.of(getByLevelNumber(levelNumber).get());
         }
         return Optional.empty();
     }
-
+    
+    /**
+     * Returns whether a level is playable by a user.
+     * @param levelNumber the number of the level.
+     * @param userId the ID of the user.
+     * @return whether the level is playable by a user.
+     * @throws LevelInexistentException if the level does not exist.
+     * @throws UserInexistentException if the user does not exist.
+     */
+    public boolean isLevelPlayable(int levelNumber, String userId) throws LevelInexistentException, UserInexistentException {
+        if(!levelExists(levelNumber)) {
+            throw new LevelInexistentException(levelNumber);
+        } else if(!userService.userIdExists(userId)) {
+            throw new UserInexistentException(userId);
+        }
+    
+        for (Level lev : getAllPlayableLevels(userId)) {
+            if (lev.getLevelNumber() == levelNumber) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Returns whether a level exists given the levelNumber.
+     * @param levelNumber the number of the level.
+     * @return whether a level exists given the levelNumber.
+     */
+    public boolean levelExists(int levelNumber) {
+        return levelRepository.existsByLevelNumber(levelNumber);
+    }
+    
     /**
      * Returns a Level with a specific level number.
      * @param levelNumber the level number of the level to look for.
@@ -146,7 +185,14 @@ public class LevelService {
     
     /**
      * Deletes a Level with a specific level number.
+     * @throws LevelInexistentException if the level with the given levelNumber does not exist.
      * @param levelNumber the number of the level to delete.
      */
-    public void deleteByLevelNumber(int levelNumber){levelRepository.deleteByLevelNumber(levelNumber);}
+    public void deleteByLevelNumber(int levelNumber) throws LevelInexistentException {
+        if(!levelExists(levelNumber)) {
+            throw new LevelInexistentException(levelNumber);
+        }
+        
+        levelRepository.deleteByLevelNumber(levelNumber);
+    }
 }
