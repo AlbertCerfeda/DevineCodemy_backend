@@ -1,5 +1,7 @@
 package ch.usi.si.bsc.sa4.devinecodemy.controller;
 
+import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.InvalidAuthTokenException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.UserInexistentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/users")
+@CrossOrigin(origins = "http://localhost:3000/")
 public class UserController {
     private final UserService userService;
 
@@ -88,6 +91,7 @@ public class UserController {
      * @constraint user's profile is public or of the user itself
      */
     @GetMapping("/{id}")
+    @CrossOrigin(origins = "http://localhost:3000/")
     public ResponseEntity<?> getById(OAuth2AuthenticationToken authenticationToken, @PathVariable("id") String id) {
         Optional<User> optionalUser = userService.getById(id);
         
@@ -99,6 +103,22 @@ public class UserController {
             return ResponseEntity.ok(optionalUser.get().toPublicUserDTO());
         } else {
             return ResponseEntity.ok(optionalUser.get().toPrivateUserDTO());
+        }
+    }
+
+    /**
+     * GET /users/user
+     * Gets the user
+     */
+    @GetMapping("/user")
+    public ResponseEntity<?> getUser(OAuth2AuthenticationToken authenticationToken) {
+        try {
+            User u = userService.getUserByToken(authenticationToken);
+            return ResponseEntity.ok(u.toPublicUserDTO());
+        } catch (InvalidAuthTokenException e) {
+            return ResponseEntity.status(401).build();
+        } catch (UserInexistentException e) {
+            return ResponseEntity.status(404).build();
         }
     }
 }
