@@ -2,15 +2,12 @@ package ch.usi.si.bsc.sa4.devinecodemy.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.UpdateUserDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.UserDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.model.User.User;
-import ch.usi.si.bsc.sa4.devinecodemy.service.StatisticsService;
 import ch.usi.si.bsc.sa4.devinecodemy.service.UserService;
 
 import java.util.*;
@@ -23,16 +20,10 @@ import java.util.stream.Collectors;
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
-    private final StatisticsService statisticsService;
-    private OAuth2AuthorizedClientService authorizedClientService;
-    private final RestTemplate restTemplate;
 
     @Autowired
-    public UserController(UserService userService, StatisticsService statisticsService, OAuth2AuthorizedClientService authorizedClientService) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.statisticsService = statisticsService;
-        this.authorizedClientService = authorizedClientService;
-        restTemplate = new RestTemplate();
     }
 
     /**
