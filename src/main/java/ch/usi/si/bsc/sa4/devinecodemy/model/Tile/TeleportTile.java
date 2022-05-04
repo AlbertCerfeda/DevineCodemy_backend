@@ -10,14 +10,14 @@ public class TeleportTile extends Tile {
 
     /**
      * Construct for Teleport tiles.
-     * @param pos_x the x position of the tile.
-     * @param pos_y the y position of the tile.
-     * @param pos_z the z position of the tile.
+     * @param posX the x position of the tile.
+     * @param posY the y position of the tile.
+     * @param posZ the z position of the tile.
      */
     @JsonCreator
-    public TeleportTile(@JsonProperty("pos_x") int pos_x,
-                     @JsonProperty("pos_y") int pos_y,
-                     @JsonProperty("pos_z") int pos_z) {
-        super(ETile.TELEPORT, pos_x, pos_y, pos_z, true);
+    public TeleportTile(@JsonProperty("posX") int posX,
+                     @JsonProperty("posY") int posY,
+                     @JsonProperty("posZ") int posZ) {
+        super(ETile.TELEPORT, posX, posY, posZ, true);
     }
 }

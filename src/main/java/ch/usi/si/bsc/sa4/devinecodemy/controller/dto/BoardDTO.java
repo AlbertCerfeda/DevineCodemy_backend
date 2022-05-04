@@ -17,8 +17,8 @@ public class BoardDTO {
     
     
     public BoardDTO(Board board) {
-        dim_x = board.getDim_x();
-        dim_y = board.getDim_y();
+        dim_x = board.getDimX();
+        dim_y = board.getDimY();
         
         // Converts the board made of Tile to TileDTOs
         grid = board.getGrid().stream().map(Tile::toTileDTO).collect(Collectors.toList());

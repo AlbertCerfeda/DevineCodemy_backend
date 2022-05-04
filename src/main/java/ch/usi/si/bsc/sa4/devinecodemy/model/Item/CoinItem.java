@@ -10,12 +10,12 @@ public class CoinItem extends Item {
 
     /**
      * Construct for Coin items.
-     * @param pos_x the x position of the coin.
-     * @param pos_y the y position of the coin.
+     * @param posX the x position of the coin.
+     * @param posY the y position of the coin.
      */
     @JsonCreator
-    public CoinItem(@JsonProperty("pos_x") int pos_x,
-                    @JsonProperty("pos_y") int pos_y) {
-        super(EItem.COIN, pos_x, pos_y);
+    public CoinItem(@JsonProperty("posX") int posX,
+                    @JsonProperty("posY") int posY) {
+        super(EItem.COIN, posX, posY);
     }
 }

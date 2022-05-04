@@ -1,6 +1,5 @@
 package ch.usi.si.bsc.sa4.devinecodemy.controller.dto.Tile;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.Tile.ETile;
 import ch.usi.si.bsc.sa4.devinecodemy.model.Tile.Tile;
 
 /**
@@ -10,16 +9,16 @@ public class TileDTO {
     // Field 'type' is needed by the client for him to distinguish the different type of tiles
     private String type;
     
-    private int pos_x;
-    private int pos_y;
-    private int pos_z;
+    private int posX;
+    private int posY;
+    private int posZ;
     
     
     public TileDTO(Tile tile) {
         type = tile.getType().name();
-        pos_x = tile.getPos_x();
-        pos_y = tile.getPos_y();
-        pos_z = tile.getPos_z();
+        posX = tile.getPosX();
+        posY = tile.getPosY();
+        posZ = tile.getPosZ();
     }
     
     
@@ -34,27 +33,27 @@ public class TileDTO {
         this.type=type;
     }
     
-    public int getPos_x(){
-        return pos_x;
+    public int getPosX(){
+        return posX;
     }
     
-    public void setPos_x(int pos_x){
-        this.pos_x=pos_x;
+    public void setPosX(int posX){
+        this.posX = posX;
     }
     
-    public int getPos_y(){
-        return pos_y;
+    public int getPosY(){
+        return posY;
     }
     
-    public void setPos_y(int pos_y){
-        this.pos_y=pos_y;
+    public void setPosY(int posY){
+        this.posY = posY;
     }
     
-    public int getPos_z(){
-        return pos_z;
+    public int getPosZ(){
+        return posZ;
     }
     
-    public void setPos_z(int pos_z){
-        this.pos_z=pos_z;
+    public void setPosZ(int posZ){
+        this.posZ = posZ;
     }
 }

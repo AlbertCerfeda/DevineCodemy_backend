@@ -74,8 +74,8 @@ public class BoardTests {
         } else {
             assertDoesNotThrow(() -> board.getTileAt(x, y), "method should not throw");
             final Tile actualTile = board.getTileAt(x, y);
-            assertEquals(nx, actualTile.getPos_x(), "tile does not have correct x");
-            assertEquals(ny, actualTile.getPos_y(), "tile does not have correct y");
+            assertEquals(nx, actualTile.getPosX(), "tile does not have correct x");
+            assertEquals(ny, actualTile.getPosY(), "tile does not have correct y");
         }
     }
 
@@ -106,8 +106,8 @@ public class BoardTests {
         } else {
             assertDoesNotThrow(() -> board.getNextTileFromPositionAndDirection(x, y, orientation), "method should not throw");
             final Tile actualTile = board.getNextTileFromPositionAndDirection(x, y, orientation);
-            assertEquals(nx, actualTile.getPos_x(), "next tile does not have correct x");
-            assertEquals(ny, actualTile.getPos_y(), "next tile does not have correct y");
+            assertEquals(nx, actualTile.getPosX(), "next tile does not have correct x");
+            assertEquals(ny, actualTile.getPosY(), "next tile does not have correct y");
         }
     }
 
@@ -237,7 +237,7 @@ public class BoardTests {
         @DisplayName("has the same dimX provided in the constructor")
         @Test
         void testGetDimX() {
-            var actualDimX = board.getDim_x();
+            var actualDimX = board.getDimX();
             var expectedDimX = 10;
             assertEquals(expectedDimX, actualDimX, "dimX is not the one provided in the constructor");
         }
@@ -245,7 +245,7 @@ public class BoardTests {
         @DisplayName("has the same dimY provided in the constructor")
         @Test
         void testGetDimY() {
-            var actualDimY = board.getDim_y();
+            var actualDimY = board.getDimY();
             var expectedDimY = 10;
             assertEquals(expectedDimY, actualDimY, "dimY is not the one provided in the constructor");
         }

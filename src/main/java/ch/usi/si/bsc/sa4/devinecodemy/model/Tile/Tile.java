@@ -1,9 +1,7 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.Tile;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonValue;
 
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.Tile.TileDTO;
 
@@ -34,12 +32,12 @@ public abstract class Tile {
     protected ETile type = ETile.PLACEHOLDER;
     
     // Position
-    protected final int pos_x;
-    protected final int pos_y;
-    protected int pos_z;
+    protected final int posX;
+    protected final int posY;
+    protected int posZ;
     //
     
-    protected boolean is_walkable;
+    protected boolean isWalkable;
 
 //    protected final String material;
 //    protected final String shape;
@@ -48,60 +46,60 @@ public abstract class Tile {
     /**
      * Constructor for abstract class Tile.
      * @param type the ENUM representing the type of the tile.
-     * @param pos_x the x position of the tile.
-     * @param pos_y the y position of the tile.
-     * @param pos_z the z position of the tile.
-     * @param is_walkable true if the tile is walkable, false otherwise.
+     * @param posX the x position of the tile.
+     * @param posY the y position of the tile.
+     * @param posZ the z position of the tile.
+     * @param isWalkable true if the tile is walkable, false otherwise.
      */
-    public Tile(ETile type, final int pos_x, final int pos_y, final int pos_z, final boolean is_walkable) {
+    public Tile(ETile type, final int posX, final int posY, final int posZ, final boolean isWalkable) {
         this.type = type;
-        this.pos_x = pos_x;
-        this.pos_y = pos_y;
-        this.pos_z = pos_z;
-        this.is_walkable = is_walkable;
+        this.posX = posX;
+        this.posY = posY;
+        this.posZ = posZ;
+        this.isWalkable = isWalkable;
     }
 
     /**
      * To know if this tile is walkable or not.
      * @return true if this tile is walkable, false otherwise.
      */
-    public boolean is_walkable() {
-        return is_walkable;
+    public boolean isWalkable() {
+        return isWalkable;
     }
     
-    public void set_walkable(boolean is_walkable) {
-        this.is_walkable = is_walkable;
+    public void setWalkable(boolean isWalkable) {
+        this.isWalkable = isWalkable;
     }
     
     /**
      * To get the height position of the tile.
      * @return the height position of the tile.
      */
-    public int getPos_z() {
-        return pos_z;
+    public int getPosZ() {
+        return posZ;
     }
 
     /**
      * To set the height position of the tile.
      */
-    public void setPos_z(final int pos_z) {
-        this.pos_z = pos_z;
+    public void setPosZ(final int posZ) {
+        this.posZ = posZ;
     }
 
     /**
      * To get x position of the tile.
      * @return the x position of the tile.
      */
-    public int getPos_x() {
-        return pos_x;
+    public int getPosX() {
+        return posX;
     }
 
     /**
      * To get y position of the tile.
      * @return the y position of the tile.
      */
-    public int getPos_y() {
-        return pos_y;
+    public int getPosY() {
+        return posY;
     }
 
     /**
@@ -126,11 +124,11 @@ public abstract class Tile {
         if (this == o) return true;
         if (!(o instanceof Tile)) return false;
         Tile tile = (Tile) o;
-        return pos_x == tile.pos_x && pos_y == tile.pos_y && pos_z == tile.pos_z && is_walkable == tile.is_walkable && type == tile.type;
+        return posX == tile.posX && posY == tile.posY && posZ == tile.posZ && isWalkable == tile.isWalkable && type == tile.type;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, pos_x, pos_y, pos_z, is_walkable);
+        return Objects.hash(type, posX, posY, posZ, isWalkable);
     }
 }

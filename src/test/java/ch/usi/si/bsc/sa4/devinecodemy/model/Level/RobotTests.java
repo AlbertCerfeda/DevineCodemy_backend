@@ -25,7 +25,7 @@ public class RobotTests {
         @DisplayName("has the same x provided in the constructor")
         @Test
         void testGetPosX() {
-            var actualPosX = robot.getPos_x();
+            var actualPosX = robot.getPosX();
             var expectedPosX = 23;
             assertEquals(expectedPosX, actualPosX, "posX is not the one provided in the constructor");
         }
@@ -33,7 +33,7 @@ public class RobotTests {
         @DisplayName("has the same posY provided in the constructor")
         @Test
         void testGetPosY() {
-            var actualPosY = robot.getPos_y();
+            var actualPosY = robot.getPosY();
             var expectedPosY = 3;
             assertEquals(expectedPosY, actualPosY, "posY is not the one provided in the constructor");
         }

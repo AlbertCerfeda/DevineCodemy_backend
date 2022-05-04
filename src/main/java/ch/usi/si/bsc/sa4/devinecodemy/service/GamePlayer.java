@@ -49,8 +49,8 @@ public class GamePlayer {
 
         Robot robot = level.getRobot();
         Board board = level.getBoard();
-        int current_x = robot.getPos_x();
-        int current_y = robot.getPos_y();
+        int current_x = robot.getPosX();
+        int current_y = robot.getPosY();
         EOrientation current_orientation = robot.getOrientation();
 
         int collectedItems = 0;

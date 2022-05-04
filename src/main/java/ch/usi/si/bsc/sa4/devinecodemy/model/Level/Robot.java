@@ -9,27 +9,27 @@ import java.util.Objects;
 
 
 public class Robot {
-    private final int pos_x;
-    private final int pos_y;
+    private final int posX;
+    private final int posY;
     private EOrientation orientation = EOrientation.UP;
 
     @JsonCreator
-    public Robot(@JsonProperty("start_x") int pos_x,
-                 @JsonProperty("start_y") int pos_y,
+    public Robot(@JsonProperty("start_x") int posX,
+                 @JsonProperty("start_y") int posY,
                  @JsonProperty("orientation") EOrientation orientation) {
-        this.pos_x= pos_x;
-        this.pos_y= pos_y;
+        this.posX = posX;
+        this.posY = posY;
         this.orientation = orientation;
     }
     
     public RobotDTO toRobotDTO() { return new RobotDTO(this); }
     
-    public int getPos_x() {
-        return pos_x;
+    public int getPosX() {
+        return posX;
     }
 
-    public int getPos_y() {
-        return pos_y;
+    public int getPosY() {
+        return posY;
     }
     
     public EOrientation getOrientation(){ return orientation; }
@@ -39,11 +39,11 @@ public class Robot {
         if (this == o) return true;
         if (!(o instanceof Robot)) return false;
         Robot robot = (Robot) o;
-        return pos_x == robot.pos_x && pos_y == robot.pos_y && orientation == robot.orientation;
+        return posX == robot.posX && posY == robot.posY && orientation == robot.orientation;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pos_x, pos_y, orientation);
+        return Objects.hash(posX, posY, orientation);
     }
 }
