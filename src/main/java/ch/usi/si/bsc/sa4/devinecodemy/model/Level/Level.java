@@ -21,7 +21,7 @@ public class Level {
     private final String description;
 
     @Indexed(unique = true)
-    private int levelNumber;
+    private final int levelNumber;
     
     private final int maxCommandsNumber;
 

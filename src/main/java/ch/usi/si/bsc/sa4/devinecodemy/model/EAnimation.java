@@ -21,6 +21,7 @@ public enum EAnimation {
         this.name = animationName;
     }
 
+    @Override
     public String toString() {
         return name;
     }

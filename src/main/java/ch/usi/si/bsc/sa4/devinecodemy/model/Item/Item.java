@@ -30,7 +30,7 @@ public abstract class Item {
      * @param posX the x position of the tile.
      * @param posY the y position of the tile.
      */
-    public Item(EItem type, final int posX, final int posY) {
+    protected Item(EItem type, final int posX, final int posY) {
         this.type = type;
         this.posX = posX;
         this.posY = posY;

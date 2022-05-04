@@ -14,7 +14,7 @@ public class User {
     private final String email;
     private final String username;
     private final String avatar_url;
-    private boolean publicProfile = false;
+    private boolean publicProfile;
     private String bio;
     private String twitter;
     private String skype;

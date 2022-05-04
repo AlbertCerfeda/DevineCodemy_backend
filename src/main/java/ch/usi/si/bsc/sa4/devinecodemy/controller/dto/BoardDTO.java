@@ -9,16 +9,16 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Board;
 import ch.usi.si.bsc.sa4.devinecodemy.model.Tile.Tile;
 
 public class BoardDTO {
-    private int dim_x;
-    private int dim_y;
+    private final int dimX;
+    private final int dimY;
     private List<TileDTO> grid;
     private List<ItemDTO> items;
 
     
     
     public BoardDTO(Board board) {
-        dim_x = board.getDimX();
-        dim_y = board.getDimY();
+        dimX = board.getDimX();
+        dimY = board.getDimY();
         
         // Converts the board made of Tile to TileDTOs
         grid = board.getGrid().stream().map(Tile::toTileDTO).collect(Collectors.toList());
@@ -29,12 +29,12 @@ public class BoardDTO {
 
 
 
-    public int getDim_x() {
-        return dim_x;
+    public int getDimX() {
+        return dimX;
     }
 
-    public int getDim_y() {
-        return dim_y;
+    public int getDimY() {
+        return dimY;
     }
 
     public List<TileDTO> getGrid() {

@@ -6,8 +6,8 @@ public class ItemDTO {
     /** 'type' is needed by the client for him to distinguish the different type of Items.  */
     final String type;
     
-    private int posX;
-    private int posY;
+    private final int posX;
+    private final int posY;
     
     public ItemDTO(Item item) {
         type = item.getType().name();
