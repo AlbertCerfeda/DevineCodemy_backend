@@ -40,8 +40,8 @@ public class PlayController {
     @PutMapping()
     @ResponseBody
     public ResponseEntity<LevelValidationDTO>play(OAuth2AuthenticationToken authenticationToken, @RequestBody PlayLevelDTO playLevelDTO) { // Fix how parameters are passed
-        User user = userService.getUserByToken(authenticationToken);
-        LevelValidation playedLevel = levelService.playLevel(playLevelDTO.getLevelNumber(), user.getId(), playLevelDTO.getCommands());
+        final User user = userService.getUserByToken(authenticationToken);
+        final LevelValidation playedLevel = levelService.playLevel(playLevelDTO.getLevelNumber(), user.getId(), playLevelDTO.getCommands());
 
         return ResponseEntity.ok(playedLevel.toLevelValidationDTO());
 

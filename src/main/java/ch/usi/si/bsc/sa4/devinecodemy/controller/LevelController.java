@@ -79,11 +79,11 @@ public class LevelController {
             
             String userId = user.getId();
             Optional<Level> level = levelService.getByLevelNumberIfPlayable(levelNumber,userId);
-            
-            return level.isPresent() ?  ResponseEntity.ok(onlyinfo? level.get().toLevelInfoDTO():
-                                                                    level.get().toLevelDTO()):
-                                        // If the level is not playable, returns just the Level info
-                                        ResponseEntity.ok(levelService.getByLevelNumber(levelNumber).get().toLevelInfoDTO());
+
+            final LevelDTO levelDTO = onlyinfo? level.get().toLevelInfoDTO() : level.get().toLevelDTO();
+            return level.isPresent() ? ResponseEntity.ok(levelDTO):
+                                       // If the level is not playable, returns just the Level info
+                                       ResponseEntity.ok(levelService.getByLevelNumber(levelNumber).get().toLevelInfoDTO());
         
         } catch (InvalidAuthTokenException e) {
             return ResponseEntity.status(401).build();

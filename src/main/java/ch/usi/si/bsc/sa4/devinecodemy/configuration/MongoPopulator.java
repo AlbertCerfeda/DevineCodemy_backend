@@ -10,7 +10,7 @@ import org.springframework.data.repository.init.Jackson2RepositoryPopulatorFacto
 public class MongoPopulator {
 	@Bean
 	public Jackson2RepositoryPopulatorFactoryBean getRespositoryPopulator() {
-		Jackson2RepositoryPopulatorFactoryBean factory = new Jackson2RepositoryPopulatorFactoryBean();
+		final Jackson2RepositoryPopulatorFactoryBean factory = new Jackson2RepositoryPopulatorFactoryBean();
 		factory.setResources(new Resource[] { new ClassPathResource("level-data.json") });
 		return factory;
 	}
