@@ -12,12 +12,12 @@ public enum EAction {
     COLLECT_COIN("collectCoin", "Collects a Coin");
     
     // The function call for this command (eg 'moveForward' )
-    private final String func_call;
+    private final String funcCall;
     // The description for the command
     private final String description;
     
-    EAction(String func_call, String description) {
-        this.func_call= func_call;
+    EAction(String funcCall, String description) {
+        this.funcCall = funcCall;
         this.description = description;
     }
 
@@ -29,7 +29,7 @@ public enum EAction {
      */
     public static EAction getEActionFromCommand(String command) throws IllegalArgumentException {
         for (EAction action : EAction.values()) {
-          if (action.getFunc_call().equals(command)) {
+          if (action.getFuncCall().equals(command)) {
             return action;
           }
         }
@@ -38,7 +38,7 @@ public enum EAction {
         throw new IllegalArgumentException("Unknown command: '" + command + "'");
     }
     
-    public String getFunc_call()  { return func_call; }
+    public String getFuncCall()  { return funcCall; }
     public String getDescription(){ return description; }
     
     public EActionDTO toEActionDTO() { return new EActionDTO(this); }

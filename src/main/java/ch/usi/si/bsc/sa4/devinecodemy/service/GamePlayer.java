@@ -68,7 +68,7 @@ public class GamePlayer {
                 // If the command is not allowed
                 if(!level.getAllowed_commands().contains(action)) {
                     hasErrors = true;
-                    levelValidation.addError("Command not allowed: '"+action.getFunc_call()+"'");
+                    levelValidation.addError("Command not allowed: '"+action.getFuncCall()+"'");
                 } else
                     actions.add(action);
             } catch (IllegalArgumentException e) {
