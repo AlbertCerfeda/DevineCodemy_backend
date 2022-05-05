@@ -11,7 +11,7 @@ import java.util.Objects;
 public class Robot {
     private final int posX;
     private final int posY;
-    private EOrientation orientation = EOrientation.UP;
+    private final EOrientation orientation;
 
     @JsonCreator
     public Robot(@JsonProperty("start_x") int posX,
