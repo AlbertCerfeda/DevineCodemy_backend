@@ -1,6 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.service;
 
-import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.User.CreateUserDTO;
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user.CreateUserDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.InvalidAuthTokenException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.UserInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.User.User;

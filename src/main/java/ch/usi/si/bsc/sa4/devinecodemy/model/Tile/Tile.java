@@ -3,7 +3,7 @@ package ch.usi.si.bsc.sa4.devinecodemy.model.Tile;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.Tile.TileDTO;
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.tile.TileDTO;
 
 import java.util.Objects;
 

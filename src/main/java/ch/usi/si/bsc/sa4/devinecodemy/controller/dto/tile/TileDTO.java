@@ -1,4 +1,4 @@
-package ch.usi.si.bsc.sa4.devinecodemy.controller.dto.Tile;
+package ch.usi.si.bsc.sa4.devinecodemy.controller.dto.tile;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.Tile.Tile;
 
