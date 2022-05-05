@@ -1,7 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model;
 
 
-import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.EActionDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.EWorldDTO;
 
 /**

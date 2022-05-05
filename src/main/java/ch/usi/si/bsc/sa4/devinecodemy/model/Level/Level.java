@@ -1,5 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.Level;
 
+import ch.usi.si.bsc.sa4.devinecodemy.model.EWorld;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
@@ -21,6 +22,8 @@ public class Level {
 
     @Indexed(unique = true)
     private int levelNumber;
+
+    private EWorld levelWorld;
     
     private final int maxCommandsNumber;
 
@@ -41,6 +44,7 @@ public class Level {
     public Level(@JsonProperty("name") String name,
                  @JsonProperty("description") String description,
                  @JsonProperty("levelNumber") int levelNumber,
+                 @JsonProperty("levelWorld") EWorld levelWorld,
                  @JsonProperty("maxCommandsNumber") int maxCommandsNumber,
                  @JsonProperty("board") Board board,
                  @JsonProperty("robot") Robot robot,
@@ -49,6 +53,7 @@ public class Level {
         this.name = name;
         this.description = description;
         this.levelNumber = levelNumber;
+        this.levelWorld = levelWorld;
         this.maxCommandsNumber = maxCommandsNumber;
         this.board = board;
         this.robot = robot;

@@ -2,6 +2,7 @@ package ch.usi.si.bsc.sa4.devinecodemy.model.Level;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EOrientation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.EWorld;
 import ch.usi.si.bsc.sa4.devinecodemy.model.Item.CoinItem;
 import ch.usi.si.bsc.sa4.devinecodemy.model.Item.Item;
 import ch.usi.si.bsc.sa4.devinecodemy.model.Tile.GrassTile;
@@ -31,7 +32,7 @@ public class LevelTests {
         var board = new Board(grid, items, 1);
         var robot = new Robot(0, 0, EOrientation.DOWN);
         var commands = List.of(EAction.MOVE_FORWARD);
-        level = new Level("test name", "test description", 10, 10, board, robot, commands, "");
+        level = new Level("test name", "test description", 10, EWorld.SKY, 10, board, robot, commands, "");
     }
 
     @DisplayName("after creation")
