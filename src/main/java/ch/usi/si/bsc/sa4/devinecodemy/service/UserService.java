@@ -29,9 +29,17 @@ public class UserService {
         this.userRepository = userRepository;
         this.statisticsService = statisticsService;
     }
+    /**
+     * Get a list of users with a specific name.
+     * @return a list of users with a specific name.
+     * */
     public List<User> getAll() {
         return userRepository.findAll();
     }
+    /**
+     * Get a list of all public users
+     * @return a list of all public users
+     * */
     public List<User> getAllPublic() { return userRepository.findAllPublic(); }
     
     

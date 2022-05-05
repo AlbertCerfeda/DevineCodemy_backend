@@ -88,14 +88,21 @@ public class UserServiceTests {
     }
 
     @Test
-    public void testUserExists() {
+    public void testUserIdExists() {
+        given(userRepository.existsById("an id")).willReturn(true);
+
+        assertTrue(userService.userIdExists("an id"), "A user with the given id doesn't exists");
+    }
+
+    @Test
+    public void testUserNameExists() {
         given(userRepository.existsByName("a name")).willReturn(true);
 
         assertTrue(userService.userNameExists("a name"), "A user with the given name doesn't exists");
     }
 
     @Test
-    public void testCreateUser() {
+    public void testAddUser() {
         CreateUserDTO createUserDTO = new CreateUserDTO("an id0", "a name0", "a username0", "an email0", "an avatar0", "a bio0", "linkedin", "twitter", "skype");
         User user0 = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail(), createUserDTO.getAvatar_url(),
                 createUserDTO.getBio(), createUserDTO.getLinkedin(), createUserDTO.getTwitter(), createUserDTO.getSkype());
