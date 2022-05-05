@@ -1,5 +1,5 @@
 package ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user;
-import ch.usi.si.bsc.sa4.devinecodemy.model.User.User;
+import ch.usi.si.bsc.sa4.devinecodemy.model.user.User;
 
 /**
  * The stripped down state of a User object.

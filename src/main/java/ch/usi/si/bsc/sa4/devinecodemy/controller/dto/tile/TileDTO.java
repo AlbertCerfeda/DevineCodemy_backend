@@ -1,6 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.controller.dto.tile;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.Tile.Tile;
+import ch.usi.si.bsc.sa4.devinecodemy.model.tile.Tile;
 
 /**
  * Encapsulates a Tile state to be sent to the client.

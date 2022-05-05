@@ -1,7 +1,7 @@
 package ch.usi.si.bsc.sa4.devinecodemy.controller;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.InvalidAuthTokenException;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.UserInexistentException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.InvalidAuthTokenException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.view.RedirectView;
 
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user.CreateUserDTO;
-import ch.usi.si.bsc.sa4.devinecodemy.model.User.User;
+import ch.usi.si.bsc.sa4.devinecodemy.model.user.User;
 import ch.usi.si.bsc.sa4.devinecodemy.service.UserService;
 
 import java.util.Arrays;

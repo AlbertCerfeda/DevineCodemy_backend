@@ -1,15 +1,15 @@
 package ch.usi.si.bsc.sa4.devinecodemy.service;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.InvalidAuthTokenException;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.UserAlreadyExistsException;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.UserInexistentException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.InvalidAuthTokenException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserAlreadyExistsException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user.CreateUserDTO;
-import ch.usi.si.bsc.sa4.devinecodemy.model.User.User;
+import ch.usi.si.bsc.sa4.devinecodemy.model.user.User;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.UserRepository;
 
 import java.util.List;
@@ -42,7 +42,7 @@ public class UserService {
      */
     public Optional<Boolean> isUserPublic(String id){
         Optional<User> optionalUser = userRepository.isUserPublic(id);
-        return optionalUser.map((user)->user.isProfilePublic());
+        return optionalUser.map(User::isProfilePublic);
     }
 
     /**

@@ -2,8 +2,8 @@ package ch.usi.si.bsc.sa4.devinecodemy.controller;
 
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.LevelValidationDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.PlayLevelDTO;
-import ch.usi.si.bsc.sa4.devinecodemy.model.LevelValidation.LevelValidation;
-import ch.usi.si.bsc.sa4.devinecodemy.model.User.User;
+import ch.usi.si.bsc.sa4.devinecodemy.model.levelvalidation.LevelValidation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.user.User;
 import ch.usi.si.bsc.sa4.devinecodemy.service.LevelService;
 import ch.usi.si.bsc.sa4.devinecodemy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

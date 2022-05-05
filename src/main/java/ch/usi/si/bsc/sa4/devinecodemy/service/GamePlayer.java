@@ -10,7 +10,7 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.EOrientation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Board;
 import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level;
 import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Robot;
-import ch.usi.si.bsc.sa4.devinecodemy.model.LevelValidation.LevelValidation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.levelvalidation.LevelValidation;
 
 /**
  * Parses a sequence of String commands into EActions and plays them on a level.

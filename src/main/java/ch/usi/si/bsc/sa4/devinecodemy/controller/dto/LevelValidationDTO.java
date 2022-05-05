@@ -2,7 +2,7 @@ package ch.usi.si.bsc.sa4.devinecodemy.controller.dto;
 
 import java.util.List;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.LevelValidation.LevelValidation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.levelvalidation.LevelValidation;
 
 public class LevelValidationDTO {
     private final boolean completed;

@@ -6,8 +6,8 @@ import org.springframework.data.annotation.PersistenceConstructor;
 
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.BoardDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EOrientation;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Item.Item;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Tile.Tile;
+import ch.usi.si.bsc.sa4.devinecodemy.model.item.Item;
+import ch.usi.si.bsc.sa4.devinecodemy.model.tile.Tile;
 
 
 /**
@@ -17,9 +17,9 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.Tile.Tile;
 public class Board {
     private int dimX;
     private int dimY;
-    private List<Tile> grid;
-    private List<Item> items;
-    private int nCoins;
+    private final List<Tile> grid;
+    private final List<Item> items;
+    private final int nCoins;
     
     /**
      * Constructor for board objects.

@@ -2,10 +2,10 @@ package ch.usi.si.bsc.sa4.devinecodemy.model.Level;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EOrientation;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Item.CoinItem;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Item.Item;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Tile.GrassTile;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Tile.Tile;
+import ch.usi.si.bsc.sa4.devinecodemy.model.item.CoinItem;
+import ch.usi.si.bsc.sa4.devinecodemy.model.item.Item;
+import ch.usi.si.bsc.sa4.devinecodemy.model.tile.GrassTile;
+import ch.usi.si.bsc.sa4.devinecodemy.model.tile.Tile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -88,7 +88,7 @@ public class LevelTests {
         @Test
         void testGetAllowedCommands() {
             var actualAllowedCommands = level.getAllowed_commands();
-            var expectedAllowedCommands = List.of(EAction.MOVE_FORWARD);;
+            var expectedAllowedCommands = List.of(EAction.MOVE_FORWARD);
             assertEquals(expectedAllowedCommands, actualAllowedCommands, "allowedCommands is not the one provided in the constructor");
         }
 

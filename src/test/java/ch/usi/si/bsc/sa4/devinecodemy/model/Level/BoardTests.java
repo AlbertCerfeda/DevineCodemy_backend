@@ -1,9 +1,9 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.Level;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.EOrientation;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Item.CoinItem;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Item.Item;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Tile.*;
+import ch.usi.si.bsc.sa4.devinecodemy.model.item.CoinItem;
+import ch.usi.si.bsc.sa4.devinecodemy.model.item.Item;
+import ch.usi.si.bsc.sa4.devinecodemy.model.tile.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

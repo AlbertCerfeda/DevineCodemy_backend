@@ -1,10 +1,10 @@
 package ch.usi.si.bsc.sa4.devinecodemy.service;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.LevelValidation.LevelValidation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.levelvalidation.LevelValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.Statistics.UserStatistics;
+import ch.usi.si.bsc.sa4.devinecodemy.model.statistics.UserStatistics;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.StatisticsRepository;
 
 import java.util.List;
@@ -38,12 +38,7 @@ public class StatisticsService {
      */
     public UserStatistics addStats(String userId, GamePlayer game, LevelValidation levelValidation) {
         Optional<UserStatistics> userStats = statisticsRepository.findById(userId);
-        UserStatistics stats;
-        if(userStats.isPresent()) {
-            stats = userStats.get();
-        } else {
-            stats = new UserStatistics(userId);
-        }
+        UserStatistics stats = userStats.orElse(new UserStatistics(userId));
 
         if (game != null) {
             stats.addData(game, levelValidation);

@@ -1,9 +1,9 @@
 package ch.usi.si.bsc.sa4.devinecodemy.service;
 
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user.CreateUserDTO;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.InvalidAuthTokenException;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.UserInexistentException;
-import ch.usi.si.bsc.sa4.devinecodemy.model.User.User;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.InvalidAuthTokenException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.user.User;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.StatisticsRepository;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -128,8 +128,8 @@ public class UserServiceTests {
         User user0 = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail(),createUserDTO.getAvatar_url(), createUserDTO.getBio(),
                 createUserDTO0.getLinkedin(), createUserDTO.getTwitter(), createUserDTO0.getSkype());
 
-        assertEquals(true, userService.checkBodyFormat(createUserDTO0), "The body format is correct");
-        assertEquals(false, userService.checkBodyFormat(createUserDTO), "The body format is not incorrect");
+        assertTrue(userService.checkBodyFormat(createUserDTO0), "The body format is correct");
+        assertFalse(userService.checkBodyFormat(createUserDTO), "The body format is not incorrect");
     }
 
     @Test

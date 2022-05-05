@@ -4,15 +4,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.tile.TileDTO;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Item.Item;
+import ch.usi.si.bsc.sa4.devinecodemy.model.item.Item;
 import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Board;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Tile.Tile;
+import ch.usi.si.bsc.sa4.devinecodemy.model.tile.Tile;
 
 public class BoardDTO {
     private final int dimX;
     private final int dimY;
-    private List<TileDTO> grid;
-    private List<ItemDTO> items;
+    private final List<TileDTO> grid;
+    private final List<ItemDTO> items;
 
     
     

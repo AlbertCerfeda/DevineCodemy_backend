@@ -3,8 +3,8 @@ package ch.usi.si.bsc.sa4.devinecodemy.controller.dto;
 import java.util.HashMap;
 import java.util.Map;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.Statistics.LevelStatistics;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Statistics.UserStatistics;
+import ch.usi.si.bsc.sa4.devinecodemy.model.statistics.LevelStatistics;
+import ch.usi.si.bsc.sa4.devinecodemy.model.statistics.UserStatistics;
 
 public class UserStatisticsDTO {
     private final String id;
