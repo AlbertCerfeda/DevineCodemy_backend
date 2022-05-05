@@ -101,8 +101,8 @@ public class GamePlayer {
             switch (action) {
                 case MOVE_FORWARD:
                     if (board.canStep(current_x, current_y, current_orientation)) {
-                        current_x += current_orientation.getDelta_x();      // update x position
-                        current_y += current_orientation.getDelta_y();      // update y position
+                        current_x += current_orientation.getDeltaX();      // update x position
+                        current_y += current_orientation.getDeltaY();      // update y position
                         levelValidation.addAnimation(EAnimation.MOVE_FORWARD);
                     } else { // Wrong command, cannot step (out of the board or too high to step on) : animate death and exit
                         levelValidation.addAnimation(EAnimation.EMOTE_DEATH);

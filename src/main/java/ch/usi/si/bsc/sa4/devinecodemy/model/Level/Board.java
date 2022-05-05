@@ -90,8 +90,8 @@ public class Board {
      * @throws IndexOutOfBoundsException if the new computed position is outside the board.
      */
     public Tile getNextTileFromPositionAndDirection(final int x, final int y, EOrientation direction) throws IndexOutOfBoundsException {
-        int newX = x + direction.getDelta_x();
-        int newY = y + direction.getDelta_y();
+        int newX = x + direction.getDeltaX();
+        int newY = y + direction.getDeltaY();
         return getTileAt(newX, newY);
     }
 

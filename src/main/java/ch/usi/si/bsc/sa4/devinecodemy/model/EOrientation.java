@@ -38,8 +38,8 @@ public enum EOrientation {
         public EOrientation turnRight()   { return DOWN; }
     };
 
-    private final int delta_x;
-    private final int delta_y;
+    private final int deltaX;
+    private final int deltaY;
     
     public abstract EOrientation getOpposite();
     public abstract EOrientation turnLeft();
@@ -53,23 +53,23 @@ public enum EOrientation {
      * @param delta_y the y variation.
      */
     EOrientation (int delta_x, int delta_y) {
-        this.delta_x = delta_x;
-        this.delta_y = delta_y;
+        this.deltaX = delta_x;
+        this.deltaY = delta_y;
     }
 
     /**
      * Returns the x direction.
      * @return the x direction.
      */
-    public int getDelta_x() {
-        return delta_x;
+    public int getDeltaX() {
+        return deltaX;
     }
 
     /**
      * Returns the y direction.
      * @return the y direction.
      */
-    public int getDelta_y() {
-        return delta_y;
+    public int getDeltaY() {
+        return deltaY;
     }
 }
