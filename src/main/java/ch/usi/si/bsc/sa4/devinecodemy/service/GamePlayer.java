@@ -64,6 +64,13 @@ public class GamePlayer {
         return playActions(actions, levelValidation);
     }
 
+    /**
+     * Parses a list of String commands into an equivalent list of EAction only if valid.
+     *  - If commands aren't existing, the levelValidation is set with errors
+     * @param commands the commands to be parsed.
+     * @param levelValidation the levelValidation object.
+     * @return the parsed list of EActions to be run.
+     */
     private List<EAction> parseCommands(List<String> commands, LevelValidation levelValidation) {
 
         List<EAction> actions = new ArrayList<>();
