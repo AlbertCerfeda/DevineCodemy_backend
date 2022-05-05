@@ -30,7 +30,7 @@ public class LevelStatistics {
      * @param game the game from which to retrieve the statistics.
      */
     public void add(GamePlayer game){
-        data.add(game.getParsed_commands());
+        data.add(game.getParsedCommands());
     }
 
     public boolean isCompleted() {

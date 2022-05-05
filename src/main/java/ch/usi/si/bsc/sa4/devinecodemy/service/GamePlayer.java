@@ -18,7 +18,7 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.LevelValidation.LevelValidation;
 public class GamePlayer {
 
     private final Level level;
-    private final List<EAction> parsed_commands = new ArrayList<>();
+    private final List<EAction> parsedCommands = new ArrayList<>();
 
     /**
      * Constructor for GamePlayer.
@@ -32,8 +32,8 @@ public class GamePlayer {
         return level;
     }
 
-    public List<EAction> getParsed_commands() {
-        return parsed_commands;
+    public List<EAction> getParsedCommands() {
+        return parsedCommands;
     }
 
     /**
@@ -44,24 +44,31 @@ public class GamePlayer {
      * @return a LevelValidation object to represent the result of the validation.
      */
     public LevelValidation play(final List<String> commands) {
-        boolean isDead = false;
 
         LevelValidation levelValidation = new LevelValidation();
-
-        Robot robot = level.getRobot();
-        Board board = level.getBoard();
-        int current_x = robot.getPosX();
-        int current_y = robot.getPosY();
-        EOrientation current_orientation = robot.getOrientation();
-
-        int collectedItems = 0;
 
         ////
         //  Parsing phase
         //      Checks for invalid commands
         //      Produces, if correct, List<EAction>
+        List<EAction> actions = parseCommands(commands, levelValidation);
+        if (levelValidation.getAnimations().contains(EAnimation.EMOTE_DEATH)) {
+            return levelValidation;
+        }
+
+        parsedCommands.addAll(actions);
+
+        ////
+        // Game playing phase
+
+        return playActions(actions, levelValidation);
+    }
+
+    private List<EAction> parseCommands(List<String> commands, LevelValidation levelValidation) {
+
         List<EAction> actions = new ArrayList<>();
         boolean hasErrors = false;
+
         for (String command : commands) {
             try {
                 EAction action = EAction.getEActionFromCommand(command.trim());
@@ -86,23 +93,37 @@ public class GamePlayer {
             levelValidation.setCompleted(false);
             levelValidation.clearAnimations();
             levelValidation.addAnimation(EAnimation.EMOTE_DEATH);
-            return levelValidation;
         }
 
-        parsed_commands.addAll(actions);
+        return actions;
+    }
 
-        ////
-        // Game playing phase
-        
+    /**
+     * Evaluates a list of actions, setting completed only once all the Items were collected.
+     * @param actions the list of EActions to be played.
+     * @param levelValidation the levelValidation.
+     * @return the levelValidation object.
+     */
+    private LevelValidation playActions(List<EAction> actions, LevelValidation levelValidation) {
+        boolean isDead = false;
+
+        Robot robot = level.getRobot();
+        Board board = level.getBoard();
+        int currentX = robot.getPosX();
+        int currentY = robot.getPosY();
+        EOrientation currentOrientation = robot.getOrientation();
+
+        int collectedItems = 0;
+
         for (EAction action : actions) {
             if(isDead)
                 break;
-            
+
             switch (action) {
                 case MOVE_FORWARD:
-                    if (board.canStep(current_x, current_y, current_orientation)) {
-                        current_x += current_orientation.getDeltaX();      // update x position
-                        current_y += current_orientation.getDeltaY();      // update y position
+                    if (board.canStep(currentX, currentY, currentOrientation)) {
+                        currentX += currentOrientation.getDeltaX();      // update x position
+                        currentY += currentOrientation.getDeltaY();      // update y position
                         levelValidation.addAnimation(EAnimation.MOVE_FORWARD);
                     } else { // Wrong command, cannot step (out of the board or too high to step on) : animate death and exit
                         levelValidation.addAnimation(EAnimation.EMOTE_DEATH);
@@ -110,16 +131,16 @@ public class GamePlayer {
                     }
                     break;
                 case TURN_LEFT:
-                    current_orientation = current_orientation.turnLeft();   // update orientation
+                    currentOrientation = currentOrientation.turnLeft();   // update orientation
                     levelValidation.addAnimation(EAnimation.TURN_LEFT);
                     break;
                 case TURN_RIGHT:
-                    current_orientation = current_orientation.turnRight();  // update orientation
+                    currentOrientation = currentOrientation.turnRight();  // update orientation
                     levelValidation.addAnimation(EAnimation.TURN_RIGHT);
                     break;
                 case COLLECT_COIN:
                     levelValidation.addAnimation(EAnimation.JUMP);
-                    if (board.containsItemAt(current_x, current_y)) {
+                    if (board.containsItemAt(currentX, currentY)) {
                         ++collectedItems;
                     } else {
                         levelValidation.addAnimation(EAnimation.EMOTE_NO);
@@ -131,7 +152,7 @@ public class GamePlayer {
                     break;
             }
         }
-        
+
         if (collectedItems == board.getCoinsNumber()) {     // level completed
             levelValidation.addAnimation(EAnimation.EMOTE_DANCE);
             levelValidation.setCompleted(true);
