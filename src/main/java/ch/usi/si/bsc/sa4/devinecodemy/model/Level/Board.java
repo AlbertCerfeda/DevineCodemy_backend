@@ -153,9 +153,10 @@ public class Board {
                     t.getType().toString().charAt(0);
         }
         final StringBuilder builder = new StringBuilder();
-        for (char[] line : result)
+        for (char[] line : result) {
             builder.append(String.valueOf(line));
             builder.append("\n");
+        }
         return builder.toString();
     }
 
