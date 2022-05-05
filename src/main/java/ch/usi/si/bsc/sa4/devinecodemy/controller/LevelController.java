@@ -96,6 +96,12 @@ public class LevelController {
         }
     }
 
+    /**
+     * GET /levels/worlds
+     *
+     * @param authenticationToken Token from GitLab after the Log-in.
+     * @return a list containing all Level Worlds and their descriptions
+     */
     @GetMapping("/worlds")
     public ResponseEntity<List<EWorldDTO>> getLevelWorlds(OAuth2AuthenticationToken authenticationToken){
         try {

@@ -120,7 +120,7 @@ public class LevelService {
     }
 
     /**
-     * Function for retrieving all the Level Worlds
+     * Function for retrieving all the Level Worlds, based on which the levels are sorted
      * @return the list of all Level Worlds
      */
     public List<EWorld> getWorlds(){
