@@ -90,16 +90,16 @@ public class Board {
      * @throws IndexOutOfBoundsException if the new computed position is outside the board.
      */
     public Tile getNextTileFromPositionAndDirection(final int x, final int y, EOrientation direction) throws IndexOutOfBoundsException {
-        int newX = x + direction.getDeltaX();
-        int newY = y + direction.getDeltaY();
+        final int newX = x + direction.getDeltaX();
+        final int newY = y + direction.getDeltaY();
         return getTileAt(newX, newY);
     }
 
     public boolean canStep(final int x, final int y, EOrientation direction) {
         try {
-            Tile nextTile = getNextTileFromPositionAndDirection(x, y, direction);
-            int delta_z = Math.abs(nextTile.getPosZ() - getTileAt(x,y).getPosZ());
-            return nextTile.isWalkable() && delta_z <= 1;
+            final Tile nextTile = getNextTileFromPositionAndDirection(x, y, direction);
+            final int deltaZ = Math.abs(nextTile.getPosZ() - getTileAt(x,y).getPosZ());
+            return nextTile.isWalkable() && deltaZ <= 1;
         } catch (IndexOutOfBoundsException e) {
             return false;
         }
@@ -152,17 +152,18 @@ public class Board {
                     containsItemAt(t.getPosX(), t.getPosY()) ? '*' :
                     t.getType().toString().charAt(0);
         }
-        String res = "";
+        final StringBuilder builder = new StringBuilder();
         for (char[] line : result)
-            res+=String.valueOf(line)+"\n";
-        return res;
+            builder.append(String.valueOf(line));
+            builder.append("\n");
+        return builder.toString();
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Board)) return false;
-        Board board = (Board) o;
+        final Board board = (Board) o;
         return dimX == board.dimX && dimY == board.dimY && nCoins == board.nCoins && Objects.equals(grid, board.grid) && Objects.equals(items, board.items);
     }
 
