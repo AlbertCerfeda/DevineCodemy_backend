@@ -448,5 +448,22 @@ public class BoardTests {
             assertNotNull(actualBoardDTO.getItems(), "boardDTO items is null");
         }
 
+        @DisplayName("can return the correct string of itself")
+        @Test
+        void testToString() {
+            var actualString = board.toString();
+            var expectedString = "WWGGGGWWWW\n" +
+                    "WWWWWWWWWW\n" +
+                    "WWWWWWWSWW\n" +
+                    "WWWWWWWGWW\n" +
+                    "WWWCCCC*WW\n" +
+                    "WWWWWWWG W\n" +
+                    "WWWWWWWGWW\n" +
+                    "WWWWWWW*WW\n" +
+                    "WWWWWWWGWW\n" +
+                    "WWGGGGGGGG\n";
+            assertEquals(expectedString, actualString, "strings don't match");
+        }
+
     }
 }

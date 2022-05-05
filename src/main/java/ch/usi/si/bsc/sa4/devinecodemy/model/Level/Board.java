@@ -149,6 +149,11 @@ public class Board {
      */
     public String toString() {
         char[][] result = new char[dim_x][dim_y];
+        for (int i = 0; i < dim_x; ++i) {
+            for (int j = 0; j < dim_y; ++j) {
+                result[i][j] = ' ';
+            }
+        }
         for (Tile t : grid) {
             result[t.getPos_x()][t.getPos_y()] =
                     containsItemAt(t.getPos_x(), t.getPos_y()) ? '*' :
