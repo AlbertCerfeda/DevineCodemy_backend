@@ -33,7 +33,8 @@ public class BoardTests {
                 arguments(0, -5, true, null), // test when y is negative
                 arguments(20, 0, true, null), // test when x is out of bounds
                 arguments(0, 29, true, null), // test when y is out of bounds
-                arguments(3, 4, false, null), // test when x and y are both within bounds but no item
+                arguments(3, 4, false, null), // test when x and y are both within bounds but no item (x does not match)
+                arguments(7, 4, false, null), // test when x and y are both within bounds but no item (x matches)
                 arguments(4, 7, false, new CoinItem(4, 7)) // test when x and y are both within bounds and yes item
         );
     }
@@ -126,7 +127,8 @@ public class BoardTests {
                 arguments(20, 0, EOrientation.UP, false), // test when x is out of bounds
                 arguments(0, 29, EOrientation.UP, false), // test when y is out of bounds
                 arguments(3, 4, EOrientation.UP, false), // test when yes next up but start on water
-                arguments(4, 3, EOrientation.LEFT, false), // test when yes next down and cannot step
+                arguments(4, 3, EOrientation.LEFT, false), // test when yes next left and cannot step due to not step-able
+                arguments(4, 3, EOrientation.RIGHT, false), // test when yes next right and cannot step due to high delta z
                 arguments(4, 3, EOrientation.DOWN, true) // test when yes next down and can step
         );
     }
@@ -199,7 +201,7 @@ public class BoardTests {
                 new WaterTile(2, 3, 0),
                 new WaterTile(3, 3, 0),
                 new ConcreteTile(4, 3, 0),
-                new WaterTile(5, 3, 0),
+                new WaterTile(5, 3, 2),
                 new WaterTile(6, 3, 0),
                 new WaterTile(7, 3, 0),
                 new WaterTile(8, 3, 0),
@@ -341,7 +343,7 @@ public class BoardTests {
                     new WaterTile(2, 3, 0),
                     new WaterTile(3, 3, 0),
                     new ConcreteTile(4, 3, 0),
-                    new WaterTile(5, 3, 0),
+                    new WaterTile(5, 3, 2),
                     new WaterTile(6, 3, 0),
                     new WaterTile(7, 3, 0),
                     new WaterTile(8, 3, 0),
