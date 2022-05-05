@@ -130,7 +130,7 @@ public class LevelService {
 
         for(Level level: allLevels){
             var eWorld = level.getLevelWorld();
-            if(!allLevels.contains(eWorld)){
+            if(!(eWorlds.contains(eWorld))){
                 eWorlds.add(eWorld);
             }
         }
