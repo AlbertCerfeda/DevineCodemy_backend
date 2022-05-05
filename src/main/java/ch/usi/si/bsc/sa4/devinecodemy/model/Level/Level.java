@@ -23,7 +23,7 @@ public class Level {
     @Indexed(unique = true)
     private int levelNumber;
 
-    private EWorld levelWorld;
+    private final EWorld levelWorld;
     
     private final int maxCommandsNumber;
 

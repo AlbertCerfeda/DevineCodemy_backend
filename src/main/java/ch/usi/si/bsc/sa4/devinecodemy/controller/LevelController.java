@@ -97,23 +97,13 @@ public class LevelController {
     }
 
     /**
-     * GET /levels/worlds
+     * GET /levels/worlds.
      *
      * @param authenticationToken Token from GitLab after the Log-in.
      * @return a list containing all Level Worlds and their descriptions
      */
     @GetMapping("/worlds")
     public ResponseEntity<List<EWorldDTO>> getLevelWorlds(OAuth2AuthenticationToken authenticationToken){
-        try {
-            List<EWorld> eWorlds = levelService.getWorlds();
-            List<EWorldDTO> eWorldDTOs = new ArrayList<>();
-            for (EWorld world : eWorlds) {
-                eWorldDTOs.add(world.toEWorldDTO());
-            }
-
-            return ResponseEntity.ok(eWorldDTOs);
-        }catch (InvalidAuthTokenException e){
-            return ResponseEntity.status(401).build();
-        }
+        return ResponseEntity.ok(List.of(EWorld.values()).stream().map(EWorld::toEWorldDTO).collect(Collectors.toList()));
     }
 }

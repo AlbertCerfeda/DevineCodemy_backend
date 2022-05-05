@@ -1,5 +1,4 @@
 package ch.usi.si.bsc.sa4.devinecodemy.service;
-import ch.usi.si.bsc.sa4.devinecodemy.model.EWorld;
 import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.LevelInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.UserInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.UserNotAllowedException;
@@ -117,24 +116,6 @@ public class LevelService {
         }
         
         return getAll().stream().filter((Level l)->l.getLevelNumber() >= start && l.getLevelNumber() <= end).collect(Collectors.toList());
-    }
-
-    /**
-     * Function for retrieving all the Level Worlds, based on which the levels are sorted
-     * @return the list of all Level Worlds
-     */
-    public List<EWorld> getWorlds(){
-
-        var allLevels = getAll();
-        List<EWorld> eWorlds = new ArrayList<>();
-
-        for(Level level: allLevels){
-            var eWorld = level.getLevelWorld();
-            if(!(eWorlds.contains(eWorld))){
-                eWorlds.add(eWorld);
-            }
-        }
-        return eWorlds;
     }
 
     /**
