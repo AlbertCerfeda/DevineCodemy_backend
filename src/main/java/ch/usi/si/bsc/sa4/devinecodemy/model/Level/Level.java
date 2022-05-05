@@ -118,4 +118,6 @@ public class Level {
     public String getThumbnailSrc() {return thumbnailSrc; }
 
     public int getLevelNumber() {return levelNumber;}
+
+    public EWorld getLevelWorld(){return levelWorld;}
 }

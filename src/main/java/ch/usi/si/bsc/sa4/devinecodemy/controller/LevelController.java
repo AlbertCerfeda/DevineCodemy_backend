@@ -4,6 +4,8 @@ package ch.usi.si.bsc.sa4.devinecodemy.controller;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.EWorldDTO;
+import ch.usi.si.bsc.sa4.devinecodemy.model.EWorld;
 import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.InvalidAuthTokenException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.LevelInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.UserInexistentException;
@@ -91,6 +93,21 @@ public class LevelController {
             return ResponseEntity.status(404).build();
         } catch (LevelInexistentException e) {
             return ResponseEntity.status(404).build();
+        }
+    }
+
+    @GetMapping("/worlds")
+    public ResponseEntity<List<EWorldDTO>> getLevelWorlds(OAuth2AuthenticationToken authenticationToken){
+        try {
+            List<EWorld> eWorlds = levelService.getWorlds();
+            List<EWorldDTO> eWorldDTOs = new ArrayList<>();
+            for (EWorld world : eWorlds) {
+                eWorldDTOs.add(world.toEWorldDTO());
+            }
+
+            return ResponseEntity.ok(eWorldDTOs);
+        }catch (InvalidAuthTokenException e){
+            return ResponseEntity.status(401).build();
         }
     }
 }
