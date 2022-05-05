@@ -37,8 +37,8 @@ public class StatisticsService {
      *
      */
     public UserStatistics addStats(String userId, GamePlayer game, LevelValidation levelValidation) {
-        Optional<UserStatistics> userStats = statisticsRepository.findById(userId);
-        UserStatistics stats = userStats.orElse(new UserStatistics(userId));
+        final Optional<UserStatistics> userStats = statisticsRepository.findById(userId);
+        final UserStatistics stats = userStats.orElse(new UserStatistics(userId));
 
         if (game != null) {
             stats.addData(game, levelValidation);
@@ -56,7 +56,7 @@ public class StatisticsService {
      * @return the saved statistic in the database
      */
     public UserStatistics addStats(String userId) {
-        Optional<UserStatistics> userStats = statisticsRepository.findById(userId);
+        final Optional<UserStatistics> userStats = statisticsRepository.findById(userId);
         if(userStats.isEmpty()) {
             return statisticsRepository.save(new UserStatistics(userId));
         }

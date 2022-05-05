@@ -8,6 +8,7 @@ import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.UserStatisticsDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.service.GamePlayer;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Represents the game statistics for a single user.
@@ -36,7 +37,7 @@ public class UserStatistics {
         return this.id;
     }
 
-    public HashMap<Integer, LevelStatistics> getData() {
+    public Map<Integer, LevelStatistics> getData() {
         return this.levelData;
     }
 

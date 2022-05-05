@@ -120,7 +120,7 @@ public abstract class Tile {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Tile)) return false;
-        Tile tile = (Tile) o;
+        final Tile tile = (Tile) o;
         return posX == tile.posX && posY == tile.posY && posZ == tile.posZ && isWalkable == tile.isWalkable && type == tile.type;
     }
 

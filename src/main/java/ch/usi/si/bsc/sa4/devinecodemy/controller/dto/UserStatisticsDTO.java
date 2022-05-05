@@ -12,7 +12,7 @@ public class UserStatisticsDTO {
 
     public UserStatisticsDTO(UserStatistics userStatistics){
         this.id = userStatistics.getId();
-        this.levelData = userStatistics.getData();
+        this.levelData = (HashMap<Integer, LevelStatistics>) userStatistics.getData();
     }
 
     public String getId(){

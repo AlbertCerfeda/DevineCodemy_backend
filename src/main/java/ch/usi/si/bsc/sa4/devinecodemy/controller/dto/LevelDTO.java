@@ -21,7 +21,7 @@ public class LevelDTO {
     
     private final int maxCommandsNumber;
 
-    private int levelNumber;
+    private final int levelNumber;
     
     /**
      * Constructor for the LevelDTO object.
@@ -40,7 +40,7 @@ public class LevelDTO {
 
         this.levelNumber = level.getLevelNumber();
         
-        allowedCommands = level.getAllowed_commands().stream().map(EAction::toEActionDTO).collect(Collectors.toList());
+        allowedCommands = level.getAllowedCommands().stream().map(EAction::toEActionDTO).collect(Collectors.toList());
         
         if(onlyinfo) {
             this.board = null;

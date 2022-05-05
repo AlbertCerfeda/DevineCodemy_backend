@@ -15,7 +15,7 @@ public class LevelStatistics {
 
     private final List<List<EAction>> data;
 
-    public List<List<EAction>> getAll_attempts() {
+    public List<List<EAction>> getAllAttempts() {
         return data;
     }
 

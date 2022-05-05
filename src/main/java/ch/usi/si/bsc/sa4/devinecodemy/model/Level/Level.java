@@ -35,7 +35,7 @@ public class Level {
     private final Board board;
     private final Robot robot;
 
-    private final List<EAction> allowed_commands;
+    private final List<EAction> allowedCommands;
 
     @PersistenceConstructor
     @JsonCreator
@@ -45,7 +45,7 @@ public class Level {
                  @JsonProperty("maxCommandsNumber") int maxCommandsNumber,
                  @JsonProperty("board") Board board,
                  @JsonProperty("robot") Robot robot,
-                 @JsonProperty("allowed_commands") List<EAction> allowed_commands,
+                 @JsonProperty("allowed_commands") List<EAction> allowedCommands,
                  @JsonProperty("thumbnailSrc") String thumbnailSrc) {
         this.name = name;
         this.description = description;
@@ -53,7 +53,7 @@ public class Level {
         this.maxCommandsNumber = maxCommandsNumber;
         this.board = board;
         this.robot = robot;
-        this.allowed_commands = allowed_commands;
+        this.allowedCommands = allowedCommands;
         this.thumbnailSrc=thumbnailSrc;
     }
     
@@ -77,14 +77,14 @@ public class Level {
         if (!(o instanceof Level)) {
             return false;
         }
-        Level level = (Level) o;
+        final Level level = (Level) o;
         return this.id.equals(level.id) && this.name.equals(level.name) && this.description.equals(level.description) && this.levelNumber == level.levelNumber &&
-                this.allowed_commands.equals(level.allowed_commands) && level.board.equals(this.board) && level.robot.equals(this.robot) && this.maxCommandsNumber == level.maxCommandsNumber;
+                this.allowedCommands.equals(level.allowedCommands) && level.board.equals(this.board) && level.robot.equals(this.robot) && this.maxCommandsNumber == level.maxCommandsNumber;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id,name,description,levelNumber,maxCommandsNumber,thumbnailSrc,board,robot,allowed_commands);
+        return Objects.hash(id,name,description,levelNumber,maxCommandsNumber,thumbnailSrc,board,robot, allowedCommands);
     }
 
     // Getters and setters
@@ -108,8 +108,8 @@ public class Level {
         return maxCommandsNumber;
     }
     
-    public List<EAction> getAllowed_commands(){
-        return allowed_commands;
+    public List<EAction> getAllowedCommands(){
+        return allowedCommands;
     }
 
     public String getId() {

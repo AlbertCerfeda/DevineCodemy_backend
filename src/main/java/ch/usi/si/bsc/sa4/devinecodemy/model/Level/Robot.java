@@ -38,7 +38,7 @@ public class Robot {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Robot)) return false;
-        Robot robot = (Robot) o;
+        final Robot robot = (Robot) o;
         return posX == robot.posX && posY == robot.posY && orientation == robot.orientation;
     }
 

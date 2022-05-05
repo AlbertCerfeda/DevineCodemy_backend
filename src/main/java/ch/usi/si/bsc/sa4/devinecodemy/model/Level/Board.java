@@ -33,10 +33,10 @@ public class Board {
         this.dimX = 0;
         this.dimY = 0;
         // Derives the dimensions of the board
-        grid.forEach((t)-> this.dimX = Math.max(this.dimX, t.getPosX() + 1));
-        grid.forEach((t)-> this.dimY = Math.max(this.dimY, t.getPosY() + 1));
-        items.forEach((i)-> this.dimX = Math.max(this.dimX, i.getPosX() + 1));
-        items.forEach((i)-> this.dimY = Math.max(this.dimY, i.getPosY() + 1));
+        grid.forEach(t-> this.dimX = Math.max(this.dimX, t.getPosX() + 1));
+        grid.forEach(t-> this.dimY = Math.max(this.dimY, t.getPosY() + 1));
+        items.forEach(i-> this.dimX = Math.max(this.dimX, i.getPosX() + 1));
+        items.forEach(i-> this.dimY = Math.max(this.dimY, i.getPosY() + 1));
         
         
         this.grid = grid;

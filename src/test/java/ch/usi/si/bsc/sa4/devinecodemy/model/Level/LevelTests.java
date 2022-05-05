@@ -87,7 +87,7 @@ public class LevelTests {
         @DisplayName("has the same maxSteps provided in the constructor")
         @Test
         void testGetAllowedCommands() {
-            var actualAllowedCommands = level.getAllowed_commands();
+            var actualAllowedCommands = level.getAllowedCommands();
             var expectedAllowedCommands = List.of(EAction.MOVE_FORWARD);
             assertEquals(expectedAllowedCommands, actualAllowedCommands, "allowedCommands is not the one provided in the constructor");
         }

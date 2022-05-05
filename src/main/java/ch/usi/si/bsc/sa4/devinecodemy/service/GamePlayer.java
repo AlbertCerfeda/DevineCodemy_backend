@@ -80,7 +80,7 @@ public class GamePlayer {
             try {
                 EAction action = EAction.getEActionFromCommand(command.trim());
                 // If the command is not allowed
-                if(!level.getAllowed_commands().contains(action)) {
+                if(!level.getAllowedCommands().contains(action)) {
                     hasErrors = true;
                     levelValidation.addError("Command not allowed: '"+action.getFuncCall()+"'");
                 } else
