@@ -68,24 +68,13 @@ public abstract class Tile {
     public boolean is_walkable() {
         return is_walkable;
     }
-    
-    public void set_walkable(boolean is_walkable) {
-        this.is_walkable = is_walkable;
-    }
-    
+
     /**
      * To get the height position of the tile.
      * @return the height position of the tile.
      */
     public int getPos_z() {
         return pos_z;
-    }
-
-    /**
-     * To set the height position of the tile.
-     */
-    public void setPos_z(final int pos_z) {
-        this.pos_z = pos_z;
     }
 
     /**
