@@ -90,7 +90,7 @@ public class UserTests {
         assertEquals(false, privateUserDTO.visible(), "The public profile wasn't set correctly");
 
         userPrivate2.setPublicProfile(false);
-        UserDTO privateUserDTO2 = new UserDTO(userPrivate2, true);
+        UserDTO privateUserDTO2 = userPrivate2.toPrivateUserDTO();
         assertEquals("private id2", privateUserDTO2.getId(), "the id field wasn't set correctly");
         assertEquals("private name2", privateUserDTO2.getName(), "the name field wasn't set correctly");
         assertEquals("private username2", privateUserDTO2.getUsername(), "the username field wasn't set correctly");
