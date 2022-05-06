@@ -1,4 +1,5 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.level;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -7,7 +8,9 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.EOrientation;
 
 import java.util.Objects;
 
-
+/**
+ * The Robot class represents the robot playing the level.
+ */
 public class Robot {
     private final int posX;
     private final int posY;
@@ -24,9 +27,11 @@ public class Robot {
         this.posY = posY;
         this.orientation = orientation;
     }
-    
-    public RobotDTO toRobotDTO() { return new RobotDTO(this); }
-    
+
+    public RobotDTO toRobotDTO() {
+        return new RobotDTO(this);
+    }
+
     public int getPosX() {
         return posX;
     }
@@ -34,8 +39,10 @@ public class Robot {
     public int getPosY() {
         return posY;
     }
-    
-    public EOrientation getOrientation(){ return orientation; }
+
+    public EOrientation getOrientation() {
+        return orientation;
+    }
 
     @Override
     public boolean equals(Object o) {

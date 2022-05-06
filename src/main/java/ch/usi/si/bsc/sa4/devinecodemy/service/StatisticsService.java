@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Provides all operations relating user statistics.
+ * The StatisticsService class provides all operations relating user statistics.
  */
 @Service
 public class StatisticsService {

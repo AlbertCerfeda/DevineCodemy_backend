@@ -23,8 +23,8 @@ public class UpdateUserDTO {
      *
      * @param id                       the id of the user to be updated.
      * @param publicProfileInitialized whether the publicProfile was initialized.
-     * @param publicProfile            new value of the publicProfile field telling whether
-     *                                 the profile should be public or not.
+     * @param publicProfile            new value of the publicProfile field telling
+     *                                 whether the profile should be public or not.
      */
     public UpdateUserDTO(String id, boolean publicProfileInitialized, boolean publicProfile) {
         this.id = id;

@@ -74,10 +74,28 @@ public enum EOrientation {
     private final int deltaX;
     private final int deltaY;
 
+    /**
+     * Returns the opposite EOrientation value with respect
+     * to the actual Orientation.
+     *
+     * @return the new Orientation.
+     */
     public abstract EOrientation getOpposite();
 
+    /**
+     * Returns the new EOrientation turning to the left
+     * with respect to the actual Orientation.
+     *
+     * @return the new Orientation.
+     */
     public abstract EOrientation turnLeft();
 
+    /**
+     * Returns the new EOrientation turning to the right
+     * with respect to the actual Orientation.
+     *
+     * @return the new Orientation.
+     */
     public abstract EOrientation turnRight();
 
 
