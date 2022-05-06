@@ -21,7 +21,6 @@ public class UpdateUserDTO {
     /**
      * Constructs a new UpdateUserDTO with the field to be modified
      * of the user with the given id.
-     *
      * @param id                       the id of the user to be updated.
      * @param publicProfileInitialized whether the publicProfile was initialized.
      * @param publicProfile            new value of the publicProfile field telling

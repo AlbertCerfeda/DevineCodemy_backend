@@ -8,7 +8,7 @@ import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.tile.TileDTO;
 import java.util.Objects;
 
 /**
- * This class represents the general structure of a tile.
+ * The Tile class represents the general structure of a tile.
  */
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
@@ -27,15 +27,15 @@ import java.util.Objects;
         @JsonSubTypes.Type(value = StarTile.class, name = "TELEPORT"),
 })
 public abstract class Tile {
-    // Used by the TileDTO to indicate the type of the Tile.
-    //  Subclasses of the Tile class are expected to set the value of the type field accordingly.
+    /** Used by the TileDTO to indicate the type of the Tile.
+     *  Subclasses of the Tile class are expected
+     * to set the value of the type field accordingly. */
     protected ETile type;
     
-    // Position
+    /** Position of the Tile object */
     protected final int posX;
     protected final int posY;
     protected int posZ;
-    //
     
     protected boolean isWalkable;
 
@@ -63,7 +63,12 @@ public abstract class Tile {
     public boolean isWalkable() {
         return isWalkable;
     }
-    
+
+    /**
+     * Sets the isWalkable field to the new value.
+     * @param isWalkable new value indicating whether
+     *                   the tile is walkable or not.
+     */
     public void setWalkable(boolean isWalkable) {
         this.isWalkable = isWalkable;
     }
@@ -78,6 +83,7 @@ public abstract class Tile {
 
     /**
      * To set the height position of the tile.
+     * @param posZ the new Z position of the tile.
      */
     public void setPosZ(final int posZ) {
         this.posZ = posZ;

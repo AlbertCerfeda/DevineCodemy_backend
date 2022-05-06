@@ -44,6 +44,21 @@ public class Level {
      */
     private final List<EAction> allowedCommands;
 
+    /**
+     * Constructs a new Level object given the fields
+     * from the .json file using the JsonCreator.
+     * @param name the name of the level.
+     * @param description the description of the level.
+     * @param levelNumber the number of the level.
+     * @param maxCommandsNumber the maximum amount of commands
+     *                          the user can insert
+     *                          to complete the level.
+     * @param board the board of the level.
+     * @param robot the robot of the level.
+     * @param allowedCommands the collection of allowed commands
+     *                       in the level.
+     * @param thumbnailSrc the link to representation of the level.
+     */
     @PersistenceConstructor
     @JsonCreator
     public Level(@JsonProperty("name") String name,

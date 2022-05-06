@@ -15,8 +15,10 @@ import java.util.Optional;
  */
 @Repository
 public interface UserRepository extends MongoRepository<User, String> {
-    // You can implement complex "predefined" logic with specific conventions by specific method names
-    // Documentation link: https://docs.spring.io/spring-data/mongodb/docs/current/reference/html/#mongodb.repositories.queries
+    /** You can implement complex "predefined" logic with
+     * specific conventions by specific method names.
+     * Documentation link:
+     * https://docs.spring.io/spring-data/mongodb/docs/current/reference/html/#mongodb.repositories.queries */
     List<User> findAllByNameContainingAndPublicProfileTrue(String string);
     List<User> findAllByNameContainingAndPublicProfileFalse(String string);
 

@@ -19,6 +19,12 @@ public class Robot {
      */
     private final EOrientation orientation;
 
+    /**
+     * Constructs a new Robot object with the given values.
+     * @param posX the x position of the robot.
+     * @param posY the y position of the robot.
+     * @param orientation the starting EOrientation of the robot.
+     */
     @JsonCreator
     public Robot(@JsonProperty("start_x") int posX,
                  @JsonProperty("start_y") int posY,
@@ -28,6 +34,11 @@ public class Robot {
         this.orientation = orientation;
     }
 
+    /**
+     * Returns the RobotDTO whose values are
+     * the ones of this Robot.
+     * @return the RobotDTO of this.
+     */
     public RobotDTO toRobotDTO() {
         return new RobotDTO(this);
     }
