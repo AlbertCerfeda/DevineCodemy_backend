@@ -5,7 +5,9 @@ import java.util.List;
 import ch.usi.si.bsc.sa4.devinecodemy.model.levelvalidation.LevelValidation;
 
 /**
- *
+ * The LevelValidationDTO class represents the validation state
+ * of the Level after being played, to be used by the client
+ * that played the level.
  */
 public class LevelValidationDTO {
     private final boolean completed;
