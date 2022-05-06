@@ -92,7 +92,7 @@ public class UserService {
             throw new UserAlreadyExistsException("ID is already taken.");
         }
         
-        User user = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail(), createUserDTO.getAvatar_url(),
+        User user = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail(), createUserDTO.getAvatarUrl(),
                                 createUserDTO.getBio(), createUserDTO.getLinkedin(), createUserDTO.getTwitter(), createUserDTO.getSkype());
         userRepository.save(user);
         statisticsService.addStats(user.getId());

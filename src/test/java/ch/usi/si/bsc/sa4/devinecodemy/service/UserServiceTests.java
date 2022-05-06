@@ -96,7 +96,7 @@ public class UserServiceTests {
     @Test
     public void testCreateUser() {
         CreateUserDTO createUserDTO = new CreateUserDTO("an id0", "a name0", "a username0", "an email0", "an avatar0", "a bio0", "linkedin", "twitter", "skype");
-        User user0 = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail(), createUserDTO.getAvatar_url(),
+        User user0 = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail(), createUserDTO.getAvatarUrl(),
                 createUserDTO.getBio(), createUserDTO.getLinkedin(), createUserDTO.getTwitter(), createUserDTO.getSkype());
         when(userRepository.save(any())).then(AdditionalAnswers.returnsFirstArg());
         
@@ -123,9 +123,9 @@ public class UserServiceTests {
         CreateUserDTO createUserDTO = new CreateUserDTO("", "a name", "a username", "an email", "an avatar", "a bio", "linkedin", "twitter", "skype");
         CreateUserDTO createUserDTO0 = new CreateUserDTO("an id0", "a name0", "a username0", "an email0", "an avatar", "a bio", "linkedin", "twitter", "skype");
 
-        User user = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail(),createUserDTO.getAvatar_url(), createUserDTO.getBio(),
+        User user = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail(),createUserDTO.getAvatarUrl(), createUserDTO.getBio(),
                 createUserDTO0.getLinkedin(), createUserDTO.getTwitter(), createUserDTO0.getSkype());
-        User user0 = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail(),createUserDTO.getAvatar_url(), createUserDTO.getBio(),
+        User user0 = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail(),createUserDTO.getAvatarUrl(), createUserDTO.getBio(),
                 createUserDTO0.getLinkedin(), createUserDTO.getTwitter(), createUserDTO0.getSkype());
 
         assertTrue(userService.checkBodyFormat(createUserDTO0), "The body format is correct");

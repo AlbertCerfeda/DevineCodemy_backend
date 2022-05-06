@@ -23,10 +23,18 @@ public class UserStatisticsDTO {
         this.levelData = (HashMap<Integer, LevelStatistics>) userStatistics.getData();
     }
 
+    /**
+     * returns the id of the UserStatistic, that is the id of the user.
+     * @return the id of the UserStatistic.
+     */
     public String getId(){
         return this.id;
     }
 
+    /**
+     * returns the levelData of the User.
+     * @return the Map of LevelStatistics played.
+     */
     public Map<Integer, LevelStatistics> getData(){
         return this.levelData;
     }

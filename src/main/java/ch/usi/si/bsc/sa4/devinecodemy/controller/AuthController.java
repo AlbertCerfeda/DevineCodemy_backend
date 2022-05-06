@@ -130,7 +130,7 @@ public class AuthController {
               newUser.getName(),
               newUser.getUsername(),
               newUser.getEmail(),
-              newUser.getAvatar_url(),
+              newUser.getAvatarUrl(),
               newUser.getBio(),
               newUser.getLinkedin(),
               newUser.getTwitter(),
