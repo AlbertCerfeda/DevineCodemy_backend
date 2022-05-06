@@ -53,6 +53,10 @@ public enum EAction {
         return description;
     }
 
+    /**
+     * Returns the EActionDTO of this EAction object.
+     * @return the EActionDTO of this EAction object.
+     */
     public EActionDTO toEActionDTO() {
         return new EActionDTO(this);
     }

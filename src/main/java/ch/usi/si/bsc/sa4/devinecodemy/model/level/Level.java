@@ -13,6 +13,9 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * The Level class represents the Level to be played.
+ */
 @Document(collection="levels")
 public class Level {
     @Id
@@ -35,6 +38,10 @@ public class Level {
     private final Board board;
     private final Robot robot;
 
+    /**
+     * A collection of commands that is possible
+     * to play in this Level.
+     */
     private final List<EAction> allowedCommands;
 
     @PersistenceConstructor

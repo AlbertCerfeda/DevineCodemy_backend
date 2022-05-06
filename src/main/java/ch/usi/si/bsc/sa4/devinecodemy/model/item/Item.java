@@ -55,7 +55,12 @@ public abstract class Item {
     public EItem getType(){
         return type;
     }
-    
+
+    /**
+     * Returns the ItemDTO whose values are
+     * the ones of this object.
+     * @return the ItemDTO of this object.
+     */
     public ItemDTO toItemDTO() { return new ItemDTO(this); }
 
     @Override

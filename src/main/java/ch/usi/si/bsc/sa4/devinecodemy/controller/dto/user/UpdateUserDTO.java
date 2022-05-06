@@ -12,7 +12,8 @@ public class UpdateUserDTO {
     private boolean publicProfile;
 
     /**
-     * Constructs a new UpdateUserDTO object with unsetted values.
+     * Constructs a new UpdateUserDTO object
+     * with unsetted values.
      */
     public UpdateUserDTO() {
     }
