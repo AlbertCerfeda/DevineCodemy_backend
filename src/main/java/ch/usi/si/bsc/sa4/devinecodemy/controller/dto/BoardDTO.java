@@ -9,7 +9,8 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Board;
 import ch.usi.si.bsc.sa4.devinecodemy.model.tile.Tile;
 
 /**
- * Represents the state of a Board to be used by a client.
+ * The BoardDTO class represents the state of a Board to be used
+ * by a client.
  */
 public class BoardDTO {
     private final int dimX;

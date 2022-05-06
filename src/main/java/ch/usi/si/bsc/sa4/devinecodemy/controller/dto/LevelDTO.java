@@ -7,7 +7,10 @@ import java.util.stream.Collectors;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
 import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level;
 
-
+/**
+ * The LevelDTO class represents the Level to be played
+ * by a client.
+ */
 public class LevelDTO {
     private final String name;
     private final String description;
