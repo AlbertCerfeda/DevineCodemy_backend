@@ -2,6 +2,7 @@ package ch.usi.si.bsc.sa4.devinecodemy.controller;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.InvalidAuthTokenException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.user.SocialMedia;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -125,16 +126,16 @@ public class AuthController {
         // If the user does not exist yet in the database, it creates it.
         try {
             userService.getUserByToken(authenticationToken);
-      userService.updateUser(
-          new User(newUser.getId(),
-              newUser.getName(),
-              newUser.getUsername(),
-              newUser.getEmail(),
-              newUser.getAvatarUrl(),
-              newUser.getBio(),
-              newUser.getLinkedin(),
-              newUser.getTwitter(),
-              newUser.getSkype()));
+            userService.updateUser(
+                new User(newUser.getId(),
+                    newUser.getName(),
+                    newUser.getUsername(),
+                    newUser.getEmail(),
+                    newUser.getAvatarUrl(),
+                    newUser.getBio(),
+                    new SocialMedia(newUser.getLinkedin(),
+                    newUser.getTwitter(),
+                    newUser.getSkype())));
         } catch (UserInexistentException e) {
             userService.addUser(newUser);
         }

@@ -10,6 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class CreateUserDTO extends GeneralUserDTO {
 
     private String avatarUrl;
+    protected String twitter;
+    protected String skype;
+    protected String linkedin;
 
     /**
      * Constructs the CreateUserDTO object with the given fields.
@@ -33,8 +36,11 @@ public class CreateUserDTO extends GeneralUserDTO {
                          @JsonProperty("skype") String skype,
                          @JsonProperty("linkedin") String linkedin,
                          @JsonProperty("avatar_url") String avatarUrl) {
-        super(id,name,username,email,bio,twitter,skype,linkedin);
+        super(id,name,username,email,bio);
         this.avatarUrl = avatarUrl;
+        this.twitter = twitter;
+        this.skype = skype;
+        this.linkedin = linkedin;
     }
 
     /**
@@ -45,11 +51,35 @@ public class CreateUserDTO extends GeneralUserDTO {
         return avatarUrl;
     }
 
+    public String getTwitter() {
+        return twitter;
+    }
+
+    public String getSkype() {
+        return skype;
+    }
+
+    public String getLinkedin() {
+        return linkedin;
+    }
+
     /**
      * Sets the given avatar_url as new value for the field of the object.
      * @param avatarUrl the new link to the profile image.
      */
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
+    }
+
+    public void setTwitter(String twitter) {
+        this.twitter = twitter;
+    }
+
+    public void setSkype(String skype) {
+        this.skype = skype;
+    }
+
+    public void setLinkedin(String linkedin) {
+        this.linkedin = linkedin;
     }
 }

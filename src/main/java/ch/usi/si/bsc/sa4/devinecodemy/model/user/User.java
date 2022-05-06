@@ -20,9 +20,7 @@ public class User {
     private final String avatarUrl;
     private boolean publicProfile;
     private String bio;
-    private String twitter;
-    private String skype;
-    private String linkedin;
+    private SocialMedia socialMedia;
     
     /**
      * Main constructor to create the User with GitLab data.
@@ -32,16 +30,14 @@ public class User {
      * @param email User's email
      */
     @PersistenceConstructor
-    public User(String id, String name, String username, String email, String avatar_url, String bio, String linkedin, String twitter, String skype) {
+    public User(String id, String name, String username, String email, String avatarUrl, String bio, SocialMedia socialMedia) {
         this.id = id;
         this.name = name;
         this.username = username;
         this.email = email;
-        this.avatarUrl = avatar_url;
+        this.avatarUrl = avatarUrl;
         this.bio = bio;
-        this.skype = skype;
-        this.twitter = twitter;
-        this.linkedin = linkedin;
+        this.socialMedia = new SocialMedia(socialMedia.getTwitter(), socialMedia.getSkype(), socialMedia.getLinkedin());
     }
     
     
@@ -96,28 +92,12 @@ public class User {
         this.bio = bio;
     }
 
-    public String getTwitter() {
-        return twitter;
+    public SocialMedia getSocialMedia() {
+        return socialMedia;
     }
 
-    public void setTwitter(String twitter) {
-        this.twitter = twitter;
-    }
-
-    public String getSkype() {
-        return skype;
-    }
-
-    public void setSkype(String skype) {
-        this.skype = skype;
-    }
-
-    public String getLinkedin() {
-        return linkedin;
-    }
-
-    public void setLinkedin(String linkedin) {
-        this.linkedin = linkedin;
+    public void setSocialMedia(SocialMedia socialMedia) {
+        this.socialMedia = new SocialMedia(socialMedia.getTwitter(), socialMedia.getSkype(), socialMedia.getLinkedin());
     }
 
     public void setPublicProfile(boolean publicProfile) {

@@ -1,5 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user;
 
+import ch.usi.si.bsc.sa4.devinecodemy.model.user.SocialMedia;
 import ch.usi.si.bsc.sa4.devinecodemy.model.user.User;
 
 /**
@@ -13,6 +14,7 @@ public class UserDTO extends GeneralUserDTO {
     private boolean visible;
     private String avatarUrl;
     private boolean publicProfile;
+    private SocialMediaDTO socialMedia;
 
     /**
      * Constructs a UserDTO object with values of the given user.
@@ -22,16 +24,14 @@ public class UserDTO extends GeneralUserDTO {
      *                     only the essential data if the profile is private.
      */
     public UserDTO(User user, boolean checkPrivate) {
-        super(user.getId(), user.getName(), user.getUsername(), user.getEmail(), user.getBio(), user.getTwitter(), user.getSkype(), user.getLinkedin());
+        super(user.getId(), user.getName(), user.getUsername(), user.getEmail(), user.getBio());
         this.avatarUrl = user.getAvatarUrl();
         this.publicProfile = user.isProfilePublic();
         this.visible = true;
 
         if (checkPrivate && !user.isProfilePublic()) {
             this.email = "";
-            this.linkedin = "";
-            this.skype = "";
-            this.twitter = "";
+            this.socialMedia = new SocialMediaDTO("", "", "");
             this.visible = false;
         }
     }
@@ -39,6 +39,14 @@ public class UserDTO extends GeneralUserDTO {
 
     // Getters and setters
 
+
+    public SocialMediaDTO getSocialMedia() {
+        return socialMedia;
+    }
+
+    public void setSocialMedia(SocialMediaDTO socialMedia) {
+        this.socialMedia = new SocialMediaDTO(socialMedia.getTwitter(), socialMedia.getSkype(), socialMedia.getLinkedin());
+    }
 
     public String getAvatarUrl() {
         return avatarUrl;

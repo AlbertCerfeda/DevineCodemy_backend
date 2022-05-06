@@ -3,6 +3,7 @@ package ch.usi.si.bsc.sa4.devinecodemy.service;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.InvalidAuthTokenException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserAlreadyExistsException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.user.SocialMedia;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -104,7 +105,7 @@ public class UserService {
         }
 
         User user = new User(createUserDTO.getId(), createUserDTO.getName(), createUserDTO.getUsername(), createUserDTO.getEmail(), createUserDTO.getAvatarUrl(),
-                createUserDTO.getBio(), createUserDTO.getLinkedin(), createUserDTO.getTwitter(), createUserDTO.getSkype());
+                createUserDTO.getBio(), new SocialMedia(createUserDTO.getLinkedin(), createUserDTO.getTwitter(), createUserDTO.getSkype()));
         userRepository.save(user);
         statisticsService.addStats(user.getId());
         return user;
