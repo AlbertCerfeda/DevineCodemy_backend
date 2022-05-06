@@ -6,6 +6,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user.UserDTO;
 
+/**
+ * The User class represents the user, represented with an
+ * unique id and all the values from GitLab.
+ */
 @Document(collection="users")
 public class User {
     @Id
@@ -13,7 +17,7 @@ public class User {
     private final String name;
     private final String email;
     private final String username;
-    private final String avatar_url;
+    private final String avatarUrl;
     private boolean publicProfile;
     private String bio;
     private String twitter;
@@ -33,7 +37,7 @@ public class User {
         this.name = name;
         this.username = username;
         this.email = email;
-        this.avatar_url = avatar_url;
+        this.avatarUrl = avatar_url;
         this.bio = bio;
         this.skype = skype;
         this.twitter = twitter;
@@ -42,7 +46,7 @@ public class User {
     
     
 
-    public String getAvatar_url() { return avatar_url; }
+    public String getAvatarUrl() { return avatarUrl; }
 
     public String getId() {
         return id;
@@ -60,6 +64,10 @@ public class User {
         return username;
     }
 
+    /**
+     * Returns whether the user profile is public or not.
+     * @return whether the user profile is public or not.
+     */
     public Boolean isProfilePublic() {
         return publicProfile;
     }

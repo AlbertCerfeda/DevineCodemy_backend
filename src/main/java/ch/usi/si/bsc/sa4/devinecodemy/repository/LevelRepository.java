@@ -13,10 +13,27 @@ import java.util.Optional;
  */
 @Repository
 public interface LevelRepository extends MongoRepository<Level, String> {
-    
+
+    /**
+     * Retrieves an Optional of the level with the given levelNumber.
+     * @param levelNumber the number of the Level to search in the db.
+     * @return the Optional<Level> containing:
+     *  - the level if found
+     *  - an empty Optional if level not found.
+     */
     Optional<Level> findByLevelNumber(int levelNumber);
-    
+
+    /**
+     * Returns whether the Level with the given levelNumber exists or not.
+     *
+     * @param levelNumber the levelNumber of the Level to seek.
+     * @return a boolean telling whether the level exists or not.
+     */
     boolean existsByLevelNumber(int levelNumber);
-    
+
+    /**
+     * Deletes the Level with the given levelNumber in the db.
+     * @param levelNumber the number of the Level to be deleted.
+     */
     void deleteByLevelNumber(int levelNumber);
 }

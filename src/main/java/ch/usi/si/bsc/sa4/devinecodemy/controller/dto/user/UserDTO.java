@@ -23,7 +23,7 @@ public class UserDTO extends GeneralUserDTO {
      */
     public UserDTO(User user, boolean checkPrivate) {
         super(user.getId(), user.getName(), user.getUsername(), user.getEmail(), user.getBio(), user.getTwitter(), user.getSkype(), user.getLinkedin());
-        this.avatarUrl = user.getAvatar_url();
+        this.avatarUrl = user.getAvatarUrl();
         this.publicProfile = user.isProfilePublic();
         this.visible = true;
 
