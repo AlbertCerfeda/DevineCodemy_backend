@@ -27,11 +27,11 @@ public class LevelDTO {
     private final int levelNumber;
     
     /**
-     * Constructor for the LevelDTO object.
+     * Constructs a LevelDTO object matching the given Level.
      * @param level the Level object from which to retrieve the DTO data.
-     * @param onlyinfo whether to store only the Level info.
+     * @param onlyInfo whether to store only the Level info.
      */
-    public LevelDTO(Level level, boolean onlyinfo) {
+    public LevelDTO(Level level, boolean onlyInfo) {
         this.name = level.getName();
         this.description = level.getDescription();
         
@@ -45,7 +45,7 @@ public class LevelDTO {
         
         allowedCommands = level.getAllowedCommands().stream().map(EAction::toEActionDTO).collect(Collectors.toList());
         
-        if(onlyinfo) {
+        if(onlyInfo) {
             this.board = null;
             this.robot = null;
             
