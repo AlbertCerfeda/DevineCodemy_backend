@@ -1,6 +1,5 @@
 package ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.user.SocialMedia;
 import ch.usi.si.bsc.sa4.devinecodemy.model.user.User;
 
 /**
