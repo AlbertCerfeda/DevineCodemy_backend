@@ -6,8 +6,15 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.repository.init.Jackson2RepositoryPopulatorFactoryBean;
 
+/**
+ * Class to populate the MongoDB from a file
+ */
 @Configuration
 public class MongoPopulator {
+	/**
+	 * Populates the db with the json contained in level-data.json
+	 * @return the Jackson2RepositoryPopulatorFactoryBean.
+	 */
 	@Bean
 	public Jackson2RepositoryPopulatorFactoryBean getRespositoryPopulator() {
 		final Jackson2RepositoryPopulatorFactoryBean factory = new Jackson2RepositoryPopulatorFactoryBean();

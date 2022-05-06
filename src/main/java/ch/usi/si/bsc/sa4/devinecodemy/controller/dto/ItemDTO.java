@@ -2,8 +2,13 @@ package ch.usi.si.bsc.sa4.devinecodemy.controller.dto;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.item.Item;
 
+/**
+ * The ItemDTO class represents the Item to be consumed by
+ * the client.
+ */
 public class ItemDTO {
-    /** 'type' is needed by the client for him to distinguish the different type of Items.  */
+    /** 'type' is needed by the client for him
+     * to distinguish the different type of Items.  */
     private final String type;
     
     private final int posX;

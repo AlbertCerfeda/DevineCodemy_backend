@@ -16,6 +16,11 @@ public enum EAction {
     // The description for the command
     private final String description;
 
+    /**
+     * Creates an EAction with the given funcCall and description.
+     * @param funcCall the name of the func to be called when the action is executed.
+     * @param description the description of the action.
+     */
     EAction(String funcCall, String description) {
         this.funcCall = funcCall;
         this.description = description;

@@ -8,14 +8,20 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.item.Item;
 import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Board;
 import ch.usi.si.bsc.sa4.devinecodemy.model.tile.Tile;
 
+/**
+ * Represents the state of a Board to be used by a client.
+ */
 public class BoardDTO {
     private final int dimX;
     private final int dimY;
     private final List<TileDTO> grid;
     private final List<ItemDTO> items;
 
-    
-    
+
+    /**
+     * Constructs a new BoardDTO object of the given Board.
+     * @param board the board to be matched.
+     */
     public BoardDTO(Board board) {
         dimX = board.getDimX();
         dimY = board.getDimY();

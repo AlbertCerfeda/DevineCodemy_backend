@@ -23,7 +23,11 @@ public class PlayController {
     private final LevelService levelService;
     private final UserService userService;
 
-
+    /**
+     * Sets the controller with the services needed.
+     * @param levelService the LevelService.
+     * @param userService the UserService.
+     */
     @Autowired
     public PlayController(LevelService levelService, UserService userService){
         this.levelService = levelService;

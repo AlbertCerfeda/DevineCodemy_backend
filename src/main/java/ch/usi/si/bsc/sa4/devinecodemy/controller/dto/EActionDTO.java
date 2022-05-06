@@ -9,7 +9,11 @@ public class EActionDTO {
     
     private final String name;
     private final String description;
-    
+
+    /**
+     * Constructs a new EActionDTO given the EAction.
+     * @param action the action to be converted.
+     */
     public EActionDTO (EAction action) {
         name = action.getFuncCall();
         description = action.getDescription();
