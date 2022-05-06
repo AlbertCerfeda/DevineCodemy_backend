@@ -11,7 +11,14 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.statistics.UserStatistics;
  * to be used by the client.
  */
 public class UserStatisticsDTO {
+    /**
+     * The id of the user of whose statistics belong to.
+     */
     private final String id;
+    /**
+     * The collection of the levels played mapping from the levelNumber
+     * to the LevelStatistics of the Level played by the user.
+     */
     private final HashMap<Integer, LevelStatistics> levelData;
 
     /**

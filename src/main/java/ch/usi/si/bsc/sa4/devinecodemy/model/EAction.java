@@ -11,9 +11,9 @@ public enum EAction {
     TURN_RIGHT("turnRight", "Turns Robot right"),
     COLLECT_COIN("collectCoin", "Collects a Coin");
 
-    // The function call for this command (eg 'moveForward' )
+    /** The function call for this command (eg 'moveForward' ) */
     private final String funcCall;
-    // The description for the command
+    /** The description for the command */
     private final String description;
 
     /**

@@ -2,6 +2,7 @@ package ch.usi.si.bsc.sa4.devinecodemy.model.statistics;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.levelvalidation.LevelValidation;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.UserStatisticsDTO;
@@ -19,18 +20,39 @@ public class UserStatistics {
     @Id
     private String id;
 
-    private final HashMap<Integer, LevelStatistics> levelData; // maps the ID of the Level to a LevelData object
+    /**
+     * Maps the levelNumber of the Level to a LevelData object
+     */
+    private final HashMap<Integer, LevelStatistics> levelData;
 
 
     /**
-     * Creates object that stores all recorded data for each level and game played by a single user.
-     * The users' id is used in creating the object, so that it can also be identified by it.
+     * Constructs a UserStatistic object that stores all recorded data
+     * for each level and game played by a single user.
+     * The user's id is used in creating the object,
+     * so that it can also be identified by it.
      *
-     * @param id the id of the user
+     * @param id the id of the user.
      */
     public UserStatistics(String id) {
         this.id = id;
         this.levelData = new HashMap<>();
+    }
+
+    /**
+     * Constructs a UserStatistic object that stores all recorded data
+     * for each level and game played by a single user.
+     * Needed by the db on retrieval to create a object with all the parameters.
+     * The user's id is used in creating the object,
+     * so that it can also be identified by it.
+     *
+     * @param id the id of the user.
+     * @param levelData the levelData of the user.
+     */
+    @PersistenceConstructor
+    UserStatistics(String id, HashMap<Integer, LevelStatistics> levelData) {
+        this.id = id;
+        this.levelData = levelData;
     }
 
     public String getId() {

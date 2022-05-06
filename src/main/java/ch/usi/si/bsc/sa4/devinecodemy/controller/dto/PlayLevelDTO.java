@@ -10,8 +10,14 @@ import java.util.List;
  */
 public class PlayLevelDTO {
 
+    /**
+     * The levelNumber of the Level to be played.
+     */
     private final int levelNumber;
-
+    /**
+     * The list of commands inserted by the user, and thus
+     * represented as Strings to be parsed on execution.
+     */
     private final List<String> commands;
 
     /**

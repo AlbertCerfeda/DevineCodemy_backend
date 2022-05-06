@@ -10,8 +10,22 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.levelvalidation.LevelValidation;
  * that played the level.
  */
 public class LevelValidationDTO {
+    /**
+     * A boolean indicating whether the level was completed or not.
+     */
     private final boolean completed;
+    /**
+     * A list of errors thrown when the level was played.
+     * Possible errors:
+     *  - Command not allowed.
+     *  - The command doesn't exist.
+     *  - Too many commands inserted.
+     */
     private final List<String> errors;
+    /**
+     * A list of animations to be played on the client to show
+     * the level execution.
+     */
     private final List<String> animations;
 
     /**

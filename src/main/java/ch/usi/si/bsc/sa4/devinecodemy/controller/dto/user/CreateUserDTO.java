@@ -12,15 +12,6 @@ public class CreateUserDTO extends GeneralUserDTO {
     private String avatarUrl;
 
     /**
-     * Default constructor. Needed by ObjectMapper.readValue() to avoid failures
-     * on the base case as it doesn't know whether the JSON retrieved contains
-     * the required fields.
-     */
-//    public CreateUserDTO() {
-//        super();
-//    }
-
-    /**
      * Constructs the CreateUserDTO object with the given fields.
      * @param id the id of the user.
      * @param name the name of the user.
