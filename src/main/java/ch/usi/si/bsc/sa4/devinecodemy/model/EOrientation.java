@@ -83,7 +83,8 @@ public enum EOrientation {
 
     /**
      * Private constructor for enum values.
-     * Each value is associated with a deltaX and a deltaY which together mathematically represent the direction.
+     * Each value is associated with a deltaX and a deltaY
+     * which together mathematically represent the direction.
      *
      * @param deltaX the x variation.
      * @param deltaY the y variation.

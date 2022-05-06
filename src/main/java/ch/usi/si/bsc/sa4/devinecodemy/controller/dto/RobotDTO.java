@@ -1,6 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.controller.dto;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Robot;
+import ch.usi.si.bsc.sa4.devinecodemy.model.level.Robot;
 
 /**
  * The RobotDTO class represents the robot state to be used
@@ -9,6 +9,9 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Robot;
 public class RobotDTO {
     private final int posX;
     private final int posY;
+    /**
+     * An enum of all the Orientations the Robot can have.
+     */
     private final String orientation;
 
     /**

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level;
+import ch.usi.si.bsc.sa4.devinecodemy.model.level.Level;
 
 /**
  * The LevelDTO class represents the Level to be played

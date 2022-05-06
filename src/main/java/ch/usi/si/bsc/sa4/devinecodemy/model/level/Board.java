@@ -1,4 +1,4 @@
-package ch.usi.si.bsc.sa4.devinecodemy.model.Level;
+package ch.usi.si.bsc.sa4.devinecodemy.model.level;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.*;

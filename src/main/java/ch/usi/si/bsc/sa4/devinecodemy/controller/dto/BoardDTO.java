@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.tile.TileDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.model.item.Item;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Board;
+import ch.usi.si.bsc.sa4.devinecodemy.model.level.Board;
 import ch.usi.si.bsc.sa4.devinecodemy.model.tile.Tile;
 
 /**

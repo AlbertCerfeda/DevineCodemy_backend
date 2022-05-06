@@ -7,9 +7,9 @@ import java.util.logging.Logger;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EAnimation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EOrientation;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Board;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Robot;
+import ch.usi.si.bsc.sa4.devinecodemy.model.level.Board;
+import ch.usi.si.bsc.sa4.devinecodemy.model.level.Level;
+import ch.usi.si.bsc.sa4.devinecodemy.model.level.Robot;
 import ch.usi.si.bsc.sa4.devinecodemy.model.levelvalidation.LevelValidation;
 
 /**

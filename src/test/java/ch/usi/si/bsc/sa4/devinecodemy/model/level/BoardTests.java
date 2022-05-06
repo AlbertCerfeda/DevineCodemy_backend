@@ -1,4 +1,4 @@
-package ch.usi.si.bsc.sa4.devinecodemy.model.Level;
+package ch.usi.si.bsc.sa4.devinecodemy.model.level;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.EOrientation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.item.CoinItem;

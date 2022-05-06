@@ -14,7 +14,7 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.web.bind.annotation.*;
 
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.LevelDTO;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level;
+import ch.usi.si.bsc.sa4.devinecodemy.model.level.Level;
 import ch.usi.si.bsc.sa4.devinecodemy.model.user.User;
 import ch.usi.si.bsc.sa4.devinecodemy.service.LevelService;
 import ch.usi.si.bsc.sa4.devinecodemy.service.UserService;

@@ -5,7 +5,7 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserNotAllowedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level;
+import ch.usi.si.bsc.sa4.devinecodemy.model.level.Level;
 import ch.usi.si.bsc.sa4.devinecodemy.model.levelvalidation.LevelValidation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.statistics.UserStatistics;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.LevelRepository;

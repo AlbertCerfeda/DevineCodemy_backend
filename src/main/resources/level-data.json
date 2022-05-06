@@ -1,6 +1,6 @@
 [
   {
-    "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level",
+    "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.level.Level",
     "id": 1,
     "name": "Level 1",
     "description": "Earth level 1",
@@ -137,7 +137,7 @@
     "thumbnailSrc": "../assets/level1.png"
   },
   {
-    "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level",
+    "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.level.Level",
     "id": 2,
     "name": "Level 2",
     "description": "Earth level 2",
@@ -275,7 +275,7 @@
     "thumbnailSrc": "../assets/level2.png"
   },
   {
-    "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level",
+    "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.level.Level",
     "id": 3,
     "name": "Level 3",
     "description": "Earth level 3",
@@ -413,7 +413,7 @@
     "thumbnailSrc": "../assets/level3.png"
   },
   {
-    "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level",
+    "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.level.Level",
     "id": 4,
     "name": "Level 4",
     "description": "Earth level 4",
@@ -553,7 +553,7 @@
     "thumbnailSrc": "../assets/level4.png"
   },
   {
-    "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level",
+    "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.level.Level",
     "id": 5,
     "name": "Level 5",
     "description": "Earth level 5",
@@ -698,7 +698,7 @@
 
 
   {
-    "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level",
+    "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.level.Level",
     "id": 6,
     "name": "Level 6",
     "description": "SKY level 1",
@@ -840,7 +840,7 @@
 
 
   {
-    "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level",
+    "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.level.Level",
     "id": 7,
     "name": "Level 7",
     "description": "Sky level 2",
@@ -981,7 +981,7 @@
 
 
   {
-    "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level",
+    "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.level.Level",
     "id": 8,
     "name": "Level 8",
     "description": "Sky level 3",
@@ -1122,7 +1122,7 @@
   },
 
   {
-    "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level",
+    "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.level.Level",
     "id": 9,
     "name": "Level 9",
     "description": "Sky level 4",
@@ -1263,7 +1263,7 @@
     "thumbnailSrc": "../assets/level9.png"
   },
   {
-    "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level",
+    "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.level.Level",
     "id": 10,
     "name": "Level 10",
     "description": "Sky level 5",

@@ -1,4 +1,4 @@
-package ch.usi.si.bsc.sa4.devinecodemy.model.Level;
+package ch.usi.si.bsc.sa4.devinecodemy.model.level;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -11,6 +11,9 @@ import java.util.Objects;
 public class Robot {
     private final int posX;
     private final int posY;
+    /**
+     * An enum of all the Orientations the Robot can have.
+     */
     private final EOrientation orientation;
 
     @JsonCreator
