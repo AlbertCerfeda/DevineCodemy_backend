@@ -16,9 +16,9 @@ import java.util.HashMap;
 public class UserStatistics {
 
     @Id
-    private String id;
+    private final String id;
 
-    private HashMap<Integer, LevelStatistics> level_data; // maps the ID of the Level to a LevelData object
+    private final HashMap<Integer, LevelStatistics> level_data; // maps the ID of the Level to a LevelData object
 
 
     /**
