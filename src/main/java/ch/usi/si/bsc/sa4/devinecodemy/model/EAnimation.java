@@ -1,7 +1,8 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model;
 
 /**
- * Animations recognized by the frontend.
+ * The EAnimation class represents the animation recognized
+ * by the frontend through its name.
  */
 public enum EAnimation {
     MOVE_FORWARD("MoveForward"),
@@ -14,7 +15,7 @@ public enum EAnimation {
     EMOTE_THUMBS_UP("EmoteThumbsUp"),
     EMOTE_DANCE("EmoteDance");
     
-    // The animation name recognized in the frontend
+    /** The animation name recognized in the frontend */
     private final String name;
 
     EAnimation(String animationName) {

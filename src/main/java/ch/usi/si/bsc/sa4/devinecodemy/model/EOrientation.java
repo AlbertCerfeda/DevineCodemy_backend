@@ -2,7 +2,8 @@ package ch.usi.si.bsc.sa4.devinecodemy.model;
 
 
 /**
- * All the possible orientations.
+ * The EOrientation class represents all the possible orientations
+ * that the robot can have.
  */
 public enum EOrientation {
     UP(0, -1) {

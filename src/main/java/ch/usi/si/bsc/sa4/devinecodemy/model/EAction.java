@@ -3,7 +3,7 @@ package ch.usi.si.bsc.sa4.devinecodemy.model;
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.EActionDTO;
 
 /**
- * All the actions at the disposal of the player.
+ * The EAction class represents the actions at the disposal of the player.
  */
 public enum EAction {
     MOVE_FORWARD("moveForward", "Moves Robot forward"),

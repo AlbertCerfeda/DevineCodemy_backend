@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Represents the collection and grouping of all 'User' database objects.
+ * The UserRepository class represents the collection and grouping
+ * of all 'User' database objects.
  */
 @Repository
 public interface UserRepository extends MongoRepository<User, String> {

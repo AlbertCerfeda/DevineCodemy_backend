@@ -8,7 +8,8 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level;
 import java.util.Optional;
 
 /**
- * Represents the collection and grouping of all 'Level' database objects.
+ * The LevelRepository class represents the collection and grouping
+ * of all 'Level' database objects.
  */
 @Repository
 public interface LevelRepository extends MongoRepository<Level, String> {
