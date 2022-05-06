@@ -69,7 +69,11 @@ public class LevelDTO {
     public RobotDTO getRobot() {
         return robot;
     }
-
+    
+    public String getLevelWorld(){
+        return levelWorld;
+    }
+    
     public List<EActionDTO> getAllowed_commands() {
         return allowed_commands;
     }
