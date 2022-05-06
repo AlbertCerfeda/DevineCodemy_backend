@@ -11,17 +11,18 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level;
 public class LevelDTO {
     private final String name;
     private final String description;
+    private final String thumbnailSrc;
+    
     
     private BoardDTO board;
     private RobotDTO robot;
     
     private final List<EActionDTO> allowed_commands;
-
-    private final String thumbnailSrc;
-    
     private final int maxCommandsNumber;
-
+    
     private int levelNumber;
+    private final String levelWorld;
+    
     
     /**
      * Constructor for the LevelDTO object.
@@ -32,6 +33,8 @@ public class LevelDTO {
         this.name = level.getName();
         this.description = level.getDescription();
         
+        this.levelWorld = level.getLevelWorld().name();
+        
         this.board = level.getBoard().toBoardDTO();
         
         this.robot = level.getRobot().toRobotDTO();
@@ -40,7 +43,7 @@ public class LevelDTO {
 
         this.levelNumber = level.getLevelNumber();
         
-        allowed_commands = level.getAllowed_commands().stream().map(EAction::toEActionDTO).collect(Collectors.toList());
+        this.allowed_commands = level.getAllowed_commands().stream().map(EAction::toEActionDTO).collect(Collectors.toList());
         
         if(onlyinfo) {
             this.board = null;
