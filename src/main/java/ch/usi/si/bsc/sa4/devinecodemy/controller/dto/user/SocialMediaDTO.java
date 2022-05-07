@@ -1,26 +1,36 @@
 package ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user;
 
+import ch.usi.si.bsc.sa4.devinecodemy.model.user.SocialMedia;
+
 /**
  * The SocialMediaDTO class represents the socialMedia object
  * to be used by the client.
  */
 public class SocialMediaDTO {
 
-    private final String twitter;
-    private final String skype;
-    private final String linkedin;
+    private String twitter;
+    private String skype;
+    private String linkedin;
 
     /**
      * Constructs a new SocialMediaDTO object to be returned to the client
      * with the given values.
-     * @param twitter the link to the Twitter profile.
-     * @param skype the link to the Skype profile.
-     * @param linkedin the link to the LinkedIn profile.
      */
-    public  SocialMediaDTO(String twitter, String skype, String linkedin) {
-        this.skype = skype;
-        this.twitter = twitter;
-        this.linkedin = linkedin;
+    public  SocialMediaDTO() {
+        this.twitter = "";
+        this.skype = "";
+        this.linkedin = "";
+    }
+
+    /**
+     * Constructs a new SocialMediaDTO object to be returned to the client
+     * with the given values.
+     * @param socialMedia the socialMedia from which to retrieve the data.
+     */
+    public  SocialMediaDTO(SocialMedia socialMedia) {
+        this.skype = socialMedia.getSkype();
+        this.twitter = socialMedia.getTwitter();
+        this.linkedin = socialMedia.getLinkedin();
     }
 
     public String getTwitter() {

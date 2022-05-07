@@ -67,7 +67,7 @@ public class Level {
                  @JsonProperty("maxCommandsNumber") int maxCommandsNumber,
                  @JsonProperty("board") Board board,
                  @JsonProperty("robot") Robot robot,
-                 @JsonProperty("allowed_commands") List<EAction> allowedCommands,
+                 @JsonProperty("allowedCommands") List<EAction> allowedCommands,
                  @JsonProperty("thumbnailSrc") String thumbnailSrc) {
         this.name = name;
         this.description = description;

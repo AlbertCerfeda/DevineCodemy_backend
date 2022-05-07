@@ -27,10 +27,11 @@ public class UserDTO extends GeneralUserDTO {
         this.avatarUrl = user.getAvatarUrl();
         this.publicProfile = user.isProfilePublic();
         this.visible = true;
+        this.socialMedia = user.getSocialMedia().toSocialMediaDTO();
 
         if (checkPrivate && !user.isProfilePublic()) {
             this.email = "";
-            this.socialMedia = new SocialMediaDTO("", "", "");
+            this.socialMedia = new SocialMediaDTO();
             this.visible = false;
         }
     }
@@ -41,10 +42,6 @@ public class UserDTO extends GeneralUserDTO {
 
     public SocialMediaDTO getSocialMedia() {
         return socialMedia;
-    }
-
-    public void setSocialMedia(SocialMediaDTO socialMedia) {
-        this.socialMedia = new SocialMediaDTO(socialMedia.getTwitter(), socialMedia.getSkype(), socialMedia.getLinkedin());
     }
 
     public String getAvatarUrl() {

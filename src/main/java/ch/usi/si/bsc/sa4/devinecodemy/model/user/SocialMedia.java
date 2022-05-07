@@ -1,5 +1,7 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.user;
 
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user.SocialMediaDTO;
+
 /**
  * The SocialMedia class represents all the social media
  * profiles links of a certain user.
@@ -44,5 +46,9 @@ public class SocialMedia {
 
     public void setLinkedin(String linkedin) {
         this.linkedin = linkedin;
+    }
+
+    public SocialMediaDTO toSocialMediaDTO () {
+        return new SocialMediaDTO(this);
     }
 }

@@ -13,16 +13,19 @@ public class LevelStatistics {
 
     private boolean completed;
 
-    private final List<List<EAction>> data;
+    private List<List<EAction>> data;
 
-    public List<List<EAction>> getAllAttempts() {
-        return data;
-    }
 
     public LevelStatistics (boolean completed) {
         this.completed = completed;
         this.data = new ArrayList<>();
     }
+
+    public List<List<EAction>> getAllAttempts() {
+        return data;
+    }
+
+    public void setData(List<List<EAction>> data) { this.data = data; }
 
     /**
      * Adds the list of commands used in a game played.
