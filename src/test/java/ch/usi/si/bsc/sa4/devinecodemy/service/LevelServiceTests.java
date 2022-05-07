@@ -1,9 +1,9 @@
 package ch.usi.si.bsc.sa4.devinecodemy.service;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.LevelInexistentException;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.UserInexistentException;
-import ch.usi.si.bsc.sa4.devinecodemy.model.LevelValidation.LevelValidation;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Statistics.UserStatistics;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.LevelInexistentException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.levelvalidation.LevelValidation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.statistics.UserStatistics;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.LevelRepository;
 import java.util.List;
 import java.util.Optional;

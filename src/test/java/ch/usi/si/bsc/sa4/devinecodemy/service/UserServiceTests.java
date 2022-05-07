@@ -1,23 +1,23 @@
 package ch.usi.si.bsc.sa4.devinecodemy.service;
 
-import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.CreateUserDTO;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.InvalidAuthTokenException;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.UserInexistentException;
-import ch.usi.si.bsc.sa4.devinecodemy.model.User.User;
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user.CreateUserDTO;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.InvalidAuthTokenException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.user.SocialMedia;
+import ch.usi.si.bsc.sa4.devinecodemy.model.user.User;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.StatisticsRepository;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.AdditionalAnswers;
-import org.mockito.Mockito;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import java.util.List;
 import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willReturn;
 import static org.mockito.Mockito.*;
 
 public class UserServiceTests {
@@ -37,11 +37,12 @@ public class UserServiceTests {
         statisticsRepository = mock(StatisticsRepository.class);
 
         statisticsService = new StatisticsService(statisticsRepository);
-        userService = new UserService(userRepository, statisticsService);
 
-        user = new User("an id", "a name", "a username", "an email", "an avatar", "a bio", "linkedin", "twitter", "skype");
-        user1 = new User("an id1", "a name1", "a username1", "an email1", "an avatar1", "a bio1", "linkedin1", "twitter1", "skype1");
-        user2 = new User("an id2", "a name2", "a username2", "an email2", "an avatar2", "a bio2", "linkedin2", "twitter2", "skype2");
+        userService = new UserService(userRepository,statisticsService);
+        
+        user = new User("an id", "a name", "a username", "an email", "an avatar", "a bio" , new SocialMedia("twitter", "skype", "linkedin"));
+        user1 = new User("an id1", "a name1", "a username1", "an email1", "an avatar1", "a bio1", new SocialMedia("twitter", "skype", "linkedin"));
+        user2 = new User("an id2", "a name2", "a username2", "an email2", "an avatar2", "a bio2", new SocialMedia("twitter", "skype", "linkedin"));
     }
 
     @Test
@@ -103,8 +104,8 @@ public class UserServiceTests {
     @Test
     public void testAddUser() {
         CreateUserDTO createUserDTO = new CreateUserDTO("an id0", "a name0", "a username0", "an email0", "an avatar0", "a bio0", "linkedin", "twitter", "skype");
-        User user0 = new User(createUserDTO.getId(), createUserDTO.getName(), createUserDTO.getUsername(), createUserDTO.getEmail(), createUserDTO.getAvatar_url(),
-                createUserDTO.getBio(), createUserDTO.getLinkedin(), createUserDTO.getTwitter(), createUserDTO.getSkype());
+        User user0 = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail(), createUserDTO.getAvatarUrl(),
+                createUserDTO.getBio(), new SocialMedia(createUserDTO.getTwitter(), createUserDTO.getSkype(), createUserDTO.getLinkedin()));
         when(userRepository.save(any())).then(AdditionalAnswers.returnsFirstArg());
 
         assertDoesNotThrow(() -> {
@@ -127,16 +128,16 @@ public class UserServiceTests {
     @Test
 
     public void testCheckBodyFormat() {
-        CreateUserDTO createUserDTO = new CreateUserDTO("", "a name", "a username", "an email", "an avatar", "a bio", "linkedin", "twitter", "skype");
-        CreateUserDTO createUserDTO0 = new CreateUserDTO("an id0", "a name0", "a username0", "an email0", "an avatar", "a bio", "linkedin", "twitter", "skype");
+        CreateUserDTO createUserDTO = new CreateUserDTO("", "a name", "a username", "an email", "an avatar", "a bio", "twitter", "skype", "linkedin");
+        CreateUserDTO createUserDTO0 = new CreateUserDTO("an id0", "a name0", "a username0", "an email0", "an avatar", "a bio", "twitter", "skype", "linkedin");
 
-        User user = new User(createUserDTO.getId(), createUserDTO.getName(), createUserDTO.getUsername(), createUserDTO.getEmail(), createUserDTO.getAvatar_url(), createUserDTO.getBio(),
-                createUserDTO0.getLinkedin(), createUserDTO.getTwitter(), createUserDTO0.getSkype());
-        User user0 = new User(createUserDTO.getId(), createUserDTO.getName(), createUserDTO.getUsername(), createUserDTO.getEmail(), createUserDTO.getAvatar_url(), createUserDTO.getBio(),
-                createUserDTO0.getLinkedin(), createUserDTO.getTwitter(), createUserDTO0.getSkype());
+        User user = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail(),createUserDTO.getAvatarUrl(), createUserDTO.getBio(),
+                new SocialMedia(createUserDTO.getTwitter(), createUserDTO0.getSkype(), createUserDTO0.getLinkedin()));
+        User user0 = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail(),createUserDTO.getAvatarUrl(), createUserDTO.getBio(),
+                new SocialMedia(createUserDTO.getTwitter(), createUserDTO0.getSkype(), createUserDTO0.getLinkedin()));
 
-        assertEquals(true, userService.checkBodyFormat(createUserDTO0), "The body format is correct");
-        assertEquals(false, userService.checkBodyFormat(createUserDTO), "The body format is not incorrect");
+        assertTrue(userService.checkBodyFormat(createUserDTO0), "The body format is correct");
+        assertFalse(userService.checkBodyFormat(createUserDTO), "The body format is not incorrect");
     }
 
     @Test

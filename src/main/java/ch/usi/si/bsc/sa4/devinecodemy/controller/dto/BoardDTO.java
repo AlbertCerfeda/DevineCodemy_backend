@@ -3,22 +3,29 @@ package ch.usi.si.bsc.sa4.devinecodemy.controller.dto;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.Tile.TileDTO;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Item.Item;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Board;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Tile.Tile;
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.tile.TileDTO;
+import ch.usi.si.bsc.sa4.devinecodemy.model.item.Item;
+import ch.usi.si.bsc.sa4.devinecodemy.model.level.Board;
+import ch.usi.si.bsc.sa4.devinecodemy.model.tile.Tile;
 
+/**
+ * The BoardDTO class represents the state of a Board to be used
+ *  by a client.
+ */
 public class BoardDTO {
-    private int dim_x;
-    private int dim_y;
-    private List<TileDTO> grid;
-    private List<ItemDTO> items;
+    private final int dimX;
+    private final int dimY;
+    private final List<TileDTO> grid;
+    private final List<ItemDTO> items;
 
-    
-    
+
+    /**
+     * Constructs a new BoardDTO object of the given Board.
+     * @param board the board to build the DTO from.
+     */
     public BoardDTO(Board board) {
-        dim_x = board.getDim_x();
-        dim_y = board.getDim_y();
+        dimX = board.getDimX();
+        dimY = board.getDimY();
         
         // Converts the board made of Tile to TileDTOs
         grid = board.getGrid().stream().map(Tile::toTileDTO).collect(Collectors.toList());
@@ -29,12 +36,12 @@ public class BoardDTO {
 
 
 
-    public int getDim_x() {
-        return dim_x;
+    public int getDimX() {
+        return dimX;
     }
 
-    public int getDim_y() {
-        return dim_y;
+    public int getDimY() {
+        return dimY;
     }
 
     public List<TileDTO> getGrid() {

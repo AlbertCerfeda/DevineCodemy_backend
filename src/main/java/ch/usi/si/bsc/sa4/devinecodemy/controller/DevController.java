@@ -1,6 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.controller;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.LevelInexistentException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.LevelInexistentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.User.User;
+import ch.usi.si.bsc.sa4.devinecodemy.model.user.User;
 import ch.usi.si.bsc.sa4.devinecodemy.service.LevelService;
 import ch.usi.si.bsc.sa4.devinecodemy.service.UserService;
 

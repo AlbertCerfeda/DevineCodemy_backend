@@ -1,89 +1,132 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 /**
- * All the possible orientations.
+ * The EOrientation class represents all the possible orientations
+ * that the robot can have.
  */
 public enum EOrientation {
-    UP(0,-1) {
+    UP(0, -1) {
         @Override
-        public EOrientation getOpposite() { return DOWN; }
+        public EOrientation getOpposite() {
+            return DOWN;
+        }
+
         @Override
-        public EOrientation turnLeft()    { return LEFT; }
+        public EOrientation turnLeft() {
+            return LEFT;
+        }
+
         @Override
-        public EOrientation turnRight()   { return RIGHT; }
+        public EOrientation turnRight() {
+            return RIGHT;
+        }
     },
-    DOWN(0,1) {
+    DOWN(0, 1) {
         @Override
-        public EOrientation getOpposite() { return UP; }
+        public EOrientation getOpposite() {
+            return UP;
+        }
+
         @Override
-        public EOrientation turnLeft()    { return RIGHT; }
+        public EOrientation turnLeft() {
+            return RIGHT;
+        }
+
         @Override
-        public EOrientation turnRight()   { return LEFT; }
+        public EOrientation turnRight() {
+            return LEFT;
+        }
     },
     LEFT(-1, 0) {
         @Override
-        public EOrientation getOpposite() { return RIGHT; }
+        public EOrientation getOpposite() {
+            return RIGHT;
+        }
+
         @Override
-        public EOrientation turnLeft()    { return DOWN; }
+        public EOrientation turnLeft() {
+            return DOWN;
+        }
+
         @Override
-        public EOrientation turnRight()   { return UP; }
+        public EOrientation turnRight() {
+            return UP;
+        }
     },
-    RIGHT(1,0) {
+    RIGHT(1, 0) {
         @Override
-        public EOrientation getOpposite() { return LEFT; }
+        public EOrientation getOpposite() {
+            return LEFT;
+        }
+
         @Override
-        public EOrientation turnLeft()    { return UP; }
+        public EOrientation turnLeft() {
+            return UP;
+        }
+
         @Override
-        public EOrientation turnRight()   { return DOWN; }
+        public EOrientation turnRight() {
+            return DOWN;
+        }
     };
 
-    private final int delta_x;
-    private final int delta_y;
-    private static final Random random = new Random();
-    
-    public abstract EOrientation getOpposite();
-    public abstract EOrientation turnLeft();
-    public abstract EOrientation turnRight();
-    
-    
+    private final int deltaX;
+    private final int deltaY;
+
     /**
-     * Private constructor for enum values.
-     * Each value is associated with a delta_z and a delta_y which together mathematically represent the direction.
-     * @param delta_x the x variation.
-     * @param delta_y the y variation.
+     * Returns the opposite EOrientation value with respect
+     * to the actual Orientation.
+     *
+     * @return the opposite Orientation.
      */
-    EOrientation (int delta_x, int delta_y) {
-        this.delta_x = delta_x;
-        this.delta_y = delta_y;
+    public abstract EOrientation getOpposite();
+
+    /**
+     * Returns the new EOrientation turning to the left
+     * with respect to the actual Orientation.
+     *
+     * @return the new Orientation.
+     */
+    public abstract EOrientation turnLeft();
+
+    /**
+     * Returns the new EOrientation turning to the right
+     * with respect to the actual Orientation.
+     *
+     * @return the new Orientation.
+     */
+    public abstract EOrientation turnRight();
+
+
+    /**
+     * Constructor for enum values.
+     * Each value is associated with a deltaX and a deltaY
+     * which together mathematically represent the direction.
+     *
+     * @param deltaX the x variation.
+     * @param deltaY the y variation.
+     */
+    EOrientation(int deltaX, int deltaY) {
+        this.deltaX = deltaX;
+        this.deltaY = deltaY;
     }
 
     /**
      * Returns the x direction.
+     *
      * @return the x direction.
      */
-    public int getDelta_x() {
-        return delta_x;
+    public int getDeltaX() {
+        return deltaX;
     }
 
     /**
      * Returns the y direction.
+     *
      * @return the y direction.
      */
-    public int getDelta_y() {
-        return delta_y;
-    }
-
-    /**
-     * To get a random direction.
-     * @return a random direction.
-     */
-    public static EOrientation getRandom() {
-        Random random = new Random();
-        final int r = random.nextInt(values().length);
-        return values()[r];
+    public int getDeltaY() {
+        return deltaY;
     }
 }

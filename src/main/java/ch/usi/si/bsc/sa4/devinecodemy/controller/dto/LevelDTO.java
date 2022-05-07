@@ -5,45 +5,50 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level;
+import ch.usi.si.bsc.sa4.devinecodemy.model.level.Level;
 
+/**
+ * The LevelDTO class represents the Level to be played
+ * by a player.
+ */
 public class LevelDTO {
     private final String name;
     private final String description;
-    
+
     private BoardDTO board;
     private RobotDTO robot;
-    
-    private final List<EActionDTO> allowed_commands;
+
+    private final List<EActionDTO> allowedCommands;
 
     private final String thumbnailSrc;
-    
+
     private final int maxCommandsNumber;
 
     private final int levelNumber;
-    
+
     /**
-     * Constructor for the LevelDTO object.
+     * Constructs a LevelDTO object matching the given Level.
      * @param level the Level object from which to retrieve the DTO data.
-     * @param onlyinfo whether to store only the Level info.
+     * @param onlyInfo whether to store only the Level info.
      */
-    public LevelDTO(Level level, boolean onlyinfo) {
+    public LevelDTO(Level level, boolean onlyInfo) {
         this.name = level.getName();
         this.description = level.getDescription();
-        
+
         this.board = level.getBoard().toBoardDTO();
-        
+
         this.robot = level.getRobot().toRobotDTO();
-        
+
         this.maxCommandsNumber = level.getMaxCommandsNumber();
 
         this.levelNumber = level.getLevelNumber();
-        
-        allowed_commands = level.getAllowed_commands().stream().map(EAction::toEActionDTO).collect(Collectors.toList());
-        
-        if(onlyinfo) {
+
+        allowedCommands = level.getAllowedCommands().stream().map(EAction::toEActionDTO).collect(Collectors.toList());
+
+        if(onlyInfo) {
             this.board = null;
             this.robot = null;
+
         }
 
         this.thumbnailSrc= level.getThumbnailSrc();
@@ -65,8 +70,8 @@ public class LevelDTO {
         return robot;
     }
 
-    public List<EActionDTO> getAllowed_commands() {
-        return allowed_commands;
+    public List<EActionDTO> getAllowedCommands() {
+        return allowedCommands;
     }
 
     public int getMaxCommandsNumber() {
@@ -76,7 +81,7 @@ public class LevelDTO {
     public int getLevelNumber() {
         return levelNumber;
     }
-    
+
     public String getThumbnailSrc(){
         return thumbnailSrc;
     }
