@@ -1,54 +1,58 @@
 package ch.usi.si.bsc.sa4.devinecodemy.service;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.LevelValidation.LevelValidation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.levelvalidation.LevelValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.Statistics.UserStatistics;
+import ch.usi.si.bsc.sa4.devinecodemy.model.statistics.UserStatistics;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.StatisticsRepository;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Provides all operations relating user statistics.
+ * The StatisticsService class provides all operations relating user statistics.
  */
 @Service
 public class StatisticsService {
     private final StatisticsRepository statisticsRepository;
 
+    /**
+     * Constructs a StatisticService by autowiring the dependencies.
+     * @param statisticsRepository the Repository of the statistics.
+     */
     @Autowired
-    public StatisticsService(StatisticsRepository statisticsRepository) {this.statisticsRepository = statisticsRepository;}
+    public StatisticsService(StatisticsRepository statisticsRepository) {
+        this.statisticsRepository = statisticsRepository;
+    }
 
     /**
      * Returns a UserStatistics for a single user, with a specific ID.
+     *
      * @param id the id of the user statistics to look for.
-     * @return an Optional containing the UserStatistics if there exists one with the provided ID.
+     * @return an Optional containing the UserStatistics
+     * if there exists one with the provided ID.
      */
-    public Optional<UserStatistics> getById(String id) {return statisticsRepository.findById(id);}
+    public Optional<UserStatistics> getById(String id) {
+        return statisticsRepository.findById(id);
+    }
 
-    
+
     /**
      * Updates the statistics of a user.
      *
-     * @param userId the user whose statistics we want to keep track of.
-     * @param game the game from which to retrieve the statistics.
+     * @param userId          the user whose statistics we want to keep track of.
+     * @param game            the game from which to retrieve the statistics.
      * @param levelValidation the result of the validation of the game
-     *
      */
     public UserStatistics addStats(String userId, GamePlayer game, LevelValidation levelValidation) {
-        Optional<UserStatistics> userStats = statisticsRepository.findById(userId);
-        UserStatistics stats;
-        if(userStats.isPresent()) {
-            stats = userStats.get();
-        } else {
-            stats = new UserStatistics(userId);
-        }
+        final Optional<UserStatistics> userStats = statisticsRepository.findById(userId);
+        final UserStatistics stats = userStats.orElse(new UserStatistics(userId));
 
         if (game != null) {
             stats.addData(game, levelValidation);
         }
-        
+
         return statisticsRepository.save(stats);
     }
 
@@ -57,15 +61,14 @@ public class StatisticsService {
      * Returns new or existing statistics of they exist already.
      *
      * @param userId the user whose statistics we want to keep track of.
-     *
      * @return the saved statistic in the database
      */
     public UserStatistics addStats(String userId) {
-        Optional<UserStatistics> userStats = statisticsRepository.findById(userId);
-        if(userStats.isEmpty()) {
+        final Optional<UserStatistics> userStats = statisticsRepository.findById(userId);
+        if (userStats.isEmpty()) {
             return statisticsRepository.save(new UserStatistics(userId));
         }
-        
+
         return userStats.get();
     }
 
@@ -74,8 +77,9 @@ public class StatisticsService {
      *
      * @return List containing the statistics for every user.
      */
-    public List<UserStatistics> getAll() {return statisticsRepository.findAll();}
-
+    public List<UserStatistics> getAll() {
+        return statisticsRepository.findAll();
+    }
 
 
 }

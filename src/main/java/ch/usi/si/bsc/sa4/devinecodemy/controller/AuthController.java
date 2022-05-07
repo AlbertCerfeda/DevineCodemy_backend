@@ -1,7 +1,8 @@
 package ch.usi.si.bsc.sa4.devinecodemy.controller;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.InvalidAuthTokenException;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.UserInexistentException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.InvalidAuthTokenException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.user.SocialMedia;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,23 +15,23 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.view.RedirectView;
 
-import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.CreateUserDTO;
-import ch.usi.si.bsc.sa4.devinecodemy.model.User.User;
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user.CreateUserDTO;
+import ch.usi.si.bsc.sa4.devinecodemy.model.user.User;
 import ch.usi.si.bsc.sa4.devinecodemy.service.UserService;
 
 import java.util.Arrays;
-import java.util.Optional;
+import java.util.logging.Logger;
 
 
 /**
- *  Request router for  /auth
+ * Request router for  /auth
  */
 @CrossOrigin(origins = "http://localhost200 >= response.status || response.status >= 300:3000")
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
     private final UserService userService;
-    private OAuth2AuthorizedClientService authorizedClientService;
+    private final OAuth2AuthorizedClientService authorizedClientService;
     private final RestTemplate restTemplate;
 
     @Autowired
@@ -42,13 +43,15 @@ public class AuthController {
 
     /**
      * GET /auth/check
-     * Returns whether the user is authenticated or not by returning an Optional<User>.
+     * Returns whether the user is authenticated or not
+     * by returning a User.
+     *
      * @param authenticationToken token that belongs to user.
-     * @return Optional<User> user.
-     *  If the user is not authenticated, returns HTTP status 401 (Unauthorized)
+     * @return the User.
+     * If the user is not authenticated, returns HTTP status 401 (Unauthorized)
      */
     @GetMapping("/check")
-    public ResponseEntity<User> isAuthenticated (OAuth2AuthenticationToken authenticationToken) {
+    public ResponseEntity<User> isAuthenticated(OAuth2AuthenticationToken authenticationToken) {
         try {
             return ResponseEntity.ok(userService.getUserByToken(authenticationToken));
         } catch (InvalidAuthTokenException ex) {
@@ -57,23 +60,24 @@ public class AuthController {
             return ResponseEntity.status(404).build();
         }
     }
-    
+
 
     /**
      * GET /auth/logout
      * Logs out the user.
+     *
      * @param authenticationToken token that belongs to user.
      */
     @GetMapping("/logout")
     public void logout(OAuth2AuthenticationToken authenticationToken) {
         // TODO: Implement logout
     }
-    
 
 
     /**
      * GET /auth/login
      * Creates a new user if it doesn't exist. Finally, redirects to the home page
+     *
      * @param authenticationToken Token from GitLab after the Log-in
      * @return RedirectView Url Redirecting to the home page
      */
@@ -81,23 +85,23 @@ public class AuthController {
     public RedirectView userLogin(OAuth2AuthenticationToken authenticationToken) {
 
         // Retrieves the user token from the GitLab Token
-        OAuth2AuthorizedClient client = authorizedClientService
+        final OAuth2AuthorizedClient client = authorizedClientService
                 .loadAuthorizedClient(
                         authenticationToken.getAuthorizedClientRegistrationId(),
                         authenticationToken.getName());
         if (client == null) {
             throw new IllegalArgumentException("The token is null !");
         }
-        String accessToken = client.getAccessToken().getTokenValue();
+        final String accessToken = client.getAccessToken().getTokenValue();
 
         //Creates a new request to GitLab to retrieve the user data
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON,MediaType.TEXT_HTML,MediaType.TEXT_PLAIN));
-        HttpEntity<String> entity = new HttpEntity<String>(headers);
+        final HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON, MediaType.TEXT_HTML, MediaType.TEXT_PLAIN));
+        final HttpEntity<String> entity = new HttpEntity<>(headers);
 
         String plainUser;
         try {
-             plainUser = restTemplate
+            plainUser = restTemplate
                     .exchange("https://gitlab.com/api/v4/user?access_token=" + accessToken,
                             HttpMethod.GET,
                             entity,
@@ -108,13 +112,13 @@ public class AuthController {
         }
 
         //Converts the received JSON Plain text into CreateUserDTO
-        ObjectMapper o = new ObjectMapper()
+        final ObjectMapper o = new ObjectMapper()
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         CreateUserDTO newUser;
         try {
             newUser = o.readValue(plainUser, CreateUserDTO.class);
         } catch (Exception ex) { //If JSON received is broken, gives a Server Error
-            System.out.println(ex);
+            Logger.getLogger(this.getClass().getName()).severe(ex.getMessage());
             RedirectView r = new RedirectView();
             r.setUrl("/");
             return r;
@@ -123,22 +127,23 @@ public class AuthController {
         // If the user does not exist yet in the database, it creates it.
         try {
             userService.getUserByToken(authenticationToken);
-      userService.updateUser(
-          new User(newUser.getId(),
-              newUser.getName(),
-              newUser.getUsername(),
-              newUser.getEmail(),
-              newUser.getAvatar_url(),
-              newUser.getBio(),
-              newUser.getLinkedin(),
-              newUser.getTwitter(),
-              newUser.getSkype()));
+            userService.updateUser(
+                    new User(newUser.getId(),
+                            newUser.getName(),
+                            newUser.getUsername(),
+                            newUser.getEmail(),
+                            newUser.getAvatarUrl(),
+                            newUser.getBio(),
+                            new SocialMedia(
+                                    newUser.getTwitter(),
+                                    newUser.getSkype(),
+                                    newUser.getLinkedin())));
         } catch (UserInexistentException e) {
             userService.addUser(newUser);
         }
 
         // For redirecting back to Home Page
-        RedirectView redirectView = new RedirectView();
+        final RedirectView redirectView = new RedirectView();
         redirectView.setUrl("http://localhost:3000/profile");
         return redirectView;
     }

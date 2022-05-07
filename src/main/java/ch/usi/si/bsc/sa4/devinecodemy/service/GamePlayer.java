@@ -2,14 +2,15 @@ package ch.usi.si.bsc.sa4.devinecodemy.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EAnimation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EOrientation;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Board;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Robot;
-import ch.usi.si.bsc.sa4.devinecodemy.model.LevelValidation.LevelValidation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.level.Board;
+import ch.usi.si.bsc.sa4.devinecodemy.model.level.Level;
+import ch.usi.si.bsc.sa4.devinecodemy.model.level.Robot;
+import ch.usi.si.bsc.sa4.devinecodemy.model.levelvalidation.LevelValidation;
 
 /**
  * Parses a sequence of String commands into EActions and plays them on a level.
@@ -17,7 +18,7 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.LevelValidation.LevelValidation;
 public class GamePlayer {
 
     private final Level level;
-    private final List<EAction> parsed_commands = new ArrayList<>();
+    private final List<EAction> parsedCommands = new ArrayList<>();
 
     /**
      * Constructor for GamePlayer.
@@ -31,8 +32,8 @@ public class GamePlayer {
         return level;
     }
 
-    public List<EAction> getParsed_commands() {
-        return parsed_commands;
+    public List<EAction> getParsedCommands() {
+        return parsedCommands;
     }
 
     /**
@@ -43,31 +44,45 @@ public class GamePlayer {
      * @return a LevelValidation object to represent the result of the validation.
      */
     public LevelValidation play(final List<String> commands) {
-        boolean isDead = false;
 
         LevelValidation levelValidation = new LevelValidation();
-
-        Robot robot = level.getRobot();
-        Board board = level.getBoard();
-        int current_x = robot.getPos_x();
-        int current_y = robot.getPos_y();
-        EOrientation current_orientation = robot.getOrientation();
-
-        int collectedItems = 0;
 
         ////
         //  Parsing phase
         //      Checks for invalid commands
         //      Produces, if correct, List<EAction>
+        List<EAction> actions = parseCommands(commands, levelValidation);
+        if (levelValidation.getErrors().size() > 0) {
+            return levelValidation;
+        }
+
+        parsedCommands.addAll(actions);
+
+        ////
+        // Game playing phase
+
+        return playActions(actions, levelValidation);
+    }
+
+    /**
+     * Parses a list of String commands into an equivalent list of EAction only if valid.
+     *  - If commands aren't existing, the levelValidation is set with errors
+     * @param commands the commands to be parsed.
+     * @param levelValidation the levelValidation object.
+     * @return the parsed list of EActions to be run.
+     */
+    private List<EAction> parseCommands(List<String> commands, LevelValidation levelValidation) {
+
         List<EAction> actions = new ArrayList<>();
         boolean hasErrors = false;
+
         for (String command : commands) {
             try {
                 EAction action = EAction.getEActionFromCommand(command.trim());
                 // If the command is not allowed
-                if(!level.getAllowed_commands().contains(action)) {
+                if(!level.getAllowedCommands().contains(action)) {
                     hasErrors = true;
-                    levelValidation.addError("Command not allowed: '"+action.getFunc_call()+"'");
+                    levelValidation.addError("Command not allowed: '"+action.getFuncCall()+"'");
                 } else
                     actions.add(action);
             } catch (IllegalArgumentException e) {
@@ -85,23 +100,37 @@ public class GamePlayer {
             levelValidation.setCompleted(false);
             levelValidation.clearAnimations();
             levelValidation.addAnimation(EAnimation.EMOTE_DEATH);
-            return levelValidation;
         }
 
-        parsed_commands.addAll(actions);
+        return actions;
+    }
 
-        ////
-        // Game playing phase
-        
+    /**
+     * Evaluates a list of actions, setting completed only once all the Items were collected.
+     * @param actions the list of EActions to be played.
+     * @param levelValidation the levelValidation.
+     * @return the levelValidation object.
+     */
+    private LevelValidation playActions(List<EAction> actions, LevelValidation levelValidation) {
+        boolean isDead = false;
+
+        Robot robot = level.getRobot();
+        Board board = level.getBoard();
+        int currentX = robot.getPosX();
+        int currentY = robot.getPosY();
+        EOrientation currentOrientation = robot.getOrientation();
+
+        int collectedItems = 0;
+
         for (EAction action : actions) {
             if(isDead)
                 break;
-            
+
             switch (action) {
                 case MOVE_FORWARD:
-                    if (board.canStep(current_x, current_y, current_orientation)) {
-                        current_x += current_orientation.getDelta_x();      // update x position
-                        current_y += current_orientation.getDelta_y();      // update y position
+                    if (board.canStep(currentX, currentY, currentOrientation)) {
+                        currentX += currentOrientation.getDeltaX();      // update x position
+                        currentY += currentOrientation.getDeltaY();      // update y position
                         levelValidation.addAnimation(EAnimation.MOVE_FORWARD);
                     } else { // Wrong command, cannot step (out of the board or too high to step on) : animate death and exit
                         levelValidation.addAnimation(EAnimation.EMOTE_DEATH);
@@ -109,27 +138,28 @@ public class GamePlayer {
                     }
                     break;
                 case TURN_LEFT:
-                    current_orientation = current_orientation.turnLeft();   // update orientation
+                    currentOrientation = currentOrientation.turnLeft();   // update orientation
                     levelValidation.addAnimation(EAnimation.TURN_LEFT);
                     break;
                 case TURN_RIGHT:
-                    current_orientation = current_orientation.turnRight();  // update orientation
+                    currentOrientation = currentOrientation.turnRight();  // update orientation
                     levelValidation.addAnimation(EAnimation.TURN_RIGHT);
                     break;
                 case COLLECT_COIN:
                     levelValidation.addAnimation(EAnimation.JUMP);
-                    if (board.containsItemAt(current_x, current_y)) {
+                    if (board.containsItemAt(currentX, currentY)) {
                         ++collectedItems;
                     } else {
                         levelValidation.addAnimation(EAnimation.EMOTE_NO);
                     }
                     break;
                 default:
-                    System.out.println("[X] '" + action.name() +"' action unhandled !!");
+                    Logger logger = Logger.getLogger(this.getClass().getName());
+                    logger.severe("[X] '" + action.name() +"' action unhandled !!");
                     break;
             }
         }
-        
+
         if (collectedItems == board.getCoinsNumber()) {     // level completed
             levelValidation.addAnimation(EAnimation.EMOTE_DANCE);
             levelValidation.setCompleted(true);
