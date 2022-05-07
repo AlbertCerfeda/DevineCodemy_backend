@@ -108,4 +108,24 @@ public class LevelController {
     public ResponseEntity<List<EWorldDTO>> getLevelWorlds(OAuth2AuthenticationToken authenticationToken){
         return ResponseEntity.ok(List.of(EWorld.values()).stream().map(EWorld::toEWorldDTO).collect(Collectors.toList()));
     }
+
+    /**
+     * GET /levels/worlds/{worldName}
+     *
+     *
+     * @param authenticationToken Token from GitLab after the Log-in.
+     * @param worldName name of the world to retrieve
+     * @return the world with the specified name
+     */
+    @GetMapping("/worlds/{worldName}")
+    public ResponseEntity<EWorldDTO> getWorld(OAuth2AuthenticationToken authenticationToken, @PathVariable("worldName") String worldName){
+        try{
+           EWorld world = EWorld.getEWorldFromString(worldName);
+           return ResponseEntity.ok(world.toEWorldDTO());
+        } catch (IllegalArgumentException e){
+            return ResponseEntity.status(404).build();
+        }
+
+    }
+
 }
