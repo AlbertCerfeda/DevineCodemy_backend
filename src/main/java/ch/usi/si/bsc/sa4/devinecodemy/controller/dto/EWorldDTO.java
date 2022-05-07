@@ -8,18 +8,24 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.EWorld;
 public class EWorldDTO {
     
     private String name;
-    private String description;
-
+    private String descriptionMessage;
+    private String congratulationsMessage;
+    
     public EWorldDTO (EWorld world) {
         name = world.name();
-        description = world.getDescription();
+        descriptionMessage= world.getDescriptionMessage();
+        congratulationsMessage = world.getCongratulationsMessage();
     }
     
     public String getName(){
         return name;
     }
     
-    public String getDescription() {
-        return description;
+    public String getDescriptionMessage() {
+        return descriptionMessage;
+    }
+    
+    public String getCongratulationsMessage(){
+        return congratulationsMessage;
     }
 }
