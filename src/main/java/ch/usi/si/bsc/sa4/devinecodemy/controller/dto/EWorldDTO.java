@@ -12,7 +12,7 @@ public class EWorldDTO {
     private String congratulationsMessage;
     
     public EWorldDTO (EWorld world) {
-        name = world.name();
+        name = world.getName();
         descriptionMessage= world.getDescriptionMessage();
         congratulationsMessage = world.getCongratulationsMessage();
     }

@@ -8,18 +8,37 @@ import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.EWorldDTO;
  */
 public enum EWorld {
 
-    EARTH("Part of the earth levels","Congrats!"), //Example descriptions
-    SKY("Part of the sky levels","Congrats!"),
+    EARTH("EARTH", "Part of the earth levels","Congrats!"), //Example descriptions
+    SKY("SKY", "Part of the sky levels","Congrats!"),
     
-    LAVA("Part of the lava levels","Congrats!");
+    LAVA("LAVA", "Part of the lava levels","Congrats!");
 
-    //Description of the world
+    
+    private final String name;
     private final String descriptionMessage;
     private final String congratulationsMessage;
     
-    EWorld(String descriptionMessage, String congratulationsMessage){
+    EWorld(String name, String descriptionMessage, String congratulationsMessage){
+        this.name = name;
         this.descriptionMessage = descriptionMessage;
         this.congratulationsMessage = congratulationsMessage;
+    }
+    
+    /**
+     * Create a new EWorld from a world name.
+     * Example: "LAVA" -> EWorld.LAVA
+     * @param world the given world
+     * @throws IllegalArgumentException if the string does not correspond to a valid EWorld value.
+     */
+    public static EWorld getEWorldFromString(String world) throws IllegalArgumentException {
+        for (EWorld eworld : EWorld.values()) {
+            if (eworld.getName().equals(world)) {
+                return eworld;
+            }
+        }
+        
+        
+        throw new IllegalArgumentException("Unknown world: '" + world + "'");
     }
     
     public String getDescriptionMessage() {
@@ -27,6 +46,9 @@ public enum EWorld {
     }
     public String getCongratulationsMessage() {
         return congratulationsMessage;
+    }
+    public String getName(){
+        return name;
     }
     
     public EWorldDTO toEWorldDTO() { return new EWorldDTO(this); }
