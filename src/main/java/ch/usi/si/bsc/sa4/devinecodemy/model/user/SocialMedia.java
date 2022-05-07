@@ -48,6 +48,10 @@ public class SocialMedia {
         this.linkedin = linkedin;
     }
 
+    /**
+     * Returns the SocialMediaDTO version of this object.
+     * @return the SocialMediaDTO version of this object.
+     */
     public SocialMediaDTO toSocialMediaDTO () {
         return new SocialMediaDTO(this);
     }
