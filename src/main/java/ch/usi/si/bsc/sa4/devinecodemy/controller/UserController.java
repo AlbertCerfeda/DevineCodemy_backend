@@ -1,18 +1,15 @@
 package ch.usi.si.bsc.sa4.devinecodemy.controller;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.InvalidAuthTokenException;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.UserInexistentException;
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user.UserDTO;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.InvalidAuthTokenException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
-import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.UpdateUserDTO;
-import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.UserDTO;
-import ch.usi.si.bsc.sa4.devinecodemy.model.User.User;
-import ch.usi.si.bsc.sa4.devinecodemy.service.StatisticsService;
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user.UpdateUserDTO;
+import ch.usi.si.bsc.sa4.devinecodemy.model.user.User;
 import ch.usi.si.bsc.sa4.devinecodemy.service.UserService;
 
 import java.util.*;
@@ -26,16 +23,10 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "http://localhost:3000/")
 public class UserController {
     private final UserService userService;
-    private final StatisticsService statisticsService;
-    private OAuth2AuthorizedClientService authorizedClientService;
-    private final RestTemplate restTemplate;
 
     @Autowired
-    public UserController(UserService userService, StatisticsService statisticsService, OAuth2AuthorizedClientService authorizedClientService) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.statisticsService = statisticsService;
-        this.authorizedClientService = authorizedClientService;
-        restTemplate = new RestTemplate();
     }
 
     /**
@@ -57,7 +48,7 @@ public class UserController {
      * @constraint boolean modifyProfile if true modify profile status, else modify other user fields.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(OAuth2AuthenticationToken authenticationToken, @PathVariable String id ,@RequestBody UpdateUserDTO updateUserDTO) throws IllegalArgumentException {
+    public ResponseEntity<UserDTO> updateUser(OAuth2AuthenticationToken authenticationToken, @PathVariable String id ,@RequestBody UpdateUserDTO updateUserDTO) throws IllegalArgumentException {
         Optional<User> optionalUser = userService.getById(id);
         
         if(optionalUser.isEmpty()) {
@@ -101,7 +92,7 @@ public class UserController {
      */
     @GetMapping("/{id}")
     @CrossOrigin(origins = "http://localhost:3000/")
-    public ResponseEntity<?> getById(OAuth2AuthenticationToken authenticationToken, @PathVariable("id") String id) {
+    public ResponseEntity<UserDTO> getById(OAuth2AuthenticationToken authenticationToken, @PathVariable("id") String id) {
         Optional<User> optionalUser = userService.getById(id);
         
         if(optionalUser.isEmpty()) {
@@ -120,7 +111,7 @@ public class UserController {
      * Gets the user
      */
     @GetMapping("/user")
-    public ResponseEntity<?> getUser(OAuth2AuthenticationToken authenticationToken) {
+    public ResponseEntity<UserDTO> getUser(OAuth2AuthenticationToken authenticationToken) {
         try {
             User u = userService.getUserByToken(authenticationToken);
             return ResponseEntity.ok(u.toPublicUserDTO());
