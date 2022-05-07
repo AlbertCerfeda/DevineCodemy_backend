@@ -105,7 +105,7 @@ public class UserService {
         }
 
         User user = new User(createUserDTO.getId(), createUserDTO.getName(), createUserDTO.getUsername(), createUserDTO.getEmail(), createUserDTO.getAvatarUrl(),
-                createUserDTO.getBio(), new SocialMedia(createUserDTO.getLinkedin(), createUserDTO.getTwitter(), createUserDTO.getSkype()));
+                createUserDTO.getBio(), new SocialMedia(createUserDTO.getTwitter(), createUserDTO.getSkype(), createUserDTO.getLinkedin()));
         userRepository.save(user);
         statisticsService.addStats(user.getId());
         return user;
