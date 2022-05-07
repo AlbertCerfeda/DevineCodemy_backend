@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 
 
 /**
- *  Request router for  /auth
+ * Request router for  /auth
  */
 @CrossOrigin(origins = "http://localhost200 >= response.status || response.status >= 300:3000")
 @RestController
@@ -45,12 +45,13 @@ public class AuthController {
      * GET /auth/check
      * Returns whether the user is authenticated or not
      * by returning an Optional<User>.
+     *
      * @param authenticationToken token that belongs to user.
      * @return Optional<User> user.
-     *  If the user is not authenticated, returns HTTP status 401 (Unauthorized)
+     * If the user is not authenticated, returns HTTP status 401 (Unauthorized)
      */
     @GetMapping("/check")
-    public ResponseEntity<User> isAuthenticated (OAuth2AuthenticationToken authenticationToken) {
+    public ResponseEntity<User> isAuthenticated(OAuth2AuthenticationToken authenticationToken) {
         try {
             return ResponseEntity.ok(userService.getUserByToken(authenticationToken));
         } catch (InvalidAuthTokenException ex) {
@@ -59,23 +60,24 @@ public class AuthController {
             return ResponseEntity.status(404).build();
         }
     }
-    
+
 
     /**
      * GET /auth/logout
      * Logs out the user.
+     *
      * @param authenticationToken token that belongs to user.
      */
     @GetMapping("/logout")
     public void logout(OAuth2AuthenticationToken authenticationToken) {
         // TODO: Implement logout
     }
-    
 
 
     /**
      * GET /auth/login
      * Creates a new user if it doesn't exist. Finally, redirects to the home page
+     *
      * @param authenticationToken Token from GitLab after the Log-in
      * @return RedirectView Url Redirecting to the home page
      */
@@ -94,12 +96,12 @@ public class AuthController {
 
         //Creates a new request to GitLab to retrieve the user data
         final HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON,MediaType.TEXT_HTML,MediaType.TEXT_PLAIN));
+        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON, MediaType.TEXT_HTML, MediaType.TEXT_PLAIN));
         final HttpEntity<String> entity = new HttpEntity<>(headers);
 
         String plainUser;
         try {
-             plainUser = restTemplate
+            plainUser = restTemplate
                     .exchange("https://gitlab.com/api/v4/user?access_token=" + accessToken,
                             HttpMethod.GET,
                             entity,
@@ -127,15 +129,16 @@ public class AuthController {
         try {
             userService.getUserByToken(authenticationToken);
             userService.updateUser(
-                new User(newUser.getId(),
-                    newUser.getName(),
-                    newUser.getUsername(),
-                    newUser.getEmail(),
-                    newUser.getAvatarUrl(),
-                    newUser.getBio(),
-                    new SocialMedia(newUser.getLinkedin(),
-                    newUser.getTwitter(),
-                    newUser.getSkype())));
+                    new User(newUser.getId(),
+                            newUser.getName(),
+                            newUser.getUsername(),
+                            newUser.getEmail(),
+                            newUser.getAvatarUrl(),
+                            newUser.getBio(),
+                            new SocialMedia(
+                                    newUser.getTwitter(),
+                                    newUser.getSkype(),
+                                    newUser.getLinkedin())));
         } catch (UserInexistentException e) {
             userService.addUser(newUser);
         }
