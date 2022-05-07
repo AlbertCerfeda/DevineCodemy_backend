@@ -121,7 +121,7 @@
       "items": [
         { "posX": 4, "posY": 7, "type": "COIN" }
       ],
-      "n_coins": 1
+      "nCoins": 1
     },
     "robot": {
       "posX": 4,
@@ -259,7 +259,7 @@
         { "posX": 4, "posY": 7, "type": "COIN" },
         { "posX": 5, "posY": 5, "type": "COIN" }
       ],
-      "n_coins": 2
+      "nCoins": 2
     },
     "robot": {
       "posX": 3,
@@ -397,7 +397,7 @@
         { "posX": 7, "posY": 4, "type": "COIN" },
         { "posX": 6, "posY": 1, "type": "COIN" }
       ],
-      "n_coins": 2
+      "nCoins": 2
     },
     "robot": {
       "posX": 9,
@@ -537,7 +537,7 @@
         { "posX": 7, "posY": 4, "type": "COIN" },
         { "posX": 3, "posY": 5, "type": "COIN" }
       ],
-      "n_coins": 4
+      "nCoins": 4
     },
     "robot": {
       "posX": 3,
@@ -677,7 +677,7 @@
         { "posX": 5, "posY": 3, "type": "COIN" },
         { "posX": 8, "posY": 3, "type": "COIN" }
       ],
-      "n_coins": 4
+      "nCoins": 4
     },
     "robot": {
       "posX": 1,
@@ -822,7 +822,7 @@
         { "posX": 3, "posY": 5, "type": "COIN" }
 
       ],
-      "n_coins": 3
+      "nCoins": 3
     },
     "robot": {
       "posX": 4,
@@ -963,7 +963,7 @@
 
 
       ],
-      "n_coins": 1
+      "nCoins": 1
     },
     "robot": {
       "posX": 8,
@@ -1105,7 +1105,7 @@
 
 
       ],
-      "n_coins": 2
+      "nCoins": 2
     },
     "robot": {
       "posX": 7,
@@ -1247,7 +1247,7 @@
 
 
       ],
-      "n_coins": 3
+      "nCoins": 3
     },
     "robot": {
       "posX": 2,
@@ -1386,7 +1386,7 @@
         { "posX": 8, "posY": 1, "type": "COIN" },
         { "posX": 7, "posY": 9, "type": "COIN" }
       ],
-      "n_coins": 3
+      "nCoins": 3
     },
     "robot": {
       "posX": 1,

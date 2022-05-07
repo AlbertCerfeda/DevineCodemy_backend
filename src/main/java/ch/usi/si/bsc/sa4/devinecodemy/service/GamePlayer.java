@@ -52,7 +52,7 @@ public class GamePlayer {
         //      Checks for invalid commands
         //      Produces, if correct, List<EAction>
         List<EAction> actions = parseCommands(commands, levelValidation);
-        if (levelValidation.getAnimations().contains(EAnimation.EMOTE_DEATH)) {
+        if (levelValidation.getErrors().size() > 0) {
             return levelValidation;
         }
 
