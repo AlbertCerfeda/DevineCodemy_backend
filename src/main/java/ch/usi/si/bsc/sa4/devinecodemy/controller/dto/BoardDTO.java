@@ -10,7 +10,7 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.tile.Tile;
 
 /**
  * The BoardDTO class represents the state of a Board to be used
- * by a client.
+ *  by a client.
  */
 public class BoardDTO {
     private final int dimX;
@@ -21,7 +21,7 @@ public class BoardDTO {
 
     /**
      * Constructs a new BoardDTO object of the given Board.
-     * @param board the board to be matched.
+     * @param board the board to build the DTO from.
      */
     public BoardDTO(Board board) {
         dimX = board.getDimX();

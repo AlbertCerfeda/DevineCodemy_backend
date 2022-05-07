@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A tile made of grass. You can walk on it.
+ * The Coin item, to be collected.
  */
 public class CoinItem extends Item {
 

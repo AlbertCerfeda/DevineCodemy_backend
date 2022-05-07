@@ -3,8 +3,8 @@ package ch.usi.si.bsc.sa4.devinecodemy.controller.dto;
 import ch.usi.si.bsc.sa4.devinecodemy.model.item.Item;
 
 /**
- * The ItemDTO class represents the Item to be consumed
- * by a client.
+ * The ItemDTO class represents the Item to be consumed.
+ * by a player.
  */
 public class ItemDTO {
     /** 'type' is needed by the client for him
@@ -16,7 +16,7 @@ public class ItemDTO {
 
     /**
      * Constructs a new ItemDTO object of the given item.
-     * @param item the Item to be matched.
+     * @param item the Item to build the DTO from.
      */
     public ItemDTO(Item item) {
         type = item.getType().name();

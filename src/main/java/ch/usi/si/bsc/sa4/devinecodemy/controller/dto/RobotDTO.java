@@ -16,7 +16,7 @@ public class RobotDTO {
 
     /**
      * Constructs a RobotDTO object of the given robot.
-     * @param robot the robot to be matched.
+     * @param robot the robot to build the DTO from.
      */
     public RobotDTO (Robot robot) {
         posX = robot.getPosX();

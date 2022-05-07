@@ -26,8 +26,8 @@ public class Robot {
      * @param orientation the starting EOrientation of the robot.
      */
     @JsonCreator
-    public Robot(@JsonProperty("start_x") int posX,
-                 @JsonProperty("start_y") int posY,
+    public Robot(@JsonProperty("startX") int posX,
+                 @JsonProperty("startY") int posY,
                  @JsonProperty("orientation") EOrientation orientation) {
         this.posX = posX;
         this.posY = posY;

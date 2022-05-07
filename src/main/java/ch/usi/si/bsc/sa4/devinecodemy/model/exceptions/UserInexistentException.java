@@ -1,8 +1,8 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.exceptions;
 
 /**
- * The UserInexistentException class represents the Exception thrown
- * when searching for a User that doesn't exist.
+ * The UserInexistentException Exception thrown
+ * 	when a certain User does not exist.
  */
 public class UserInexistentException extends RuntimeException {
 	/**
@@ -15,8 +15,8 @@ public class UserInexistentException extends RuntimeException {
 
 	/**
 	 * Construct a new UserInexistentException object
-	 * stating that the id with the given id doesn't exist.
-	 * @param userId the id of the User not existing
+	 * 	stating that the id with the given id doesn't exist.
+	 * @param userId the id of the User that does not exist.
 	 */
 	public UserInexistentException(String userId){
 		super("User '"+userId+"' does not exist !");

@@ -7,8 +7,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user.UserDTO;
 
 /**
- * The User class represents the user, represented with an
- * unique id and all the values from GitLab.
+ * The User class represents the user, represented with a
+ * unique id and the fetched values from GitLab.
  */
 @Document(collection="users")
 public class User {
@@ -23,11 +23,11 @@ public class User {
     private SocialMedia socialMedia;
     
     /**
-     * Main constructor to create the User with GitLab data.
-     * @param id User's id (in GitLab)
-     * @param name User's name
-     * @param username User's GitLab username (unique)
-     * @param email User's email
+     * Main constructor to create a User.
+     * @param id ID of the user (usually retrieved from GitLab).
+     * @param name name of the new user.
+     * @param username username of the new user.
+     * @param email email of the new user.
      */
     @PersistenceConstructor
     public User(String id, String name, String username, String email, String avatarUrl, String bio, SocialMedia socialMedia) {
@@ -42,7 +42,9 @@ public class User {
     
     
 
-    public String getAvatarUrl() { return avatarUrl; }
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
 
     public String getId() {
         return id;
@@ -88,16 +90,8 @@ public class User {
         return bio;
     }
 
-    public void setBio(String bio) {
-        this.bio = bio;
-    }
-
     public SocialMedia getSocialMedia() {
         return socialMedia;
-    }
-
-    public void setSocialMedia(SocialMedia socialMedia) {
-        this.socialMedia = new SocialMedia(socialMedia.getTwitter(), socialMedia.getSkype(), socialMedia.getLinkedin());
     }
 
     public void setPublicProfile(boolean publicProfile) {

@@ -24,7 +24,7 @@ public class PlayController {
     private final UserService userService;
 
     /**
-     * Sets the controller with the services needed.
+     * Instantiates the PlayController object by autowiring the dependencies.
      * @param levelService the LevelService.
      * @param userService the UserService.
      */

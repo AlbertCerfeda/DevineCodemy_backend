@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class WaterTile extends Tile {
 
     /**
-     * Construct for Water tiles.
+     * Constructor for Water tiles.
      * @param posX the x position of the tile.
      * @param posY the y position of the tile.
      * @param posZ the z position of the tile.

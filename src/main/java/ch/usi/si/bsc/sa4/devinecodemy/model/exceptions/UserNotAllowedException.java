@@ -1,9 +1,9 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.exceptions;
 
 /**
- * The UserNotAllowedException class represents the Exception
- * thrown when trying to execute an action that a User is not
- * allowed to execute.
+ * The UserNotAllowedException Exception thrown
+ * 	when a certain User lacks permissions to perform an action.
+ * 	e.g User is not allowed to access a Level.
  */
 public class UserNotAllowedException extends RuntimeException {
 	/**

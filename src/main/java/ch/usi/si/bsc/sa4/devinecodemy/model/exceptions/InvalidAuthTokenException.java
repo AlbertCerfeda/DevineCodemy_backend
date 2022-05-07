@@ -6,7 +6,7 @@ package ch.usi.si.bsc.sa4.devinecodemy.model.exceptions;
  */
 public class InvalidAuthTokenException extends RuntimeException {
 	/**
-	 * Constructs a new InvalidAuthTokenException object at Runtime.
+	 * Instantiates a new InvalidAuthTokenException object.
 	 */
 	public InvalidAuthTokenException() {
 		super("Invalid auth token !");

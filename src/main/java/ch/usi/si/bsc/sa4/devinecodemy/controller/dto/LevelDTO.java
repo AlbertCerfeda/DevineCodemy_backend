@@ -9,7 +9,7 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.level.Level;
 
 /**
  * The LevelDTO class represents the Level to be played
- * by a client.
+ * by a player.
  */
 public class LevelDTO {
     private final String name;

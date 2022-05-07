@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class CORSConfiguration implements WebMvcConfigurer {
 
     /**
-     * adds mappings and their specifications to the given registry
+     * Adds mappings and their specifications to the given registry.
      * @param registry the registry to add the mappings.
      */
     @Override

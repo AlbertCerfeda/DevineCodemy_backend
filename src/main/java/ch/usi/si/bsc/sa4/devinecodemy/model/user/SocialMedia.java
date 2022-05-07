@@ -15,8 +15,8 @@ public class SocialMedia {
     /**
      * Constructs a new SocialMedia object with the given values.
      * @param twitter the link to the Twitter profile.
-     * @param skype the link to the Skype profile.
-     * @param linkedin the link to the LinkedIn profile.
+     * @param skype the Skype username.
+     * @param linkedin the LinkedIn username.
      */
     public  SocialMedia(String twitter, String skype, String linkedin) {
         this.skype = skype;
@@ -28,24 +28,12 @@ public class SocialMedia {
         return twitter;
     }
 
-    public void setTwitter(String twitter) {
-        this.twitter = twitter;
-    }
-
     public String getSkype() {
         return skype;
     }
 
-    public void setSkype(String skype) {
-        this.skype = skype;
-    }
-
     public String getLinkedin() {
         return linkedin;
-    }
-
-    public void setLinkedin(String linkedin) {
-        this.linkedin = linkedin;
     }
 
     /**

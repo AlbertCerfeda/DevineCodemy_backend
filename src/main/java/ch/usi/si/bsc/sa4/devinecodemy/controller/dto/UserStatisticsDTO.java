@@ -23,7 +23,7 @@ public class UserStatisticsDTO {
 
     /**
      * Constructs a UserStatisticsDTO object of the given userStatistic.
-     * @param userStatistics the UserStatistic to be matched.
+     * @param userStatistics the UserStatistic to build the DTO from.
      */
     public UserStatisticsDTO(UserStatistics userStatistics){
         this.id = userStatistics.getId();
@@ -31,7 +31,7 @@ public class UserStatisticsDTO {
     }
 
     /**
-     * returns the id of the UserStatistic, that is the id of the user.
+     * Returns the id of the UserStatistic, that is the id of the user.
      * @return the id of the UserStatistic.
      */
     public String getId(){
@@ -39,7 +39,7 @@ public class UserStatisticsDTO {
     }
 
     /**
-     * returns the levelData of the User.
+     * Returns the levelData of the User.
      * @return the Map of LevelStatistics played.
      */
     public Map<Integer, LevelStatistics> getData(){

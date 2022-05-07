@@ -18,7 +18,7 @@ public class StatisticsService {
     private final StatisticsRepository statisticsRepository;
 
     /**
-     * Constructs a StatisticService accessing the given repos.
+     * Constructs a StatisticService by autowiring the dependencies.
      * @param statisticsRepository the Repository of the statistics.
      */
     @Autowired

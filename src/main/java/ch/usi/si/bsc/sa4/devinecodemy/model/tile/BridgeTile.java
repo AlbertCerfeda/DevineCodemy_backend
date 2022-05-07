@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class BridgeTile extends Tile {
 
     /**
-     * Construct for BridgeTile object.
+     * Constructor for BridgeTile object.
      * @param posX the x position of the bridge.
      * @param posY the y position of the bridge.
      * @param posZ the z position of the bridge.

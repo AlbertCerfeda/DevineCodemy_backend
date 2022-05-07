@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class NormalSkyTile extends Tile {
 
     /**
-     * Construct for Water tiles.
+     * Construct for NormalSkyTile tiles.
      * @param posX the x position of the tile.
      * @param posY the y position of the tile.
      * @param posZ the z position of the tile.

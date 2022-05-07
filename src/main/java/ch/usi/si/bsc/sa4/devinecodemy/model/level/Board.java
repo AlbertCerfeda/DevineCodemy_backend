@@ -53,14 +53,18 @@ public class Board {
      * @throws IllegalArgumentException it the coordinates are out of bounds.
      */
     public Tile getTileAt(final int x, final int y) throws IndexOutOfBoundsException{
-        if(x < 0 || y < 0 || x>= dimX || y>= dimY)
+        if(x < 0 || y < 0 || x>= dimX || y>= dimY) {
             throw new IndexOutOfBoundsException("Invalid coordinates");
+        }
+        
         for(Tile tile : grid) {
-            if(tile.getPosX() == x && tile.getPosY() == y)
+            if(tile.getPosX() == x && tile.getPosY() == y) {
                 return tile;
+            }
         }
         return null;
     }
+    
     /**
      * Returns an Item from a given position.
      *  Returns null if an Item with the given coordinates does not exist.
@@ -70,12 +74,14 @@ public class Board {
      * @throws IllegalArgumentException it the coordinates are out of bounds.
      */
     public Item getItemAt(final int x, final int y) throws IndexOutOfBoundsException{
-        if(x < 0 || y < 0 || x>= dimX || y>= dimY)
+        if(x < 0 || y < 0 || x>= dimX || y>= dimY) {
             throw new IndexOutOfBoundsException("Invalid coordinates");
+        }
         
         for(Item item : items) {
-            if(item.getPosX() == x && item.getPosY() == y)
+            if(item.getPosX() == x && item.getPosY() == y) {
                 return item;
+            }
         }
         return null;
     }

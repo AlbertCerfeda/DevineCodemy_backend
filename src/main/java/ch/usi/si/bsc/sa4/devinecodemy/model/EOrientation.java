@@ -78,7 +78,7 @@ public enum EOrientation {
      * Returns the opposite EOrientation value with respect
      * to the actual Orientation.
      *
-     * @return the new Orientation.
+     * @return the opposite Orientation.
      */
     public abstract EOrientation getOpposite();
 
@@ -100,7 +100,7 @@ public enum EOrientation {
 
 
     /**
-     * Private constructor for enum values.
+     * Constructor for enum values.
      * Each value is associated with a deltaX and a deltaY
      * which together mathematically represent the direction.
      *

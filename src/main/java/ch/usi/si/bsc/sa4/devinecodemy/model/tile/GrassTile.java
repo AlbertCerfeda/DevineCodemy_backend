@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class GrassTile extends Tile {
 
     /**
-     * Construct for Grass tiles.
+     * Constructor for GrassTile tiles.
      * @param posX the x position of the tile.
      * @param posY the y position of the tile.
      * @param posZ the z position of the tile.

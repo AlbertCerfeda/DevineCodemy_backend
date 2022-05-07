@@ -82,14 +82,6 @@ public abstract class Tile {
     }
 
     /**
-     * To set the height position of the tile.
-     * @param posZ the new Z position of the tile.
-     */
-    public void setPosZ(final int posZ) {
-        this.posZ = posZ;
-    }
-
-    /**
      * To get x position of the tile.
      * @return the x position of the tile.
      */

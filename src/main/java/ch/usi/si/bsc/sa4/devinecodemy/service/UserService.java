@@ -24,7 +24,12 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final StatisticsService statisticsService;
-
+    
+    /**
+     * Construct a UserService by autowiring its dependencies.
+     * @param userRepository the UserRepository.
+     * @param statisticsService the statistics service.
+     */
     @Autowired
     public UserService(UserRepository userRepository, StatisticsService statisticsService) {
         this.userRepository = userRepository;
@@ -161,8 +166,8 @@ public class UserService {
     /**
      * Return the user matching the given authenticationToken.
      *
-     * @param authenticationToken token that belongs to user.
-     * @return Optional<User> user.
+     * @param authenticationToken the OAuth2 auth token.
+     * @return the User.
      * @throws InvalidAuthTokenException if the auth token is invalid.
      * @throws UserInexistentException   if the user does not exist.
      */

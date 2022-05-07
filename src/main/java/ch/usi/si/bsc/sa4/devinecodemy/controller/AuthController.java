@@ -44,10 +44,10 @@ public class AuthController {
     /**
      * GET /auth/check
      * Returns whether the user is authenticated or not
-     * by returning an Optional<User>.
+     * by returning a User.
      *
      * @param authenticationToken token that belongs to user.
-     * @return Optional<User> user.
+     * @return the User.
      * If the user is not authenticated, returns HTTP status 401 (Unauthorized)
      */
     @GetMapping("/check")
@@ -118,8 +118,7 @@ public class AuthController {
         try {
             newUser = o.readValue(plainUser, CreateUserDTO.class);
         } catch (Exception ex) { //If JSON received is broken, gives a Server Error
-            Logger logger = Logger.getLogger(this.getClass().getName());
-            logger.severe(ex.getMessage());
+            Logger.getLogger(this.getClass().getName()).severe(ex.getMessage());
             RedirectView r = new RedirectView();
             r.setUrl("/");
             return r;

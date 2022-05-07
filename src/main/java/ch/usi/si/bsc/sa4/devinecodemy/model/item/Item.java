@@ -57,8 +57,7 @@ public abstract class Item {
     }
 
     /**
-     * Returns the ItemDTO whose values are
-     * the ones of this object.
+     * Returns the ItemDTO of this object.
      * @return the ItemDTO of this object.
      */
     public ItemDTO toItemDTO() { return new ItemDTO(this); }

@@ -62,24 +62,4 @@ public class CreateUserDTO extends GeneralUserDTO {
     public String getLinkedin() {
         return linkedin;
     }
-
-    /**
-     * Sets the given avatar_url as new value for the field of the object.
-     * @param avatarUrl the new link to the profile image.
-     */
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
-    }
-
-    public void setTwitter(String twitter) {
-        this.twitter = twitter;
-    }
-
-    public void setSkype(String skype) {
-        this.skype = skype;
-    }
-
-    public void setLinkedin(String linkedin) {
-        this.linkedin = linkedin;
-    }
 }

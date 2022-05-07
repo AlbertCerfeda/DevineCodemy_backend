@@ -57,7 +57,8 @@ public class Level {
      * @param robot the robot of the level.
      * @param allowedCommands the collection of allowed commands
      *                       in the level.
-     * @param thumbnailSrc the link to representation of the level.
+     * @param thumbnailSrc the frontend path to the thumbnail image
+     *                     of the Level.
      */
     @PersistenceConstructor
     @JsonCreator

@@ -1,8 +1,8 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.exceptions;
 
 /**
- * The UserAlread.ExistsException class represents the Exception
- * thrown when trying to add a user that already exists/
+ * The UserAlreadyExistsException Exception thrown
+ *  when trying to add a user that already exists/
  */
 public class UserAlreadyExistsException extends RuntimeException {
 

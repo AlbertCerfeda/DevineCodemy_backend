@@ -48,23 +48,11 @@ public class UserDTO extends GeneralUserDTO {
         return avatarUrl;
     }
 
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
-    }
-
     public boolean isPublicProfile() {
         return publicProfile;
     }
 
-    public void setPublicProfile(boolean publicProfile) {
-        this.publicProfile = publicProfile;
-    }
-
     public boolean isVisible() {
         return this.visible;
-    }
-
-    public void setVisible(boolean visible) {
-        this.visible = visible;
     }
 }

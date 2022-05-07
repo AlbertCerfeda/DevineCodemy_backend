@@ -6,8 +6,8 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.levelvalidation.LevelValidation;
 
 /**
  * The LevelValidationDTO class represents the validation state
- * of the Level after being played, to be used by the client
- * that played the level.
+ * of the Level after being played, to be read by the player after
+ * executing commands.
  */
 public class LevelValidationDTO {
     /**

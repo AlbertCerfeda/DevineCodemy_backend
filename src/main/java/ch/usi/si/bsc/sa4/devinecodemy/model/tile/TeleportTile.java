@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A tile where the pleayer can teleport to another tile
+ * A tile where the player can teleport to another teleport tile.
  */
 public class TeleportTile extends Tile {
 

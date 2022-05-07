@@ -76,7 +76,7 @@ public class LevelService {
         }
         
         Optional<UserStatistics> stats = statisticsService.getById(userId);
-        // If there is no stats yet for this user, create empty statistics for the user in the db.
+        // If there are no stats yet for this user, create empty statistics for the user in the db.
         if (stats.isEmpty()) {
             statisticsService.addStats(userId);
         }
