@@ -15,6 +15,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
+import org.springframework.data.util.Pair;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
@@ -32,7 +33,8 @@ public class BoardTests {
                 arguments(0, -5, true, null), // test when y is negative
                 arguments(20, 0, true, null), // test when x is out of bounds
                 arguments(0, 29, true, null), // test when y is out of bounds
-                arguments(3, 4, false, null), // test when x and y are both within bounds but no item
+                arguments(3, 4, false, null), // test when x and y are both within bounds but no item (x does not match)
+                arguments(7, 4, false, null), // test when x and y are both within bounds but no item (x matches)
                 arguments(4, 7, false, new CoinItem(4, 7)) // test when x and y are both within bounds and yes item
         );
     }
@@ -56,26 +58,31 @@ public class BoardTests {
 
     public static Stream<Arguments> getTileAtTestsArgumentProvider() {
         return Stream.of(
-                arguments(-1, -2, true, 0, 0), // test when both are negative
-                arguments(34, 333, true, 0, 0), // test when both are out of bounds
-                arguments(-1, 0, true, 0, 0), // test when x is negative
-                arguments(0, -5, true, 0, 0), // test when y is negative
-                arguments(20, 0, true, 0, 0), // test when x is out of bounds
-                arguments(0, 29, true, 0, 0), // test when y is out of bounds
-                arguments(3, 4, false, 3, 4) // test when x and y are both within bounds
+                arguments(-1, -2, true, Pair.of(0, 0)), // test when both are negative
+                arguments(34, 333, true, Pair.of(0, 0)), // test when both are out of bounds
+                arguments(-1, 0, true, Pair.of(0, 0)), // test when x is negative
+                arguments(0, -5, true, Pair.of(0, 0)), // test when y is negative
+                arguments(20, 0, true, Pair.of(0, 0)), // test when x is out of bounds
+                arguments(0, 29, true, Pair.of(0, 0)), // test when y is out of bounds
+                arguments(3, 4, false, Pair.of(3, 4)) // test when x and y are both within bounds
+//                arguments(5, 8, false, null) // test when x and y are both within bounds but no tile
         );
     }
 
-    @ParameterizedTest(name = "getting the tile at x {0} and y {1} should {2} throw and return tile with x {3} and y {4}")
+    @ParameterizedTest(name = "getting the tile at x {0} and y {1} should {2} throw and return tile with xy {3}")
     @MethodSource("getTileAtTestsArgumentProvider")
-    void getTileAtTest(int x, int y, boolean shouldThrow, int nx, int ny) {
+    void getTileAtTest(int x, int y, boolean shouldThrow, Pair<Integer, Integer> xy) {
         if (shouldThrow) {
             assertThrows(Exception.class, () -> board.getTileAt(x, y), "method should throw");
         } else {
             assertDoesNotThrow(() -> board.getTileAt(x, y), "method should not throw");
             final Tile actualTile = board.getTileAt(x, y);
-            assertEquals(nx, actualTile.getPosX(), "tile does not have correct x");
-            assertEquals(ny, actualTile.getPosY(), "tile does not have correct y");
+            if (xy == null) {
+                assertNull(actualTile, "tile should be null");
+            } else {
+                assertEquals(xy.getFirst(), actualTile.getPosX(), "tile does not have correct x");
+                assertEquals(xy.getSecond(), actualTile.getPosY(), "tile does not have correct y");
+            }
         }
     }
 
@@ -109,6 +116,48 @@ public class BoardTests {
             assertEquals(nx, actualTile.getPosX(), "next tile does not have correct x");
             assertEquals(ny, actualTile.getPosY(), "next tile does not have correct y");
         }
+    }
+
+    public static Stream<Arguments> canStepTestsArgumentProvider() {
+        return Stream.of(
+                arguments(-1, -2, EOrientation.UP, false), // test when both are negative
+                arguments(34, 333, EOrientation.UP, false), // test when both are out of bounds
+                arguments(-1, 0, EOrientation.UP, false), // test when x is negative
+                arguments(0, -5, EOrientation.UP, false), // test when y is negative
+                arguments(20, 0, EOrientation.UP, false), // test when x is out of bounds
+                arguments(0, 29, EOrientation.UP, false), // test when y is out of bounds
+                arguments(3, 4, EOrientation.UP, false), // test when yes next up but start on water
+                arguments(4, 3, EOrientation.LEFT, false), // test when yes next left and cannot step due to not step-able
+                arguments(4, 3, EOrientation.RIGHT, false), // test when yes next right and cannot step due to high delta z
+                arguments(4, 3, EOrientation.DOWN, true) // test when yes next down and can step
+        );
+    }
+
+    @ParameterizedTest(name = "checking can step from x {0} and y {1} in direction {2} should return {3}")
+    @MethodSource("canStepTestsArgumentProvider")
+    void canStepTest(int x, int y, EOrientation direction, boolean expected) {
+        final boolean actual = board.canStep(x, y, direction);
+        assertEquals(expected, actual);
+    }
+
+    public static Stream<Arguments> containsItemAtTestsArgumentProvider() {
+        return Stream.of(
+                arguments(-1, -2, false), // test when both are negative
+                arguments(34, 333, false), // test when both are out of bounds
+                arguments(-1, 0, false), // test when x is negative
+                arguments(0, -5, false), // test when y is negative
+                arguments(20, 0, false), // test when x is out of bounds
+                arguments(0, 29, false), // test when y is out of bounds
+                arguments(3, 4, false), // test when x and y are both within bounds but no item
+                arguments(4, 7, true) // test when x and y are both within bounds and yes item
+        );
+    }
+
+    @ParameterizedTest(name = "checking if contains item at x {0} and y {1} should return {2}")
+    @MethodSource("containsItemAtTestsArgumentProvider")
+    void containsItemAtTest(int x, int y, boolean expected) {
+        final boolean actual = board.containsItemAt(x, y);
+        assertEquals(expected, actual);
     }
 
     @BeforeEach
@@ -152,7 +201,7 @@ public class BoardTests {
                 new WaterTile(2, 3, 0),
                 new WaterTile(3, 3, 0),
                 new ConcreteTile(4, 3, 0),
-                new WaterTile(5, 3, 0),
+                new ConcreteTile(5, 3, 2),
                 new WaterTile(6, 3, 0),
                 new WaterTile(7, 3, 0),
                 new WaterTile(8, 3, 0),
@@ -207,7 +256,7 @@ public class BoardTests {
                 new WaterTile(2, 8, 0),
                 new WaterTile(3, 8, 0),
                 new WaterTile(4, 8, 0),
-                new WaterTile(5, 8, 0),
+                new WaterTile(5, 8, 0), // intentional
                 new WaterTile(6, 8, 0),
                 new WaterTile(7, 8, 0),
                 new WaterTile(8, 8, 0),
@@ -225,9 +274,10 @@ public class BoardTests {
                 new GrassTile(9, 9, 0)
         );
         List<Item> items = List.of(
-                new CoinItem(4, 7)
+                new CoinItem(4, 7),
+                new CoinItem(7, 7)
         );
-        board = new Board(grid, items, 1);
+        board = new Board(grid, items, 2);
     }
 
     @DisplayName("after creation")
@@ -293,7 +343,7 @@ public class BoardTests {
                     new WaterTile(2, 3, 0),
                     new WaterTile(3, 3, 0),
                     new ConcreteTile(4, 3, 0),
-                    new WaterTile(5, 3, 0),
+                    new ConcreteTile(5, 3, 2),
                     new WaterTile(6, 3, 0),
                     new WaterTile(7, 3, 0),
                     new WaterTile(8, 3, 0),
@@ -348,7 +398,7 @@ public class BoardTests {
                     new WaterTile(2, 8, 0),
                     new WaterTile(3, 8, 0),
                     new WaterTile(4, 8, 0),
-                    new WaterTile(5, 8, 0),
+                    new WaterTile(5, 8, 0), // intentional
                     new WaterTile(6, 8, 0),
                     new WaterTile(7, 8, 0),
                     new WaterTile(8, 8, 0),
@@ -373,7 +423,8 @@ public class BoardTests {
         void testGetItems() {
             var actualItems = board.getItems();
             var expectedItems = List.of(
-                    new CoinItem(4, 7)
+                    new CoinItem(4, 7),
+                    new CoinItem(7, 7)
             );
             assertEquals(expectedItems, actualItems, "items is not the one provided in the constructor");
         }
@@ -383,8 +434,35 @@ public class BoardTests {
         @Test
         void testGetNumberOfCoins() {
             var actualNumberOfCoins = board.getCoinsNumber();
-            var expectedNumberOfCoins = 1;
+            var expectedNumberOfCoins = 2;
             assertEquals(expectedNumberOfCoins, actualNumberOfCoins, "number of coins is not the one provided in the constructor");
+        }
+
+        @DisplayName("can return the correct boardDTO")
+        @Test
+        void testToBoardDTO() {
+            var actualBoardDTO = board.toBoardDTO();
+            assertEquals(board.getDimX(), actualBoardDTO.getDimX(), "boardDTO does not have the same dimX as its board");
+            assertEquals(board.getDimY(), actualBoardDTO.getDimY(), "boardDTO does not have the same dimY as its board");
+            assertNotNull(actualBoardDTO.getGrid(), "boardDTO grid is null");
+            assertNotNull(actualBoardDTO.getItems(), "boardDTO items is null");
+        }
+
+        @DisplayName("can return the correct string of itself")
+        @Test
+        void testToString() {
+            var actualString = board.toString();
+            var expectedString = "WWGGGGWWWW\n" +
+                    "WWWWWWWWWW\n" +
+                    "WWWWWWWSWW\n" +
+                    "WWWWWWWGWW\n" +
+                    "WWWCCCC*WW\n" +
+                    "WWWCWWWGWW\n" +
+                    "WWWWWWWGWW\n" +
+                    "WWWWWWW*WW\n" +
+                    "WWWWWWWGWW\n" +
+                    "WWGGGGGGGG\n";
+            assertEquals(expectedString, actualString, "strings don't match");
         }
 
     }

@@ -25,7 +25,7 @@ public class Level {
 
     @Indexed(unique = true)
     private final int levelNumber;
-    
+
     private final int maxCommandsNumber;
 
     private final String thumbnailSrc;
@@ -34,7 +34,7 @@ public class Level {
     - Goal of the level in order to complete it
     - Thumbnail image of the level
      */
-    
+
     private final Board board;
     private final Robot robot;
 
@@ -79,19 +79,19 @@ public class Level {
         this.allowedCommands = allowedCommands;
         this.thumbnailSrc=thumbnailSrc;
     }
-    
+
     /**
      * Returns a LevelDTO containing ALL the data.
      * @return the LevelDTO.
      */
     public LevelDTO toLevelDTO() { return new LevelDTO(this, false); }
-    
+
     /**
      * Returns a LevelDTO containing only the Level info.
      * @return the LevelDTO.
      */
     public LevelDTO toLevelInfoDTO() { return new LevelDTO(this, true); }
-    
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -114,23 +114,23 @@ public class Level {
     public String getName(){
         return name;
     }
-    
+
     public String getDescription(){
         return description;
     }
-    
+
     public Board getBoard(){
         return board;
     }
-    
+
     public Robot getRobot(){
         return robot;
     }
-    
+
     public int getMaxCommandsNumber(){
         return maxCommandsNumber;
     }
-    
+
     public List<EAction> getAllowedCommands(){
         return allowedCommands;
     }

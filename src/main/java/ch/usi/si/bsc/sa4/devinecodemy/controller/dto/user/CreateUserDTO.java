@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class CreateUserDTO extends GeneralUserDTO {
 
-    private String avatarUrl;
+    private final String avatarUrl;
     protected String twitter;
     protected String skype;
     protected String linkedin;

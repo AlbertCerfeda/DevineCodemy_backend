@@ -36,14 +36,18 @@ public class UserService {
         this.statisticsService = statisticsService;
     }
 
+    /**
+     * Get a list of users with a specific name.
+     * @return a list of users with a specific name.
+     * */
     public List<User> getAll() {
         return userRepository.findAll();
     }
-
-    public List<User> getAllPublic() {
-        return userRepository.findAllPublic();
-    }
-
+    /**
+     * Get a list of all public users
+     * @return a list of all public users
+     * */
+    public List<User> getAllPublic() { return userRepository.findAllPublic(); }
 
     /**
      * Returns, if the user exists, whether its profile is public or not.

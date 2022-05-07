@@ -14,18 +14,18 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.level.Level;
 public class LevelDTO {
     private final String name;
     private final String description;
-    
+
     private BoardDTO board;
     private RobotDTO robot;
-    
+
     private final List<EActionDTO> allowedCommands;
 
     private final String thumbnailSrc;
-    
+
     private final int maxCommandsNumber;
 
     private final int levelNumber;
-    
+
     /**
      * Constructs a LevelDTO object matching the given Level.
      * @param level the Level object from which to retrieve the DTO data.
@@ -34,21 +34,21 @@ public class LevelDTO {
     public LevelDTO(Level level, boolean onlyInfo) {
         this.name = level.getName();
         this.description = level.getDescription();
-        
+
         this.board = level.getBoard().toBoardDTO();
-        
+
         this.robot = level.getRobot().toRobotDTO();
-        
+
         this.maxCommandsNumber = level.getMaxCommandsNumber();
 
         this.levelNumber = level.getLevelNumber();
-        
+
         allowedCommands = level.getAllowedCommands().stream().map(EAction::toEActionDTO).collect(Collectors.toList());
-        
+
         if(onlyInfo) {
             this.board = null;
             this.robot = null;
-            
+
         }
 
         this.thumbnailSrc= level.getThumbnailSrc();
@@ -81,7 +81,7 @@ public class LevelDTO {
     public int getLevelNumber() {
         return levelNumber;
     }
-    
+
     public String getThumbnailSrc(){
         return thumbnailSrc;
     }

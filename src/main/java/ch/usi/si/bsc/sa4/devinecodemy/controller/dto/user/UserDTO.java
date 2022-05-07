@@ -11,8 +11,8 @@ public class UserDTO extends GeneralUserDTO {
      * has been hidden (eg if its private).
      */
     private boolean visible;
-    private String avatarUrl;
-    private boolean publicProfile;
+    private final String avatarUrl;
+    private final boolean publicProfile;
     private SocialMediaDTO socialMedia;
 
     /**

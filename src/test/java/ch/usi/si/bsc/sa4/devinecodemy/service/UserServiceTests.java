@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.AdditionalAnswers;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -24,10 +23,10 @@ import static org.mockito.Mockito.*;
 public class UserServiceTests {
     UserRepository userRepository;
     StatisticsRepository statisticsRepository;
-    
+
     UserService userService;
     StatisticsService statisticsService;
-    
+
     User user;
     User user1;
     User user2;
@@ -36,8 +35,9 @@ public class UserServiceTests {
     void beforeAllTests() {
         userRepository = mock(UserRepository.class);
         statisticsRepository = mock(StatisticsRepository.class);
-        
+
         statisticsService = new StatisticsService(statisticsRepository);
+
         userService = new UserService(userRepository,statisticsService);
         
         user = new User("an id", "a name", "a username", "an email", "an avatar", "a bio" , new SocialMedia("twitter", "skype", "linkedin"));
@@ -88,20 +88,27 @@ public class UserServiceTests {
     }
 
     @Test
-    public void testUserExists() {
+    public void testUserIdExists() {
+        given(userRepository.existsById("an id")).willReturn(true);
+
+        assertTrue(userService.userIdExists("an id"), "A user with the given id doesn't exists");
+    }
+
+    @Test
+    public void testUserNameExists() {
         given(userRepository.existsByName("a name")).willReturn(true);
 
         assertTrue(userService.userNameExists("a name"), "A user with the given name doesn't exists");
     }
 
     @Test
-    public void testCreateUser() {
+    public void testAddUser() {
         CreateUserDTO createUserDTO = new CreateUserDTO("an id0", "a name0", "a username0", "an email0", "an avatar0", "a bio0", "linkedin", "twitter", "skype");
         User user0 = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail(), createUserDTO.getAvatarUrl(),
                 createUserDTO.getBio(), new SocialMedia(createUserDTO.getTwitter(), createUserDTO.getSkype(), createUserDTO.getLinkedin()));
         when(userRepository.save(any())).then(AdditionalAnswers.returnsFirstArg());
-        
-        assertDoesNotThrow(()-> {
+
+        assertDoesNotThrow(() -> {
             assertEquals(user0.getId(), userService.addUser(createUserDTO).getId(), "It didn't create the user");
         });
     }
@@ -146,10 +153,12 @@ public class UserServiceTests {
         given(tokenInvalid.getPrincipal()).willReturn(oAuth2UserInvalid);
         given(userRepository.findById("an id")).willReturn(Optional.of(user));
 
-        assertThrows(UserInexistentException.class, ()-> userService.getUserByToken(tokenInvalid), "Exception has been thrown: The user does not exist");
+        assertThrows(UserInexistentException.class, () -> userService.getUserByToken(tokenInvalid), "Exception has been thrown: The user does not exist");
 
-        assertThrows(InvalidAuthTokenException.class, () -> userService.getUserByToken(tokenNull),"Exception has been thrown: The token is null");
+        assertThrows(InvalidAuthTokenException.class, () -> userService.getUserByToken(tokenNull), "Exception has been thrown: The token is null");
 
         assertEquals(user, userService.getUserByToken(token), "Given a token, the user has not been returned");
     }
 }
+
+

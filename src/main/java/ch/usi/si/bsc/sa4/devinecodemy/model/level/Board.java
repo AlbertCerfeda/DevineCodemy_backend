@@ -20,7 +20,7 @@ public class Board {
     private final List<Tile> grid;
     private final List<Item> items;
     private final int nCoins;
-    
+
     /**
      * Constructor for board objects.
      * @param grid the tiles of the board representing the terrain.
@@ -37,8 +37,8 @@ public class Board {
         grid.forEach(t-> this.dimY = Math.max(this.dimY, t.getPosY() + 1));
         items.forEach(i-> this.dimX = Math.max(this.dimX, i.getPosX() + 1));
         items.forEach(i-> this.dimY = Math.max(this.dimY, i.getPosY() + 1));
-        
-        
+
+
         this.grid = grid;
         this.items = items;
         this.nCoins = nCoins;
@@ -56,7 +56,7 @@ public class Board {
         if(x < 0 || y < 0 || x>= dimX || y>= dimY) {
             throw new IndexOutOfBoundsException("Invalid coordinates");
         }
-        
+
         for(Tile tile : grid) {
             if(tile.getPosX() == x && tile.getPosY() == y) {
                 return tile;
@@ -64,7 +64,7 @@ public class Board {
         }
         return null;
     }
-    
+
     /**
      * Returns an Item from a given position.
      *  Returns null if an Item with the given coordinates does not exist.
@@ -77,7 +77,7 @@ public class Board {
         if(x < 0 || y < 0 || x>= dimX || y>= dimY) {
             throw new IndexOutOfBoundsException("Invalid coordinates");
         }
-        
+
         for(Item item : items) {
             if(item.getPosX() == x && item.getPosY() == y) {
                 return item;
@@ -111,25 +111,25 @@ public class Board {
         }
     }
 
-    
+
     public BoardDTO toBoardDTO() {
         return new BoardDTO(this);
     }
-    
+
     // Getters and setters below
-    
+
     public int getDimX(){
         return dimX;
     }
-    
+
     public int getDimY(){
         return dimY;
     }
-    
+
     public List<Tile> getGrid(){
         return grid;
     }
-    
+
     public List<Item> getItems(){
         return items;
     }
@@ -156,12 +156,11 @@ public class Board {
         for (Tile t : grid) {
             result[t.getPosX()][t.getPosY()] =
                     containsItemAt(t.getPosX(), t.getPosY()) ? '*' :
-                    t.getType().toString().charAt(0);
+                            t.getType().toString().charAt(0);
         }
         final StringBuilder builder = new StringBuilder();
         for (char[] line : result) {
-            builder.append(String.valueOf(line));
-            builder.append("\n");
+            builder.append(line).append('\n');
         }
         return builder.toString();
     }

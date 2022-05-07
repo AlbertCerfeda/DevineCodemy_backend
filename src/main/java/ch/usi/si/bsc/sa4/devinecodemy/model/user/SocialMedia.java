@@ -8,9 +8,9 @@ import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user.SocialMediaDTO;
  */
 public class SocialMedia {
 
-    private String twitter;
-    private String skype;
-    private String linkedin;
+    private final String twitter;
+    private final String skype;
+    private final String linkedin;
 
     /**
      * Constructs a new SocialMedia object with the given values.

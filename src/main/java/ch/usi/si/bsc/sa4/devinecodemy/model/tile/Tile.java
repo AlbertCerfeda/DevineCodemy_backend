@@ -31,12 +31,12 @@ public abstract class Tile {
      *  Subclasses of the Tile class are expected
      * to set the value of the type field accordingly. */
     protected ETile type;
-    
+
     /** Position of the Tile object */
     protected final int posX;
     protected final int posY;
     protected int posZ;
-    
+
     protected boolean isWalkable;
 
 
@@ -72,7 +72,7 @@ public abstract class Tile {
     public void setWalkable(boolean isWalkable) {
         this.isWalkable = isWalkable;
     }
-    
+
     /**
      * To get the height position of the tile.
      * @return the height position of the tile.
@@ -104,7 +104,7 @@ public abstract class Tile {
     public ETile getType(){
         return type;
     }
-    
+
     /**
      * To get if the tile has been already visited or not.
      * Useful when creating board.

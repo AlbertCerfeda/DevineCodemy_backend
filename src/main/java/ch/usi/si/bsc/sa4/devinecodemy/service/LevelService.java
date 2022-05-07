@@ -76,12 +76,11 @@ public class LevelService {
         }
         
         Optional<UserStatistics> stats = statisticsService.getById(userId);
-        // If there are no stats yet for this user, create empty statistics for the user in the db.
-        if (stats.isEmpty()) {
-            statisticsService.addStats(userId);
-        }
-        
-        UserStatistics statistics = stats.get();
+        // If there no stats yet for this user, create empty statistics for the user in the db.
+        UserStatistics statistics = stats.isEmpty()
+                ? statisticsService.addStats(userId)
+                : stats.get();
+
         int max = 0;
         // Finds the highest levelNumber among the completed levels.
         for (Integer key : statistics.getData().keySet()) {
