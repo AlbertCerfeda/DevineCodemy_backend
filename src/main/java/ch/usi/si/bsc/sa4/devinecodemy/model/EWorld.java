@@ -8,10 +8,10 @@ import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.EWorldDTO;
  */
 public enum EWorld {
 
-    EARTH("EARTH", "Part of the earth levels","Congrats!"), //Example descriptions
-    SKY("SKY", "Part of the sky levels","Congrats!"),
+    EARTH("EARTH", "Sample description for the EARTH world !","Congrats!"), //Example descriptions
+    SKY("SKY", "Sample description for the SKY world !","Congrats!"),
     
-    LAVA("LAVA", "Part of the lava levels","Congrats!");
+    LAVA("LAVA", "Sample description for the LAVA world !","Congrats!");
 
     
     private final String name;
