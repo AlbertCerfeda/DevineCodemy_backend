@@ -5,10 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.UserStatisticsDTO;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Statistics.UserStatistics;
+import ch.usi.si.bsc.sa4.devinecodemy.model.statistics.UserStatistics;
 import ch.usi.si.bsc.sa4.devinecodemy.service.StatisticsService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,7 +31,7 @@ public class StatisticsController {
     public ResponseEntity<List<UserStatisticsDTO>> getAll() {
         List<UserStatisticsDTO> allData;
 
-        allData = statisticsService.getAll().stream().map((stat)->stat.toUserStatisticsDTO()).collect(Collectors.toList());
+        allData = statisticsService.getAll().stream().map(UserStatistics::toUserStatisticsDTO).collect(Collectors.toList());
 
         return ResponseEntity.ok(allData);
     }

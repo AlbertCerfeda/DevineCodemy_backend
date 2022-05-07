@@ -1,13 +1,13 @@
 package ch.usi.si.bsc.sa4.devinecodemy.service;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.LevelInexistentException;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.UserInexistentException;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.UserNotAllowedException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.LevelInexistentException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserNotAllowedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level;
-import ch.usi.si.bsc.sa4.devinecodemy.model.LevelValidation.LevelValidation;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Statistics.UserStatistics;
+import ch.usi.si.bsc.sa4.devinecodemy.model.level.Level;
+import ch.usi.si.bsc.sa4.devinecodemy.model.levelvalidation.LevelValidation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.statistics.UserStatistics;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.LevelRepository;
 
 import java.util.*;
@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 @Service
 public class LevelService {
     private final UserService userService;
-    private LevelRepository levelRepository;
-    private StatisticsService statisticsService;
+    private final LevelRepository levelRepository;
+    private final StatisticsService statisticsService;
 
     @Autowired
     public LevelService(LevelRepository levelRepository, StatisticsService statisticsService, UserService userService) {
@@ -76,7 +76,7 @@ public class LevelService {
         }
         
         Optional<UserStatistics> stats = statisticsService.getById(userId);
-        // If there no stats yet for this user, create empty statistics for the user in the db.
+        // If there are no stats yet for this user, create empty statistics for the user in the db.
         if (stats.isEmpty()) {
             statisticsService.addStats(userId);
         }
