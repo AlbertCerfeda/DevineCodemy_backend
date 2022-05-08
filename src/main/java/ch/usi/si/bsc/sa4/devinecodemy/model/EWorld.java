@@ -8,20 +8,26 @@ import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.EWorldDTO;
  */
 public enum EWorld {
 
-    EARTH("EARTH", "Sample description for the EARTH world !","Congrats!"), //Example descriptions
-    SKY("SKY", "Sample description for the SKY world !","Congrats!"),
+    EARTH("EARTH", "Sample description for the EARTH world !","Congrats!", 1, 5), //Example descriptions
+    SKY("SKY", "Sample description for the SKY world !","Congrats!",6, 10),
     
-    LAVA("LAVA", "Sample description for the LAVA world !","Congrats!");
+    LAVA("LAVA", "Sample description for the LAVA world !","Congrats!", 11,15);
 
     
     private final String name;
     private final String descriptionMessage;
     private final String congratulationsMessage;
+
+    private int firstLevelNumber;
+
+    private int lastLevelNumber;
     
-    EWorld(String name, String descriptionMessage, String congratulationsMessage){
+    EWorld(String name, String descriptionMessage, String congratulationsMessage, int firstLevelNumber, int lastLevelNumber){
         this.name = name;
         this.descriptionMessage = descriptionMessage;
         this.congratulationsMessage = congratulationsMessage;
+        this.firstLevelNumber = firstLevelNumber;
+        this.lastLevelNumber = lastLevelNumber;
     }
     
     /**
@@ -47,6 +53,15 @@ public enum EWorld {
     public String getCongratulationsMessage() {
         return congratulationsMessage;
     }
+
+    public int getFirstLevelNumber(){
+        return firstLevelNumber;
+    }
+
+    public int getLastLevelNumber() {
+        return lastLevelNumber;
+    }
+
     public String getName(){
         return name;
     }
