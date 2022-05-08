@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.StatisticInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.service.GamePlayer;
 
 /**
@@ -43,4 +44,18 @@ public class LevelStatistics {
     public void setCompleted(boolean completed) {
         this.completed = completed;
     }
+
+    public List<EAction> getLastAttempt() {
+        return data.get(data.size() - 1);
+    }
+
+    public List<EAction> getAttempt(int attemptNumber) throws StatisticInexistentException {
+        try {
+            return data.get(attemptNumber);
+        }catch (Exception e){
+            throw new StatisticInexistentException();
+        }
+
+    }
+
 }

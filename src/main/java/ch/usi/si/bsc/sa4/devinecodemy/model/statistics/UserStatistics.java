@@ -1,5 +1,7 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.statistics;
 
+import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.StatisticInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.levelvalidation.LevelValidation;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
@@ -9,6 +11,7 @@ import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.UserStatisticsDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.service.GamePlayer;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -85,6 +88,18 @@ public class UserStatistics {
         }
         level.add(game);
         levelData.put(levelNumber, level);
+    }
+
+    public List<EAction> getLastAttemptFromLevel(int levelNumber){
+        return levelData.get(levelNumber).getLastAttempt();
+    }
+
+    public List<EAction> getAttemptFromLevel(int levelNumber, int attemptNumber) throws StatisticInexistentException {
+        try{
+            return levelData.get(levelNumber).getAttempt(attemptNumber);
+        } catch (Exception e){
+            throw new StatisticInexistentException();
+        }
     }
 
 

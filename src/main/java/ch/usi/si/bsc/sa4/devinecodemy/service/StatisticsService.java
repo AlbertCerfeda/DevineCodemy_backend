@@ -1,5 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.service;
 
+import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
 import ch.usi.si.bsc.sa4.devinecodemy.model.levelvalidation.LevelValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import ch.usi.si.bsc.sa4.devinecodemy.model.statistics.UserStatistics;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.StatisticsRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,6 +72,22 @@ public class StatisticsService {
         }
 
         return userStats.get();
+    }
+
+    /**
+     * Retrieves an attempt from a played level
+     *
+     * @param userId the user whose attempt we want to get
+     * @param levelNumber level for which to retrieve the attempt
+     * @param attemptNumber the number of the attempt to retrieve
+     * @return the list of actions used in the attempt
+     */
+    public List<EAction> getAttempt(String userId, int levelNumber, int attemptNumber){
+        final Optional<UserStatistics> userStats = statisticsRepository.findById(userId);
+        if(attemptNumber == -1){
+            return userStats.get().getLastAttemptFromLevel(levelNumber);
+        }
+        return userStats.get().getAttemptFromLevel(levelNumber,attemptNumber);
     }
 
     /**
