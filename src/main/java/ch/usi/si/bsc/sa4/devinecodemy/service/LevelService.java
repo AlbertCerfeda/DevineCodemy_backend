@@ -134,7 +134,12 @@ public class LevelService {
         }
 
         if(isLevelPlayable(levelNumber, userId)) {
-            return Optional.of(getByLevelNumber(levelNumber).get());
+
+            Optional<Level> level = getByLevelNumber(levelNumber);
+            if (level.isEmpty()) {
+                throw new LevelInexistentException(levelNumber);
+            }
+            return level;
         }
         return Optional.empty();
     }

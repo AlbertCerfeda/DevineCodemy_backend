@@ -1,7 +1,14 @@
 package ch.usi.si.bsc.sa4.devinecodemy.controller;
 
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.EActionDTO;
+import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.StatisticInexistentException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.user.User;
+import ch.usi.si.bsc.sa4.devinecodemy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.UserStatisticsDTO;
@@ -19,9 +26,13 @@ import java.util.stream.Collectors;
 @RequestMapping("/stats")
 public class StatisticsController {
     private final StatisticsService statisticsService;
+    private final UserService userService;
 
     @Autowired
-    public StatisticsController(StatisticsService statisticsService){ this.statisticsService = statisticsService;}
+    public StatisticsController(StatisticsService statisticsService, UserService userService){
+        this.userService = userService;
+        this.statisticsService = statisticsService;
+    }
 
     /**
      * GET  /stats
@@ -29,11 +40,7 @@ public class StatisticsController {
      */
     @GetMapping
     public ResponseEntity<List<UserStatisticsDTO>> getAll() {
-        List<UserStatisticsDTO> allData;
-
-        allData = statisticsService.getAll().stream().map(UserStatistics::toUserStatisticsDTO).collect(Collectors.toList());
-
-        return ResponseEntity.ok(allData);
+        return ResponseEntity.ok(statisticsService.getAll().stream().map(UserStatistics::toUserStatisticsDTO).collect(Collectors.toList()));
     }
 
     /**
@@ -42,12 +49,32 @@ public class StatisticsController {
      * @return an Optional<UserStatistics> containing the UserStatistics if present.
      */
     @GetMapping("/{id}")
-    public Optional<UserStatistics> getById(@PathVariable String id) {
-        return statisticsService.getById(id);
+    public ResponseEntity<UserStatisticsDTO> getById(@PathVariable String id) {
+        return ResponseEntity.ok(statisticsService.addStats(id).toUserStatisticsDTO());
     }
 
-    //TODO GET /username?levelname - all data for a specific user, for a specific level
 
+    /**
+     * GET /stats/level/{levelNumber}?attemptNumber=
+     * @param levelNumber the level for which to retrieve the attempt.
+     * @param attemptNumber the number of the attempt to retrieve, for -1 retrieves the last one.
+     * @return an Optional<UserStatistics> containing the UserStatistics if present.
+     */
+    @GetMapping("/level/{levelNumber}")
+    public ResponseEntity<List<EActionDTO>> getAttempt(OAuth2AuthenticationToken authenticationToken, @PathVariable("levelNumber") int levelNumber,@RequestParam(name = "attemptNumber", defaultValue = "-1") Integer attemptNumber){
+
+        try{
+            User user = userService.getUserByToken(authenticationToken);
+            String userId = user.getId();
+
+            List<EAction> attempt = statisticsService.getAttempt(userId,levelNumber,attemptNumber);
+            return ResponseEntity.ok(attempt.stream().map(EAction::toEActionDTO).collect(Collectors.toList()));
+
+        } catch (StatisticInexistentException | UserInexistentException e) {
+            return ResponseEntity.status(404).build();
+        }
+
+    }
 
 
 }
