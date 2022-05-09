@@ -47,7 +47,7 @@ public class StatisticsService {
      * @param game            the game from which to retrieve the statistics.
      * @param levelValidation the result of the validation of the game
      */
-    public void addStats(String userId, GamePlayer game, LevelValidation levelValidation) {
+    public UserStatistics addStats(String userId, GamePlayer game, LevelValidation levelValidation) {
         final Optional<UserStatistics> userStats = statisticsRepository.findById(userId);
         final UserStatistics stats = userStats.orElse(new UserStatistics(userId));
 
@@ -55,7 +55,7 @@ public class StatisticsService {
             stats.addData(game, levelValidation);
         }
 
-        statisticsRepository.save(stats);
+        return statisticsRepository.save(stats);
     }
 
     /**
@@ -75,22 +75,21 @@ public class StatisticsService {
     }
 
     /**
-     * Retrieves an attempt from a played level
+     * Retrieves an attempt from a played level.
      *
-     * @param userId the user whose attempt we want to get
-     * @param levelNumber level for which to retrieve the attempt
-     * @param attemptNumber the number of the attempt to retrieve
-     * @return the list of actions used in the attempt
-     * @throws StatisticInexistentException if the user does not have any statistics for the level
+     * @param userId the user whose attempt we want to get.
+     * @param levelNumber level for which to retrieve the attempt.
+     * @param attemptNumber the number of the attempt to retrieve.
+     *                      if -1 returns the last attempt.
+     * @return the requested attempt.
+     * @throws StatisticInexistentException if the user does not have any statistics for the level.
      */
     public List<EAction> getAttempt(String userId, int levelNumber, int attemptNumber) throws StatisticInexistentException{
         final Optional<UserStatistics> userStats = statisticsRepository.findById(userId);
         if (userStats.isEmpty()) {
             throw new StatisticInexistentException();
         }
-        if(attemptNumber == -1){
-            return userStats.get().getLastAttemptFromLevel(levelNumber);
-        }
+        
         return userStats.get().getAttemptFromLevel(levelNumber,attemptNumber);
     }
 

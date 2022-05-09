@@ -40,11 +40,7 @@ public class StatisticsController {
      */
     @GetMapping
     public ResponseEntity<List<UserStatisticsDTO>> getAll() {
-        List<UserStatisticsDTO> allData;
-
-        allData = statisticsService.getAll().stream().map(UserStatistics::toUserStatisticsDTO).collect(Collectors.toList());
-
-        return ResponseEntity.ok(allData);
+        return ResponseEntity.ok(statisticsService.getAll().stream().map(UserStatistics::toUserStatisticsDTO).collect(Collectors.toList()));
     }
 
     /**
@@ -53,15 +49,15 @@ public class StatisticsController {
      * @return an Optional<UserStatistics> containing the UserStatistics if present.
      */
     @GetMapping("/{id}")
-    public Optional<UserStatistics> getById(@PathVariable String id) {
-        return statisticsService.getById(id);
+    public ResponseEntity<UserStatisticsDTO> getById(@PathVariable String id) {
+        return ResponseEntity.ok(statisticsService.addStats(id).toUserStatisticsDTO());
     }
 
 
     /**
-     * GET /stats/{levelNumber}/?attemptNumber=
-     * @param levelNumber the level for which to retrieve the attempt
-     * @param attemptNumber the number of the attempt to retrieve, for -1 retrieves the last one
+     * GET /stats/level/{levelNumber}?attemptNumber=
+     * @param levelNumber the level for which to retrieve the attempt.
+     * @param attemptNumber the number of the attempt to retrieve, for -1 retrieves the last one.
      * @return an Optional<UserStatistics> containing the UserStatistics if present.
      */
     @GetMapping("/level/{levelNumber}")
