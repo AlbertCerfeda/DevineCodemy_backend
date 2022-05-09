@@ -107,7 +107,7 @@ public class LevelController {
     @GetMapping("/worlds")
     public ResponseEntity<List<EWorldDTO>> getLevelWorlds(OAuth2AuthenticationToken authenticationToken){
         return ResponseEntity.ok(List.of(EWorld.values()).stream()
-                .map((world)-> world.toEWorldDTO(levelService.getLevelNumberRangeForWorld(world)))
+                .map(world-> world.toEWorldDTO(levelService.getLevelNumberRangeForWorld(world)))
                 .collect(Collectors.toList()));
     }
 
