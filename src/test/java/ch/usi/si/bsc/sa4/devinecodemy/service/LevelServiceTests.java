@@ -1,7 +1,9 @@
 package ch.usi.si.bsc.sa4.devinecodemy.service;
 
+import ch.usi.si.bsc.sa4.devinecodemy.model.EAnimation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.LevelInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserNotAllowedException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.levelvalidation.LevelValidation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.statistics.UserStatistics;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.LevelRepository;
@@ -29,6 +31,8 @@ public class LevelServiceTests {
     @Autowired
     LevelService levelService;
 
+    @MockBean
+    GamePlayer gamePlayer;
     @MockBean
     UserService userService;
     @MockBean
@@ -62,6 +66,9 @@ public class LevelServiceTests {
         given(statisticsService.getById("1")).willReturn(Optional.of(stats1));
         given(statisticsService.getById("2")).willReturn(Optional.of(stats2));
         given(statisticsService.addStats("3")).willReturn(new UserStatistics("3"));
+
+        given(gamePlayer.play(any())).willReturn(validation2);
+        given(gamePlayer.play(List.of())).willReturn(validation1);
     }
 
     @DisplayName(" returns two playable levels when user exists")
@@ -73,6 +80,7 @@ public class LevelServiceTests {
                 levelRepository.findAll().get(1)
         );
         assertEquals(expectedPlayableLevels, actualPlayableLevels, "levels don't match");
+        assertThrows(UserInexistentException.class, () -> levelService.getAllPlayableLevels("4"), "should throw");
     }
 
     @DisplayName(" returns one playable level when user exists and has stats")
@@ -122,12 +130,45 @@ public class LevelServiceTests {
         assertEquals(expectedOptionalLevel, actualOptionalLevel, "levels don't match");
     }
 
+    @DisplayName(" returns the correct level by number")
+    @Test
+    void testGetByLevelNumberIfPlayable() {
+        assertEquals(levelRepository.findByLevelNumber(1), levelService.getByLevelNumberIfPlayable(1, "1"), "doesn't match");
+        assertEquals(levelRepository.findByLevelNumber(2), levelService.getByLevelNumberIfPlayable(2, "1"), "doesn't match");
+        assertEquals(levelRepository.findByLevelNumber(1), levelService.getByLevelNumberIfPlayable(1, "2"), "doesn't match");
+        assertEquals(Optional.empty(), levelService.getByLevelNumberIfPlayable(2, "2"), "doesn't match");
+        assertEquals(levelRepository.findByLevelNumber(1), levelService.getByLevelNumberIfPlayable(1, "3"), "doesn't match");
+        assertEquals(Optional.empty(), levelService.getByLevelNumberIfPlayable(2, "3"), "doesn't match");
+        assertThrows(LevelInexistentException.class, () -> levelService.getByLevelNumberIfPlayable(20, "3"), "should throw on no level");
+        assertThrows(UserInexistentException.class, () -> levelService.getByLevelNumberIfPlayable(1, "4"), "should throw on no user");
+    }
+
     @DisplayName(" returns the correct level exists by number")
     @Test
     void testLevelExists() {
         var actual = levelService.levelExists(2);
         var expected = levelRepository.existsByLevelNumber(2);
         assertEquals(expected, actual, "level exists don't match");
+    }
+
+    @DisplayName(" correctly plays a level")
+    @Test
+    void testPlayLevel() {
+        var expected1 = new LevelValidation();
+        expected1.setCompleted(true);
+        expected1.addAnimation(EAnimation.MOVE_FORWARD);
+        expected1.addAnimation(EAnimation.MOVE_FORWARD);
+        expected1.addAnimation(EAnimation.MOVE_FORWARD);
+        expected1.addAnimation(EAnimation.MOVE_FORWARD);
+        expected1.addAnimation(EAnimation.JUMP);
+        expected1.addAnimation(EAnimation.EMOTE_DANCE);
+        assertEquals(expected1, levelService.playLevel(1, "1", List.of("moveForward","moveForward","moveForward","moveForward","collectCoin")), "validations don't match");
+        var expected2 = new LevelValidation();
+        expected2.setCompleted(false);
+        assertEquals(expected2, levelService.playLevel(1, "1", List.of()), "validations don't match");
+        assertThrows(LevelInexistentException.class, () -> levelService.playLevel(20, "3", List.of()), "should throw on no level");
+        assertThrows(UserInexistentException.class, () -> levelService.playLevel(1, "4", List.of()), "should throw on no user");
+        assertThrows(UserNotAllowedException.class, () -> levelService.playLevel(10, "2", List.of()), "should throw on high level for user");
     }
 
 }
