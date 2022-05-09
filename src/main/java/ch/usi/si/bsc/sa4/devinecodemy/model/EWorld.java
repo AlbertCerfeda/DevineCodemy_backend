@@ -23,9 +23,8 @@ public enum EWorld {
      * @param displayName            the name of the world
      *                               that will get displayed in the frontend.
      * @param descriptionMessage     the description of the topics covered by a world.
-     * @param congratulationsMessage the congratulations message to display
-     *                               upon successfully completing
-     *                               all the levels inside a world.
+     * @param congratulationsMessage the congratulations message to display upon successfully
+     *                               completing all the levels inside a world.
      */
     EWorld(final String displayName, final String descriptionMessage, final String congratulationsMessage) {
         this.displayName = displayName;
