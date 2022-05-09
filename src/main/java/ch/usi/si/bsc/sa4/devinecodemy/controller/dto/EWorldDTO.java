@@ -16,6 +16,12 @@ public class EWorldDTO {
 
     private int lastLevelNumber;
     
+    /**
+     * Constructor for the EWorld DTO.
+     * @param world the EWorld t be represented by this enum.
+     * @param levelNumberRange the range of levelNumbers for the levels in this EWorld,
+     *                         going from the first level to the last level.
+     */
     public EWorldDTO (EWorld world, Pair<Integer, Integer> levelNumberRange) {
         name = world.getName();
         descriptionMessage= world.getDescriptionMessage();

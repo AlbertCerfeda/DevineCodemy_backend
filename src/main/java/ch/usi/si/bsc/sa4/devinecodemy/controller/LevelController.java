@@ -102,7 +102,7 @@ public class LevelController {
      * GET /levels/worlds.
      *
      * @param authenticationToken Token from GitLab after the Log-in.
-     * @return a list containing all Level Worlds and their descriptions
+     * @return a list containing all Level Worlds and their descriptions.
      */
     @GetMapping("/worlds")
     public ResponseEntity<List<EWorldDTO>> getLevelWorlds(OAuth2AuthenticationToken authenticationToken){
@@ -112,12 +112,12 @@ public class LevelController {
     }
 
     /**
-     * GET /levels/worlds/{worldName}
+     * GET /levels/worlds/{worldName}.
      *
      *
      * @param authenticationToken Token from GitLab after the Log-in.
-     * @param worldName name of the world to retrieve
-     * @return the world with the specified name
+     * @param worldName name of the world to retrieve.
+     * @return the world with the specified name.
      */
     @GetMapping("/worlds/{worldName}")
     public ResponseEntity<EWorldDTO> getWorld(OAuth2AuthenticationToken authenticationToken, @PathVariable("worldName") String worldName){

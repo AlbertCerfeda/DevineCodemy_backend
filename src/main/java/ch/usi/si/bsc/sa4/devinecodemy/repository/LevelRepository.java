@@ -39,8 +39,6 @@ public interface LevelRepository extends MongoRepository<Level, String> {
      */
     void deleteByLevelNumber(int levelNumber);
     
-	List<Level> findAllByLevelWorld(EWorld world);
-    
     /**
      * Returns the first level for a specific EWorld.
      * @param world the EWorld of the level.
