@@ -89,11 +89,16 @@ public class UserStatistics {
         level.add(game);
         levelData.put(levelNumber, level);
     }
-
-    public List<EAction> getLastAttemptFromLevel(int levelNumber){
-        return levelData.get(levelNumber).getLastAttempt();
-    }
-
+    
+    /**
+     * Returns a specific attempt for the level.
+     *  If attempt number is -1, returns the last attempt.
+     * @param levelNumber the number of the level to retrieve the statistic from.
+     * @param attemptNumber the attempt number to return.
+     *                      if -1 returns the last attempt.
+     * @return the specific attempt for the level.
+     * @throws StatisticInexistentException if the statistic does not exist.
+    */
     public List<EAction> getAttemptFromLevel(int levelNumber, int attemptNumber) throws StatisticInexistentException {
         try{
             return levelData.get(levelNumber).getAttempt(attemptNumber);

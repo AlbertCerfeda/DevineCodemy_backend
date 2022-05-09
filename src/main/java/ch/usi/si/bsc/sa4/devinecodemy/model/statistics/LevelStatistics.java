@@ -44,15 +44,19 @@ public class LevelStatistics {
     public void setCompleted(boolean completed) {
         this.completed = completed;
     }
-
-    public List<EAction> getLastAttempt() {
-        return data.get(data.size() - 1);
-    }
-
+    
+    /**
+     * Returns a specific attempt for the level.
+     *  If attempt number is -1, returns the last attempt.
+     * @param attemptNumber the attempt number to return.
+     *                      if -1 returns the last attempt
+     * @return the specific attempt for the level.
+     * @throws StatisticInexistentException if the statistic does not exist.
+     */
     public List<EAction> getAttempt(int attemptNumber) throws StatisticInexistentException {
         try {
-            return data.get(attemptNumber);
-        }catch (Exception e){
+            return data.get(attemptNumber == -1 ? data.size()-1 : attemptNumber);
+        }catch (IndexOutOfBoundsException e){
             throw new StatisticInexistentException();
         }
 
