@@ -18,8 +18,15 @@ public enum EWorld {
     private final String displayName;
     private final String descriptionMessage;
     private final String congratulationsMessage;
-
-    EWorld(String displayName, String descriptionMessage, String congratulationsMessage){
+    
+    /**
+     * Constructor for the EWorld ENUM.
+     * @param displayName the name of the world that will get displayed in the frontend.
+     * @param descriptionMessage  the description of the topics covered by a world.
+     * @param congratulationsMessage the congratulations message to display upon successfully completing
+     *                               all the levels inside a world.
+     */
+    EWorld(final String displayName, final String descriptionMessage, final String congratulationsMessage){
         this.displayName = displayName;
         this.descriptionMessage = descriptionMessage;
         this.congratulationsMessage = congratulationsMessage;
