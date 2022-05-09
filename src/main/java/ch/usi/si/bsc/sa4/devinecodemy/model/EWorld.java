@@ -23,7 +23,7 @@ public enum EWorld {
      * @param displayName            the name of the world
      *                               that will get displayed in the frontend.
      * @param descriptionMessage     the description of the topics covered by a world.
-     * @param congratulationsMessage the congratulations message to display upon successfully
+     * @param congratulationsMessage the congratulations message to display after
      *                               completing all the levels inside a world.
      */
     EWorld(final String displayName, final String descriptionMessage, final String congratulationsMessage) {
@@ -37,7 +37,8 @@ public enum EWorld {
      * Example: "LAVA" -> EWorld.LAVA
      *
      * @param world the given world
-     * @throws IllegalArgumentException if the string does not correspond to a valid EWorld value.
+     * @throws IllegalArgumentException if the string does not correspond
+     *                                  to a valid EWorld value.
      */
     public static EWorld getEWorldFromString(String world) throws IllegalArgumentException {
         for (final EWorld eworld : EWorld.values()) {
