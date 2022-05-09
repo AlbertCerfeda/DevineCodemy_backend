@@ -37,7 +37,7 @@ public class LevelDTO {
         this.name = level.getName();
         this.description = level.getDescription();
         
-        this.levelWorld = level.getLevelWorld().getName();
+        this.levelWorld = level.getLevelWorld().getDisplayName();
 
         this.board = level.getBoard().toBoardDTO();
 

@@ -23,7 +23,7 @@ public class EWorldDTO {
      *                         going from the first level to the last level.
      */
     public EWorldDTO (EWorld world, Pair<Integer, Integer> levelNumberRange) {
-        name = world.getName();
+        name = world.getDisplayName();
         descriptionMessage= world.getDescriptionMessage();
         congratulationsMessage = world.getCongratulationsMessage();
         this.firstLevelNumber = levelNumberRange.getFirst();

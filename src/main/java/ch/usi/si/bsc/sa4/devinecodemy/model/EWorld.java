@@ -9,18 +9,18 @@ import org.springframework.data.util.Pair;
  */
 public enum EWorld {
 
-    EARTH("EARTH", "Sample description for the EARTH world !","Congrats!"), //Example descriptions
-    SKY("SKY", "Sample description for the SKY world !","Congrats!"),
+    EARTH("Earth", "Sample description for the EARTH world !","Congrats!"), //Example descriptions
+    SKY("Sky", "Sample description for the SKY world !","Congrats!"),
     
-    LAVA("LAVA", "Sample description for the LAVA world !","Congrats!");
+    LAVA("Lava", "Sample description for the LAVA world !","Congrats!");
 
     
-    private final String name;
+    private final String displayName;
     private final String descriptionMessage;
     private final String congratulationsMessage;
 
-    EWorld(String name, String descriptionMessage, String congratulationsMessage){
-        this.name = name;
+    EWorld(String displayName, String descriptionMessage, String congratulationsMessage){
+        this.displayName = displayName;
         this.descriptionMessage = descriptionMessage;
         this.congratulationsMessage = congratulationsMessage;
     }
@@ -33,7 +33,7 @@ public enum EWorld {
      */
     public static EWorld getEWorldFromString(String world) throws IllegalArgumentException {
         for (EWorld eworld : EWorld.values()) {
-            if (eworld.getName().equals(world)) {
+            if (eworld.getDisplayName().equals(world)) {
                 return eworld;
             }
         }
@@ -49,8 +49,8 @@ public enum EWorld {
         return congratulationsMessage;
     }
 
-    public String getName(){
-        return name;
+    public String getDisplayName(){
+        return displayName;
     }
     
     public EWorldDTO toEWorldDTO(Pair<Integer, Integer> levelNumberRange) { return new EWorldDTO(this, levelNumberRange); }
