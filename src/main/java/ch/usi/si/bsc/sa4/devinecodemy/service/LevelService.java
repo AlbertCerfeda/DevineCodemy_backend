@@ -47,7 +47,7 @@ public class LevelService {
         } else if(!userService.userIdExists(userId)) {
             throw new UserInexistentException(userId);
         } else if(!isLevelPlayable(levelNumber, userId)) {
-            throw new UserNotAllowedException("Level #"+levelNumber+" is not playable by user '"+userId+"' !");
+            throw new UserNotAllowedException(userId,levelNumber);
         }
 
         GamePlayer gameplayer = new GamePlayer(optionalLevel.get());
