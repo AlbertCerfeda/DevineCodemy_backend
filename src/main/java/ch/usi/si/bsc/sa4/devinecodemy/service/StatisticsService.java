@@ -1,6 +1,7 @@
 package ch.usi.si.bsc.sa4.devinecodemy.service;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.StatisticInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.levelvalidation.LevelValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,7 +9,6 @@ import org.springframework.stereotype.Service;
 import ch.usi.si.bsc.sa4.devinecodemy.model.statistics.UserStatistics;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.StatisticsRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,7 +47,7 @@ public class StatisticsService {
      * @param game            the game from which to retrieve the statistics.
      * @param levelValidation the result of the validation of the game
      */
-    public UserStatistics addStats(String userId, GamePlayer game, LevelValidation levelValidation) {
+    public void addStats(String userId, GamePlayer game, LevelValidation levelValidation) {
         final Optional<UserStatistics> userStats = statisticsRepository.findById(userId);
         final UserStatistics stats = userStats.orElse(new UserStatistics(userId));
 
@@ -55,7 +55,7 @@ public class StatisticsService {
             stats.addData(game, levelValidation);
         }
 
-        return statisticsRepository.save(stats);
+        statisticsRepository.save(stats);
     }
 
     /**
@@ -81,9 +81,13 @@ public class StatisticsService {
      * @param levelNumber level for which to retrieve the attempt
      * @param attemptNumber the number of the attempt to retrieve
      * @return the list of actions used in the attempt
+     * @throws StatisticInexistentException if the user does not have any statistics for the level
      */
-    public List<EAction> getAttempt(String userId, int levelNumber, int attemptNumber){
+    public List<EAction> getAttempt(String userId, int levelNumber, int attemptNumber) throws StatisticInexistentException{
         final Optional<UserStatistics> userStats = statisticsRepository.findById(userId);
+        if (userStats.isEmpty()) {
+            throw new StatisticInexistentException();
+        }
         if(attemptNumber == -1){
             return userStats.get().getLastAttemptFromLevel(levelNumber);
         }
