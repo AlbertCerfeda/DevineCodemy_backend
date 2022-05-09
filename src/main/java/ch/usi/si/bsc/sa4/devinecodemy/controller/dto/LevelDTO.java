@@ -14,6 +14,8 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.level.Level;
 public class LevelDTO {
     private final String name;
     private final String description;
+    private final String levelWorld;
+
 
     private BoardDTO board;
     private RobotDTO robot;
@@ -34,6 +36,8 @@ public class LevelDTO {
     public LevelDTO(Level level, boolean onlyInfo) {
         this.name = level.getName();
         this.description = level.getDescription();
+        
+        this.levelWorld = level.getLevelWorld().getDisplayName();
 
         this.board = level.getBoard().toBoardDTO();
 
@@ -69,6 +73,11 @@ public class LevelDTO {
     public RobotDTO getRobot() {
         return robot;
     }
+    
+    public String getLevelWorld(){
+        return levelWorld;
+    }
+
 
     public List<EActionDTO> getAllowedCommands() {
         return allowedCommands;
