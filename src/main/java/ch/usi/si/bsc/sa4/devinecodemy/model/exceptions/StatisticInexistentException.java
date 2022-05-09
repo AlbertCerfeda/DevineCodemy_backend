@@ -2,7 +2,7 @@ package ch.usi.si.bsc.sa4.devinecodemy.model.exceptions;
 
 /**
  * The StatisticsInexistentException class represents the Exception thrown
- * 	when statistics for a certain level do not exist.
+ * 	when statistics for a certain level does not exist.
  */
 public class StatisticInexistentException extends RuntimeException {
 	/**
@@ -10,7 +10,7 @@ public class StatisticInexistentException extends RuntimeException {
 	 * for a stat that does not exist.
 	 */
 	public StatisticInexistentException() {
-		super("Level does not exist !");
+		super("Statistics for the level does not exist !");
 	}
 
 }
