@@ -3,7 +3,8 @@ package ch.usi.si.bsc.sa4.devinecodemy.controller;
 
 import java.util.ArrayList;
 import java.util.Optional;
-
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.EWorldDTO;
+import ch.usi.si.bsc.sa4.devinecodemy.model.EWorld;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.InvalidAuthTokenException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.LevelInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
@@ -96,4 +97,37 @@ public class LevelController {
             return ResponseEntity.status(404).build();
         }
     }
+
+    /**
+     * GET /levels/worlds.
+     *
+     * @param authenticationToken Token from GitLab after the Log-in.
+     * @return a list containing all Level Worlds and their descriptions.
+     */
+    @GetMapping("/worlds")
+    public ResponseEntity<List<EWorldDTO>> getLevelWorlds(OAuth2AuthenticationToken authenticationToken){
+        return ResponseEntity.ok(List.of(EWorld.values()).stream()
+                .map(world-> world.toEWorldDTO(levelService.getLevelNumberRangeForWorld(world)))
+                .collect(Collectors.toList()));
+    }
+
+    /**
+     * GET /levels/worlds/{worldName}.
+     *
+     *
+     * @param authenticationToken Token from GitLab after the Log-in.
+     * @param worldName name of the world to retrieve.
+     * @return the world with the specified name.
+     */
+    @GetMapping("/worlds/{worldName}")
+    public ResponseEntity<EWorldDTO> getWorld(OAuth2AuthenticationToken authenticationToken, @PathVariable("worldName") String worldName){
+        try{
+           EWorld world = EWorld.getEWorldFromString(worldName);
+           return ResponseEntity.ok(world.toEWorldDTO(levelService.getLevelNumberRangeForWorld(world)));
+        } catch (IllegalArgumentException e){
+            return ResponseEntity.status(404).build();
+        }
+
+    }
+
 }

@@ -15,4 +15,15 @@ public class UserNotAllowedException extends RuntimeException {
 	public UserNotAllowedException(String message){
 		super(message);
 	}
+	
+	/**
+	 * Constructs a new UserNotAllowedException regarding
+	 * a user not being able to access a specific level
+	 * @param userId teh ID of the user.
+	 * @param levelNumber the number of the level the user
+	 *                    does not have access to.
+	 */
+	public UserNotAllowedException(String userId, int levelNumber){
+		super("User '"+userId+"' is not allowed to access level #"+levelNumber+" !");
+	}
 }
