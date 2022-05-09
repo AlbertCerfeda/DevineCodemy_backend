@@ -1,8 +1,10 @@
 package ch.usi.si.bsc.sa4.devinecodemy.service;
+import ch.usi.si.bsc.sa4.devinecodemy.model.EWorld;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.LevelInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserNotAllowedException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.level.Level;
@@ -47,7 +49,7 @@ public class LevelService {
         } else if(!userService.userIdExists(userId)) {
             throw new UserInexistentException(userId);
         } else if(!isLevelPlayable(levelNumber, userId)) {
-            throw new UserNotAllowedException("Level #"+levelNumber+" is not playable by user '"+userId+"' !");
+            throw new UserNotAllowedException(userId,levelNumber);
         }
 
         GamePlayer gameplayer = new GamePlayer(optionalLevel.get());
@@ -59,8 +61,24 @@ public class LevelService {
 
         return validation;
     }
-
-
+    
+    /**
+     * Returns a Pair of integers representing the lower and upper bound
+     *  levelNumbers for the levels in that World.
+     * @param world the World of the levels to return the range of.
+     * @return  Pair of integers representing the lower and upper bound
+     *  levelNumbers for the levels in that World.
+     */
+    public Pair<Integer, Integer> getLevelNumberRangeForWorld(EWorld world) {
+        Optional<Level> first = levelRepository.findFirstByLevelWorldOrderByLevelNumberAsc(world);
+        if (first.isEmpty()) {
+            return Pair.of(-1,-1);
+        }
+        return Pair.of(first.get().getLevelNumber(),
+                levelRepository.findFirstByLevelWorldOrderByLevelNumberDesc(world)
+                    .get()
+                    .getLevelNumber());
+    }
 
 
 
