@@ -8,19 +8,20 @@ import org.springframework.data.util.Pair;
  */
 public class EWorldDTO {
     
-    private String name;
-    private String descriptionMessage;
-    private String congratulationsMessage;
+    private final String name;
+    private final String descriptionMessage;
+    private final String congratulationsMessage;
 
-    private int firstLevelNumber;
+    private final int firstLevelNumber;
 
-    private int lastLevelNumber;
+    private final int lastLevelNumber;
     
     /**
      * Constructor for the EWorld DTO.
      * @param world the EWorld t be represented by this enum.
-     * @param levelNumberRange the range of levelNumbers for the levels in this EWorld,
-     *                         going from the first level to the last level.
+     * @param levelNumberRange the range of levelNumbers for the levels
+     *                         in this EWorld, going from the first level
+     *                         to the last level.
      */
     public EWorldDTO (EWorld world, Pair<Integer, Integer> levelNumberRange) {
         name = world.getDisplayName();

@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.level.Level;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
