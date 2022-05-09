@@ -106,7 +106,9 @@ public class LevelController {
      */
     @GetMapping("/worlds")
     public ResponseEntity<List<EWorldDTO>> getLevelWorlds(OAuth2AuthenticationToken authenticationToken){
-        return ResponseEntity.ok(List.of(EWorld.values()).stream().map(EWorld::toEWorldDTO).collect(Collectors.toList()));
+        return ResponseEntity.ok(List.of(EWorld.values()).stream()
+                .map((world)-> world.toEWorldDTO(levelService.getLevelNumberRangeForWorld(world)))
+                .collect(Collectors.toList()));
     }
 
     /**
@@ -121,7 +123,7 @@ public class LevelController {
     public ResponseEntity<EWorldDTO> getWorld(OAuth2AuthenticationToken authenticationToken, @PathVariable("worldName") String worldName){
         try{
            EWorld world = EWorld.getEWorldFromString(worldName);
-           return ResponseEntity.ok(world.toEWorldDTO());
+           return ResponseEntity.ok(world.toEWorldDTO(levelService.getLevelNumberRangeForWorld(world)));
         } catch (IllegalArgumentException e){
             return ResponseEntity.status(404).build();
         }
