@@ -1,5 +1,7 @@
 package ch.usi.si.bsc.sa4.devinecodemy.service;
 
+import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.StatisticInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.levelvalidation.LevelValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,6 +72,25 @@ public class StatisticsService {
         }
 
         return userStats.get();
+    }
+
+    /**
+     * Retrieves an attempt from a played level.
+     *
+     * @param userId the user whose attempt we want to get.
+     * @param levelNumber level for which to retrieve the attempt.
+     * @param attemptNumber the number of the attempt to retrieve.
+     *                      if -1 returns the last attempt.
+     * @return the requested attempt.
+     * @throws StatisticInexistentException if the user does not have any statistics for the level.
+     */
+    public List<EAction> getAttempt(String userId, int levelNumber, int attemptNumber) throws StatisticInexistentException{
+        final Optional<UserStatistics> userStats = statisticsRepository.findById(userId);
+        if (userStats.isEmpty()) {
+            throw new StatisticInexistentException();
+        }
+        
+        return userStats.get().getAttemptFromLevel(levelNumber,attemptNumber);
     }
 
     /**
