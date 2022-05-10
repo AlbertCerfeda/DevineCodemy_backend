@@ -9,12 +9,13 @@ import org.springframework.data.util.Pair;
  */
 public enum EWorld {
 
-    EARTH("Earth", "Sample description for the EARTH world !", "Congrats!"), //Example descriptions
-    SKY("Sky", "Sample description for the SKY world !", "Congrats!"),
-    LAVA("Lava", "Sample description for the LAVA world !", "Congrats!");
+    EARTH("Earth", 1, "Sample description for the EARTH world !", "Congrats!"), //Example descriptions
+    SKY("Sky", 2, "Sample description for the SKY world !", "Congrats!"),
+    LAVA("Lava", 3, "Sample description for the LAVA world !", "Congrats!");
 
 
     private final String displayName;
+    private final int worldNumber;
     private final String descriptionMessage;
     private final String congratulationsMessage;
 
@@ -26,8 +27,9 @@ public enum EWorld {
      * @param congratulationsMessage the congratulations message to display after
      *                               completing all the levels inside a world.
      */
-    EWorld(final String displayName, final String descriptionMessage, final String congratulationsMessage) {
+    EWorld(final String displayName, final int worldNumber, final String descriptionMessage, final String congratulationsMessage) {
         this.displayName = displayName;
+        this.worldNumber = worldNumber;
         this.descriptionMessage = descriptionMessage;
         this.congratulationsMessage = congratulationsMessage;
     }
@@ -61,6 +63,10 @@ public enum EWorld {
 
     public String getDisplayName() {
         return displayName;
+    }
+
+    public int getWorldNumber() {
+        return worldNumber;
     }
 
     /**
