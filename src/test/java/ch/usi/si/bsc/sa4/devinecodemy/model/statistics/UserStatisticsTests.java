@@ -27,13 +27,12 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
 @SpringBootTest
 @DisplayName("The UserStatistic")
-public class UserStatisticTests {
+public class UserStatisticsTests {
 
     private UserStatistics statistics1;
     private UserStatistics statistics2;
@@ -56,8 +55,6 @@ public class UserStatisticTests {
         HashMap<Integer, LevelStatistics> levelData = new HashMap<>();
         levelData.put(1,new LevelStatistics(true));
         statistics2 = new UserStatistics("2", levelData);
-
-
     }
 
     @DisplayName("after creation")
