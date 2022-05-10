@@ -9,6 +9,7 @@ import org.springframework.data.util.Pair;
 public class EWorldDTO {
     
     private final String name;
+    private final int worldNumber;
     private final String descriptionMessage;
     private final String congratulationsMessage;
 
@@ -25,6 +26,7 @@ public class EWorldDTO {
      */
     public EWorldDTO (EWorld world, Pair<Integer, Integer> levelNumberRange) {
         name = world.getDisplayName();
+        worldNumber = world.getWorldNumber();
         descriptionMessage= world.getDescriptionMessage();
         congratulationsMessage = world.getCongratulationsMessage();
         this.firstLevelNumber = levelNumberRange.getFirst();
@@ -33,6 +35,10 @@ public class EWorldDTO {
     
     public String getName(){
         return name;
+    }
+
+    public int getWorldNumber(){
+        return worldNumber;
     }
     
     public String getDescriptionMessage() {
