@@ -55,16 +55,10 @@ public class StatisticsServiceTests {
     @BeforeEach
     void setup() {
         statisticsService.addStats("1");
-        List<Tile> grid = List.of(
-                new GrassTile(0, 0, 0)
-        );
-        List<Item> items = List.of(
-                new CoinItem(4, 7)
-        );
-        var board = new Board(grid, items, 1);
-        var robot = new Robot(0, 0, EOrientation.DOWN);
-        var commands = List.of(EAction.MOVE_FORWARD);
-        gamePlayer = new GamePlayer(new Level( "test name", "test description", 1, EWorld.EARTH, 10, board, robot, commands, "../assets/level10.png"));
+        Level level = mock(Level.class);
+        given(level.getLevelNumber()).willReturn(1);
+        given(level.getAllowedCommands()).willReturn(List.of(EAction.MOVE_FORWARD));
+        gamePlayer = new GamePlayer(level);
         levelValidation = mock(LevelValidation.class);
         userStatistics1 = mock(UserStatistics.class);
         userStatistics2 = mock(UserStatistics.class);
