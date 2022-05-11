@@ -1,6 +1,7 @@
 package ch.usi.si.bsc.sa4.devinecodemy.service;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.EAnimation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.EWorld;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.LevelInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserNotAllowedException;
@@ -9,18 +10,22 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.statistics.UserStatistics;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.LevelRepository;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.util.Pair;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
@@ -109,17 +114,27 @@ public class LevelServiceTests {
         assertThrows(UserInexistentException.class, () -> levelService.getAllPlayableLevels("4"), "should throw exception when getting all playable levels of nonexistent user");
     }
 
-    @DisplayName(" returns correctly whether a level is player given a user")
-    @Test
-    void testIsLevelPlayable() {
-        assertTrue(levelService.isLevelPlayable(1, "1"), "doesn't match");
-        assertTrue(levelService.isLevelPlayable(2, "1"), "doesn't match");
-        assertTrue(levelService.isLevelPlayable(1, "2"), "doesn't match");
-        assertFalse(levelService.isLevelPlayable(2, "2"), "doesn't match");
-        assertTrue(levelService.isLevelPlayable(1, "3"), "doesn't match");
-        assertFalse(levelService.isLevelPlayable(2, "3"), "doesn't match");
-        assertThrows(LevelInexistentException.class, () -> levelService.isLevelPlayable(20, "3"), "should throw on no level");
-        assertThrows(UserInexistentException.class, () -> levelService.isLevelPlayable(1, "4"), "should throw on no user");
+    public static Stream<Arguments> getByLevelNumberIfPlayableTestsAndIsLevelPlayableTestsArgumentProvider() {
+        return Stream.of(
+                arguments(1, "1", 1, null),
+                arguments(2, "1", 2, null),
+                arguments(1, "2", 1, null),
+                arguments(2, "2", 0, null),
+                arguments(1, "3", 1, null),
+                arguments(2, "3", 0, null),
+                arguments(20, "3", -1, LevelInexistentException.class),
+                arguments(1, "4", -1, UserInexistentException.class)
+        );
+    }
+
+    @ParameterizedTest(name = "checking if level by number {0} and user {1} is playable should return {2} > 0 and should throw {3}")
+    @MethodSource("getByLevelNumberIfPlayableTestsAndIsLevelPlayableTestsArgumentProvider")
+    void isLevelPlayableTest(int levelNumber, String userId, int expected, Class<Exception> expectedType) {
+        if (expectedType == null) {
+            assertEquals(expected > 0, levelService.isLevelPlayable(levelNumber, userId), "doesn't match");
+        } else {
+            assertThrows(expectedType, () -> levelService.isLevelPlayable(levelNumber, userId), "should throw");
+        }
     }
 
     @DisplayName(" returns the correct level by number")
@@ -130,17 +145,17 @@ public class LevelServiceTests {
         assertEquals(expectedOptionalLevel, actualOptionalLevel, "levels don't match");
     }
 
-    @DisplayName(" returns the correct level by number")
-    @Test
-    void testGetByLevelNumberIfPlayable() {
-        assertEquals(levelRepository.findByLevelNumber(1), levelService.getByLevelNumberIfPlayable(1, "1"), "doesn't match");
-        assertEquals(levelRepository.findByLevelNumber(2), levelService.getByLevelNumberIfPlayable(2, "1"), "doesn't match");
-        assertEquals(levelRepository.findByLevelNumber(1), levelService.getByLevelNumberIfPlayable(1, "2"), "doesn't match");
-        assertEquals(Optional.empty(), levelService.getByLevelNumberIfPlayable(2, "2"), "doesn't match");
-        assertEquals(levelRepository.findByLevelNumber(1), levelService.getByLevelNumberIfPlayable(1, "3"), "doesn't match");
-        assertEquals(Optional.empty(), levelService.getByLevelNumberIfPlayable(2, "3"), "doesn't match");
-        assertThrows(LevelInexistentException.class, () -> levelService.getByLevelNumberIfPlayable(20, "3"), "should throw on no level");
-        assertThrows(UserInexistentException.class, () -> levelService.getByLevelNumberIfPlayable(1, "4"), "should throw on no user");
+    @ParameterizedTest(name = "getting level by number {0} and user {1} should return level {2} and should throw {3}")
+    @MethodSource("getByLevelNumberIfPlayableTestsAndIsLevelPlayableTestsArgumentProvider")
+    void getByLevelNumberIfPlayableTest(int levelNumber, String userId, int expectedLevelNumber, Class<Exception> expectedType) {
+        if (expectedType == null) {
+            var expected = expectedLevelNumber > 0
+                    ? levelRepository.findByLevelNumber(expectedLevelNumber)
+                    : Optional.empty();
+            assertEquals(expected, levelService.getByLevelNumberIfPlayable(levelNumber, userId), "doesn't match");
+        } else {
+            assertThrows(expectedType, () -> levelService.getByLevelNumberIfPlayable(levelNumber, userId), "should throw");
+        }
     }
 
     @DisplayName(" returns the correct level exists by number")
@@ -151,24 +166,48 @@ public class LevelServiceTests {
         assertEquals(expected, actual, "level exists don't match");
     }
 
-    @DisplayName(" correctly plays a level")
+    public static Stream<Arguments> getLevelNumberRangeForWorldTestsArgumentProvider() {
+        return Stream.of(
+                arguments(EWorld.EARTH, Pair.of(1, 5)), // test Earth levels
+                arguments(EWorld.LAVA, Pair.of(-1, -1)), // test Lava levels
+                arguments(EWorld.SKY, Pair.of(6, 10)) // test Sky levels
+        );
+    }
+
+    @ParameterizedTest(name = "getting level number range for world {0} should return {1}")
+    @MethodSource("getLevelNumberRangeForWorldTestsArgumentProvider")
+    void getLevelNumberRangeForWorldTest(EWorld world, Pair<Integer, Integer> expected) {
+        final Pair<Integer, Integer> actual = levelService.getLevelNumberRangeForWorld(world);
+        assertEquals(expected, actual);
+    }
+
+    @DisplayName(" correctly plays a level with valid commands")
     @Test
-    void testPlayLevel() {
-        var expected1 = new LevelValidation();
-        expected1.setCompleted(true);
-        expected1.addAnimation(EAnimation.MOVE_FORWARD);
-        expected1.addAnimation(EAnimation.MOVE_FORWARD);
-        expected1.addAnimation(EAnimation.MOVE_FORWARD);
-        expected1.addAnimation(EAnimation.MOVE_FORWARD);
-        expected1.addAnimation(EAnimation.JUMP);
-        expected1.addAnimation(EAnimation.EMOTE_DANCE);
-        assertEquals(expected1, levelService.playLevel(1, "1", List.of("moveForward","moveForward","moveForward","moveForward","collectCoin")), "validations don't match");
-        var expected2 = new LevelValidation();
-        expected2.setCompleted(false);
-        assertEquals(expected2, levelService.playLevel(1, "1", List.of()), "validations don't match");
+    void testPlayLevelValid() {
+        var expected = new LevelValidation();
+        expected.setCompleted(true);
+        expected.addAnimation(EAnimation.MOVE_FORWARD);
+        expected.addAnimation(EAnimation.MOVE_FORWARD);
+        expected.addAnimation(EAnimation.MOVE_FORWARD);
+        expected.addAnimation(EAnimation.MOVE_FORWARD);
+        expected.addAnimation(EAnimation.JUMP);
+        expected.addAnimation(EAnimation.EMOTE_DANCE);
+        assertEquals(expected, levelService.playLevel(1, "1", List.of("moveForward","moveForward","moveForward","moveForward","collectCoin")), "validations don't match");
+    }
+
+    @DisplayName(" correctly plays a level with invalid commands")
+    @Test
+    void testPlayLevelInvalid() {
+        var expected = new LevelValidation();
+        expected.setCompleted(false);
+        assertEquals(expected, levelService.playLevel(1, "1", List.of()), "validations don't match");
+    }
+
+    @DisplayName(" correctly plays a level with exception")
+    @Test
+    void testPlayLevelException() {
         assertThrows(LevelInexistentException.class, () -> levelService.playLevel(20, "3", List.of()), "should throw on no level");
         assertThrows(UserInexistentException.class, () -> levelService.playLevel(1, "4", List.of()), "should throw on no user");
         assertThrows(UserNotAllowedException.class, () -> levelService.playLevel(10, "2", List.of()), "should throw on high level for user");
     }
-
 }
