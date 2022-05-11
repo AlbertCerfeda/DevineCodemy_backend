@@ -143,19 +143,10 @@ public class LevelService {
         Optional<Level> l = getByLevelNumber(levelNumber);
         if (l.isEmpty()) {
             throw new LevelInexistentException(levelNumber);
-        } else if(!userService.userIdExists(userId)) {
+        } else if (!userService.userIdExists(userId)) {
             throw new UserInexistentException(userId);
         }
-
-        if(isLevelPlayable(levelNumber, userId)) {
-
-            Optional<Level> level = getByLevelNumber(levelNumber);
-            if (level.isEmpty()) {
-                throw new LevelInexistentException(levelNumber);
-            }
-            return level;
-        }
-        return Optional.empty();
+        return isLevelPlayable(levelNumber, userId) ? l : Optional.empty();
     }
     
     /**

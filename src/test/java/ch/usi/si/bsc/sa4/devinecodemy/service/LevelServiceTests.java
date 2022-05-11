@@ -48,28 +48,41 @@ public class LevelServiceTests {
 
     @BeforeEach
     void testSetup() {
-        var level = levelRepository.findAll().get(0);
-        var game = new GamePlayer(level);
+        var level1 = levelRepository.findAll().get(0);
+        var gameLevel1 = new GamePlayer(level1);
+        var level2 = levelRepository.findAll().get(1);
+        var gameLevel2 = new GamePlayer(level2);
 
         // user 1 completed level 1
         var validation1 = new LevelValidation();
         validation1.setCompleted(true);
         var stats1 = new UserStatistics("1");
-        stats1.addData(game, validation1);
+        stats1.addData(gameLevel1, validation1);
 
         // user 2 completed no levels
         var validation2 = new LevelValidation();
         var stats2 = new UserStatistics("2");
-        stats2.addData(game, validation2);
+        stats2.addData(gameLevel1, validation2);
+
+        // user 5 completed levels 1 and 2
+        var validation3 = new LevelValidation();
+        validation3.setCompleted(true);
+        var validation4 = new LevelValidation();
+        validation4.setCompleted(true);
+        var stats5 = new UserStatistics("5");
+        stats5.addData(gameLevel1, validation3);
+        stats5.addData(gameLevel2, validation4);
 
         given(userService.userIdExists(any())).willReturn(false);
         given(userService.userIdExists("1")).willReturn(true);
         given(userService.userIdExists("2")).willReturn(true);
         given(userService.userIdExists("3")).willReturn(true);
+        given(userService.userIdExists("5")).willReturn(true);
 
         given(statisticsService.getById(any())).willReturn(Optional.empty());
         given(statisticsService.getById("1")).willReturn(Optional.of(stats1));
         given(statisticsService.getById("2")).willReturn(Optional.of(stats2));
+        given(statisticsService.getById("5")).willReturn(Optional.of(stats5));
         given(statisticsService.addStats("3")).willReturn(new UserStatistics("3"));
 
         given(gamePlayer.play(any())).willReturn(validation2);
@@ -85,7 +98,18 @@ public class LevelServiceTests {
                 levelRepository.findAll().get(1)
         );
         assertEquals(expectedPlayableLevels, actualPlayableLevels, "levels don't match");
-        assertThrows(UserInexistentException.class, () -> levelService.getAllPlayableLevels("4"), "should throw");
+    }
+
+    @DisplayName(" returns three playable levels when user exists")
+    @Test
+    void testGetAllPlayableLevelsThree() {
+        var actualPlayableLevels = levelService.getAllPlayableLevels("5");
+        var expectedPlayableLevels = List.of(
+                levelRepository.findAll().get(0),
+                levelRepository.findAll().get(1),
+                levelRepository.findAll().get(2)
+        );
+        assertEquals(expectedPlayableLevels, actualPlayableLevels, "levels don't match");
     }
 
     @DisplayName(" returns one playable level when user exists and has stats")
