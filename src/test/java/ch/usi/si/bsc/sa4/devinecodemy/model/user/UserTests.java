@@ -7,6 +7,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 
 @DisplayName("The user")
 public class UserTests {
@@ -41,13 +43,13 @@ public class UserTests {
     }
 
     @Test
-    public void testSetPublicProfile() {
-        user.setPublicProfile(true);
-        assertEquals(true, user.isProfilePublic(), "The public profile wasn't set correctly");
+    public void testIsProfilePublic(){
+        assertEquals(false, userPrivate.isProfilePublic(), "The public profile wasn't set correctly");
 
-        user.setPublicProfile(false);
-        assertEquals(false, user.isProfilePublic(), "The public profile wasn't set correctly");
+        userPrivate.setPublicProfile(true);
+        assertEquals(true, userPrivate.isProfilePublic(), "The public profile wasn't set correctly");
     }
+
 
     @Test
     public void testToPublicUserDTO() {
@@ -106,5 +108,14 @@ public class UserTests {
         assertEquals("", privateUserDTO2.getSocialMedia().getLinkedin(), "the linkedin field wasn't set correctly. Private user doesn't share linkedin");
         assertFalse(privateUserDTO2.isVisible(), "The public profile wasn't set correctly");
 
+    }
+
+    @Test
+    public void testSetPublicProfile() {
+        user.setPublicProfile(true);
+        assertEquals(true, user.isProfilePublic(), "The public profile wasn't set correctly");
+
+        user.setPublicProfile(false);
+        assertEquals(false, user.isProfilePublic(), "The public profile wasn't set correctly");
     }
 }
