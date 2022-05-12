@@ -164,7 +164,6 @@ public class UserService {
         try {
             u = getUserByToken(authenticationToken);
         } catch (InvalidAuthTokenException e) {
-            e.printStackTrace();
             return false;
         } catch (UserInexistentException e) {
             return false;
