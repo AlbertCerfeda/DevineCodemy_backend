@@ -2,6 +2,7 @@ package ch.usi.si.bsc.sa4.devinecodemy.service;
 
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user.CreateUserDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.InvalidAuthTokenException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserAlreadyExistsException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.user.SocialMedia;
 import ch.usi.si.bsc.sa4.devinecodemy.model.user.User;
@@ -112,14 +113,42 @@ public class UserServiceTests {
 
     @Test
     public void testAddUser() {
-        CreateUserDTO createUserDTO = new CreateUserDTO("an id0", "a name0", "a username0", "an email0", "an avatar0", "a bio0", "linkedin", "twitter", "skype");
-        User user0 = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail(), createUserDTO.getAvatarUrl(),
-                createUserDTO.getBio(), new SocialMedia(createUserDTO.getTwitter(), createUserDTO.getSkype(), createUserDTO.getLinkedin()));
+        CreateUserDTO userDTO = new CreateUserDTO("an id", "a name", "a username", "an email", "an avatar", "a bio", "a twitter", "a skype", "a linkedin");
+        CreateUserDTO UserDTO_empty = new CreateUserDTO("", "", "", "", "an avatar", "a bio", "a twitter", "a skype", "a linkedin");
+        CreateUserDTO UserDTO_noID = new CreateUserDTO(null, "a name", "a username", "an email", "an avatar", "a bio", "a twitter", "a skype", "a linkedin");
+        CreateUserDTO userDTO_noName = new CreateUserDTO("an id", null, "a username", "an email", "an avatar", "a bio", "a twitter", "a skype", "a linkedin");
+        CreateUserDTO userDTO_noUsername = new CreateUserDTO("an id", "a name", null, "an email", "an avatar", "a bio", "a twitter", "a skype", "a linkedin");
+
+        User user_complete = new User(userDTO.getId(),userDTO.getName(),userDTO.getUsername(),userDTO.getEmail(), userDTO.getAvatarUrl(),
+                userDTO.getBio(), new SocialMedia(userDTO.getTwitter(), userDTO.getSkype(), userDTO.getLinkedin()));
+        User user_empty = new User(userDTO.getId(),userDTO.getName(),userDTO.getUsername(),userDTO.getEmail(), userDTO.getAvatarUrl(),
+                userDTO.getBio(), new SocialMedia(userDTO.getTwitter(), userDTO.getSkype(), userDTO.getLinkedin()));
         when(userRepository.save(any())).then(AdditionalAnswers.returnsFirstArg());
 
         assertDoesNotThrow(() -> {
-            assertEquals(user0.getId(), userService.addUser(createUserDTO).getId(), "It didn't create the user");
+            assertEquals(user_complete.getId(), userService.addUser(userDTO).getId(), "It didn't create the user");
         });
+        assertThrows(IllegalArgumentException.class, () -> {
+            userService.addUser(UserDTO_empty);
+        }   , "It created a user with empty fields");
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            userService.addUser(UserDTO_noID);
+        }   , "It created a user with no id");
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            userService.addUser(userDTO_noName);
+        }   , "It created a user with no name");
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            userService.addUser(userDTO_noUsername);
+        }   , "It created a user with no username");
+
+        given(userRepository.existsById(userDTO.getId())).willReturn(true);
+        assertThrows(UserAlreadyExistsException.class, () -> {
+            userService.addUser(userDTO);
+        }  , "It created a user with an id that already exists");
+
     }
 
     @Test
