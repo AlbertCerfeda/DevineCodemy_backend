@@ -43,6 +43,7 @@ public class UserService {
     public List<User> getAll() {
         return userRepository.findAll();
     }
+
     /**
      * Get a list of all public users
      * @return a list of all public users
@@ -139,6 +140,11 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    /**
+     * Checks if the body of the request is valid.
+     * @param user The user to be created.
+     * @return true if the body is valid, else false
+     */
     public boolean checkBodyFormat(CreateUserDTO user) {
         return !(Objects.equals(user.getName(), "") ||
                 Objects.equals(user.getEmail(), "") ||

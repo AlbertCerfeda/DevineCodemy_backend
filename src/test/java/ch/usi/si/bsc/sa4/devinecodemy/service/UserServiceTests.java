@@ -21,28 +21,33 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 public class UserServiceTests {
+    // Mocks
     UserRepository userRepository;
     StatisticsRepository statisticsRepository;
-
     UserService userService;
     StatisticsService statisticsService;
 
+    // Variables related to users
+    SocialMedia socialMedia;
     User user;
     User user1;
     User user2;
 
     @BeforeEach
     void beforeAllTests() {
+        //Mocking repositories
         userRepository = mock(UserRepository.class);
         statisticsRepository = mock(StatisticsRepository.class);
 
+        // Statistics service
         statisticsService = new StatisticsService(statisticsRepository);
-
         userService = new UserService(userRepository,statisticsService);
-        
-        user = new User("an id", "a name", "a username", "an email", "an avatar", "a bio" , new SocialMedia("twitter", "skype", "linkedin"));
-        user1 = new User("an id1", "a name1", "a username1", "an email1", "an avatar1", "a bio1", new SocialMedia("twitter", "skype", "linkedin"));
-        user2 = new User("an id2", "a name2", "a username2", "an email2", "an avatar2", "a bio2", new SocialMedia("twitter", "skype", "linkedin"));
+
+        // Setting up users
+        socialMedia = new SocialMedia("twitter", "skype", "linkedin");
+        user = new User("an id", "a name", "a username", "an email", "an avatar", "a bio" , socialMedia);
+        user1 = new User("an id1", "a name1", "a username1", "an email1", "an avatar1", "a bio1", socialMedia);
+        user2 = new User("an id2", "a name2", "a username2", "an email2", "an avatar2", "a bio2", socialMedia);
     }
 
     @Test
@@ -68,7 +73,11 @@ public class UserServiceTests {
         user.setPublicProfile(true);
         given(userRepository.isUserPublic("an id")).willReturn(Optional.of(user));
 
+        user1.setPublicProfile(false);
+        given(userRepository.isUserPublic("an id1")).willReturn(Optional.of(user1));
+
         assertEquals(Optional.of(true), userService.isUserPublic("an id"), "isUserPublic returns the wrong value");
+        assertEquals(Optional.of(false), userService.isUserPublic("an id1"), "isUserPublic returns the wrong value");
     }
 
     @Test
@@ -81,10 +90,10 @@ public class UserServiceTests {
     @Test
     public void testSearchByNameContaining() {
         given(userService.searchByNameContaining("a name", true)).willReturn(List.of(user));
-        given(userService.searchByNameContaining("a name1", false)).willReturn(List.of(user2));
+        given(userService.searchByNameContaining("a name1", false)).willReturn(List.of(user1));
 
-        assertEquals(List.of(user), userService.searchByNameContaining("a name", true), "It didn't get the right users");
-        assertEquals(List.of(user2), userService.searchByNameContaining("a name1", false), "It didn't get the right users");
+        assertEquals(List.of(user), userService.searchByNameContaining("a name", true), "It didn't get the right user list, given a name");
+        assertEquals(List.of(user1), userService.searchByNameContaining("a name1", false), "It didn't get the right user list, given a name");
     }
 
     @Test
@@ -120,13 +129,12 @@ public class UserServiceTests {
     }
 
     @Test
-    public void testDeleteUser() {
+    public void testDeleteUserById() {
         userService.deleteUserById("an id");
         verify(userRepository).deleteById("an id");
     }
 
     @Test
-
     public void testCheckBodyFormat() {
         CreateUserDTO createUserDTO = new CreateUserDTO("", "a name", "a username", "an email", "an avatar", "a bio", "twitter", "skype", "linkedin");
         CreateUserDTO createUserDTO0 = new CreateUserDTO("an id0", "a name0", "a username0", "an email0", "an avatar", "a bio", "twitter", "skype", "linkedin");
