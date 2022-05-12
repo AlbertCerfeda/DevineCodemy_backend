@@ -143,27 +143,30 @@ public class UserServiceTests {
         CreateUserDTO userDTO_noUsername = new CreateUserDTO("an id", "a name", "", "an email", "an avatar", "a bio", "a twitter", "a skype", "a linkedin");
         CreateUserDTO userDTO_noEmail = new CreateUserDTO("an id", "a name", "a username", "", "an avatar", "a bio", "a twitter", "a skype", "a linkedin");
 
-//        User user = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),
-//                createUserDTO.getEmail(), createUserDTO.getAvatarUrl(), createUserDTO.getBio(), socialMediaUserDTO);
-
         assertTrue(userService.checkBodyFormat(userDTO), "The body format is correct");
         assertFalse(userService.checkBodyFormat(UserDTO_noID), "The body format is not incorrect");
         assertFalse(userService.checkBodyFormat(userDTO_noName), "The body format is not incorrect");
         assertFalse(userService.checkBodyFormat(userDTO_noUsername), "The body format is not incorrect");
         assertFalse(userService.checkBodyFormat(userDTO_noEmail), "The body format is not incorrect");
         assertFalse(userService.checkBodyFormat(UserDTO_empty), "The body format is not incorrect");
-
-        System.out.println("TESTING HERE:");
-        System.out.println(UserService.checkBodyFormat(UserDTO_empty));
-
     }
 
     @Test
     public void testIsIdEqualToken(){
-//        OAuth2AuthenticationToken token = new OAuth2AuthenticationToken("a token", null, null);
-//        token.setPrincipal("an id");
-//
-//        when(user.getUserByToken("a token")).thenReturn(user);
+        OAuth2AuthenticationToken token = mock(OAuth2AuthenticationToken.class);
+        OAuth2AuthenticationToken tokenInvalid = mock(OAuth2AuthenticationToken.class);
+        OAuth2User oAuth2User = mock(OAuth2User.class);
+        OAuth2User oAuth2UserInvalid = mock(OAuth2User.class);
+
+        given(oAuth2User.getName()).willReturn("an id");
+        given(oAuth2UserInvalid.getName()).willReturn("an invalid id");
+        given(token.getPrincipal()).willReturn(oAuth2User);
+        given(tokenInvalid.getPrincipal()).willReturn(oAuth2UserInvalid);
+        given(userRepository.findById("an id")).willReturn(Optional.of(user));
+
+        assertFalse(userService.isIdEqualToken(null,"something"));
+        assertFalse(userService.isIdEqualToken(tokenInvalid, "something"));
+        assertTrue(userService.isIdEqualToken(token, "an id"));
     }
 
     @Test
