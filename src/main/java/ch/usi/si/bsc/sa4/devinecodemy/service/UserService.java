@@ -145,7 +145,7 @@ public class UserService {
      * @param user The user to be created.
      * @return true if the body is valid, else false
      */
-    public boolean checkBodyFormat(CreateUserDTO user) {
+    public static boolean checkBodyFormat(CreateUserDTO user) {
         return !(Objects.equals(user.getName(), "") ||
                 Objects.equals(user.getEmail(), "") ||
                 Objects.equals(user.getUsername(), "") ||

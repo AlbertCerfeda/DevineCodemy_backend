@@ -44,7 +44,7 @@ public class UserServiceTests {
         userService = new UserService(userRepository,statisticsService);
 
         // Setting up users
-        socialMedia = new SocialMedia("twitter", "skype", "linkedin");
+        socialMedia = new SocialMedia("a twitter", "a skype", "a linkedin");
         user = new User("an id", "a name", "a username", "an email", "an avatar", "a bio" , socialMedia);
         user1 = new User("an id1", "a name1", "a username1", "an email1", "an avatar1", "a bio1", socialMedia);
         user2 = new User("an id2", "a name2", "a username2", "an email2", "an avatar2", "a bio2", socialMedia);
@@ -136,16 +136,34 @@ public class UserServiceTests {
 
     @Test
     public void testCheckBodyFormat() {
-        CreateUserDTO createUserDTO = new CreateUserDTO("", "a name", "a username", "an email", "an avatar", "a bio", "twitter", "skype", "linkedin");
-        CreateUserDTO createUserDTO0 = new CreateUserDTO("an id0", "a name0", "a username0", "an email0", "an avatar", "a bio", "twitter", "skype", "linkedin");
+        CreateUserDTO userDTO = new CreateUserDTO("an id", "a name", "a username", "an email", "an avatar", "a bio", "a twitter", "a skype", "a linkedin");
+        CreateUserDTO UserDTO_empty = new CreateUserDTO("", "", "", "", "an avatar", "a bio", "a twitter", "a skype", "a linkedin");
+        CreateUserDTO UserDTO_noID = new CreateUserDTO("", "a name", "a username", "an email", "an avatar", "a bio", "a twitter", "a skype", "a linkedin");
+        CreateUserDTO userDTO_noName = new CreateUserDTO("an id", "", "a username", "an email", "an avatar", "a bio", "a twitter", "a skype", "a linkedin");
+        CreateUserDTO userDTO_noUsername = new CreateUserDTO("an id", "a name", "", "an email", "an avatar", "a bio", "a twitter", "a skype", "a linkedin");
+        CreateUserDTO userDTO_noEmail = new CreateUserDTO("an id", "a name", "a username", "", "an avatar", "a bio", "a twitter", "a skype", "a linkedin");
 
-        User user = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail(),createUserDTO.getAvatarUrl(), createUserDTO.getBio(),
-                new SocialMedia(createUserDTO.getTwitter(), createUserDTO0.getSkype(), createUserDTO0.getLinkedin()));
-        User user0 = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail(),createUserDTO.getAvatarUrl(), createUserDTO.getBio(),
-                new SocialMedia(createUserDTO.getTwitter(), createUserDTO0.getSkype(), createUserDTO0.getLinkedin()));
+//        User user = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),
+//                createUserDTO.getEmail(), createUserDTO.getAvatarUrl(), createUserDTO.getBio(), socialMediaUserDTO);
 
-        assertTrue(userService.checkBodyFormat(createUserDTO0), "The body format is correct");
-        assertFalse(userService.checkBodyFormat(createUserDTO), "The body format is not incorrect");
+        assertTrue(userService.checkBodyFormat(userDTO), "The body format is correct");
+        assertFalse(userService.checkBodyFormat(UserDTO_noID), "The body format is not incorrect");
+        assertFalse(userService.checkBodyFormat(userDTO_noName), "The body format is not incorrect");
+        assertFalse(userService.checkBodyFormat(userDTO_noUsername), "The body format is not incorrect");
+        assertFalse(userService.checkBodyFormat(userDTO_noEmail), "The body format is not incorrect");
+        assertFalse(userService.checkBodyFormat(UserDTO_empty), "The body format is not incorrect");
+
+        System.out.println("TESTING HERE:");
+        System.out.println(UserService.checkBodyFormat(UserDTO_empty));
+
+    }
+
+    @Test
+    public void testIsIdEqualToken(){
+//        OAuth2AuthenticationToken token = new OAuth2AuthenticationToken("a token", null, null);
+//        token.setPrincipal("an id");
+//
+//        when(user.getUserByToken("a token")).thenReturn(user);
     }
 
     @Test
