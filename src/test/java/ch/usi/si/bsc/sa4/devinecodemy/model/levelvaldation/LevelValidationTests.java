@@ -138,16 +138,15 @@ public class LevelValidationTests {
                 assertNotEquals(levelValidation,levelValidation1,
                         "the comparison of an object with one containing different completed and animations" +
                                 " returns true");
-                assertNotEquals(levelValidation,levelValidation1,
-                        "the comparison of a full object with an empty object returns true");
-                levelValidation1.addAnimation(EAnimation.EMOTE_DANCE);
-                assertNotEquals(levelValidation,levelValidation1,
-                        "the comparison of an object with one containing different completed and errors"+
-                                " returns true");
                 levelValidation1.setCompleted(false);
                 assertNotEquals(levelValidation,levelValidation1,
-                        "the comparison of an object with one containing different errors returns true");
+                        "the comparison of an object with one containing different errors and animations" +
+                                " returns true");
                 levelValidation1.addError("Error!");
+                assertNotEquals(levelValidation,levelValidation1,
+                        "the comparison of an object with one containing different animations"+
+                                " returns true");
+                levelValidation1.addAnimation(EAnimation.EMOTE_DANCE);
                 assertEquals(levelValidation,levelValidation1,
                         "the comparison of an object with one containing the same fields returns false");
                 levelValidation1.setCompleted(true);
@@ -159,8 +158,8 @@ public class LevelValidationTests {
                         " returns true");
                 levelValidation1.addError("A new Error!");
                 assertNotEquals(levelValidation,levelValidation1,
-                        "the comparison of an object with one containing different completed, animations " +
-                                " and errors returns true");
+                        "the comparison of an object with one containing different completed, errors " +
+                                " and animations returns true");
                 levelValidation1.addAnimation(EAnimation.EMOTE_DANCE);
                 assertNotEquals(levelValidation,levelValidation1,
                         "the comparison of an object with one containing different completed " +
@@ -171,7 +170,7 @@ public class LevelValidationTests {
                                 " returns true");
                 assertEquals(levelValidation,levelValidation,
                         "the comparison of an object with itself returns false");
-                assertNotEquals(levelValidation, new SocialMedia("","",""),
+                assertNotEquals(levelValidation, new LevelValidationDTO(levelValidation),
                         "the comparison of an object with an object of another class returns true");
             }
 
