@@ -70,8 +70,8 @@ public class LevelServiceTests {
         var validation4 = new LevelValidation();
         validation4.setCompleted(true);
         var stats5 = new UserStatistics("5");
-        stats5.addData(gameLevel1, validation3);
         stats5.addData(gameLevel2, validation4);
+        stats5.addData(gameLevel1, validation3);
 
         given(userService.userIdExists(any())).willReturn(false);
         given(userService.userIdExists("1")).willReturn(true);
@@ -194,7 +194,8 @@ public class LevelServiceTests {
         return Stream.of(
                 arguments(EWorld.EARTH, Pair.of(1, 5)), // test Earth levels
                 arguments(EWorld.LAVA, Pair.of(-1, -1)), // test Lava levels
-                arguments(EWorld.SKY, Pair.of(6, 10)) // test Sky levels
+                arguments(EWorld.SKY, Pair.of(6, 10)), // test Sky levels
+                arguments(null, Pair.of(-1, -1)) // test no levels
         );
     }
 
