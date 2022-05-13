@@ -3,7 +3,6 @@ package ch.usi.si.bsc.sa4.devinecodemy.model.levelvaldation;
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.LevelValidationDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EAnimation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.levelvalidation.LevelValidation;
-import ch.usi.si.bsc.sa4.devinecodemy.model.user.SocialMedia;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
