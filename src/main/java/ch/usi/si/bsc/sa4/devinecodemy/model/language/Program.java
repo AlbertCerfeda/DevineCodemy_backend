@@ -12,7 +12,8 @@ import java.util.Map;
 
 
 /**
- * This is an example of JSON program
+ * This class represents a program: is a list of commands. This is the main class of the language.
+ * Here a JSON example is shown:
  * program: {
  *   commands: [
  *     {
@@ -29,7 +30,6 @@ import java.util.Map;
  *         next: null // optional next command, if null or not present, the program ends
  *       },
  *     },
- *
  *     {
  *       type: 'functionDefinition',
  *       functionName: 'win',
@@ -40,22 +40,26 @@ import java.util.Map;
  *
  *   ]
  * }
- *
  */
-
-
-
-
 public class Program {
 
     private final List<LanguageBlock> blocks;
 
+    /**
+     * Constructor of the program.
+     *
+     * @param blocks the list of actions and function definition representing the program.
+     */
     @JsonCreator
     public Program(@JsonProperty("commands") List<LanguageBlock> blocks) {
         this.blocks = blocks;
     }
 
-
+    /**
+     * To execute the program.
+     *
+     * @return a LevelValidation object representing the result of the execution.
+     */
     public LevelValidation execute(Context context) {
 
         Map<String, Action> functionTable = new HashMap<>();
@@ -90,7 +94,7 @@ public class Program {
 
         // if there is no action, error
         if (actionCount == 0) {
-            levelValidation.addError("Nothing to execute");
+            levelValidation.addError("No executable block in the program");
         }
 
         // do not execute the program if there are errors in the parsing
