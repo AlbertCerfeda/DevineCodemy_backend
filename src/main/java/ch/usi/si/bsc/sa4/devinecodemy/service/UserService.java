@@ -1,5 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.service;
 
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user.LBUserDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.InvalidAuthTokenException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserAlreadyExistsException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
@@ -13,6 +14,7 @@ import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user.CreateUserDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.model.user.User;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -188,6 +190,21 @@ public class UserService {
         } else {
             return user.get();
         }
+    }
+
+    public int getCompletedLevels(User u) {
+        return 0;
+    }
+
+    public List<LBUserDTO> getLeaderboardUsers() {
+        List<LBUserDTO> lb_users = new ArrayList<>();
+        List<User> users = getAllPublic();
+        for (User u : users) {
+            LBUserDTO lbuser = u.toLBUserDTO(getCompletedLevels(u));
+            lb_users.add(lbuser);
+        }
+        return lb_users;
+
     }
 }
     
