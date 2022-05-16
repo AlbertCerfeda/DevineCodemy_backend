@@ -2,6 +2,7 @@ package ch.usi.si.bsc.sa4.devinecodemy.model.levelvalidation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.LevelValidationDTO;
@@ -60,5 +61,18 @@ public class LevelValidation {
 
     public LevelValidationDTO toLevelValidationDTO() {
         return new LevelValidationDTO(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof LevelValidation)) return false;
+        LevelValidation that = (LevelValidation) o;
+        return completed == that.completed && Objects.equals(errors, that.errors) && Objects.equals(animations, that.animations);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(completed, errors, animations);
     }
 }

@@ -1,11 +1,14 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.user;
 
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user.SocialMediaDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user.UserDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 
 @DisplayName("The user")
 public class UserTests {
@@ -13,18 +16,21 @@ public class UserTests {
     User user2;
     User userPrivate;
     User userPrivate2;
+    SocialMedia socialMedia;
 
     @BeforeEach
     void beforeAllTests() {
-        user = new User("an id", "a name", "a username", "an email","an avatar","a bio", new SocialMedia("a twitter","a skype", "a linkedin"));
+        socialMedia = new SocialMedia("a twitter","a skype", "a linkedin");
+
+        user = new User("an id", "a name", "a username", "an email","an avatar","a bio", socialMedia);
         user2 = new User("another id", "another name", "another username", "another email","another avatar","another bio", new SocialMedia("another twitter","another skype", "another linkedin"));
+
         userPrivate = new User("private id", "private name", "private username", "private email","private avatar","private bio", new SocialMedia( "private twitter","private skype", "private linkedin"));
         userPrivate2 = new User("private id2", "private name2", "private username2", "private email2","private avatar2","private bio2", new SocialMedia("private twitter2","private skype2", "private linkedin2"));
     }
 
     @Test
     public void testConstructor() {
-        User user = new User("an id", "a name", "a username", "an email","an avatar","a bio", new SocialMedia("a twitter","a skype", "a linkedin"));
         assertEquals("an id", user.getId(), "the id field isn't set correctly");
         assertEquals("a name", user.getName(), "the name field isn't set correctly");
         assertEquals("a username", user.getUsername(), "the username field isn't set correctly");
@@ -37,19 +43,17 @@ public class UserTests {
     }
 
     @Test
-    public void testSetPublicProfile() {
-        User user = new User("an id", "a name", "a username", "an email", "an avatar", "a bio", new SocialMedia("twitter", "skype", "linkedin"));
-        user.setPublicProfile(true);
-        assertEquals(true, user.isProfilePublic(), "The public profile wasn't set correctly");
+    public void testIsProfilePublic(){
+        assertEquals(false, userPrivate.isProfilePublic(), "The public profile wasn't set correctly");
 
-        user.setPublicProfile(false);
-        assertEquals(false, user.isProfilePublic(), "The public profile wasn't set correctly");
+        userPrivate.setPublicProfile(true);
+        assertEquals(true, userPrivate.isProfilePublic(), "The public profile wasn't set correctly");
     }
+
 
     @Test
     public void testToPublicUserDTO() {
         user.setPublicProfile(true);
-        User user = new User("an id", "a name", "a username", "an email", "an avatar", "a bio", new SocialMedia("a twitter", "a skype", "a linkedin"));
         UserDTO userDTO = user.toPublicUserDTO();
         assertEquals("an id", userDTO.getId(), "the id field wasn't set correctly");
         assertEquals("a name", userDTO.getName(), "the name field wasn't set correctly");
@@ -63,7 +67,6 @@ public class UserTests {
         assertTrue( userDTO.isVisible(), "The public profile wasn't set correctly");
 
         // default public profile is false
-        User user2 = new User("another id", "another name", "another username", "another email", "another avatar", "another bio", new SocialMedia("another twitter", "another skype", "another linkedin"));
         UserDTO userDTO2 = user2.toPublicUserDTO();
         assertEquals("another id", userDTO2.getId(), "the id field wasn't set correctly");
         assertEquals("another name", userDTO2.getName(), "the name field wasn't set correctly");
@@ -105,5 +108,14 @@ public class UserTests {
         assertEquals("", privateUserDTO2.getSocialMedia().getLinkedin(), "the linkedin field wasn't set correctly. Private user doesn't share linkedin");
         assertFalse(privateUserDTO2.isVisible(), "The public profile wasn't set correctly");
 
+    }
+
+    @Test
+    public void testSetPublicProfile() {
+        user.setPublicProfile(true);
+        assertEquals(true, user.isProfilePublic(), "The public profile wasn't set correctly");
+
+        user.setPublicProfile(false);
+        assertEquals(false, user.isProfilePublic(), "The public profile wasn't set correctly");
     }
 }
