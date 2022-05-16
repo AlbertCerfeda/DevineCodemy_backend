@@ -5,6 +5,7 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.levelvalidation.LevelValidation;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,8 +58,8 @@ public class Program {
 
     public LevelValidation execute(Context context) {
 
-
         Map<String, Action> functionTable = new HashMap<>();
+        LevelValidation levelValidation = context.getLevelValidation();
 
         // Scan all blocks, if there is more than one Action: error, cannot execute the program
         // create a function table with all the functionDefinitions, mapping the functionName to the Action body to execute
@@ -66,43 +67,62 @@ public class Program {
         int actionCount = 0;
         for (LanguageBlock block : blocks) {
             if (block instanceof Action) {
-                if (actionCount > 0) {
-                    context.getLevelValidation().addError("More than one action in the program"); // TODO: write better error message
+                if (actionCount > 0) { // only one action is allowed
+                    levelValidation.addError("More than one executable block in the program, we can only have one");
                 }
                 actionCount++;
                 main = (Action)block;
             } else if (block instanceof FunctionDefinition) {
                 FunctionDefinition functionDefinition = (FunctionDefinition)block;
-                // if the key is already in the table, error
+
+                // check if the function name is already defined
                 if (functionTable.containsKey(functionDefinition.getName())) {
-                    context.getLevelValidation().addError("Function " + functionDefinition.getName() + " is already defined");
-                    return context.getLevelValidation();
+                    levelValidation.addError("Function " + functionDefinition.getName() + " is already defined");
                 }
-                // TODO: check also if the function name is basic one (e.g. moveForward) ???
+
+                // check if the function definition is valid
+                if (Arrays.asList("moveForward", "TurnLeft", "TurnRight", "CollectCoin").contains(functionDefinition.getName())) {
+                    levelValidation.addError("Function name " + functionDefinition.getName() + " is reserved");
+                }
                 functionTable.put(functionDefinition.getName(), functionDefinition.getBody());
             }
         }
 
         // if there is no action, error
         if (actionCount == 0) {
-            context.getLevelValidation().addError("Nothing to execute"); // TODO: write better error message
+            levelValidation.addError("Nothing to execute");
         }
 
+        // do not execute the program if there are errors in the parsing
+        if (levelValidation.hasErrors() || main == null) {
+            levelValidation.setCompleted(false);
+            levelValidation.clearAnimations();
+            levelValidation.addAnimation(EAnimation.EMOTE_DEATH);
+            return levelValidation;
+        }
+
+        // set the function table in the context
         context.setFunctionTable(functionTable);
+
         // execute the main action
-        assert main != null;
         main.execute(context);
 
+        // if there are errors in the execution, set the level as failed
+        if (levelValidation.hasErrors()) {
+            levelValidation.setCompleted(false);
+            levelValidation.clearAnimations();
+            levelValidation.addAnimation(EAnimation.EMOTE_DEATH);
+            return levelValidation;
+        }
 
-        // TODO: check if the coins are all collected, ...
-        // TODO: add final animations, ...
-        LevelValidation levelValidation = context.getLevelValidation();
+
+        // level completed
         if (context.getCollectedCoins() == context.getBoard().getCoinsNumber()) { // level completed
             levelValidation.addAnimation(EAnimation.EMOTE_DANCE);
             levelValidation.setCompleted(true);
         }
 
-        return context.getLevelValidation();
+        return levelValidation;
     }
 
 
