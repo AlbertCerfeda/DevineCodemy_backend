@@ -256,7 +256,7 @@ public class BoardTests {
                 new WaterTile(2, 8, 0),
                 new WaterTile(3, 8, 0),
                 new WaterTile(4, 8, 0),
-                new WaterTile(5, 8, 0), // intentional
+//                new WaterTile(5, 8, 0), // intentional
                 new WaterTile(6, 8, 0),
                 new WaterTile(7, 8, 0),
                 new WaterTile(8, 8, 0),
@@ -398,7 +398,7 @@ public class BoardTests {
                     new WaterTile(2, 8, 0),
                     new WaterTile(3, 8, 0),
                     new WaterTile(4, 8, 0),
-                    new WaterTile(5, 8, 0), // intentional
+//                    new WaterTile(5, 8, 0), // intentional
                     new WaterTile(6, 8, 0),
                     new WaterTile(7, 8, 0),
                     new WaterTile(8, 8, 0),
@@ -457,7 +457,7 @@ public class BoardTests {
                     "WWWWWWWSWW\n" +
                     "WWWWWWWGWW\n" +
                     "WWWCCCC*WW\n" +
-                    "WWWCWWWGWW\n" +
+                    "WWWCWWWG W\n" +
                     "WWWWWWWGWW\n" +
                     "WWWWWWW*WW\n" +
                     "WWWWWWWGWW\n" +
