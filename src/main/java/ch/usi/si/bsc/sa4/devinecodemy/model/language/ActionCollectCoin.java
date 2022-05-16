@@ -5,8 +5,16 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.level.Robot;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Action to collect a coin.
+ */
 public class ActionCollectCoin extends Action {
 
+    /**
+     * Creates a new action to collect a coin.
+     *
+     * @param nextAction the next action to execute.
+     */
     @JsonCreator
     public ActionCollectCoin(@JsonProperty("next") Action nextAction) {
         super(nextAction);
