@@ -5,6 +5,10 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.EWorld;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.LevelInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserNotAllowedException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.language.ActionCollectCoin;
+import ch.usi.si.bsc.sa4.devinecodemy.model.language.ActionMoveForward;
+import ch.usi.si.bsc.sa4.devinecodemy.model.language.LanguageBlock;
+import ch.usi.si.bsc.sa4.devinecodemy.model.language.Program;
 import ch.usi.si.bsc.sa4.devinecodemy.model.levelvalidation.LevelValidation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.statistics.UserStatistics;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.LevelRepository;
@@ -217,7 +221,10 @@ public class LevelServiceTests {
         expected.addAnimation(EAnimation.MOVE_FORWARD);
         expected.addAnimation(EAnimation.JUMP);
         expected.addAnimation(EAnimation.EMOTE_DANCE);
-        assertEquals(expected, levelService.playLevel(1, "1", List.of("moveForward","moveForward","moveForward","moveForward","collectCoin")), "validations don't match");
+
+        List<LanguageBlock> languageBlocks = List.of(new ActionMoveForward(new ActionMoveForward(new ActionMoveForward(new ActionMoveForward(new ActionCollectCoin(null))))));
+        Program program = new Program(languageBlocks);
+        assertEquals(expected, levelService.playLevel(1, "1", program), "validations don't match");
     }
 
     @DisplayName(" correctly plays a level with invalid commands")
@@ -225,14 +232,14 @@ public class LevelServiceTests {
     void testPlayLevelInvalid() {
         var expected = new LevelValidation();
         expected.setCompleted(false);
-        assertEquals(expected, levelService.playLevel(1, "1", List.of()), "validations don't match");
+        assertEquals(expected, levelService.playLevel(1, "1", new Program(List.of())), "validations don't match");
     }
 
     @DisplayName(" correctly plays a level with exception")
     @Test
     void testPlayLevelException() {
-        assertThrows(LevelInexistentException.class, () -> levelService.playLevel(20, "3", List.of()), "should throw on no level");
-        assertThrows(UserInexistentException.class, () -> levelService.playLevel(1, "4", List.of()), "should throw on no user");
-        assertThrows(UserNotAllowedException.class, () -> levelService.playLevel(10, "2", List.of()), "should throw on high level for user");
+        assertThrows(LevelInexistentException.class, () -> levelService.playLevel(20, "3", new Program(List.of())), "should throw on no level");
+        assertThrows(UserInexistentException.class, () -> levelService.playLevel(1, "4", new Program(List.of())), "should throw on no user");
+        assertThrows(UserNotAllowedException.class, () -> levelService.playLevel(10, "2", new Program(List.of())), "should throw on high level for user");
     }
 }
