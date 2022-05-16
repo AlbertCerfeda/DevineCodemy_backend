@@ -1,10 +1,15 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.language;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.level.Robot;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+/**
+ * ConditionTrue represents a condition that is always true.
+ */
 public class ConditionTrue implements BooleanCondition {
 
+    /**
+     * Creates a new ConditionTrue.
+     */
     @JsonCreator
     public ConditionTrue() {}
 
