@@ -21,6 +21,8 @@ stages:
   - sonarqube
   - checkstyle
   - build
+  - release
+  - deploy
 
 compile:
   stage: compile
