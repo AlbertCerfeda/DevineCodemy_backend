@@ -6,6 +6,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
 
+/**
+ * A condition that can be evaluated to a boolean value.
+ */
 @JsonTypeInfo(use = NAME, include = PROPERTY, property = "type")
 @JsonSubTypes({
         @JsonSubTypes.Type(value=ConditionContainsCoin.class, name = "containsCoin"),
@@ -15,5 +18,11 @@ import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
 })
 public interface BooleanCondition {
 
+
+    /**
+     * Evaluates the condition.
+     *
+     * @return the boolean value of the condition
+     */
     boolean evaluate(Context context);
 }
