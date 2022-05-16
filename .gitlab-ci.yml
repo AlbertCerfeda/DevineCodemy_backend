@@ -150,7 +150,7 @@ deploy_backend:
 
     mkdir -p ~/.ssh
 
-    echo "$DOCKER_CD_KEY_CN" >~/.ssh/id_rsa
+    echo "$DOCKER_CD_KEY_PP" >~/.ssh/id_rsa
     chmod 600 ~/.ssh/id_rsa
 
     ssh-keyscan -H "$DOCKER_STAGING_HOST" >>~/.ssh/known_hosts
