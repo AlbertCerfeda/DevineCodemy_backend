@@ -9,7 +9,7 @@ public class FunctionDefinition implements LanguageBlock {
     private final Action body;
 
     @JsonCreator
-    public FunctionDefinition(@JsonProperty("name") final String name,
+    public FunctionDefinition(@JsonProperty("functionName") final String name,
                               @JsonProperty("body") Action body) {
         this.name = name;
         this.body = body;

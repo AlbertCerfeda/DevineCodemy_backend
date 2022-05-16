@@ -12,48 +12,45 @@ import java.util.Map;
 
 /**
  * This is an example of JSON program
- * {
- *     commands: [
- *      {
- *          name: "moveForward",
- *          next: {
- *              name: "collectCoin",
- *              next: {
- *                  name: "functionCall",
- *                  functionName: "rotateLeft"
- *                  next: null,
- *              }
- *          }
- *      },
- *      {
- *          name: "functionDefinition",
- *          functionName: "rotateLeft",
- *          body: {
- *              name: "turnLeft",
- *              next: null,
- *          }
- *      },
- *      {
- *          name: "functionDefinition",
- *          functionName: "rotate180Left",
- *          body: {
- *              name: "turnLeft",
- *              next: {
- *                  name: "turnLeft",
- *                  next: null
- *              },
- *          }
- *      },
+ * program: {
+ *   commands: [
+ *     {
+ *       type: 'while',
+ *       condition: {
+ *         type: 'canStep'
+ *       },
+ *       body: {
+ *         type: 'moveForward',
+ *       },
+ *       next: {
+ *         type: 'functionCall',
+ *         functionName: 'win',
+ *         next: null // optional next command, if null or not present, the program ends
+ *       },
+ *     },
  *
- *     ]
+ *     {
+ *       type: 'functionDefinition',
+ *       functionName: 'win',
+ *       body: {
+ *         type: 'collectCoin',
+ *       },
+ *     }
+ *
+ *   ]
  * }
+ *
  */
+
+
+
+
 public class Program {
 
     private final List<LanguageBlock> blocks;
 
     @JsonCreator
-    public Program(@JsonProperty("commands") final List<LanguageBlock> blocks) {
+    public Program(@JsonProperty("commands") List<LanguageBlock> blocks) {
         this.blocks = blocks;
     }
 

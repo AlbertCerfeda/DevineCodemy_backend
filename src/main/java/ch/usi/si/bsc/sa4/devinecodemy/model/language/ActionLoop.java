@@ -22,5 +22,7 @@ public class ActionLoop extends Action {
         for (int i = 0; i < loopCount; i++) {
             body.execute(context);
         }
+
+        super.executeNextAction(context);
     }
 }

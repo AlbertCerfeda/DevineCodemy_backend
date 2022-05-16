@@ -20,5 +20,7 @@ public class ActionWhile extends Action {
         while (condition.evaluate(context)) {
             body.execute(context);
         }
+
+        super.executeNextAction(context);
     }
 }

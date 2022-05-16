@@ -16,9 +16,10 @@ public class ActionCollectCoin extends Action {
     public void execute(Context context) {
         if (!context.isDead()) {
             Robot robot = context.getRobot();
+            context.getLevelValidation().addAnimation(EAnimation.JUMP);
+
             if (context.getBoard().containsItemAt(robot.getPosX(), robot.getPosY())) {
                 context.incrementCollectedCoins();
-                context.getLevelValidation().addAnimation(EAnimation.JUMP);
             } else {
                 context.getLevelValidation().addAnimation(EAnimation.EMOTE_NO);
             }

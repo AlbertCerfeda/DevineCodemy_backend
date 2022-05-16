@@ -21,6 +21,9 @@ public class ActionFunctionCall extends Action {
     public void execute(Context context) {
         // look up the function in the block list and execute it
         Map<String, Action> functionTable = context.getFunctionTable();
+        System.out.println("-----------------------------------------------------------------------------------------");
+        System.out.println(functionTable.toString());
+        System.out.println("-----------------------------------------------------------------------------------------");
         if (!functionTable.containsKey(functionName)) {
             context.getLevelValidation().addError("Function " + functionName + " not found");
         } else {
