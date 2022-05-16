@@ -1,21 +1,41 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.language;
 
-
+/**
+ * Represents an action in the language. An action has a pointer to the next action in the program.
+ * An action can be executed.
+ */
 public abstract class Action implements LanguageBlock {
 
     // The next action in the chain, null if this is the last action
     protected final Action next;
 
+    /**
+     * Creates a new action with the given next action, which is executed after this action.
+     * @param next The next action in the chain, null if this is the last action.
+     */
     protected Action(Action next) {
         this.next = next;
     }
 
+    /**
+     * To executes the action given the context. This method modifies the context according to the action execution.
+     * @param context The context to execute the action.
+     */
     public abstract void execute(Context context);
 
+    /**
+     * Returns the next action in the chain.
+     * @return The next action in the chain, null if this is the last action.
+     */
     public Action getNext() {
         return next;
     }
 
+    /**
+     * Executes the next action in the chain. If there is no next action, this method does nothing.
+     *
+     * @param context The context to execute the action.
+     */
     protected void executeNextAction(Context context) {
         if (next != null) {
             next.execute(context);
