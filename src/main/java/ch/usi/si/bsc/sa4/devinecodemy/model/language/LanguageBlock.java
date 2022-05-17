@@ -16,6 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
         @JsonSubTypes.Type(value=ActionTurnRight.class, name = "turnRight"),
         @JsonSubTypes.Type(value=ActionCollectCoin.class, name = "collectCoin"),
         @JsonSubTypes.Type(value=ActionIf.class, name = "if"),
+        @JsonSubTypes.Type(value=ActionIfElse.class, name = "ifElse"),
         @JsonSubTypes.Type(value=ActionLoop.class, name = "loop"),
         @JsonSubTypes.Type(value=ActionWhile.class, name = "while"),
         @JsonSubTypes.Type(value=ActionFunctionCall.class, name = "functionCall"),
