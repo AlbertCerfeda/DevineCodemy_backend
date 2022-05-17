@@ -2,7 +2,6 @@ package ch.usi.si.bsc.sa4.devinecodemy.model.level;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.EOrientation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.item.CoinItem;
-import ch.usi.si.bsc.sa4.devinecodemy.model.item.EItem;
 import ch.usi.si.bsc.sa4.devinecodemy.model.item.Item;
 import ch.usi.si.bsc.sa4.devinecodemy.model.tile.*;
 import org.junit.jupiter.api.BeforeEach;
