@@ -63,7 +63,7 @@ public class LanguageTests {
         level = new Level("Level 1", "the first level",1, EWorld.EARTH,
                 6,board,robot,allowedCommands,"../../assets/thumbnail.jpg");
         levelValidation = new LevelValidation();
-        context = new Context(board, robot, levelValidation);
+        context = new Context(board, robot, 4, levelValidation);
     }
 
     @DisplayName("should be able to return its board")
@@ -129,8 +129,7 @@ public class LanguageTests {
     @Test
     public void testExecuteBasicProgram() {
         Program thisProgram = new Program(List.of(new ActionMoveForward(new ActionTurnLeft(new ActionTurnRight(new ActionCollectCoin(null))))));
-        Context thisContext = new Context(board, robot, new LevelValidation());
-        LevelValidation result = thisProgram.execute(thisContext);
+        LevelValidation result = thisProgram.execute(context);
         assertFalse(result.isCompleted(), "The level should not be completed");
         assertFalse(result.getAnimations().contains(EAnimation.EMOTE_DEATH),
                 "doesn't add death animation when the player is not dead");
@@ -141,8 +140,7 @@ public class LanguageTests {
     @Test
     public void testExecuteProgramWithTwoMainBlocks() {
         Program thisProgram = new Program(List.of(new ActionMoveForward(null), new ActionMoveForward(null)));
-        Context thisContext = new Context(board, robot, new LevelValidation());
-        LevelValidation result = thisProgram.execute(thisContext);
+        LevelValidation result = thisProgram.execute(context);
         assertFalse(result.isCompleted(), "The level should not be completed");
         assertTrue(result.getAnimations().contains(EAnimation.EMOTE_DEATH),
                 "adds death animation when the program cannot be executed");
@@ -153,8 +151,7 @@ public class LanguageTests {
     @Test
     public void testExecuteProgramWithoutMainBlock() {
         Program thisProgram = new Program(List.of());
-        Context thisContext = new Context(board, robot, new LevelValidation());
-        LevelValidation result = thisProgram.execute(thisContext);
+        LevelValidation result = thisProgram.execute(context);
         assertFalse(result.isCompleted(), "The level should not be completed");
         assertTrue(result.getAnimations().contains(EAnimation.EMOTE_DEATH),
                 "adds death animation when the program cannot be executed");
@@ -165,8 +162,7 @@ public class LanguageTests {
     @Test
     public void testExecuteProgramWithoutMainBlock2() {
         Program thisProgram = new Program(List.of(new FunctionDefinition("pippo", new ActionMoveForward(null))));
-        Context thisContext = new Context(board, robot, new LevelValidation());
-        LevelValidation result = thisProgram.execute(thisContext);
+        LevelValidation result = thisProgram.execute(context);
         assertFalse(result.isCompleted(), "The level should not be completed");
         assertTrue(result.getAnimations().contains(EAnimation.EMOTE_DEATH),
                 "adds death animation when the program cannot be executed");
@@ -179,22 +175,20 @@ public class LanguageTests {
         Program thisProgram = new Program(List.of(new ActionFunctionCall("pippo", null),
                                                   new FunctionDefinition("pippo",
                                                                           new ActionMoveForward(null))));
-        Context thisContext = new Context(board, robot, new LevelValidation());
-        LevelValidation result = thisProgram.execute(thisContext);
+        LevelValidation result = thisProgram.execute(context);
         assertFalse(result.isCompleted(), "The level should not be completed");
         assertFalse(result.getAnimations().contains(EAnimation.EMOTE_DEATH),
                 "doesn't add death animation when the player is not dead");
         assertTrue(result.getAnimations().contains(EAnimation.MOVE_FORWARD), "adds move forward animation");
         assertFalse(result.hasErrors(), "doesn't add error when the program can be executed");
-        assertTrue(thisContext.getFunctionTable().containsKey("pippo"), "adds function to the function table");
+        assertTrue(context.getFunctionTable().containsKey("pippo"), "adds function to the function table");
     }
 
     @DisplayName("should not be able to define a function with the same name as a built-in function")
     @Test
     public void testDefineFunctionWithBuiltInFunctionName() {
         Program thisProgram = new Program(List.of(new FunctionDefinition("moveForward", new ActionMoveForward(null))));
-        Context thisContext = new Context(board, robot, new LevelValidation());
-        LevelValidation result = thisProgram.execute(thisContext);
+        LevelValidation result = thisProgram.execute(context);
         assertFalse(result.isCompleted(), "The level should not be completed");
         assertTrue(result.getAnimations().contains(EAnimation.EMOTE_DEATH),
                 "adds death animation when the program cannot be executed");
@@ -206,8 +200,22 @@ public class LanguageTests {
     public void testDefineFunctionWithSameName() {
         Program thisProgram = new Program(List.of(new FunctionDefinition("pippo", new ActionMoveForward(null)),
                                                   new FunctionDefinition("pippo", new ActionMoveForward(null))));
-        Context thisContext = new Context(board, robot, new LevelValidation());
-        LevelValidation result = thisProgram.execute(thisContext);
+        LevelValidation result = thisProgram.execute(context);
+        assertFalse(result.isCompleted(), "The level should not be completed");
+        assertTrue(result.getAnimations().contains(EAnimation.EMOTE_DEATH),
+                "adds death animation when the program cannot be executed");
+        assertTrue(result.hasErrors(), "adds error when the program cannot be executed");
+    }
+
+    @DisplayName("should not complete a level with too may commands")
+    @Test
+    public void testTooManyCommands() {
+        Program thisProgram = new Program(List.of(new ActionMoveForward(
+                                                    new ActionCollectCoin(
+                                                        new ActionMoveForward(
+                                                             new ActionCollectCoin(
+                                                                 new ActionTurnLeft(null)))))));
+        LevelValidation result = thisProgram.execute(context);
         assertFalse(result.isCompleted(), "The level should not be completed");
         assertTrue(result.getAnimations().contains(EAnimation.EMOTE_DEATH),
                 "adds death animation when the program cannot be executed");
@@ -218,169 +226,16 @@ public class LanguageTests {
     @Test
     public void testCompleteLevel() {
         Program thisProgram = new Program(List.of(new ActionMoveForward(new ActionCollectCoin(new ActionMoveForward(new ActionCollectCoin(null))))));
-        Context thisContext = new Context(board, robot, new LevelValidation());
-        LevelValidation result = thisProgram.execute(thisContext);
+        LevelValidation result = thisProgram.execute(context);
         assertTrue(result.isCompleted(), "The level should be completed");
         assertTrue(result.getAnimations().contains(EAnimation.MOVE_FORWARD), "adds move forward animation");
         assertTrue(result.getAnimations().contains(EAnimation.JUMP), "adds jump animation");
         assertTrue(result.getAnimations().contains(EAnimation.EMOTE_DANCE),
                     "adds emote dance animation when the level is completed");
-        assertEquals(2, thisContext.getCollectedCoins(), "count collected coins");
-        assertFalse(thisContext.isDead(), "The player should not be dead");
+        assertEquals(2, context.getCollectedCoins(), "count collected coins");
+        assertFalse(context.isDead(), "The player should not be dead");
         assertFalse(result.hasErrors(), "The level validation should not have errors");
     }
 
 
-
-
-//
-//
-//    @DisplayName("should be able to play a list of commands to complete the Level")
-//    @Test
-//    public void testPlay() {
-//        var actualValidation = gamePlayer.play(List.of("moveForward"));
-//        assertFalse(actualValidation.isCompleted(),
-//                "the completion is not the one expected");
-//    }
-//
-//    @DisplayName("should be able to parse a list of strings into commands")
-//    @Test
-//    public void testParseCommands() {
-//        var actualValidation = gamePlayer.play(List.of("moveForward","turnLeft"));
-//        assertFalse(actualValidation.isCompleted(),
-//                "the completion is not the one expected");
-//    }
-//
-//    @DisplayName("should be able to parse a list of strings into commands")
-//    @Test
-//    public void testParseCommandsWrongCommands() {
-//        LevelValidation actualValidation = gamePlayer.play(List.of("moveForwar","turnRight"));
-//        List<String> actualValidationErrors = actualValidation.getErrors();
-//        var expectedValidationError1 = "Unknown command: 'moveForwar'";
-//        assertEquals(expectedValidationError1,actualValidationErrors.get(0),
-//                "doesn't add error when inserting commands with typos");
-//        var expectedValidationError2 = "Command not allowed: 'turnRight'";
-//        assertEquals(expectedValidationError2,actualValidationErrors.get(1),
-//                "doesn't add error when inserting not allowed commands");
-//        assertTrue(actualValidation.getAnimations().contains(EAnimation.EMOTE_DEATH),
-//                "doesn't add death animation when inserting not allowed commands");
-//    }
-//
-//    @DisplayName("should have not completed the level when inserting more commands than allowed")
-//    @Test
-//    public void testParseCommandsTooManyCommands() {
-//        List<String> actualValidationErrors = gamePlayer.play(
-//                List.of("moveForward",
-//                        "moveForward",
-//                        "moveForward",
-//                        "turnLeft",
-//                        "turnLeft",
-//                        "turnLeft",
-//                        "turnLeft",
-//                        "turnLeft")).getErrors();
-//        var expectedValidationError = "Too many commands: you can use only " + level.getMaxCommandsNumber() + " commands.";
-//        assertEquals(expectedValidationError,actualValidationErrors.get(0),
-//                "doesn't add error when inserting too many commands");
-//    }
-//
-//    @DisplayName("should not complete the level when inserting commands to go out of the board")
-//    @Test
-//    public void testPlayWrongOrientationMoveForwardCommands() {
-//        LevelValidation actualValidation = gamePlayer.play(
-//                List.of("moveForward",
-//                        "moveForward",
-//                        "moveForward",
-//                        "moveForward",
-//                        "turnLeft"));
-//        assertFalse(actualValidation.isCompleted(),
-//                "completes when inserting wrong moveForward commands");
-//        assertTrue(actualValidation.getAnimations().contains(EAnimation.EMOTE_DEATH),
-//                "doesn't add death animation when inserting wrong moveForward commands");
-//    }
-//
-//    @DisplayName("should collect the coin when inserting the collectCoin command on a tile with an item")
-//    @Test
-//    public void testPlayCollectRight() {
-//        LevelValidation actualValidation = gamePlayer.play(
-//                List.of("moveForward",
-//                        "collectCoin",
-//                        "moveForward",
-//                        "turnLeft"));
-//        assertFalse(actualValidation.isCompleted(),
-//                "completes the level when inserting wrong commands");
-//        assertTrue(actualValidation.getAnimations().contains(EAnimation.MOVE_FORWARD),
-//                "doesn't add moveForward animation when inserting the moveForward command");
-//        assertTrue(actualValidation.getAnimations().contains(EAnimation.JUMP),
-//                "doesn't add jump animation when inserting the collectCoin command");
-//        assertTrue(actualValidation.getAnimations().contains(EAnimation.TURN_LEFT),
-//                "doesn't add turnLeft animation when inserting the turnLeft command");
-//    }
-//
-//    @DisplayName("should not collect the coin when inserting the collectCoin command on a tile without an item")
-//    @Test
-//    public void testPlayCollectWrong() {
-//        LevelValidation actualValidation = gamePlayer.play(
-//                List.of("moveForward",
-//                        "turnLeft",
-//                        "moveForward",
-//                        "collectCoin",
-//                        "moveForward"));
-//        assertFalse(actualValidation.isCompleted(),
-//                "completes the level when inserting wrong commands");
-//        assertTrue(actualValidation.getAnimations().contains(EAnimation.MOVE_FORWARD),
-//                "doesn't add moveForward animation when inserting the moveForward command");
-//        assertTrue(actualValidation.getAnimations().contains(EAnimation.JUMP),
-//                "doesn't add jump animation when inserting the collectCoin command");
-//        assertTrue(actualValidation.getAnimations().contains(EAnimation.EMOTE_NO),
-//                "doesn't add emote-no animation when inserting the collectCoin command");
-//        assertTrue(actualValidation.getAnimations().contains(EAnimation.TURN_LEFT),
-//                "doesn't add turnLeft animation when inserting the turnLeft command");
-//    }
-//
-//    @DisplayName("should be able to complete the level inserting a valid list of commands below" +
-//            " the max limit of the specific level")
-//    @Test
-//    public void testPlayRightCommands() {
-//        LevelValidation actualValidation = gamePlayer.play(
-//                List.of("moveForward",
-//                        "collectCoin",
-//                        "moveForward",
-//                        "collectCoin"));
-//        assertTrue(actualValidation.isCompleted(),
-//                "completes the level when inserting wrong commands");
-//        assertTrue(actualValidation.getAnimations().contains(EAnimation.MOVE_FORWARD),
-//                "doesn't add moveForward animation when inserting the moveForward command");
-//        assertTrue(actualValidation.getAnimations().contains(EAnimation.JUMP),
-//                "doesn't add jump animation when inserting the collectCoin command");
-//        assertTrue(actualValidation.getAnimations().contains(EAnimation.EMOTE_DANCE),
-//                "doesn't add dance animation when inserting right commands");
-//    }
-//
-//    @DisplayName("should be able to play any command if the level allows it")
-//    @Test
-//    public void testPlayUnknownCommand() {
-//        List<EAction> allowedCommands = List.of(
-//                EAction.MOVE_FORWARD,
-//                EAction.COLLECT_COIN,
-//                EAction.TURN_LEFT,
-//                EAction.TURN_RIGHT);
-//        level = new Level("Level 1", "the first level",1, EWorld.EARTH,
-//                6,board,robot,allowedCommands,"../../assets/thumbnail.jpg");
-//        gamePlayer = new GamePlayer(level);
-//        LevelValidation actualValidation = gamePlayer.play(
-//                List.of("moveForward",
-//                        "collectCoin",
-//                        "turnLeft",
-//                        "turnRight"));
-//        assertFalse(actualValidation.isCompleted(),
-//                "completes the level when inserting wrong commands");
-//        assertTrue(actualValidation.getAnimations().contains(EAnimation.MOVE_FORWARD),
-//                "doesn't add moveForward animation when inserting the moveForward command");
-//        assertTrue(actualValidation.getAnimations().contains(EAnimation.JUMP),
-//                "doesn't add jump animation when inserting the collectCoin command");
-//        assertTrue(actualValidation.getAnimations().contains(EAnimation.TURN_LEFT),
-//                "doesn't add turnLeft animation when inserting the turnLeft command");
-//        assertTrue(actualValidation.getAnimations().contains(EAnimation.TURN_RIGHT),
-//                "doesn't add turnRight animation when inserting the turnRight command");
-//    }
 }

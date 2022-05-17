@@ -31,6 +31,15 @@ public abstract class Action implements LanguageBlock {
         return next;
     }
 
+
+    /**
+     * To count the number of actions in the chain.
+     * @return The number of actions in the chain.
+     */
+    public int countActions() {
+        return 1 + (next == null ? 0 : next.countActions());
+    }
+
     /**
      * Executes the next action in the chain. If there is no next action, this method does nothing.
      *

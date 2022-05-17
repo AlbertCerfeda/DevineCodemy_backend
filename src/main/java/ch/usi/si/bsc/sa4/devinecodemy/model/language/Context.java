@@ -21,6 +21,8 @@ public class Context {
     private final Board board;
     private final Robot robot;
     private final LevelValidation levelValidation;
+
+    private final int maxCommandsNumber;
     private final Map<String, Action> functionTable = new HashMap<>();
 
     private int collectedCoins = 0;
@@ -31,11 +33,13 @@ public class Context {
      * Constructor for the context.
      * @param board the board on which the game is played.
      * @param robot the robot controlled by the player's program.
+     * @param maxCommandsNumber the maximum number of commands that can be used to complete
      * @param levelValidation the result of the game validation.
      */
-    public Context(final Board board, final Robot robot, final LevelValidation levelValidation) {
+    public Context(final Board board, final Robot robot, final int maxCommandsNumber, final LevelValidation levelValidation) {
         this.board = board;
         this.robot = robot;
+        this.maxCommandsNumber = maxCommandsNumber;
         this.levelValidation = levelValidation;
     }
 
@@ -45,6 +49,10 @@ public class Context {
 
     public Robot getRobot() {
         return robot;
+    }
+
+    public int getMaxCommandsNumber() {
+        return maxCommandsNumber;
     }
 
     public LevelValidation getLevelValidation() {

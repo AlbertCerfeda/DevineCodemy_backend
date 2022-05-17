@@ -95,7 +95,10 @@ public class Program {
         // if there is no action, error
         if (main == null) {
             levelValidation.addError("No executable block in the program");
-        } else {
+        } else if (main.countActions() > context.getMaxCommandsNumber()) {
+            levelValidation.addError("Too many commands in the program, we can only have " +
+                                     context.getMaxCommandsNumber());
+        } else if (!levelValidation.hasErrors()) {
             // set the function table in the context
             context.setFunctionTable(functionTable);
             // execute the main action that cannot be null anymore

@@ -56,7 +56,7 @@ public class LevelService {
 
         Level level = optionalLevel.get();
         LevelValidation levelValidation = new LevelValidation();
-        Context context = new Context(level.getBoard(), level.getRobot(), levelValidation);
+        Context context = new Context(level.getBoard(), level.getRobot(), level.getMaxCommandsNumber(), levelValidation);
 
 
         // Here we create the new statistics for the user after playing the game.
