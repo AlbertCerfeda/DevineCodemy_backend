@@ -19,7 +19,8 @@ public class ActionMoveForward extends Action {
     }
 
     @Override
-    public void execute(Context context) {
+    public void execute(Context context) throws RuntimeException {
+        context.incrementClock();
         if (!context.isDead()) {
             try {
                 context.getRobot().moveForward(context.getBoard());

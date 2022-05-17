@@ -28,7 +28,7 @@ public class ConditionCanStep implements BooleanCondition {
 
         switch (direction) {
             case "FORWARD":
-                // check if the robot can move forward
+                // the robot is already facing forward
                 break;
             case "LEFT":
                 orientation = orientation.turnLeft();

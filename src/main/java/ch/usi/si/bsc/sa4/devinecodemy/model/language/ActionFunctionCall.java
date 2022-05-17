@@ -26,7 +26,8 @@ public class ActionFunctionCall extends Action {
 
 
     @Override
-    public void execute(Context context) {
+    public void execute(Context context) throws RuntimeException {
+        context.incrementClock();
         // look up the function in the block list and execute it
         Map<String, Action> functionTable = context.getFunctionTable();
         if (!functionTable.containsKey(functionName)) {

@@ -28,7 +28,8 @@ public class ActionLoop extends Action {
     }
 
     @Override
-    public void execute(Context context) {
+    public void execute(Context context) throws RuntimeException {
+        context.incrementClock();
         for (int i = 0; i < loopCount; i++) {
             body.execute(context);
         }

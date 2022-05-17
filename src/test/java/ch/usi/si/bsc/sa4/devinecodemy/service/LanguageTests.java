@@ -415,4 +415,15 @@ public class LanguageTests {
         assertFalse(result.hasErrors(), "The level validation should not have errors");
     }
 
+
+    @DisplayName("test infinite recursion")
+    @Test
+    public void testInfiniteRecursion() {
+        Program thisProgram = new Program(List.of(new FunctionDefinition("f", new ActionFunctionCall("f", null)),
+                                                  new ActionFunctionCall("f", null)));
+
+        LevelValidation result = thisProgram.execute(context);
+        assertTrue(result.hasErrors(), "The level validation should have errors");
+    }
+
 }

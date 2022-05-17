@@ -20,7 +20,8 @@ public class ActionTurnRight extends Action {
     }
 
     @Override
-    public void execute(Context context) {
+    public void execute(Context context) throws RuntimeException {
+        context.incrementClock();
         context.getRobot().turnRight();
         context.getLevelValidation().addAnimation(EAnimation.TURN_RIGHT);
 

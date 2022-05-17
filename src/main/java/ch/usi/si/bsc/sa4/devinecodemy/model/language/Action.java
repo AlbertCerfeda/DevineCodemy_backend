@@ -20,8 +20,9 @@ public abstract class Action implements LanguageBlock {
     /**
      * To executes the action given the context. This method modifies the context according to the action execution.
      * @param context The context to execute the action.
+     * @throws RuntimeException if too many actions are executed (used to stop endless loops).
      */
-    public abstract void execute(Context context);
+    public abstract void execute(Context context) throws RuntimeException ;
 
     /**
      * To count the number of actions in the chain.

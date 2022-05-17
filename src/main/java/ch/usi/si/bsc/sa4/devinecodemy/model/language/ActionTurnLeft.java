@@ -21,7 +21,8 @@ public class ActionTurnLeft extends Action {
 
 
     @Override
-    public void execute(Context context) {
+    public void execute(Context context) throws RuntimeException {
+        context.incrementClock();
         context.getRobot().turnLeft();
         context.getLevelValidation().addAnimation(EAnimation.TURN_LEFT);
 

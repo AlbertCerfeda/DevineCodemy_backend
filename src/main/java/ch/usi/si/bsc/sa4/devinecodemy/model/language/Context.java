@@ -27,6 +27,9 @@ public class Context {
 
     private int collectedCoins = 0;
 
+    // this represents the clock of the game
+    private int clock = 0;
+
     private boolean isDead = false;
 
     /**
@@ -51,6 +54,8 @@ public class Context {
         return robot;
     }
 
+
+
     public int getMaxCommandsNumber() {
         return maxCommandsNumber;
     }
@@ -61,6 +66,17 @@ public class Context {
 
     public Map<String, Action> getFunctionTable() {
         return functionTable;
+    }
+
+    /**
+     * Increments the clock of the game. The clock is used to stop the game if there are infinite loops.
+     * @throws RuntimeException if there are more than 1000 executions.
+     */
+    public void incrementClock() throws RuntimeException{
+        clock++;
+        if (clock > 1000) { // true if more than 1000 executions
+            throw new RuntimeException("Method execution timed out. It seems that there is an infinite loop in your code.");
+        }
     }
 
     /**

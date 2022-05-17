@@ -33,7 +33,8 @@ public class ActionIfElse extends Action{
     }
 
     @Override
-    public void execute(Context context) {
+    public void execute(Context context) throws RuntimeException {
+        context.incrementClock();
         if (condition.evaluate(context)) {
             ifTrue.execute(context);
         } else {

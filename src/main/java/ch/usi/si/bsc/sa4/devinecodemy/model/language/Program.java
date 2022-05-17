@@ -103,7 +103,11 @@ public class Program {
             // set the function table in the context
             context.setFunctionTable(functionTable);
             // execute the main action that cannot be null anymore
-            main.execute(context);
+            try {
+                main.execute(context);
+            } catch (RuntimeException e) {
+                levelValidation.addError(e.getMessage());
+            }
         }
 
         // if there are errors in the parsing or during the execution, set the level as failed
