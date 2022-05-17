@@ -93,25 +93,16 @@ public class Program {
         }
 
         // if there is no action, error
-        if (actionCount == 0) {
+        if (main == null) {
             levelValidation.addError("No executable block in the program");
+        } else {
+            // set the function table in the context
+            context.setFunctionTable(functionTable);
+            // execute the main action that cannot be null anymore
+            main.execute(context);
         }
 
-        // do not execute the program if there are errors in the parsing
-        if (levelValidation.hasErrors() || main == null) {
-            levelValidation.setCompleted(false);
-            levelValidation.clearAnimations();
-            levelValidation.addAnimation(EAnimation.EMOTE_DEATH);
-            return levelValidation;
-        }
-
-        // set the function table in the context
-        context.setFunctionTable(functionTable);
-
-        // execute the main action
-        main.execute(context);
-
-        // if there are errors in the execution, set the level as failed
+        // if there are errors in the parsing or during the execution, set the level as failed
         if (levelValidation.hasErrors()) {
             levelValidation.setCompleted(false);
             levelValidation.clearAnimations();
