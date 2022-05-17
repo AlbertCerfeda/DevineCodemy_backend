@@ -11,12 +11,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.List;
+import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 @DisplayName("The level")
 public class LevelTests {
@@ -159,7 +162,99 @@ public class LevelTests {
             assertNull(actualLevelDTO.getBoard(), "levelDTO board is not null");
             assertNull(actualLevelDTO.getRobot(), "levelDTO robot is not null");
         }
+    }
 
+    @ParameterizedTest(name = "can compare the level with another level object")
+    @MethodSource("equalsArguments")
+    public void testEquals(boolean equals, Level level1, String same, String difference) {
+        level = new Level( "name", "description", 10, EWorld.SKY,
+                10, new Board(List.of(),List.of(),0),
+                new Robot(0,0,EOrientation.UP), List.of(),
+                "../assets/level10.png");
+        if (equals) {
+            assertEquals(level,level1,
+                    "level is not equal when compared to " + same);
+        } else {
+            assertNotEquals(level,level1,
+                    "level is equal when compared to a level with same " + same +
+                            " but different " + difference);
+        }
+    }
+
+    public static Stream<Arguments> equalsArguments() {
+        return Stream.of(
+                arguments(false,
+                        new Level("name","description", 10, EWorld.SKY,
+                                10, new Board(List.of(),List.of(),0),
+                                new Robot(0,0,EOrientation.UP), List.of(EAction.MOVE_FORWARD),
+                                "../assets/level10.png"),
+                        "name,description,number,world,maxCommandsNumber,board,robot",
+                        "commands"
+                ),
+                arguments(false,
+                        new Level("name","description", 10, EWorld.SKY,
+                                10, new Board(List.of(),List.of(),0),
+                                new Robot(0,0,EOrientation.DOWN), List.of(),"../assets/level10.png"),
+                        "name,description,number,world,maxCommandsNumber,board",
+                        "robot"
+                ),
+                arguments(false,
+                        new Level("name","description", 10, EWorld.SKY, 10,
+                                new Board(List.of(new GrassTile(0,0,0)),List.of(),0),
+                                new Robot(0,0,EOrientation.UP), List.of(),"../assets/level10.png"),
+                        "name,description,number,world,maxCommandsNumber",
+                        "board"
+                ),
+                arguments(false,
+                        new Level("name","description", 10, EWorld.SKY, 9,
+                                new Board(List.of(),List.of(),0),
+                                new Robot(0,0,EOrientation.UP), List.of(),"../assets/level10.png"),
+                        "name,description,number,world",
+                        "maxCommandsNumber"
+                ),
+                arguments(false,
+                        new Level("name","description", 10, EWorld.LAVA, 10,
+                                new Board(List.of(),List.of(),0),
+                                new Robot(0,0,EOrientation.UP), List.of(),"../assets/level10.png"),
+                        "name,description,number",
+                        "world"
+                ),
+                arguments(false,
+                        new Level("name","description", 9, EWorld.SKY, 10,
+                                new Board(List.of(),List.of(),0),
+                                new Robot(0,0,EOrientation.UP), List.of(),"../assets/level10.png"),
+                        "name,description",
+                        "number"
+                ),
+                arguments(false,
+                        new Level("name","", 10, EWorld.SKY, 10,
+                                new Board(List.of(),List.of(),0),
+                                new Robot(0,0,EOrientation.UP), List.of(),"../assets/level10.png"),
+                        "name",
+                        "description"
+                ),
+                arguments(false,
+                        new Level("","description", 10, EWorld.SKY, 10,
+                                new Board(List.of(),List.of(),0),
+                                new Robot(0,0,EOrientation.UP), List.of(),"../assets/level10.png"),
+                        "",
+                        "name"
+                ),
+                arguments(true,
+                        new Level("name","description", 10, EWorld.SKY, 10,
+                                new Board(List.of(),List.of(),0),
+                                new Robot(0,0,EOrientation.UP), List.of(),"../assets/level10.png"),
+                        "another level with same values",
+                        ""
+                )
+        );
+    }
+
+    @DisplayName("can compare the level with itself")
+    @Test
+    public void testEqualsSpecialCases() {
+        assertEquals(level,level,"level is not equal when compared to itself");
+        assertNotEquals(level,level.toLevelDTO(),"level is equal when compared to a different class' object");
     }
 
 }
