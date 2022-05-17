@@ -417,7 +417,7 @@ public class BoardTests {
             );
             assertEquals(expectedGrid, actualGrid, "grid is not the one provided in the constructor");
             assertEquals(board, board,"board is not equal to itself");
-            assertNotEquals(board, expectedGrid,"board is equal when compared to another class");
+            assertNotEquals(board, board.toBoardDTO(),"board is equal when compared to another class");
             Board board1 = new Board(expectedGrid,List.of(),0);
             assertNotEquals(board, board1,"board is equal when compared to board with different grid");
             Board board2 = new Board(List.of(new GrassTile(2,2,0)),List.of(),0);
@@ -487,9 +487,9 @@ public class BoardTests {
 
     }
 
-    @ParameterizedTest(name = "can compare the level with another level object")
-    @MethodSource("equalsArguments")
-    public void testEquals(boolean equals, Tile tile1, String same, String difference) {
+    @ParameterizedTest(name = "can compare the tile with another tile object")
+    @MethodSource("tileEqualsArguments")
+    public void testTileEquals(boolean equals, Tile tile1, String same, String difference) {
         var tile = board.getTileAt(0,0);
         if (equals) {
             assertEquals(tile,tile1,
@@ -501,7 +501,7 @@ public class BoardTests {
         }
     }
 
-    public static Stream<Arguments> equalsArguments() {
+    public static Stream<Arguments> tileEqualsArguments() {
         var tile1 = new WaterTile(0,0,0);
         tile1.setWalkable(true);
         return Stream.of(
@@ -522,10 +522,46 @@ public class BoardTests {
 
     @DisplayName("can compare a tile with itself")
     @Test
-    public void testTileEquals() {
+    public void testTileEqualsSpecialCases() {
         var tile = board.getTileAt(0,0);
         assertEquals(tile,tile,"tile is not equal when compared to itself");
         assertNotEquals(tile,tile.toTileDTO(),
                 "tile is equal when compared to an object of another class");
+    }
+
+    @ParameterizedTest(name = "can compare the level with another level object")
+    @MethodSource("itemEqualsArguments")
+    public void testItemEquals(boolean equals, Item item1, String same, String difference) {
+        var item = board.getItemAt(4,7);
+        if (equals) {
+            assertEquals(item,item1,
+                    "item is not equal when compared to " + same);
+        } else {
+            assertNotEquals(item,item1,
+                    "item is equal when compared to a level with same " + same +
+                            " but different " + difference);
+        }
+    }
+
+    public static Stream<Arguments> itemEqualsArguments() {
+        var tile1 = new WaterTile(0,0,0);
+        tile1.setWalkable(true);
+        return Stream.of(
+                arguments(false,new CoinItem(5,7),
+                        "","x"),
+                arguments(false,new CoinItem(4,8),
+                        "x","y"),
+                arguments(true,new CoinItem(4,7),
+                        "another item with equal values","")
+        );
+    }
+
+    @DisplayName("can compare an item with itself")
+    @Test
+    public void testItemEqualsSpecialCases() {
+        var item = board.getItemAt(4,7);
+        assertEquals(item,item,"item is not equal when compared to itself");
+        assertNotEquals(item,item.toItemDTO(),
+                "item is equal when compared to an object of another class");
     }
 }

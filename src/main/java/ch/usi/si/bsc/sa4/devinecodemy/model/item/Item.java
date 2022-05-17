@@ -67,7 +67,7 @@ public abstract class Item {
         if (this == o) return true;
         if (!(o instanceof Item)) return false;
         final Item item = (Item) o;
-        return posX == item.posX && posY == item.posY && type == item.type;
+        return posX == item.posX && posY == item.posY && type.equals(item.type);
     }
 
     @Override
