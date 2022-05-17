@@ -2,6 +2,7 @@ package ch.usi.si.bsc.sa4.devinecodemy.model.level;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.EOrientation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.item.CoinItem;
+import ch.usi.si.bsc.sa4.devinecodemy.model.item.EItem;
 import ch.usi.si.bsc.sa4.devinecodemy.model.item.Item;
 import ch.usi.si.bsc.sa4.devinecodemy.model.tile.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -416,6 +417,26 @@ public class BoardTests {
                     new GrassTile(9, 9, 0)
             );
             assertEquals(expectedGrid, actualGrid, "grid is not the one provided in the constructor");
+            assertEquals(board, board,"board is not equal to itself");
+            assertNotEquals(board, expectedGrid,"board is equal when compared to another class");
+            Board board1 = new Board(expectedGrid,List.of(),0);
+            assertNotEquals(board, board1,"board is equal when compared to board with different grid");
+            Board board2 = new Board(List.of(new GrassTile(2,2,0)),List.of(),0);
+            assertNotEquals(board, board2,"board is equal when compared to board with different dimension x");
+            board1 = new Board(List.of(
+                    new GrassTile(0,1,0),
+                    new GrassTile(1,2,0),
+                    new GrassTile(2,1,0)),List.of(),0);
+            assertNotEquals(board1, board2,"board is equal when compared to board with " +
+                    "same dimension x,y,nCoins but different grid");
+            board1 = new Board(List.of(new GrassTile(2,2,0)),
+                    List.of(new CoinItem(0,0)),0);
+            assertNotEquals(board1, board2,"board is equal when compared to board with " +
+                    "same dimension x,y,nCoins,grid, but different items");
+            board1 = new Board(List.of(new GrassTile(2,1,0)),
+                    List.of(new CoinItem(0,0)),0);
+            assertNotEquals(board1, board2,"board is equal when compared to board with " +
+                    "same dimension x, but different dimension y");
         }
 
         @DisplayName("has the same items provided in the constructor")
