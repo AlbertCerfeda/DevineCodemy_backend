@@ -17,11 +17,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -45,8 +46,9 @@ public class PlayControllerTests {
 
     private FakeOAuth2User fakeOAuth2User;
     private PlayLevelDTO playLevelDTO;
+    private LevelValidationDTO levelValidationDTO;
 
-    @BeforeAll
+    @BeforeEach
     void setup() {
         playLevelDTO = new PlayLevelDTO(1,
                 List.of("turnRight","moveForward","turnLeft","moveForward","collectCoin"));
@@ -54,8 +56,11 @@ public class PlayControllerTests {
                 "a bio",new SocialMedia("a twitter","a skype", "a linkedin"));
         fakeOAuth2User = new FakeOAuth2User("an id");
         LevelValidation levelValidation = mock(LevelValidation.class);
-        LevelValidationDTO levelValidationDTO = mock(LevelValidationDTO.class);
+        levelValidationDTO = mock(LevelValidationDTO.class);
         given(levelValidation.toLevelValidationDTO()).willReturn(levelValidationDTO);
+        given(levelValidationDTO.isCompleted()).willReturn(false);
+        given(levelValidationDTO.getAnimations()).willReturn(List.of());
+        given(levelValidationDTO.getErrors()).willReturn(List.of());
         given(userService.getUserByToken(fakeOAuth2User.getoAuth2AuthenticationToken())).willReturn(user1);
         given(levelService.playLevel(1,"an id",
                 List.of("turnRight","moveForward","turnLeft","moveForward","collectCoin")))
@@ -66,11 +71,20 @@ public class PlayControllerTests {
     @Test
     public void testPlay() throws Exception {
         String body = objectMapper.writeValueAsString(playLevelDTO);
-        mockMvc.perform(put("/play/")
+        MvcResult result = mockMvc.perform(put("/play/")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body)
                 .with(SecurityMockMvcRequestPostProcessors
                         .authentication(fakeOAuth2User.getoAuth2AuthenticationToken())))
-                .andExpect(status().isOk());
+                .andReturn();
+        LevelValidationDTO levelValidationDTO = objectMapper.readValue(
+                result.getResponse().getContentAsString(),
+                LevelValidationDTO.class);
+        assertEquals(this.levelValidationDTO.isCompleted(), levelValidationDTO.isCompleted(),
+                "completed state of the playLevelDTO doesn't match the expected one");
+        assertEquals(this.levelValidationDTO.getAnimations(), levelValidationDTO.getAnimations(),
+                "animations of the playLevelDTO doesn't match the expected one");
+        assertEquals(this.levelValidationDTO.getErrors(), levelValidationDTO.getErrors(),
+                "errors state of the playLevelDTO doesn't match the expected one");
     }
 }
