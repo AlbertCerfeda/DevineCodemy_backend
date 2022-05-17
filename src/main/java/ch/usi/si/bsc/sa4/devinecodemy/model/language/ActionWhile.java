@@ -28,8 +28,15 @@ public class ActionWhile extends Action {
 
     @Override
     public void execute(Context context) {
+        // start timer, if the method takes longer than the timeout, the method will be aborted
+        long start = System.currentTimeMillis();
         while (condition.evaluate(context)) {
             body.execute(context);
+            if (System.currentTimeMillis() - start > 1000) { // 1 second
+                context.getLevelValidation()
+                        .addError("Method execution timed out. It seems that the method is infinite.");
+                break;
+            }
         }
 
         super.executeNextAction(context);

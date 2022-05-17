@@ -20,6 +20,7 @@ import java.util.Map;
  *       type: 'while',
  *       condition: {
  *         type: 'canStep'
+ *         direction: 'FORWARD'
  *       },
  *       body: {
  *         type: 'moveForward',

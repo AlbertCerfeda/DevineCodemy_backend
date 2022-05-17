@@ -207,6 +207,18 @@ public class LanguageTests {
         assertTrue(result.hasErrors(), "adds error when the program cannot be executed");
     }
 
+    @DisplayName("should not be able to complete a level with an unknown function")
+    @Test
+    public void testUnknownFunction() {
+        Program thisProgram = new Program(List.of(new ActionFunctionCall("pippo", null)));
+        LevelValidation result = thisProgram.execute(context);
+        assertFalse(result.isCompleted(), "The level should not be completed");
+        assertTrue(result.getAnimations().contains(EAnimation.EMOTE_DEATH),
+                "adds death animation when the program cannot be executed");
+        assertTrue(result.hasErrors(), "adds error when the program cannot be executed");
+    }
+
+
     @DisplayName("should not complete a level with too may commands")
     @Test
     public void testTooManyCommands() {
@@ -237,5 +249,170 @@ public class LanguageTests {
         assertFalse(result.hasErrors(), "The level validation should not have errors");
     }
 
+    @DisplayName("test collect coin action")
+    @Test
+    public void testCollectCoin() {
+        Program thisProgram = new Program(List.of(new ActionCollectCoin(new ActionMoveForward(new ActionCollectCoin(null)))));
+        LevelValidation result = thisProgram.execute(context);
+        assertFalse(result.isCompleted(), "The level should be completed");
+        assertTrue(result.getAnimations().contains(EAnimation.JUMP), "adds jump animation");
+        assertEquals(1, context.getCollectedCoins(), "count collected coins");
+        assertFalse(result.hasErrors(), "The level validation should not have errors");
+    }
+
+    @DisplayName("test death")
+    @Test
+    public void testDeath() {
+        Program thisProgram = new Program(List.of(new ActionTurnRight(
+                                                    new ActionMoveForward(
+                                                            new ActionTurnLeft(
+                                                                    new ActionTurnRight(null))))));
+        LevelValidation result = thisProgram.execute(context);
+        assertFalse(result.isCompleted(), "The level should be completed");
+        assertTrue(result.getAnimations().contains(EAnimation.EMOTE_DEATH), "adds death animation");
+        assertTrue(context.isDead(), "The player should be dead");
+        assertFalse(result.hasErrors(), "The level validation should not have errors");
+
+        Program thisProgram2 = new Program(List.of(new ActionTurnRight(
+                                                    new ActionMoveForward(
+                                                        new ActionMoveForward(
+                                                            new ActionCollectCoin(null))))));
+        result = thisProgram2.execute(context);
+        assertFalse(result.isCompleted(), "The level should be completed");
+        assertTrue(result.getAnimations().contains(EAnimation.EMOTE_DEATH), "adds death animation");
+        assertTrue(context.isDead(), "The player should be dead");
+        assertFalse(result.hasErrors(), "The level validation should not have errors");
+    }
+
+    @DisplayName("test if statements with false")
+    @Test
+    public void testIfStatementsFalse() {
+        Program thisProgram = new Program(List.of(new ActionIf(
+                                                    new ConditionCanStep("RIGHT"),
+                                                    new ActionMoveForward(null),
+                                                    null)));
+
+        LevelValidation result = thisProgram.execute(context);
+        assertFalse(result.isCompleted(), "The level should be completed");
+        assertTrue(result.getAnimations().isEmpty(), "no animations if the condition is false");
+        assertFalse(result.hasErrors(), "The level validation should not have errors");
+    }
+
+    @DisplayName("test if statements with true")
+    @Test
+    public void testIfStatementsTrue() {
+        Program thisProgram = new Program(List.of(new ActionIf(
+                new ConditionCanStep("FORWARD"),
+                new ActionMoveForward(null),
+                null)));
+
+        LevelValidation result = thisProgram.execute(context);
+        assertFalse(result.isCompleted(), "The level should be completed");
+        assertFalse(result.getAnimations().isEmpty(), "add animations if the condition is false");
+        assertFalse(result.hasErrors(), "The level validation should not have errors");
+    }
+
+    @DisplayName("test if statements with invalid condition")
+    @Test
+    public void testIfStatementsInvalid() {
+        Program thisProgram = new Program(List.of(new ActionIf(
+                new ConditionCanStep("ASD"),
+                new ActionMoveForward(null),
+                null)));
+
+        LevelValidation result = thisProgram.execute(context);
+        assertFalse(result.isCompleted(), "The level should be completed");
+        assertTrue(result.hasErrors(), "The level validation should have errors");
+    }
+
+
+    @DisplayName("test if-else statements with false")
+    @Test
+    public void testIfElseStatementsFalse() {
+        Program thisProgram = new Program(List.of(new ActionIfElse(
+                                                    new ConditionCanStep("BACKWARD"),
+                                                    new ActionMoveForward(null),
+                                                    new ActionTurnRight(null),
+                                                    null)));
+
+        LevelValidation result = thisProgram.execute(context);
+        assertFalse(result.isCompleted(), "The level should be completed");
+        assertTrue(result.getAnimations().contains(EAnimation.TURN_RIGHT), "should turn right if the condition is false");
+        assertFalse(result.hasErrors(), "The level validation should not have errors");
+    }
+
+    @DisplayName("test if-else statements with true")
+    @Test
+    public void testIfElseStatementsTrue() {
+        Program thisProgram = new Program(List.of(new ActionIfElse(
+                                                        new ConditionCanStep("LEFT"),
+                                                        new ActionMoveForward(null),
+                                                        new ActionTurnRight(null),
+                                                        null)));
+
+        LevelValidation result = thisProgram.execute(context);
+        assertFalse(result.isCompleted(), "The level should be completed");
+        assertTrue(result.getAnimations().contains(EAnimation.MOVE_FORWARD), "should move forward if the condition is false");
+        assertFalse(result.hasErrors(), "The level validation should not have errors");
+    }
+
+    @DisplayName("test while loop with false")
+    @Test
+    public void testWhileLoopFalse() {
+        Program thisProgram = new Program(List.of(new ActionWhile(
+                                                        new ConditionFalse(),
+                                                        new ActionMoveForward(null),
+                                                        null)));
+
+        LevelValidation result = thisProgram.execute(context);
+        assertFalse(result.isCompleted(), "The level should be completed");
+        assertTrue(result.getAnimations().isEmpty(), "no animations if the condition is false");
+        assertFalse(result.hasErrors(), "The level validation should not have errors");
+    }
+
+    @DisplayName("test while loop with true")
+    @Test
+    public void testWhileLoopTrue() {
+        Program thisProgram = new Program(List.of(new ActionWhile(
+                                                        new ConditionCanStep("FORWARD"),
+                                                        new ActionMoveForward(null),
+                                                        null)));
+
+        LevelValidation result = thisProgram.execute(context);
+        assertFalse(result.isCompleted(), "The level should be completed");
+        assertTrue(result.getAnimations().contains(EAnimation.MOVE_FORWARD), "should move forward if the condition is true");
+        assertFalse(result.hasErrors(), "The level validation should not have errors");
+    }
+
+    @DisplayName("test infinite while loop with true")
+    @Test
+    public void testWhileLoopTrueTimeout() {
+        Program thisProgram = new Program(List.of(new ActionWhile(
+                                                        new ConditionTrue(),
+                                                        new ActionTurnLeft(null),
+                                                        null)));
+
+        LevelValidation result = thisProgram.execute(context);
+        assertFalse(result.isCompleted(), "The level should be completed");
+        assertTrue(result.hasErrors(), "The level validation should have errors");
+    }
+
+    @DisplayName("test for loop")
+    @Test
+    public void testForLoop() {
+        Program thisProgram = new Program(List.of(new ActionLoop(
+                                                        4,
+                                                        new ActionIfElse(
+                                                                new ConditionContainsCoin(),
+                                                                new ActionCollectCoin(null),
+                                                                new ActionMoveForward(null),
+                                                                null),
+                                                        null)));
+
+        LevelValidation result = thisProgram.execute(context);
+        assertTrue(result.getAnimations().contains(EAnimation.MOVE_FORWARD),
+                "should move forward if the condition is true");
+        assertFalse(result.hasErrors(), "The level validation should not have errors");
+    }
 
 }

@@ -24,15 +24,6 @@ public abstract class Action implements LanguageBlock {
     public abstract void execute(Context context);
 
     /**
-     * Returns the next action in the chain.
-     * @return The next action in the chain, null if this is the last action.
-     */
-    public Action getNext() {
-        return next;
-    }
-
-
-    /**
      * To count the number of actions in the chain.
      * @return The number of actions in the chain.
      */
