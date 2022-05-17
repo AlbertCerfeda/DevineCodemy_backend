@@ -7,11 +7,11 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
  */
 public class EActionDTO {
     
-    private final String name;
-    private final String description;
+    private String name;
+    private String description;
 
     /**
-     * Constructs a new EActionDTO given the EAction.
+     * Constructs a new EActionDTO object given the EAction.
      * @param action the action to be converted.
      */
     public EActionDTO (EAction action) {
@@ -19,7 +19,19 @@ public class EActionDTO {
         description = action.getDescription();
     }
 
+    /**
+     * Constructs a new empty EActionDTO object.
+     */
+    public EActionDTO () {
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public String getName() {
         return name;

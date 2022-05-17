@@ -14,12 +14,12 @@ public class UserStatisticsDTO {
     /**
      * The id of the user of whose statistics belong to.
      */
-    private final String id;
+    private String id;
     /**
      * The collection of the levels played mapping from the levelNumber
      * to the LevelStatistics of the Level played by the user.
      */
-    private final HashMap<Integer, LevelStatistics> levelData;
+    private HashMap<Integer, LevelStatistics> levelData;
 
     /**
      * Constructs a UserStatisticsDTO object of the given userStatistic.
@@ -28,6 +28,12 @@ public class UserStatisticsDTO {
     public UserStatisticsDTO(UserStatistics userStatistics){
         this.id = userStatistics.getId();
         this.levelData = (HashMap<Integer, LevelStatistics>) userStatistics.getData();
+    }
+
+    /**
+     * Constructs an empty UserStatisticsDTO object.
+     */
+    public UserStatisticsDTO(){
     }
 
     /**
@@ -46,4 +52,11 @@ public class UserStatisticsDTO {
         return this.levelData;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setData(HashMap<Integer, LevelStatistics> levelData) {
+        this.levelData = levelData;
+    }
 }

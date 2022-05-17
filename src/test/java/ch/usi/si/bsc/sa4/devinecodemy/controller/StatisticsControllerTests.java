@@ -1,6 +1,8 @@
 package ch.usi.si.bsc.sa4.devinecodemy.controller;
 
 import ch.usi.si.bsc.sa4.devinecodemy.DevineCodemyBackend;
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.EActionDTO;
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.UserStatisticsDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.StatisticInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
@@ -10,6 +12,8 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.user.User;
 import ch.usi.si.bsc.sa4.devinecodemy.service.StatisticsService;
 import ch.usi.si.bsc.sa4.devinecodemy.service.UserService;
 import ch.usi.si.bsc.sa4.devinecodemy.utils.FakeOAuth2User;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +23,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -45,16 +52,21 @@ public class StatisticsControllerTests {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     private FakeOAuth2User fakeOAuth2User1;
     private FakeOAuth2User fakeOAuth2User2;
     private UserStatistics stats1;
     private UserStatistics stats2;
     private User user1;
     private User user2;
+    private List<EAction> attempt;
 
 
     @BeforeAll
     void setup() {
+        attempt = List.of(EAction.MOVE_FORWARD,EAction.COLLECT_COIN);
         stats1 = new UserStatistics("id");
         stats2 = new UserStatistics("another id");
         user1 = new User("id","a name", "a username", "an email","an avatar",
@@ -62,7 +74,6 @@ public class StatisticsControllerTests {
         user2 = new User("another id","another name", "another username", "another email",
                 "another avatar","another bio",
                 new SocialMedia("another twitter","another skype", "another linkedin"));
-
         fakeOAuth2User1 = new FakeOAuth2User(stats1.getId());
         fakeOAuth2User2 = new FakeOAuth2User(stats2.getId());
         given(statisticsService.addStats("id")).willReturn(
@@ -82,32 +93,68 @@ public class StatisticsControllerTests {
     @DisplayName("should be able to retrieve the statistics of all the users")
     @Test
     public void testGetAll() throws Exception{
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
         given(statisticsService.getAll()).willReturn(
                 List.of(stats1,stats2));
-        mockMvc.perform(get("/stats")
+        MvcResult result = mockMvc.perform(get("/stats")
                         .with(SecurityMockMvcRequestPostProcessors
                                 .authentication(fakeOAuth2User1.getoAuth2AuthenticationToken())))
-                .andExpect(status().isOk());
+                .andReturn();
+        List<UserStatisticsDTO> statisticsDTOS = objectMapper
+                .readValue(result.getResponse().getContentAsString(),
+                        new TypeReference<List<UserStatisticsDTO>>(){});
+        assertEquals(stats1.getId(),statisticsDTOS.get(0).getId(),
+                "first id of the list is not the id of the first statistics");
+        assertEquals(stats1.getData(),statisticsDTOS.get(0).getData(),
+                "first data of the list is not the data of the first statistics");
+        assertEquals(stats2.getId(),statisticsDTOS.get(1).getId(),
+                "second id of the list is not the id of the second statistics");
+        assertEquals(stats2.getData(),statisticsDTOS.get(1).getData(),
+                "second data of the list is not the data of the second statistics");
     }
 
     @DisplayName("should be able to retrieve the statistics of a user given its id")
     @Test
     public void testGetById() throws Exception{
-        mockMvc.perform(get("/stats/id")
+        MvcResult result = mockMvc.perform(get("/stats/id")
                 .with(SecurityMockMvcRequestPostProcessors
                         .authentication(fakeOAuth2User1.getoAuth2AuthenticationToken())))
-                .andExpect(status().isOk());
+                .andReturn();
+        UserStatisticsDTO statisticsDTO = objectMapper
+                .readValue(result.getResponse().getContentAsString(),UserStatisticsDTO.class);
+        assertEquals(stats1.getId(),statisticsDTO.getId(),
+                "id of the returned statistics doesn't match the given one");
     }
 
     @DisplayName("should be able to retrieve the attempt of a user given the level number")
     @Test
     public void testGetAttempt() throws Exception{
         given(statisticsService.getAttempt("id",1,-1))
-                .willReturn(List.of(EAction.MOVE_FORWARD,EAction.COLLECT_COIN));
-        mockMvc.perform(get("/stats/level/1")
+                .willReturn(attempt);
+        MvcResult result = mockMvc.perform(get("/stats/level/1")
                         .with(SecurityMockMvcRequestPostProcessors
                                 .authentication(fakeOAuth2User1.getoAuth2AuthenticationToken())))
-                .andExpect(status().isOk());
+                .andReturn();
+        List<EActionDTO> statisticsDTOS = objectMapper
+                .readValue(result.getResponse().getContentAsString(),
+                        new TypeReference<List<EActionDTO>>() {});
+        var actual1 = statisticsDTOS.get(0);
+        var attempt1 = attempt.get(0).toEActionDTO();
+        assertEquals(attempt1.getDescription(),actual1.getDescription(),
+                "description of the first command of the returned attempt" +
+                        "doesn't match the given one");
+        assertEquals(attempt1.getName(),actual1.getName(),
+                "name of the first command of the returned attempt" +
+                        "doesn't match the given one");
+
+        var actual2 = statisticsDTOS.get(1);
+        var attempt2 = attempt.get(1).toEActionDTO();
+        assertEquals(attempt2.getDescription(),actual2.getDescription(),
+                "description of the second command of the returned attempt" +
+                        "doesn't match the given one");
+        assertEquals(attempt2.getName(),actual2.getName(),
+                "name of the second command of the returned attempt" +
+                        "doesn't match the given one");
     }
 
     @DisplayName("should not be able to retrieve the attempt of a not existing statistics")
