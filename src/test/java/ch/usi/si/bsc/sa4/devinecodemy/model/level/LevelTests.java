@@ -17,19 +17,20 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName("The level")
 public class LevelTests {
 
     private Level level;
+    private List<Tile> grid;
+    private List<Item> items;
 
     @BeforeEach
     void setup() {
-        List<Tile> grid = List.of(
+        grid = List.of(
                 new GrassTile(0, 0, 0)
         );
-        List<Item> items = List.of(
+        items = List.of(
                 new CoinItem(4, 7)
         );
         var board = new Board(grid, items, 1);
@@ -70,12 +71,6 @@ public class LevelTests {
         @Test
         void testGetBoard() {
             var actualBoard = level.getBoard();
-            List<Tile> grid = List.of(
-                    new GrassTile(0, 0, 0)
-            );
-            List<Item> items = List.of(
-                    new CoinItem(4, 7)
-            );
             var expectedBoard = new Board(grid, items, 1);
             assertEquals(expectedBoard, actualBoard, "board is not the one provided in the constructor");
         }
@@ -116,14 +111,39 @@ public class LevelTests {
         @Test
         void testToLevelDTO() {
             var actualLevelDTO = level.toLevelDTO();
-            assertEquals(level.getName(), actualLevelDTO.getName(), "levelDTO does not have the same name as its level");
-            assertEquals(level.getLevelNumber(), actualLevelDTO.getLevelNumber(), "levelDTO does not have the same levelNumber as its level");
-            assertEquals(level.getDescription(), actualLevelDTO.getDescription(), "levelDTO does not have the same description as its level");
-            assertEquals(level.getThumbnailSrc(), actualLevelDTO.getThumbnailSrc(), "levelDTO does not have the same thumbnailSrc as its level");
-            assertEquals(level.getMaxCommandsNumber(), actualLevelDTO.getMaxCommandsNumber(), "levelDTO does not have the same maxCommandsNumber as its level");
+            assertEquals(level.getName(), actualLevelDTO.getName(),
+                    "levelDTO does not have the same name as its level");
+            assertEquals(level.getLevelNumber(), actualLevelDTO.getLevelNumber(),
+                    "levelDTO does not have the same levelNumber as its level");
+            assertEquals(level.getDescription(), actualLevelDTO.getDescription(),
+                    "levelDTO does not have the same description as its level");
+            assertEquals(level.getThumbnailSrc(), actualLevelDTO.getThumbnailSrc(),
+                    "levelDTO does not have the same thumbnailSrc as its level");
+            assertEquals(level.getMaxCommandsNumber(), actualLevelDTO.getMaxCommandsNumber(),
+                    "levelDTO does not have the same maxCommandsNumber as its level");
             assertNotNull(actualLevelDTO.getAllowedCommands(), "levelDTO allowedCommands is null");
             assertNotNull(actualLevelDTO.getBoard(), "levelDTO board is null");
+            var actualTileDTO = actualLevelDTO.getBoard().getGrid().get(0);
+            var expectedTile = grid.get(0);
+            assertEquals(expectedTile.getPosX(),actualTileDTO.getPosX(),
+                    "tileDTO does not have the same posX as its tile");
+            assertEquals(expectedTile.getPosY(),actualTileDTO.getPosY(),
+                    "tileDTO does not have the same posY as its tile");
+            assertEquals(expectedTile.getPosZ(),actualTileDTO.getPosZ(),
+                    "tileDTO does not have the same posZ as its tile");
+            assertEquals(expectedTile.getType().name(),actualTileDTO.getType(),
+                    "tileDTO does not have the same type as its tile");
+            var actualItemDTO = actualLevelDTO.getBoard().getItems().get(0);
+            var expectedItem = items.get(0);
+            assertEquals(expectedItem.getPosX(),actualItemDTO.getPosX(),
+                    "itemDTO does not have the same posX as its item");
+            assertEquals(expectedItem.getPosY(),actualItemDTO.getPosY(),
+                    "itemDTO does not have the same posY as its item");
+            assertEquals(expectedItem.getType().name(),actualItemDTO.getType(),
+                    "itemDTO does not have the same posY as its item");
             assertNotNull(actualLevelDTO.getRobot(), "levelDTO robot is null");
+            assertEquals(level.getLevelWorld().getDisplayName(), actualLevelDTO.getLevelWorld(),
+                    "levelDTO does not have the same EWorld as its level");
         }
 
         @DisplayName("can return the correct levelDTO with info only")
