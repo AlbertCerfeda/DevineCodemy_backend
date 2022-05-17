@@ -26,9 +26,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.util.Pair;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -230,9 +228,7 @@ public class LevelServiceTests {
     @DisplayName(" correctly plays a level with invalid commands")
     @Test
     void testPlayLevelInvalid() {
-        var expected = new LevelValidation();
-        expected.setCompleted(false);
-        assertEquals(expected, levelService.playLevel(1, "1", new Program(List.of())), "validations don't match");
+        assertFalse(levelService.playLevel(1, "1", new Program(List.of())).isCompleted(), "validations don't match");
     }
 
     @DisplayName(" correctly plays a level with exception")
