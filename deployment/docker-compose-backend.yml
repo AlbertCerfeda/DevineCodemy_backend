@@ -12,8 +12,8 @@ services:
     container_name: codeland-backend
     networks: [codeland-network]
     environment: 
-      - SA4_CLIENT_ID=${SA4_CLIENT_ID}
-      - SA4_CLIENT_SECRET=${SA4_CLIENT_SECRET}
+      - CLIENT_ID=${CLIENT_ID}
+      - CLIENT_SECRET=${CLIENT_SECRET}
       - MONGODB_HOST=mongodb
       - MONGODB_PORT=27017
       - MONGODB_DATABASE=codeland
