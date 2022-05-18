@@ -20,8 +20,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -56,12 +58,20 @@ public class AuthenticationControllerTests {
     private static User user2;
     private FakeOAuth2User fakeOAuth2User;
     private FakeOAuth2User invalidOAuth2User;
+    private FakeOAuth2User noAccessOAuth2User;
 
     @Mock
     private OAuth2AuthorizedClient fakeAuthorizedClient;
 
+    @Mock
+    private OAuth2AuthorizedClient noAccessAuthorizedClient;
 
-    @BeforeAll
+    @Mock
+    private OAuth2AccessToken fakeAccessToken;
+    @Mock
+    private OAuth2AccessToken noAccessAccessToken;
+
+    @BeforeEach
     void setup() {
         authController = new AuthController(userService, authorizedClientService);
 
@@ -72,23 +82,35 @@ public class AuthenticationControllerTests {
                 new SocialMedia("another twitter","another skype", "another linkedin"));
         fakeOAuth2User = new FakeOAuth2User("garbage");
         invalidOAuth2User = new FakeOAuth2User("invalid");
+        noAccessOAuth2User = new FakeOAuth2User("no access");
 
         given(this.userService.getUserByToken(null))
                 .willThrow(new InvalidAuthTokenException());
         given(this.userService.getUserByToken(invalidOAuth2User.getOAuth2AuthenticationToken()))
                 .willThrow(new UserInexistentException());
 
-        /// Mocks for making login test work
+        /// Login: Mocks for making login test work
+        String fakeAccessTokenValue = "TODO";
         OAuth2AuthenticationToken fakeToken = fakeOAuth2User.getOAuth2AuthenticationToken();
         OAuth2AuthenticationToken invalidToken = invalidOAuth2User.getOAuth2AuthenticationToken();
+        OAuth2AuthenticationToken noAccessToken = noAccessOAuth2User.getOAuth2AuthenticationToken();
         given(this.authorizedClientService.loadAuthorizedClient(fakeToken.getAuthorizedClientRegistrationId(), fakeToken.getName())).willReturn(fakeAuthorizedClient);
         given(this.authorizedClientService.loadAuthorizedClient(invalidToken.getAuthorizedClientRegistrationId(), invalidToken.getName())).willReturn(null);
-        String accessToken = "";
+        given(this.authorizedClientService.loadAuthorizedClient(noAccessToken.getAuthorizedClientRegistrationId(), noAccessToken.getName())).willReturn(noAccessAuthorizedClient);
+        given(this.fakeAuthorizedClient.getAccessToken()).willReturn(fakeAccessToken);
+        given(this.fakeAccessToken.getTokenValue()).willReturn(fakeAccessTokenValue);
+        given(this.noAccessAuthorizedClient.getAccessToken()).willReturn(noAccessAccessToken);
+        given(this.noAccessAccessToken.getTokenValue()).willReturn("");
         String response = "";
-        Mockito
-                .when(restTemplate.getForEntity(
-                        "https://gitlab.com/api/v4/user?access_token=" + accessToken, String.class))
-          .thenReturn(new ResponseEntity(response, HttpStatus.OK));
+
+        // Login: Mocks the RestTemplate
+        // Checks that RestClient errors are handled
+        Mockito.when(restTemplate.getForEntity("https://gitlab.com/api/v4/user?access_token=", String.class))
+            .thenThrow(new RestClientException("Couldn't retrieve the user from GitLab"));
+
+        // Mocks a valid response
+        Mockito.when(restTemplate.getForEntity("https://gitlab.com/api/v4/user?access_token=" + fakeAccessTokenValue, String.class))
+            .thenReturn(new ResponseEntity(response, HttpStatus.OK));
     }
 
     @DisplayName("should be able to check if user is authenticated")
@@ -119,6 +141,10 @@ public class AuthenticationControllerTests {
         //OAuth2AuthenticationToken invalid = new OAuth2AuthenticationToken(fakeOAuth2User, )
         assertThrows(IllegalArgumentException.class, () -> {
             authController.userLogin(invalidOAuth2User.getOAuth2AuthenticationToken());
+        });
+
+        assertThrows(RestClientException.class, () -> {
+            authController.userLogin(noAccessOAuth2User.getOAuth2AuthenticationToken());
         });
     }
 }
