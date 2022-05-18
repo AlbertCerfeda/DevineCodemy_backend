@@ -15,12 +15,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.client.RestTemplate;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -53,6 +57,9 @@ public class AuthenticationControllerTests {
     private FakeOAuth2User fakeOAuth2User;
     private FakeOAuth2User invalidOAuth2User;
 
+    @Mock
+    private OAuth2AuthorizedClient fakeAuthorizedClient;
+
 
     @BeforeAll
     void setup() {
@@ -71,7 +78,17 @@ public class AuthenticationControllerTests {
         given(this.userService.getUserByToken(invalidOAuth2User.getOAuth2AuthenticationToken()))
                 .willThrow(new UserInexistentException());
 
-
+        /// Mocks for making login test work
+        OAuth2AuthenticationToken fakeToken = fakeOAuth2User.getOAuth2AuthenticationToken();
+        OAuth2AuthenticationToken invalidToken = invalidOAuth2User.getOAuth2AuthenticationToken();
+        given(this.authorizedClientService.loadAuthorizedClient(fakeToken.getAuthorizedClientRegistrationId(), fakeToken.getName())).willReturn(fakeAuthorizedClient);
+        given(this.authorizedClientService.loadAuthorizedClient(invalidToken.getAuthorizedClientRegistrationId(), invalidToken.getName())).willReturn(null);
+        String accessToken = "";
+        String response = "";
+        Mockito
+                .when(restTemplate.getForEntity(
+                        "https://gitlab.com/api/v4/user?access_token=" + accessToken, String.class))
+          .thenReturn(new ResponseEntity(response, HttpStatus.OK));
     }
 
     @DisplayName("should be able to check if user is authenticated")
@@ -94,5 +111,14 @@ public class AuthenticationControllerTests {
                         .with(SecurityMockMvcRequestPostProcessors
                                 .authentication(invalidOAuth2User.getOAuth2AuthenticationToken())))
                 .andExpect(status().isNotFound());
+    }
+
+    @DisplayName("should be able to log in a user")
+    @Test
+    public void testUserLogin() {
+        //OAuth2AuthenticationToken invalid = new OAuth2AuthenticationToken(fakeOAuth2User, )
+        assertThrows(IllegalArgumentException.class, () -> {
+            authController.userLogin(invalidOAuth2User.getOAuth2AuthenticationToken());
+        });
     }
 }
