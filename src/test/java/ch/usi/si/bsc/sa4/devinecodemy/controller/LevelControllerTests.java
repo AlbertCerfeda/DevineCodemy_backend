@@ -23,6 +23,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,8 +37,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -316,5 +321,37 @@ public class LevelControllerTests {
         assertEquals(expected.getWorldNumber(), actual.getWorldNumber(),message);
         assertEquals(expected.getFirstLevelNumber(), actual.getFirstLevelNumber(),message);
         assertEquals(expected.getLastLevelNumber(), actual.getLastLevelNumber(),message);
+    }
+
+    @ParameterizedTest(name = "should be able to retrieve a specific world given its name")
+    @MethodSource("getWorldArgumentsProvider")
+    public void testGetWorld(EWorld world,String name, Pair<Integer,Integer> range) throws Exception {
+        given(levelService.getLevelNumberRangeForWorld(world)).willReturn(range);
+        MvcResult result = mockMvc.perform(get("/levels/worlds/"+name)
+                .with(SecurityMockMvcRequestPostProcessors
+                        .authentication(fakeOAuth2User1.getOAuth2AuthenticationToken())))
+                        .andReturn();
+        EWorldDTO actual = objectMapper.readValue(result.getResponse().getContentAsString(),
+                EWorldDTO.class);
+        EWorldDTO expected = world.toEWorldDTO(range);
+        testWorldEquals(expected,actual,
+                "world does not match the world with the given name");
+    }
+
+    public static Stream<Arguments> getWorldArgumentsProvider() {
+        return Stream.of(
+                arguments(EWorld.EARTH, "Earth", Pair.of(1,5)),
+                arguments(EWorld.SKY, "Sky", Pair.of(6,10)),
+                arguments(EWorld.LAVA, "Lava", Pair.of(11,15))
+        );
+    }
+
+    @DisplayName("should not be able to retrieve a specific world given a wrong name")
+    @Test
+    public void testGetWorldNotFound() throws Exception {
+        mockMvc.perform(get("/levels/worlds/Inferno")
+                        .with(SecurityMockMvcRequestPostProcessors
+                                .authentication(fakeOAuth2User1.getOAuth2AuthenticationToken())))
+                .andExpect(status().isNotFound());
     }
 }
