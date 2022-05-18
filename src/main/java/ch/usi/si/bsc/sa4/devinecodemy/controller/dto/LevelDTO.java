@@ -12,21 +12,27 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.level.Level;
  * by a player.
  */
 public class LevelDTO {
-    private final String name;
-    private final String description;
-    private final String levelWorld;
+    private String name;
+    private String description;
+    private String levelWorld;
 
 
     private BoardDTO board;
     private RobotDTO robot;
 
-    private final List<EActionDTO> allowedCommands;
+    private List<EActionDTO> allowedCommands;
 
-    private final String thumbnailSrc;
+    private String thumbnailSrc;
 
-    private final int maxCommandsNumber;
+    private int maxCommandsNumber;
 
-    private final int levelNumber;
+    private int levelNumber;
+
+    /**
+     * Constructs a new empty LevelDTO object.
+     */
+    public LevelDTO() {
+    }
 
     /**
      * Constructs a LevelDTO object matching the given Level.

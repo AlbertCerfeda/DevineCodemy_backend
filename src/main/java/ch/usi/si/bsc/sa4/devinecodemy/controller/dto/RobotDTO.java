@@ -7,12 +7,18 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.level.Robot;
  * by a client.
  */
 public class RobotDTO {
-    private final int posX;
-    private final int posY;
+    private int posX;
+    private int posY;
     /**
      * An enum of all the Orientations the Robot can have.
      */
-    private final String orientation;
+    private String orientation;
+
+    /**
+     * Constructs a RobotDTO object of the given robot.
+     */
+    public RobotDTO () {
+    }
 
     /**
      * Constructs a RobotDTO object of the given robot.
@@ -22,6 +28,18 @@ public class RobotDTO {
         posX = robot.getPosX();
         posY = robot.getPosY();
         orientation = robot.getOrientation().name();
+    }
+
+    public void setPosX(int posX) {
+        this.posX = posX;
+    }
+
+    public void setPosY(int posY) {
+        this.posY = posY;
+    }
+
+    public void setOrientation(String orientation) {
+        this.orientation = orientation;
     }
 
     public int getPosX() {

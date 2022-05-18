@@ -8,11 +8,17 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.tile.Tile;
 public class TileDTO {
     /** Field 'type' is needed by the client
      * to distinguish the different type of tiles */
-    private final String type;
+    private String type;
     
-    private final int posX;
-    private final int posY;
-    private final int posZ;
+    private int posX;
+    private int posY;
+    private int posZ;
+
+    /**
+     * Constructs a new TileDTO object.
+     */
+    public TileDTO() {
+    }
 
     /**
      * Constructs a TileDTO object of the given tile.

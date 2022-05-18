@@ -13,11 +13,16 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.tile.Tile;
  *  by a client.
  */
 public class BoardDTO {
-    private final int dimX;
-    private final int dimY;
-    private final List<TileDTO> grid;
-    private final List<ItemDTO> items;
+    private int dimX;
+    private int dimY;
+    private List<TileDTO> grid;
+    private List<ItemDTO> items;
 
+    /**
+     * Constructs a new empty BoardDTO object.
+     */
+    public BoardDTO() {
+    }
 
     /**
      * Constructs a new BoardDTO object of the given Board.
@@ -34,7 +39,21 @@ public class BoardDTO {
         items = board.getItems().stream().map(Item::toItemDTO).collect(Collectors.toList());
     }
 
+    public void setDimX(int dimX) {
+        this.dimX = dimX;
+    }
 
+    public void setDimY(int dimY) {
+        this.dimY = dimY;
+    }
+
+    public void setGrid(List<TileDTO> grid) {
+        this.grid = grid;
+    }
+
+    public void setItems(List<ItemDTO> items) {
+        this.items = items;
+    }
 
     public int getDimX() {
         return dimX;

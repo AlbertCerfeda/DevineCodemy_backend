@@ -9,10 +9,16 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.item.Item;
 public class ItemDTO {
     /** 'type' is needed by the client for him
      * to distinguish the different type of Items.  */
-    private final String type;
+    private String type;
     
-    private final int posX;
-    private final int posY;
+    private int posX;
+    private int posY;
+
+    /**
+     * Constructs a new empty ItemDTO object.
+     */
+    public ItemDTO() {
+    }
 
     /**
      * Constructs a new ItemDTO object of the given item.
@@ -22,6 +28,18 @@ public class ItemDTO {
         type = item.getType().name();
         posX = item.getPosX();
         posY = item.getPosY();
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setPosX(int posX) {
+        this.posX = posX;
+    }
+
+    public void setPosY(int posY) {
+        this.posY = posY;
     }
 
     public String getType() {
