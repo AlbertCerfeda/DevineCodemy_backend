@@ -6,7 +6,6 @@ import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.tile.TileDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EOrientation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EWorld;
-import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.InvalidAuthTokenException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.item.CoinItem;
 import ch.usi.si.bsc.sa4.devinecodemy.model.level.Board;
@@ -32,11 +31,11 @@ import org.springframework.data.util.Pair;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -282,5 +281,40 @@ public class LevelControllerTests {
         assertEquals(expected.getPosX(),actual.getPosX(),message);
         assertEquals(expected.getPosY(),actual.getPosY(),message);
         assertEquals(expected.getType(),actual.getType(),message);
+    }
+
+    @DisplayName("should be able to retrieve all the worlds")
+    @Test
+    public void testGetLevelWorlds() throws Exception {
+        given(levelService.getLevelNumberRangeForWorld(EWorld.EARTH)).willReturn(Pair.of(1,5));
+        given(levelService.getLevelNumberRangeForWorld(EWorld.SKY)).willReturn(Pair.of(6,10));
+        given(levelService.getLevelNumberRangeForWorld(EWorld.LAVA)).willReturn(Pair.of(11,15));
+        MvcResult result = mockMvc.perform(get("/levels/worlds")
+                        .with(SecurityMockMvcRequestPostProcessors
+                                .authentication(fakeOAuth2User1.getOAuth2AuthenticationToken())))
+                .andReturn();
+        List<EWorldDTO> worldList = objectMapper.readValue(result.getResponse().getContentAsString(),
+                new TypeReference<>() {});
+        List<EWorldDTO> expected = List.of(EWorld.EARTH.toEWorldDTO(Pair.of(1,5)),
+                EWorld.SKY.toEWorldDTO(Pair.of(6,10)),
+                EWorld.LAVA.toEWorldDTO(Pair.of(11,15)));
+        testWorldsEquals(expected,worldList,
+                "the worlds don't match the inserted worlds");
+    }
+
+    public void testWorldsEquals(List<EWorldDTO> expected, List<EWorldDTO> actual,String message) {
+        assertEquals(expected.size(),actual.size(),"the size of "+message);
+        for (int i = 0; i < expected.size(); i++) {
+            testWorldEquals(expected.get(i),actual.get(i),message);
+        }
+    }
+
+    public void testWorldEquals(EWorldDTO expected, EWorldDTO actual, String message) {
+        assertEquals(expected.getCongratulationsMessage(), actual.getCongratulationsMessage(),message);
+        assertEquals(expected.getDescriptionMessage(), actual.getDescriptionMessage(),message);
+        assertEquals(expected.getName(), actual.getName(),message);
+        assertEquals(expected.getWorldNumber(), actual.getWorldNumber(),message);
+        assertEquals(expected.getFirstLevelNumber(), actual.getFirstLevelNumber(),message);
+        assertEquals(expected.getLastLevelNumber(), actual.getLastLevelNumber(),message);
     }
 }
