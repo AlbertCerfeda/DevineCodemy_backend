@@ -18,7 +18,7 @@ public class FakeOAuth2User implements OAuth2User {
         this.oAuth2AuthenticationToken = new OAuth2AuthenticationToken(this,Collections.emptyList(),this.name);
     }
 
-    public OAuth2AuthenticationToken getoAuth2AuthenticationToken() {
+    public OAuth2AuthenticationToken getOAuth2AuthenticationToken() {
         return oAuth2AuthenticationToken;
     }
 

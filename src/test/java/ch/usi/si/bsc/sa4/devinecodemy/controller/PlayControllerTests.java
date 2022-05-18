@@ -61,7 +61,7 @@ public class PlayControllerTests {
         given(levelValidationDTO.isCompleted()).willReturn(false);
         given(levelValidationDTO.getAnimations()).willReturn(List.of());
         given(levelValidationDTO.getErrors()).willReturn(List.of());
-        given(userService.getUserByToken(fakeOAuth2User.getoAuth2AuthenticationToken())).willReturn(user1);
+        given(userService.getUserByToken(fakeOAuth2User.getOAuth2AuthenticationToken())).willReturn(user1);
         given(levelService.playLevel(1,"an id",
                 List.of("turnRight","moveForward","turnLeft","moveForward","collectCoin")))
                 .willReturn(levelValidation);
@@ -75,7 +75,7 @@ public class PlayControllerTests {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body)
                 .with(SecurityMockMvcRequestPostProcessors
-                        .authentication(fakeOAuth2User.getoAuth2AuthenticationToken())))
+                        .authentication(fakeOAuth2User.getOAuth2AuthenticationToken())))
                 .andReturn();
         LevelValidationDTO levelValidationDTO = objectMapper.readValue(
                 result.getResponse().getContentAsString(),

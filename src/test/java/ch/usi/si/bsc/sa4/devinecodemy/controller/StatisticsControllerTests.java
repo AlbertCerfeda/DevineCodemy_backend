@@ -26,7 +26,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -86,7 +85,7 @@ public class StatisticsControllerTests {
                 List.of(stats1,stats2));
         given(statisticsService.addStats("id")).willReturn(
                 stats1);
-        given(userService.getUserByToken(fakeOAuth2User1.getoAuth2AuthenticationToken()))
+        given(userService.getUserByToken(fakeOAuth2User1.getOAuth2AuthenticationToken()))
                 .willReturn(user1);
     }
 
@@ -98,7 +97,7 @@ public class StatisticsControllerTests {
                 List.of(stats1,stats2));
         MvcResult result = mockMvc.perform(get("/stats")
                         .with(SecurityMockMvcRequestPostProcessors
-                                .authentication(fakeOAuth2User1.getoAuth2AuthenticationToken())))
+                                .authentication(fakeOAuth2User1.getOAuth2AuthenticationToken())))
                 .andReturn();
         List<UserStatisticsDTO> statisticsDTOS = objectMapper
                 .readValue(result.getResponse().getContentAsString(),
@@ -118,7 +117,7 @@ public class StatisticsControllerTests {
     public void testGetById() throws Exception{
         MvcResult result = mockMvc.perform(get("/stats/id")
                 .with(SecurityMockMvcRequestPostProcessors
-                        .authentication(fakeOAuth2User1.getoAuth2AuthenticationToken())))
+                        .authentication(fakeOAuth2User1.getOAuth2AuthenticationToken())))
                 .andReturn();
         UserStatisticsDTO statisticsDTO = objectMapper
                 .readValue(result.getResponse().getContentAsString(),UserStatisticsDTO.class);
@@ -133,7 +132,7 @@ public class StatisticsControllerTests {
                 .willReturn(attempt);
         MvcResult result = mockMvc.perform(get("/stats/level/1")
                         .with(SecurityMockMvcRequestPostProcessors
-                                .authentication(fakeOAuth2User1.getoAuth2AuthenticationToken())))
+                                .authentication(fakeOAuth2User1.getOAuth2AuthenticationToken())))
                 .andReturn();
         List<EActionDTO> statisticsDTOS = objectMapper
                 .readValue(result.getResponse().getContentAsString(),
@@ -161,22 +160,22 @@ public class StatisticsControllerTests {
     @Test
     public void testGetAttemptThrowsStatisticsInexistent() throws Exception{
         given(statisticsService.getAttempt(any(),anyInt(),anyInt())).willThrow(StatisticInexistentException.class);
-        given(userService.getUserByToken(fakeOAuth2User2.getoAuth2AuthenticationToken()))
+        given(userService.getUserByToken(fakeOAuth2User2.getOAuth2AuthenticationToken()))
                 .willReturn(user2);
         mockMvc.perform(get("/stats/level/2")
                         .with(SecurityMockMvcRequestPostProcessors
-                                .authentication(fakeOAuth2User2.getoAuth2AuthenticationToken())))
+                                .authentication(fakeOAuth2User2.getOAuth2AuthenticationToken())))
                 .andExpect(status().isNotFound());
     }
 
     @DisplayName("should not be able to retrieve the attempt of a not existing user")
     @Test
     public void testGetAttemptThrowsUserInexistent() throws Exception{
-        given(userService.getUserByToken(fakeOAuth2User2.getoAuth2AuthenticationToken()))
+        given(userService.getUserByToken(fakeOAuth2User2.getOAuth2AuthenticationToken()))
                 .willThrow(UserInexistentException.class);
         mockMvc.perform(get("/stats/level/2")
                         .with(SecurityMockMvcRequestPostProcessors
-                                .authentication(fakeOAuth2User2.getoAuth2AuthenticationToken())))
+                                .authentication(fakeOAuth2User2.getOAuth2AuthenticationToken())))
                 .andExpect(status().isNotFound());
     }
 }
