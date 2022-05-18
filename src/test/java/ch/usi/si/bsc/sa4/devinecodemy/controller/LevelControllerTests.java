@@ -1,13 +1,13 @@
 package ch.usi.si.bsc.sa4.devinecodemy.controller;
 
 import ch.usi.si.bsc.sa4.devinecodemy.DevineCodemyBackend;
-import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.BoardDTO;
-import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.ItemDTO;
-import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.LevelDTO;
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.*;
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.tile.TileDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EOrientation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EWorld;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.InvalidAuthTokenException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.item.CoinItem;
 import ch.usi.si.bsc.sa4.devinecodemy.model.level.Board;
 import ch.usi.si.bsc.sa4.devinecodemy.model.level.Level;
@@ -36,8 +36,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(classes = DevineCodemyBackend.class)
 @ContextConfiguration(classes = DevineCodemyBackend.class)
@@ -58,8 +60,9 @@ public class LevelControllerTests {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private FakeOAuth2User fakeOAuth2User;
+    private FakeOAuth2User fakeOAuth2User1;
     private User user1;
+    private User user2;
     private Level level1;
     private Level level2;
     private Level level3;
@@ -70,7 +73,9 @@ public class LevelControllerTests {
     void setup() {
         user1 = new User("id", "name", "username", "email", "avatarl",
                 "bio", new SocialMedia("twitter", "skype", "linkedin"));
-        fakeOAuth2User = new FakeOAuth2User(user1.getId());
+        user2 = new User("another id", "name", "username", "email", "avatarl",
+                "bio", new SocialMedia("twitter", "skype", "linkedin"));
+        fakeOAuth2User1 = new FakeOAuth2User(user1.getId());
         level1 = new Level("level 1", "description of 1", 1, EWorld.EARTH, 0,
                 new Board(List.of(), List.of(), 0), new Robot(0, 0, EOrientation.UP),
                 List.of(), "../assets/thumbnailSrc1.jpg");
@@ -101,16 +106,65 @@ public class LevelControllerTests {
                 "../assets/thumbnailSrc5.jpg");
     }
 
+    @DisplayName("should be redirect when passing a null token")
+    @Test
+    public void testGetPlayableAndUnplayableLevelsRedirect() throws Exception {
+        mockMvc.perform(get("/levels")
+                .with(SecurityMockMvcRequestPostProcessors
+                        .authentication(null)))
+                .andExpect(status().is3xxRedirection());
+    }
+
+    @DisplayName("should get not found when searching for not existing user")
+    @Test
+    public void testGetPlayableAndUnplayableLevelsNotFound() throws Exception {
+        given(userService.getUserByToken(fakeOAuth2User1.getOAuth2AuthenticationToken()))
+                .willReturn(user2);
+        given(levelService.getAllPlayableLevels("another id")).willThrow(UserInexistentException.class);
+        mockMvc.perform(get("/levels")
+                        .with(SecurityMockMvcRequestPostProcessors
+                                .authentication(fakeOAuth2User1.getOAuth2AuthenticationToken())))
+                .andExpect(status().isNotFound());
+    }
+
+    @DisplayName("should be able to retrieve all the playable and unplayable levels infos for a user")
+    @Test
+    public void testGetPlayableAndUnplayableLevelsInfos() throws Exception {
+        given(userService.getUserByToken(fakeOAuth2User1.getOAuth2AuthenticationToken()))
+                .willReturn(user1);
+        given(levelService.getAllPlayableLevels("id")).willReturn(List.of(level1, level2));
+        given(levelService.getAll()).willReturn(List.of(level1, level2, level3, level4, level5));
+        String result = mockMvc.perform(get("/levels?onlyinfo=true")
+                        .with(SecurityMockMvcRequestPostProcessors
+                                .authentication(fakeOAuth2User1.getOAuth2AuthenticationToken())))
+                .andReturn().getResponse().getContentAsString();
+        Pair<List<LevelDTO>, List<LevelDTO>> actualLevels = objectMapper.readValue(result,
+                new TypeReference<>() {
+                });
+        List<LevelDTO> playable = actualLevels.getFirst();
+        List<LevelDTO> unplayable = actualLevels.getSecond();
+        var firstPlayable = playable.get(0);
+        var secondPlayable = playable.get(1);
+        var firstUnplayable = unplayable.get(0);
+        var secondUnplayable = unplayable.get(1);
+        var thirdUnplayable = unplayable.get(2);
+        testLevelDtoEquals(level1.toLevelInfoDTO(), firstPlayable, "first", "first", false);
+        testLevelDtoEquals(level2.toLevelInfoDTO(), secondPlayable, "second", "second", false);
+        testLevelDtoEquals(level3.toLevelInfoDTO(), firstUnplayable, "first", "third", false);
+        testLevelDtoEquals(level4.toLevelInfoDTO(), secondUnplayable, "second", "fourth", false);
+        testLevelDtoEquals(level5.toLevelInfoDTO(), thirdUnplayable, "third", "fifth", false);
+    }
+
     @DisplayName("should be able to retrieve all the playable and unplayable levels for a user")
     @Test
     public void testGetPlayableAndUnplayableLevels() throws Exception {
-        given(userService.getUserByToken(fakeOAuth2User.getOAuth2AuthenticationToken()))
+        given(userService.getUserByToken(fakeOAuth2User1.getOAuth2AuthenticationToken()))
                 .willReturn(user1);
         given(levelService.getAllPlayableLevels("id")).willReturn(List.of(level1, level2));
         given(levelService.getAll()).willReturn(List.of(level1, level2, level3, level4, level5));
         String result = mockMvc.perform(get("/levels")
                         .with(SecurityMockMvcRequestPostProcessors
-                                .authentication(fakeOAuth2User.getOAuth2AuthenticationToken())))
+                                .authentication(fakeOAuth2User1.getOAuth2AuthenticationToken())))
                 .andReturn().getResponse().getContentAsString();
         Pair<List<LevelDTO>, List<LevelDTO>> actualLevels = objectMapper.readValue(result,
                 new TypeReference<>() {
@@ -134,20 +188,63 @@ public class LevelControllerTests {
             testBoardDtoEquals(expected.getBoard(), actual.getBoard(),
                     "the board of the " + first + " playable levels is not the same as " +
                             "the board of the " + second + " level");
+            testRobotDtoEquals(expected.getRobot(), actual.getRobot(),
+                    "the robot of the " + first + " playable levels is not the same as " +
+                            "the robot of the " + second + " level");
         } else {
             assertEquals(expected.getBoard(),actual.getBoard(),
                     "the board of the "+first+" unplayable level is not the same as " +
                             "the board of the "+second+" level");
+            assertEquals(expected.getRobot(),actual.getRobot(),
+                    "the robot of the "+first+" unplayable level is not the same as " +
+                            "the robot of the "+second+" level");
         }
         assertEquals(expected.getLevelWorld(), actual.getLevelWorld(),
                 "the world of the " + first + (playable ? " " : " un") + "playable level is not the same as " +
                         "the world of the " + second + " level");
+        assertEquals(expected.getName(), actual.getName(),
+                "the name of the " + first + (playable ? " " : " un") + "playable level is not the same as " +
+                        "the name number of the " + second + " level");
+        assertEquals(expected.getDescription(), actual.getDescription(),
+                "the description of the " + first + (playable ? " " : " un") + "playable level is not the same as " +
+                        "the description number of the " + second + " level");
         assertEquals(expected.getLevelNumber(), actual.getLevelNumber(),
                 "the level number of the " + first + (playable ? " " : " un") + "playable level is not the same as " +
                         "the level number of the " + second + " level");
+        assertEquals(expected.getMaxCommandsNumber(), actual.getMaxCommandsNumber(),
+                "the max commands number of the " + first + (playable ? " " : " un") + "playable level is not the same as " +
+                        "the max commands number of the " + second + " level");
+        testAllowedCommandsEquals(expected.getAllowedCommands(), actual.getAllowedCommands(),
+                "the allowed commands of the " + first + (playable ? " " : " un") + "playable level is not the same as " +
+                        "the allowed commands number of the " + second + " level");
+        assertEquals(expected.getThumbnailSrc(), actual.getThumbnailSrc(),
+                "the thumbnail source of the " + first + (playable ? " " : " un") + "playable level is not the same as " +
+                        "the thumbnail source number of the " + second + " level");
     }
 
-    public void testBoardDtoEquals(BoardDTO expected, BoardDTO actual, String message) {
+    public void testAllowedCommandsEquals(List<EActionDTO> expected, List<EActionDTO> actual, String message) {
+        assertEquals(expected.size(),actual.size(),
+                "the size of "+message);
+        for (int i = 0; i < expected.size(); i++) {
+            testEActionDtoEquals(expected.get(i),actual.get(i),message);
+        }
+    }
+
+    public void testEActionDtoEquals(EActionDTO expected, EActionDTO actual, String message) {
+        assertEquals(expected.getDescription(),actual.getDescription(),message);
+        assertEquals(expected.getName(),actual.getName(),message);
+    }
+
+    public void testRobotDtoEquals(RobotDTO expected, RobotDTO actual, String message) {
+        assertEquals(expected.getPosX(), actual.getPosX(),
+                "the position x of " + message);
+        assertEquals(expected.getPosY(), actual.getPosY(),
+                "the position y of " + message);
+        assertEquals(expected.getOrientation(), actual.getOrientation(),
+                "the orientation of " + message);
+    }
+
+        public void testBoardDtoEquals(BoardDTO expected, BoardDTO actual, String message) {
         assertEquals(expected.getDimX(), actual.getDimX(),
                 "the dimension x of " + message);
         assertEquals(expected.getDimY(), actual.getDimY(),
