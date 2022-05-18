@@ -6,6 +6,7 @@ import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.tile.TileDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EOrientation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EWorld;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.LevelInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.item.CoinItem;
 import ch.usi.si.bsc.sa4.devinecodemy.model.level.Board;
@@ -37,6 +38,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -288,7 +290,83 @@ public class LevelControllerTests {
         assertEquals(expected.getType(),actual.getType(),message);
     }
 
-    @DisplayName("should be able to retrieve all the worlds")
+    @DisplayName("should be able to get a specific level given its number")
+    @Test
+    public void testGetByLevelNumber() throws Exception {
+        given(userService.getUserByToken(fakeOAuth2User1.getOAuth2AuthenticationToken()))
+                .willReturn(user1);
+        given(levelService.getByLevelNumberIfPlayable(1,"id"))
+                .willReturn(Optional.of(level1));
+        MvcResult result = mockMvc.perform(get("/levels/1")
+                .with(SecurityMockMvcRequestPostProcessors
+                        .authentication(fakeOAuth2User1.getOAuth2AuthenticationToken())))
+                .andReturn();
+        LevelDTO actual = objectMapper.readValue(result.getResponse().getContentAsString(),
+                LevelDTO.class);
+        testLevelDtoEquals(level1.toLevelDTO(),actual,
+                "first","first",true);
+    }
+
+    @DisplayName("should be able to get a specific level info given its number and onlyinfo true as a query parameter")
+    @Test
+    public void testGetByLevelNumberOnlyInfo() throws Exception {
+        given(userService.getUserByToken(fakeOAuth2User1.getOAuth2AuthenticationToken()))
+                .willReturn(user1);
+        given(levelService.getByLevelNumberIfPlayable(1,"id"))
+                .willReturn(Optional.of(level1));
+        MvcResult result = mockMvc.perform(get("/levels/1?onlyinfo=true")
+                        .with(SecurityMockMvcRequestPostProcessors
+                                .authentication(fakeOAuth2User1.getOAuth2AuthenticationToken())))
+                .andReturn();
+        LevelDTO actual = objectMapper.readValue(result.getResponse().getContentAsString(),
+                LevelDTO.class);
+        testLevelDtoEquals(level1.toLevelInfoDTO(),actual,
+                "first","first",false);
+    }
+
+    @DisplayName("should not be able to get a specific level if not playable")
+    @Test
+    public void testGetByLevelNumberNotPlayable() throws Exception {
+        given(userService.getUserByToken(fakeOAuth2User1.getOAuth2AuthenticationToken()))
+                .willReturn(user1);
+        given(levelService.getByLevelNumberIfPlayable(1,"id"))
+                .willReturn(Optional.empty());
+        given(levelService.getByLevelNumber(1)).willReturn(Optional.of(level1));
+        MvcResult result = mockMvc.perform(get("/levels/1?onlyinfo=true")
+                        .with(SecurityMockMvcRequestPostProcessors
+                                .authentication(fakeOAuth2User1.getOAuth2AuthenticationToken())))
+                .andReturn();
+        LevelDTO actual = objectMapper.readValue(result.getResponse().getContentAsString(),
+                LevelDTO.class);
+        testLevelDtoEquals(level1.toLevelInfoDTO(),actual,
+                "first","first",false);
+    }
+
+    @DisplayName("should not be able to get a specific level if user does not exist")
+    @Test
+    public void testGetByLevelNumberUserNotFound() throws Exception {
+        given(userService.getUserByToken(fakeOAuth2User1.getOAuth2AuthenticationToken()))
+                .willThrow(UserInexistentException.class);
+        mockMvc.perform(get("/levels/1?onlyinfo=true")
+                        .with(SecurityMockMvcRequestPostProcessors
+                                .authentication(fakeOAuth2User1.getOAuth2AuthenticationToken())))
+                .andExpect(status().isNotFound());
+    }
+
+    @DisplayName("should not be able to get a specific level if level does not exist")
+    @Test
+    public void testGetByLevelNumberLevelNotFound() throws Exception {
+        given(userService.getUserByToken(fakeOAuth2User1.getOAuth2AuthenticationToken()))
+                .willReturn(user1);
+        given(levelService.getByLevelNumberIfPlayable(1,"id"))
+                .willThrow(LevelInexistentException.class);
+        mockMvc.perform(get("/levels/1?onlyinfo=true")
+                        .with(SecurityMockMvcRequestPostProcessors
+                                .authentication(fakeOAuth2User1.getOAuth2AuthenticationToken())))
+                .andExpect(status().isNotFound());
+    }
+
+        @DisplayName("should be able to retrieve all the worlds")
     @Test
     public void testGetLevelWorlds() throws Exception {
         given(levelService.getLevelNumberRangeForWorld(EWorld.EARTH)).willReturn(Pair.of(1,5));
