@@ -1,5 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.controller;
 
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user.CreateUserDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.InvalidAuthTokenException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.user.SocialMedia;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -26,8 +28,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -75,6 +79,7 @@ public class AuthenticationControllerTests {
     void setup() {
         authController = new AuthController(userService, authorizedClientService);
 
+
         user1 = new User("an id","a name", "a username", "an email","an avatar",
                 "a bio",new SocialMedia("a twitter","a skype", "a linkedin"));
         user2 = new User("another id","another name", "another username", "another email",
@@ -101,14 +106,22 @@ public class AuthenticationControllerTests {
         given(this.fakeAccessToken.getTokenValue()).willReturn(fakeAccessTokenValue);
         given(this.noAccessAuthorizedClient.getAccessToken()).willReturn(noAccessAccessToken);
         given(this.noAccessAccessToken.getTokenValue()).willReturn("");
-        String response = "";
+
 
         // Login: Mocks the RestTemplate
+        String response = "";
+
         // Checks that RestClient errors are handled
         Mockito.when(restTemplate.getForEntity("https://gitlab.com/api/v4/user?access_token=", String.class))
             .thenThrow(new RestClientException("Couldn't retrieve the user from GitLab"));
 
         // Mocks a valid response
+        Mockito.when(restTemplate
+                .exchange(Mockito.eq("https://gitlab.com/api/v4/user?access_token=" + fakeAccessTokenValue),
+                        Mockito.any(),
+                        Mockito.any(),
+                        Mockito.eq(String.class)))
+            .thenReturn(new ResponseEntity(response, HttpStatus.OK));
         Mockito.when(restTemplate.getForEntity("https://gitlab.com/api/v4/user?access_token=" + fakeAccessTokenValue, String.class))
             .thenReturn(new ResponseEntity(response, HttpStatus.OK));
     }
@@ -138,13 +151,37 @@ public class AuthenticationControllerTests {
     @DisplayName("should be able to log in a user")
     @Test
     public void testUserLogin() {
-        //OAuth2AuthenticationToken invalid = new OAuth2AuthenticationToken(fakeOAuth2User, )
-        assertThrows(IllegalArgumentException.class, () -> {
-            authController.userLogin(invalidOAuth2User.getOAuth2AuthenticationToken());
-        });
 
-        assertThrows(RestClientException.class, () -> {
-            authController.userLogin(noAccessOAuth2User.getOAuth2AuthenticationToken());
+    }
+
+    @DisplayName("get user login access token")
+    @Test
+    public void testUserLoginGetAccessToken() {
+        assertEquals("TODO", authController.userLoginGetAccessToken(fakeOAuth2User.getOAuth2AuthenticationToken()));
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            authController.userLoginGetAccessToken(invalidOAuth2User.getOAuth2AuthenticationToken());
         });
+    }
+
+    @DisplayName("fetch user info from GitLab")
+    @Test
+    public void testUserLoginFetchUserInfoFromGitLab() {
+
+//        assertThrows(RestClientException.class, () -> {
+//            authController.userLoginFetchUserInfoFromGitLab("TODO");
+//        });
+    }
+
+    @DisplayName("add or update a user")
+    @Test
+    public void testUserLoginAddOrUpdateUser() {
+        CreateUserDTO fakeUser = Mockito.mock(CreateUserDTO.class);
+        authController.userLoginAddOrUpdateUser(fakeOAuth2User.getOAuth2AuthenticationToken(), fakeUser);
+        verify(userService).getUserByToken(fakeOAuth2User.getOAuth2AuthenticationToken());
+        verify(userService).updateUser(Mockito.any());
+
+        authController.userLoginAddOrUpdateUser(invalidOAuth2User.getOAuth2AuthenticationToken(), fakeUser);
+        verify(userService).addUser(Mockito.any());
     }
 }
