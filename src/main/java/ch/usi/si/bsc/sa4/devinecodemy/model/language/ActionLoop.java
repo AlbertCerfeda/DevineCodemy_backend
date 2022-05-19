@@ -1,5 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.language;
 
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.ExecutionTimeoutException;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -28,7 +29,7 @@ public class ActionLoop extends Action {
     }
 
     @Override
-    public void execute(Context context) throws RuntimeException {
+    public void execute(Context context) throws ExecutionTimeoutException {
         context.incrementClock();
         for (int i = 0; i < loopCount; i++) {
             body.execute(context);

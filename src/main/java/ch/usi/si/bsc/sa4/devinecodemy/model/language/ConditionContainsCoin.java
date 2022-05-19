@@ -13,7 +13,9 @@ public class ConditionContainsCoin implements BooleanCondition {
      * if the board contains a coin at the robot's position.
      */
     @JsonCreator
-    public ConditionContainsCoin() {}
+    public ConditionContainsCoin() {
+        // Empty constructor needed to help Jackson to create objects from json.
+    }
 
     @Override
     public boolean evaluate(Context context) {

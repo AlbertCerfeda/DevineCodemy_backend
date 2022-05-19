@@ -1,5 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.language;
 
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.ExecutionTimeoutException;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -27,9 +28,7 @@ public class ActionWhile extends Action {
     }
 
     @Override
-    public void execute(Context context) throws RuntimeException {
-        // start timer, if the method takes longer than the timeout,
-        // the method will be aborted
+    public void execute(Context context) throws ExecutionTimeoutException {
         while (condition.evaluate(context)) {
             context.incrementClock();
             body.execute(context);

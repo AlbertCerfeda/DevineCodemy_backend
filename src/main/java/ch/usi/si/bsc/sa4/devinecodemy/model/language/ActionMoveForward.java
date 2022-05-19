@@ -1,6 +1,7 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.language;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.EAnimation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.ExecutionTimeoutException;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -19,7 +20,7 @@ public class ActionMoveForward extends Action {
     }
 
     @Override
-    public void execute(Context context) throws RuntimeException {
+    public void execute(Context context) throws ExecutionTimeoutException {
         context.incrementClock();
         if (!context.isDead()) {
             try {

@@ -55,7 +55,11 @@ public class Robot {
         return orientation;
     }
 
-
+    /**
+     * Moves the robot forward if allowed by its position in the given board.
+     * @param board the board to be moved on.
+     * @throws IllegalStateException if it can't move forward.
+     */
     public void moveForward(Board board) throws IllegalStateException {
         if (board.canStep(posX, posY, orientation)) {
             posX += orientation.getDeltaX();
@@ -65,10 +69,16 @@ public class Robot {
         }
     }
 
+    /**
+     * Turns the robot orientation left.
+     */
     public void turnLeft() {
         orientation = orientation.turnLeft();
     }
 
+    /**
+     * Turns the robot orientation right.
+     */
     public void turnRight() {
         orientation = orientation.turnRight();
     }

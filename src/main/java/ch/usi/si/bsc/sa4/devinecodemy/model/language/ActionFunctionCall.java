@@ -1,5 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.language;
 
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.ExecutionTimeoutException;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -26,15 +27,15 @@ public class ActionFunctionCall extends Action {
 
 
     @Override
-    public void execute(Context context) throws RuntimeException {
+    public void execute(Context context) throws ExecutionTimeoutException {
         context.incrementClock();
         // look up the function in the block list and execute it
         final Map<String, Action> functionTable = context.getFunctionTable();
-        if (!functionTable.containsKey(functionName)) {
-            context.getLevelValidation().addError("Function " + functionName + " not found");
-        } else {
+        if (functionTable.containsKey(functionName)) {
             // execute the function
             functionTable.get(functionName).execute(context);
+        } else {
+            context.getLevelValidation().addError("Function " + functionName + " not found");
         }
 
         // execute the next action, even if the function

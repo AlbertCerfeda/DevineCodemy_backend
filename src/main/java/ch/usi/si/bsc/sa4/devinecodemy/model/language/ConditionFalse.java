@@ -11,7 +11,9 @@ public class ConditionFalse implements BooleanCondition {
      * Creates a new ConditionFalse.
      */
     @JsonCreator
-    public ConditionFalse() {}
+    public ConditionFalse() {
+        // Empty constructor needed to help Jackson to create objects from json.
+    }
 
     @Override
     public boolean evaluate(Context context) {

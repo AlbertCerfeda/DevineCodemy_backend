@@ -1,5 +1,7 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.language;
 
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.ExecutionTimeoutException;
+
 /**
  * Represents an action in the language.
  * An action has a pointer to the next action in the program.
@@ -26,7 +28,7 @@ public abstract class Action implements LanguageBlock {
      * @throws RuntimeException if too many actions are
      * executed (used to stop endless loops).
      */
-    public abstract void execute(Context context) throws RuntimeException ;
+    public abstract void execute(Context context) throws ExecutionTimeoutException;
 
     /**
      * To count the number of actions in the chain.

@@ -11,7 +11,9 @@ public class ConditionTrue implements BooleanCondition {
      * Creates a new ConditionTrue.
      */
     @JsonCreator
-    public ConditionTrue() {}
+    public ConditionTrue() {
+        // Empty constructor needed to help Jackson to create objects from json.
+    }
 
     @Override
     public boolean evaluate(Context context) {
