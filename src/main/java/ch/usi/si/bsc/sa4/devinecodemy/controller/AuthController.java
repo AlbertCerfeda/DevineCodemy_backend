@@ -3,6 +3,7 @@ package ch.usi.si.bsc.sa4.devinecodemy.controller;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.InvalidAuthTokenException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.user.SocialMedia;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,8 +84,33 @@ public class AuthController {
      */
     @GetMapping("/login")
     public RedirectView userLogin(OAuth2AuthenticationToken authenticationToken) {
+        final String accessToken = userLoginGetAccessToken(authenticationToken);
 
-        // Retrieves the user token from the GitLab Token
+        CreateUserDTO newUser;
+        try {
+            newUser = userLoginFetchUserInfoFromGitLab(accessToken);
+        } catch (Exception ex) { //If JSON received is broken, gives a Server Error
+            Logger.getLogger(this.getClass().getName()).severe(ex.getMessage());
+            RedirectView r = new RedirectView();
+            r.setUrl("/");
+            return r;
+        }
+
+        // If the user does not exist yet in the database, it creates it.
+        userLoginAddOrUpdateUser(authenticationToken, newUser);
+
+        // For redirecting back to Home Page
+        final RedirectView redirectView = new RedirectView();
+        redirectView.setUrl("http://localhost:3000/profile");
+        return redirectView;
+    }
+
+    /**
+     * Retrieves the user token from the GitLab Token
+     * @return The user token
+     * @throws IllegalArgumentException If no OAuth2AuthorizationClient could be loaded for the given OAuth2AuthenticationToken.
+     */
+    protected String userLoginGetAccessToken(OAuth2AuthenticationToken authenticationToken) throws IllegalArgumentException {
         final OAuth2AuthorizedClient client = authorizedClientService
                 .loadAuthorizedClient(
                         authenticationToken.getAuthorizedClientRegistrationId(),
@@ -92,9 +118,15 @@ public class AuthController {
         if (client == null) {
             throw new IllegalArgumentException("The token is null !");
         }
-        final String accessToken = client.getAccessToken().getTokenValue();
+        return client.getAccessToken().getTokenValue();
+    }
 
-        //Creates a new request to GitLab to retrieve the user data
+    /**
+     * Creates a new request to GitLab to retrieve the user data
+     * @param accessToken The access token for the user to fetch
+     * @return A metadata object about the user
+     */
+    protected CreateUserDTO userLoginFetchUserInfoFromGitLab(String accessToken) {
         final HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON, MediaType.TEXT_HTML, MediaType.TEXT_PLAIN));
         final HttpEntity<String> entity = new HttpEntity<>(headers);
@@ -111,41 +143,32 @@ public class AuthController {
             throw new RestClientException("Couldn't retrieve the user from GitLab");
         }
 
-        //Converts the received JSON Plain text into CreateUserDTO
         final ObjectMapper o = new ObjectMapper()
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        CreateUserDTO newUser;
-        try {
-            newUser = o.readValue(plainUser, CreateUserDTO.class);
-        } catch (Exception ex) { //If JSON received is broken, gives a Server Error
-            Logger.getLogger(this.getClass().getName()).severe(ex.getMessage());
-            RedirectView r = new RedirectView();
-            r.setUrl("/");
-            return r;
-        }
 
-        // If the user does not exist yet in the database, it creates it.
+        try {
+            return o.readValue(plainUser, CreateUserDTO.class);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Couldn't parse the JSON sent from GitLab");
+        }
+    }
+
+    protected void userLoginAddOrUpdateUser(OAuth2AuthenticationToken authenticationToken, CreateUserDTO user) {
         try {
             userService.getUserByToken(authenticationToken);
             userService.updateUser(
-                    new User(newUser.getId(),
-                            newUser.getName(),
-                            newUser.getUsername(),
-                            newUser.getEmail(),
-                            newUser.getAvatarUrl(),
-                            newUser.getBio(),
+                    new User(user.getId(),
+                            user.getName(),
+                            user.getUsername(),
+                            user.getEmail(),
+                            user.getAvatarUrl(),
+                            user.getBio(),
                             new SocialMedia(
-                                    newUser.getTwitter(),
-                                    newUser.getSkype(),
-                                    newUser.getLinkedin())));
+                                    user.getTwitter(),
+                                    user.getSkype(),
+                                    user.getLinkedin())));
         } catch (UserInexistentException e) {
-            userService.addUser(newUser);
+            userService.addUser(user);
         }
-
-        // For redirecting back to Home Page
-        final RedirectView redirectView = new RedirectView();
-        redirectView.setUrl("http://localhost:3000/profile");
-        return redirectView;
     }
-
 }
