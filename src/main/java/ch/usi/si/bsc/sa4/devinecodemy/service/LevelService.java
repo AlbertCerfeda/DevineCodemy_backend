@@ -44,7 +44,7 @@ public class LevelService {
      * @throws UserInexistentException if the user with the given userId does not exist.
      * @throws UserNotAllowedException if the user is not allowed to play this level.
      */
-    public LevelValidation playLevel(int levelNumber, String userId, Program program) throws LevelInexistentException, UserInexistentException, UserNotAllowedException {
+    public LevelValidation playLevel(int levelNumber, String userId, Program program, String attempt) throws LevelInexistentException, UserInexistentException, UserNotAllowedException {
         Optional<Level> optionalLevel = getByLevelNumber(levelNumber);
         if(optionalLevel.isEmpty()) {
             throw new LevelInexistentException(levelNumber);
@@ -58,11 +58,12 @@ public class LevelService {
         LevelValidation levelValidation = new LevelValidation();
         Context context = new Context(level.getBoard(), level.getRobot(), level.getMaxCommandsNumber(), levelValidation);
 
+        LevelValidation result = program.execute(context);
 
         // Here we create the new statistics for the user after playing the game.
-//        statisticsService.addStats(userId, gameplayer, validation);
+        statisticsService.addStats(userId, levelNumber, attempt, result.isCompleted());
 
-        return program.execute(context);
+        return result;
     }
     
     /**

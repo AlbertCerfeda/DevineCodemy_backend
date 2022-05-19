@@ -19,6 +19,8 @@ public class PlayLevelDTO {
      */
     private final Program program;
 
+    private final String attempt;
+
     /**
      * Constructs a PlayLevelDTO object to play the level corresponding
      * to the given levelNumber with the given commands.
@@ -26,9 +28,11 @@ public class PlayLevelDTO {
      * @param program the program to execute.
      */
     public PlayLevelDTO (@JsonProperty("levelNumber") int levelNumber,
-                         @JsonProperty("program") Program program) {
+                         @JsonProperty("program") Program program,
+                         @JsonProperty("attempt") String attempt) {
         this.levelNumber = levelNumber;
         this.program = program;
+        this.attempt = attempt;
     }
 
     public Program getProgram() {
@@ -37,5 +41,9 @@ public class PlayLevelDTO {
 
     public int getLevelNumber() {
         return levelNumber;
+    }
+
+    public String getAttempt() {
+        return attempt;
     }
 }

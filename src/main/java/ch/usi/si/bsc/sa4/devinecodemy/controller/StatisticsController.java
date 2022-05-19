@@ -61,14 +61,14 @@ public class StatisticsController {
      * @return an Optional<UserStatistics> containing the UserStatistics if present.
      */
     @GetMapping("/level/{levelNumber}")
-    public ResponseEntity<List<EActionDTO>> getAttempt(OAuth2AuthenticationToken authenticationToken, @PathVariable("levelNumber") int levelNumber,@RequestParam(name = "attemptNumber", defaultValue = "-1") Integer attemptNumber){
+    public ResponseEntity<String> getAttempt(OAuth2AuthenticationToken authenticationToken, @PathVariable("levelNumber") int levelNumber,@RequestParam(name = "attemptNumber", defaultValue = "-1") Integer attemptNumber){
 
         try{
             User user = userService.getUserByToken(authenticationToken);
             String userId = user.getId();
 
-            List<EAction> attempt = statisticsService.getAttempt(userId,levelNumber,attemptNumber);
-            return ResponseEntity.ok(attempt.stream().map(EAction::toEActionDTO).collect(Collectors.toList()));
+            String attempt = statisticsService.getAttempt(userId,levelNumber,attemptNumber);
+            return ResponseEntity.ok(attempt);
 
         } catch (StatisticInexistentException | UserInexistentException e) {
             return ResponseEntity.status(404).build();

@@ -14,7 +14,7 @@ public class LevelStatistics {
 
     private boolean completed;
 
-    private List<List<EAction>> data;
+    private List<String> data;
 
 
     public LevelStatistics (boolean completed) {
@@ -22,19 +22,19 @@ public class LevelStatistics {
         this.data = new ArrayList<>();
     }
 
-    public List<List<EAction>> getAllAttempts() {
+    public List<String> getAllAttempts() {
         return data;
     }
 
-    public void setData(List<List<EAction>> data) { this.data = data; }
+    public void setData(List<String> data) { this.data = data; }
 
     /**
      * Adds the list of commands used in a game played.
      *
-     * @param game the game from which to retrieve the statistics.
+     * @param attempt the string representing the blockly commands used in the game.
      */
-    public void add(GamePlayer game){
-        data.add(game.getParsedCommands());
+    public void add(String attempt){
+        data.add(attempt);
     }
 
     public boolean isCompleted() {
@@ -53,7 +53,7 @@ public class LevelStatistics {
      * @return the specific attempt for the level.
      * @throws StatisticInexistentException if the statistic does not exist.
      */
-    public List<EAction> getAttempt(int attemptNumber) throws StatisticInexistentException {
+    public String getAttempt(int attemptNumber) throws StatisticInexistentException {
         try {
             return data.get(attemptNumber == -1 ? data.size()-1 : attemptNumber);
         }catch (IndexOutOfBoundsException e){

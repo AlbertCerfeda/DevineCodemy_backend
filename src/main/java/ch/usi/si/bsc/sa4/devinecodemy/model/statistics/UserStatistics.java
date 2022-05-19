@@ -72,21 +72,22 @@ public class UserStatistics {
      * a new LevelStatistics is created for it and then the commands are added to it. Otherwise, the commands are added
      * to the already existing one.
      *
-     * @param game the game from which to retrieve the statistics.
+     * @param levelNumber the level number of the level the user played.
+     * @param attempt the attempt the user made.
+     * @param isLevelCompleted true if the user completed the level, false otherwise.
      */
-    public void addData(GamePlayer game, LevelValidation levelValidation) {
-        Integer levelNumber = game.getLevel().getLevelNumber();
+    public void addData(int levelNumber, String attempt, boolean isLevelCompleted) {
 
         LevelStatistics level;
         if (levelData.containsKey(levelNumber)) {
             level = levelData.get(levelNumber);
             if(!level.isCompleted()){
-                level.setCompleted(levelValidation.isCompleted());
+                level.setCompleted(isLevelCompleted);
             }
         } else {
-            level = new LevelStatistics(levelValidation.isCompleted());
+            level = new LevelStatistics(isLevelCompleted);
         }
-        level.add(game);
+        level.add(attempt);
         levelData.put(levelNumber, level);
     }
     
@@ -99,7 +100,7 @@ public class UserStatistics {
      * @return the specific attempt for the level.
      * @throws StatisticInexistentException if the statistic does not exist.
     */
-    public List<EAction> getAttemptFromLevel(int levelNumber, int attemptNumber) throws StatisticInexistentException {
+    public String getAttemptFromLevel(int levelNumber, int attemptNumber) throws StatisticInexistentException {
         try{
             return levelData.get(levelNumber).getAttempt(attemptNumber);
         } catch (Exception e){
