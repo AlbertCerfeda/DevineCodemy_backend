@@ -1,5 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.user;
 
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user.UpdateUserDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user.UserDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -139,7 +140,25 @@ public class UserTests {
         assertEquals("", privateUserDTO2.getSocialMedia().getLinkedin(), "the linkedin field wasn't set correctly. Private user doesn't share linkedin");
         assertFalse(privateUserDTO2.isVisible(), "The visibility wasn't set correctly");
         assertFalse(privateUserDTO2.isPublicProfile(), "The public profile wasn't set correctly");
+    }
 
+    @DisplayName("should be able to return the update dto of itself")
+    @Test
+    public void testUpdateUserDTO() {
+        UpdateUserDTO userDTO = new UpdateUserDTO(user.getId(),true,user.isProfilePublic());
+        assertEquals(user.isProfilePublic(),userDTO.isPublicProfile(),
+                "public profile of the update dto does not match the one of the user");
+        assertEquals(user.getId(),userDTO.getId(),
+                "id of the update dto does not match the one of the user");
+        assertTrue(userDTO.isPublicProfileInitialized(),
+                "public profile initialized does not match the one given in the constructor");
+        UpdateUserDTO userDTO1 = new UpdateUserDTO();
+        assertNull(userDTO1.getId(),
+                "id is not null after creation without parameters");
+        assertFalse(userDTO1.isPublicProfile(),
+                "public profile is not false after creation without parameters");
+        assertFalse(userDTO1.isPublicProfileInitialized(),
+                "public profile initialized status is not false after creation without parameters");
     }
 
     @DisplayName("should be able to set the visibility to the given value")
