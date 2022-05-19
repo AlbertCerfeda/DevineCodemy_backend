@@ -1,17 +1,13 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.statistics;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.StatisticInexistentException;
-import ch.usi.si.bsc.sa4.devinecodemy.model.levelvalidation.LevelValidation;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.UserStatisticsDTO;
-import ch.usi.si.bsc.sa4.devinecodemy.service.GamePlayer;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

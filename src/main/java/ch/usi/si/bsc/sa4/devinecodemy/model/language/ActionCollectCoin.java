@@ -24,7 +24,7 @@ public class ActionCollectCoin extends Action {
     public void execute(Context context)  throws RuntimeException {
         context.incrementClock();
         if (!context.isDead()) {
-            Robot robot = context.getRobot();
+            final Robot robot = context.getRobot();
             context.getLevelValidation().addAnimation(EAnimation.JUMP);
 
             if (context.getBoard().containsItemAt(robot.getPosX(), robot.getPosY())) {

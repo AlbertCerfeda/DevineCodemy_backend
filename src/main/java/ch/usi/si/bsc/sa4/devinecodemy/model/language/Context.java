@@ -72,7 +72,7 @@ public class Context {
      * Increments the clock of the game. The clock is used to stop the game if there are infinite loops.
      * @throws RuntimeException if there are more than 1000 executions.
      */
-    public void incrementClock() throws RuntimeException{
+    public void incrementClock() throws RuntimeException {
         clock++;
         if (clock > 1000) { // true if more than 1000 executions
             throw new RuntimeException("Method execution timed out. It seems that there is an infinite loop in your code.");

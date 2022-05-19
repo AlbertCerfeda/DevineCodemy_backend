@@ -28,7 +28,8 @@ public class ActionWhile extends Action {
 
     @Override
     public void execute(Context context) throws RuntimeException {
-        // start timer, if the method takes longer than the timeout, the method will be aborted
+        // start timer, if the method takes longer than the timeout,
+        // the method will be aborted
         while (condition.evaluate(context)) {
             context.incrementClock();
             body.execute(context);

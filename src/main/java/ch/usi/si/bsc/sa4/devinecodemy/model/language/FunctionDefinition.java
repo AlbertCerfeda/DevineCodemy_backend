@@ -5,7 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Represents a function definition.
- * A function definition consists of a name and an Action to execute whe the function is called.
+ * A function definition consists of a name and an Action
+ * to execute whe the function is called.
  */
 public class FunctionDefinition implements LanguageBlock {
 

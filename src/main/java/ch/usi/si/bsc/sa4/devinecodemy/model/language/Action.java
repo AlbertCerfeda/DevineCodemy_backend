@@ -1,16 +1,18 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.language;
 
 /**
- * Represents an action in the language. An action has a pointer to the next action in the program.
+ * Represents an action in the language.
+ * An action has a pointer to the next action in the program.
  * An action can be executed.
  */
 public abstract class Action implements LanguageBlock {
 
-    // The next action in the chain, null if this is the last action
+    /** The next action in the chain, null if this is the last action */
     protected final Action next;
 
     /**
-     * Creates a new action with the given next action, which is executed after this action.
+     * Creates a new action with the given next action,
+     * which is executed after this action.
      * @param next The next action in the chain, null if this is the last action.
      */
     protected Action(Action next) {
@@ -18,9 +20,11 @@ public abstract class Action implements LanguageBlock {
     }
 
     /**
-     * To executes the action given the context. This method modifies the context according to the action execution.
+     * To executes the action given the context.
+     * This method modifies the context according to the action execution.
      * @param context The context to execute the action.
-     * @throws RuntimeException if too many actions are executed (used to stop endless loops).
+     * @throws RuntimeException if too many actions are
+     * executed (used to stop endless loops).
      */
     public abstract void execute(Context context) throws RuntimeException ;
 
@@ -33,7 +37,8 @@ public abstract class Action implements LanguageBlock {
     }
 
     /**
-     * Executes the next action in the chain. If there is no next action, this method does nothing.
+     * Executes the next action in the chain.
+     * If there is no next action, this method does nothing.
      *
      * @param context The context to execute the action.
      */

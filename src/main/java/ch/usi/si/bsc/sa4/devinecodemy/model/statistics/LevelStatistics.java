@@ -3,9 +3,7 @@ package ch.usi.si.bsc.sa4.devinecodemy.model.statistics;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.StatisticInexistentException;
-import ch.usi.si.bsc.sa4.devinecodemy.service.GamePlayer;
 
 /**
  * Represents all the statistics data for a specific level.

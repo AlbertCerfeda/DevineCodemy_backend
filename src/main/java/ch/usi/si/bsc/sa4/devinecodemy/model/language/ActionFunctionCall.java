@@ -29,7 +29,7 @@ public class ActionFunctionCall extends Action {
     public void execute(Context context) throws RuntimeException {
         context.incrementClock();
         // look up the function in the block list and execute it
-        Map<String, Action> functionTable = context.getFunctionTable();
+        final Map<String, Action> functionTable = context.getFunctionTable();
         if (!functionTable.containsKey(functionName)) {
             context.getLevelValidation().addError("Function " + functionName + " not found");
         } else {
@@ -37,7 +37,8 @@ public class ActionFunctionCall extends Action {
             functionTable.get(functionName).execute(context);
         }
 
-        // execute the next action, even if the function is not found (to look for other errors in the code)
+        // execute the next action, even if the function
+        // is not found (to look for other errors in the code)
         super.executeNextAction(context);
     }
 }

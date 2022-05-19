@@ -23,7 +23,7 @@ public class ConditionCanStep implements BooleanCondition {
 
     @Override
     public boolean evaluate(Context context) {
-        Robot robot = context.getRobot();
+        final Robot robot = context.getRobot();
         EOrientation orientation = robot.getOrientation();
 
         switch (direction) {
