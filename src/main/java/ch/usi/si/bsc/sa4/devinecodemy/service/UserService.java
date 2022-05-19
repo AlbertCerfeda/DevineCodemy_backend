@@ -15,10 +15,8 @@ import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user.CreateUserDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.model.user.User;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.UserRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * The UserService class provides all operations relating users.
@@ -212,6 +210,14 @@ public class UserService {
         }
         return lb_users;
 
+    }
+
+    public List<LBUserDTO> sortedLeaderboardUsers() {
+        List<LBUserDTO> unordered_list = getLeaderboardUsers();
+        List<LBUserDTO> ordered_list = unordered_list.stream()
+                .sorted(Comparator.comparing(LBUserDTO::getCompletedLevels).reversed())
+                .collect(Collectors.toList());
+        return ordered_list;
     }
 }
     

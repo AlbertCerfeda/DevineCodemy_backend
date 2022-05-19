@@ -125,6 +125,6 @@ public class UserController {
 
     @GetMapping("/lbusers")
     public ResponseEntity<List<LBUserDTO>> getLBUsers() {
-        return ResponseEntity.ok(userService.getLeaderboardUsers());
+        return ResponseEntity.ok(userService.sortedLeaderboardUsers());
     }
 }
