@@ -4,6 +4,7 @@ import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user.LBUserDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.InvalidAuthTokenException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserAlreadyExistsException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.statistics.UserStatistics;
 import ch.usi.si.bsc.sa4.devinecodemy.model.user.SocialMedia;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -193,7 +194,13 @@ public class UserService {
     }
 
     public int getCompletedLevels(User u) {
-        return 0;
+        Optional<UserStatistics> us = statisticsService.getById(u.getId());
+        if(us.isPresent()) {
+            UserStatistics uss = us.get();
+            return uss.getData().size();
+        } else {
+            return -1;
+        }
     }
 
     public List<LBUserDTO> getLeaderboardUsers() {
