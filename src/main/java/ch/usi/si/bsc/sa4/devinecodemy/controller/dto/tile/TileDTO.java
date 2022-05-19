@@ -1,6 +1,8 @@
 package ch.usi.si.bsc.sa4.devinecodemy.controller.dto.tile;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.tile.Tile;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Encapsulates a Tile state to be sent to the client.
@@ -10,14 +12,24 @@ public class TileDTO {
      * to distinguish the different type of tiles */
     private String type;
     
-    private int posX;
-    private int posY;
-    private int posZ;
+    private final int posX;
+    private final int posY;
+    private final int posZ;
+
 
     /**
-     * Constructs a new TileDTO object.
+     * Constructs a new TileDTO object with the given values.
+     * @param posX the x position of the tile.
+     * @param posY the y position of the tile.
+     * @param posZ the z position of the tile.
      */
-    public TileDTO() {
+    @JsonCreator
+    public TileDTO(@JsonProperty("posX") int posX,
+                   @JsonProperty("posY") int posY,
+                   @JsonProperty("posZ") int posZ) {
+        this.posX = posX;
+        this.posY = posY;
+        this.posZ = posZ;
     }
 
     /**

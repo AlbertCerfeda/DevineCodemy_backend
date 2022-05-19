@@ -7,21 +7,35 @@ import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.tile.TileDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.model.item.Item;
 import ch.usi.si.bsc.sa4.devinecodemy.model.level.Board;
 import ch.usi.si.bsc.sa4.devinecodemy.model.tile.Tile;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The BoardDTO class represents the state of a Board to be used
  *  by a client.
  */
 public class BoardDTO {
-    private int dimX;
-    private int dimY;
-    private List<TileDTO> grid;
-    private List<ItemDTO> items;
+    private final int dimX;
+    private final int dimY;
+    private final List<TileDTO> grid;
+    private final List<ItemDTO> items;
 
     /**
-     * Constructs a new empty BoardDTO object.
+     * Constructs a new empty BoardDTO object with the given values.
+     * @param dimX the x dimension of the board.
+     * @param dimY the y dimension of the board.
+     * @param grid the grid composing the board.
+     * @param items the items in the board.
      */
-    public BoardDTO() {
+    @JsonCreator
+    public BoardDTO(@JsonProperty("dimX") int dimX,
+                    @JsonProperty("dimY") int dimY,
+                    @JsonProperty("grid") List<TileDTO> grid,
+                    @JsonProperty("items") List<ItemDTO> items) {
+        this.dimX = dimX;
+        this.dimY = dimY;
+        this.grid = grid;
+        this.items = items;
     }
 
     /**
@@ -37,22 +51,6 @@ public class BoardDTO {
         
         // Converts the grid of Items to ItemDTOs
         items = board.getItems().stream().map(Item::toItemDTO).collect(Collectors.toList());
-    }
-
-    public void setDimX(int dimX) {
-        this.dimX = dimX;
-    }
-
-    public void setDimY(int dimY) {
-        this.dimY = dimY;
-    }
-
-    public void setGrid(List<TileDTO> grid) {
-        this.grid = grid;
-    }
-
-    public void setItems(List<ItemDTO> items) {
-        this.items = items;
     }
 
     public int getDimX() {
