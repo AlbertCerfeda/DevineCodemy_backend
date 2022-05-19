@@ -58,7 +58,7 @@ public class Program {
 
     /**
      * To execute the program.
-     *
+     * @param context the context of the game, it contains all the info needed.
      * @return a LevelValidation object representing the result of the execution.
      */
     public LevelValidation execute(Context context) {
@@ -93,22 +93,8 @@ public class Program {
             }
         }
 
-        // if there is no action, error
-        if (main == null) {
-            levelValidation.addError("No executable block in the program");
-        } else if (main.countActions() > context.getMaxCommandsNumber()) {
-            levelValidation.addError("Too many commands in the program, we can only have " +
-                                     context.getMaxCommandsNumber());
-        } else if (!levelValidation.hasErrors()) {
-            // set the function table in the context
-            context.setFunctionTable(functionTable);
-            // execute the main action that cannot be null anymore
-            try {
-                main.execute(context);
-            } catch (RuntimeException e) {
-                levelValidation.addError(e.getMessage());
-            }
-        }
+        // execute the main
+        executeParsedProgram(main, levelValidation, context, functionTable);
 
         // if there are errors in the parsing or during the execution, set the level as failed
         if (levelValidation.hasErrors()) {
@@ -126,6 +112,35 @@ public class Program {
         }
 
         return levelValidation;
+    }
+
+
+    /**
+     * Executes the parsed program only if it is valid. Otherwise, adds Error
+     * to the given level validation.
+     * @param main the main Action in the program.
+     * @param levelValidation the result of the validation.
+     * @param context the context of the game, it contains all the info needed.
+     * @param functionTable map from name of the functions to the equivalent
+     *                      Action to be executed.
+     */
+    private void executeParsedProgram(Action main, LevelValidation levelValidation, Context context, Map<String, Action> functionTable) {
+        // if there is no action, error
+        if (main == null) {
+            levelValidation.addError("No executable block in the program");
+        } else if (main.countActions() > context.getMaxCommandsNumber()) {
+            levelValidation.addError("Too many commands in the program, we can only have " +
+                    context.getMaxCommandsNumber());
+        } else if (!levelValidation.hasErrors()) {
+            // set the function table in the context
+            context.setFunctionTable(functionTable);
+            // execute the main action that cannot be null anymore
+            try {
+                main.execute(context);
+            } catch (RuntimeException e) {
+                levelValidation.addError(e.getMessage());
+            }
+        }
     }
 
 
