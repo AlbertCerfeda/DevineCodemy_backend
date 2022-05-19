@@ -1,22 +1,16 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.statistics;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.StatisticInexistentException;
-import ch.usi.si.bsc.sa4.devinecodemy.model.level.Level;
-import ch.usi.si.bsc.sa4.devinecodemy.service.GamePlayer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 
 @SpringBootTest
 @DisplayName("The LevelStatistics")
@@ -24,14 +18,9 @@ public class LevelStatisticsTests {
 
     private LevelStatistics levelStatistics1;
 
-    @MockBean
-    private GamePlayer gamePlayer;
-
     @BeforeEach
     void setup() {
         levelStatistics1 = new LevelStatistics(false);
-        gamePlayer = mock(GamePlayer.class);
-        given(gamePlayer.getParsedCommands()).willReturn(List.of(EAction.MOVE_FORWARD));
     }
 
     @DisplayName("after creation")
@@ -67,8 +56,8 @@ public class LevelStatisticsTests {
         @DisplayName("it should be possible to set a list of attempts")
         @Test
         public void testSetData() {
-            List<List<EAction>> data = List.of(List.of(EAction.MOVE_FORWARD));
-//            levelStatistics1.setData(data);
+            List<String> data = List.of("string1", "string2");
+            levelStatistics1.setData(data);
         }
 
         @DisplayName("it should be possible to set a new completed status")
@@ -81,8 +70,7 @@ public class LevelStatisticsTests {
         @DisplayName("it should be possible to add a new attempt")
         @Test
         public void testAdd() {
-//            given(gamePlayer.getParsedCommands()).willReturn(List.of());
-//            levelStatistics1.add(gamePlayer);
+            levelStatistics1.add("attempt1");
         }
     }
 
@@ -92,26 +80,25 @@ public class LevelStatisticsTests {
 
         @BeforeEach
         public void setup() {
-//            given(gamePlayer.getParsedCommands()).willReturn(List.of());
-//            levelStatistics1.add(gamePlayer);
+            levelStatistics1.add("moveForward");
         }
 
         @DisplayName("it should be possible to retrieve it")
         @Test
         public void testGetAttemptFullCorrect() {
-//            var actualAttempt = levelStatistics1.getAttempt(0);
-//            var expectedAttempt = List.of();
-//            assertEquals(expectedAttempt,actualAttempt,
-//                    "the attempt is not the one played");
+            var actualAttempt = levelStatistics1.getAttempt(0);
+            var expectedAttempt = "moveForward";
+            assertEquals(expectedAttempt,actualAttempt,
+                    "the attempt is not the one played");
         }
 
         @DisplayName("it should be possible to retrieve the size of the data")
         @Test
         public void testGetAttemptFullSpecial() {
-//            var actualAttempt = levelStatistics1.getAttempt(-1);
-//            var expectedAttempt = List.of();
-//            assertEquals(expectedAttempt,actualAttempt,
-//                    "the attempt is not the one played");
+            var actualAttempt = levelStatistics1.getAttempt(-1);
+            var expectedAttempt = "moveForward";
+            assertEquals(expectedAttempt,actualAttempt,
+                    "the attempt is not the one played");
         }
     }
 }

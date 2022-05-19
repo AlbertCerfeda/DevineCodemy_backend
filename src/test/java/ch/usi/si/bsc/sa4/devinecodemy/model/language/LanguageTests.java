@@ -1,4 +1,4 @@
-package ch.usi.si.bsc.sa4.devinecodemy.service;
+package ch.usi.si.bsc.sa4.devinecodemy.model.language;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EAnimation;
@@ -6,7 +6,6 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.EOrientation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EWorld;
 import ch.usi.si.bsc.sa4.devinecodemy.model.item.CoinItem;
 import ch.usi.si.bsc.sa4.devinecodemy.model.item.Item;
-import ch.usi.si.bsc.sa4.devinecodemy.model.language.*;
 import ch.usi.si.bsc.sa4.devinecodemy.model.level.Board;
 import ch.usi.si.bsc.sa4.devinecodemy.model.level.Level;
 import ch.usi.si.bsc.sa4.devinecodemy.model.level.Robot;

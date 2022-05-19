@@ -30,6 +30,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 @SpringBootTest
 @DisplayName("The level service")
@@ -39,8 +40,6 @@ public class LevelServiceTests {
     LevelService levelService;
 
     @MockBean
-    GamePlayer gamePlayer;
-    @MockBean
     UserService userService;
     @MockBean
     StatisticsService statisticsService;
@@ -48,32 +47,29 @@ public class LevelServiceTests {
     @Autowired
     LevelRepository levelRepository;
 
+    Program program;
+
     @BeforeEach
     void testSetup() {
+        program = mock(Program.class);
         var level1 = levelRepository.findAll().get(0);
         var gameLevel1 = new GamePlayer(level1);
         var level2 = levelRepository.findAll().get(1);
         var gameLevel2 = new GamePlayer(level2);
 
-        // user 1 completed level 1
         var validation1 = new LevelValidation();
-        validation1.setCompleted(true);
+        // user 1 completed level 1
         var stats1 = new UserStatistics("1");
-//        stats1.addData(gameLevel1, validation1);
+        stats1.addData(1, "attempt1", true);
 
         // user 2 completed no levels
-        var validation2 = new LevelValidation();
         var stats2 = new UserStatistics("2");
-//        stats2.addData(gameLevel1, validation2);
+        stats2.addData(2, "attempt1", false);
 
-        // user 5 completed levels 1 and 2
-        var validation3 = new LevelValidation();
-        validation3.setCompleted(true);
-        var validation4 = new LevelValidation();
-        validation4.setCompleted(true);
-        var stats5 = new UserStatistics("5");
-//        stats5.addData(gameLevel2, validation4);
-//        stats5.addData(gameLevel1, validation3);
+        // user 3 completed levels 1 and 2
+        var stats5 = new UserStatistics("5`");
+        stats5.addData(1, "attempt1",true);
+        stats5.addData(2, "attempt1",true);
 
         given(userService.userIdExists(any())).willReturn(false);
         given(userService.userIdExists("1")).willReturn(true);
@@ -87,31 +83,30 @@ public class LevelServiceTests {
         given(statisticsService.getById("5")).willReturn(Optional.of(stats5));
         given(statisticsService.addStats("3")).willReturn(new UserStatistics("3"));
 
-        given(gamePlayer.play(any())).willReturn(validation2);
-        given(gamePlayer.play(List.of())).willReturn(validation1);
+        given(program.execute(any())).willReturn(validation1);
     }
 
     @DisplayName(" returns two playable levels when user exists")
     @Test
     void testGetAllPlayableLevelsTwo() {
-//        var actualPlayableLevels = levelService.getAllPlayableLevels("1");
-//        var expectedPlayableLevels = List.of(
-//                levelRepository.findAll().get(0),
-//                levelRepository.findAll().get(1)
-//        );
-//        assertEquals(expectedPlayableLevels, actualPlayableLevels, "levels don't match");
+        var actualPlayableLevels = levelService.getAllPlayableLevels("1");
+        var expectedPlayableLevels = List.of(
+                levelRepository.findAll().get(0),
+                levelRepository.findAll().get(1)
+        );
+        assertEquals(expectedPlayableLevels, actualPlayableLevels, "levels don't match");
     }
 
     @DisplayName(" returns three playable levels when user exists")
     @Test
     void testGetAllPlayableLevelsThree() {
-//        var actualPlayableLevels = levelService.getAllPlayableLevels("5");
-//        var expectedPlayableLevels = List.of(
-//                levelRepository.findAll().get(0),
-//                levelRepository.findAll().get(1),
-//                levelRepository.findAll().get(2)
-//        );
-//        assertEquals(expectedPlayableLevels, actualPlayableLevels, "levels don't match");
+        var actualPlayableLevels = levelService.getAllPlayableLevels("5");
+        var expectedPlayableLevels = List.of(
+                levelRepository.findAll().get(0),
+                levelRepository.findAll().get(1),
+                levelRepository.findAll().get(2)
+        );
+        assertEquals(expectedPlayableLevels, actualPlayableLevels, "levels don't match");
     }
 
     @DisplayName(" returns one playable level when user exists and has stats")
@@ -156,11 +151,11 @@ public class LevelServiceTests {
     @ParameterizedTest(name = "checking if level by number {0} and user {1} is playable should return {2} > 0 and should throw {3}")
     @MethodSource("getByLevelNumberIfPlayableTestsAndIsLevelPlayableTestsArgumentProvider")
     void isLevelPlayableTest(int levelNumber, String userId, int expected, Class<Exception> expectedType) {
-//        if (expectedType == null) {
-//            assertEquals(expected > 0, levelService.isLevelPlayable(levelNumber, userId), "doesn't match");
-//        } else {
-//            assertThrows(expectedType, () -> levelService.isLevelPlayable(levelNumber, userId), "should throw");
-//        }
+        if (expectedType == null) {
+            assertEquals(expected > 0, levelService.isLevelPlayable(levelNumber, userId), "doesn't match");
+        } else {
+            assertThrows(expectedType, () -> levelService.isLevelPlayable(levelNumber, userId), "should throw");
+        }
     }
 
     @DisplayName(" returns the correct level by number")
@@ -174,14 +169,14 @@ public class LevelServiceTests {
     @ParameterizedTest(name = "getting level by number {0} and user {1} should return level {2} and should throw {3}")
     @MethodSource("getByLevelNumberIfPlayableTestsAndIsLevelPlayableTestsArgumentProvider")
     void getByLevelNumberIfPlayableTest(int levelNumber, String userId, int expectedLevelNumber, Class<Exception> expectedType) {
-//        if (expectedType == null) {
-//            var expected = expectedLevelNumber > 0
-//                    ? levelRepository.findByLevelNumber(expectedLevelNumber)
-//                    : Optional.empty();
-//            assertEquals(expected, levelService.getByLevelNumberIfPlayable(levelNumber, userId), "doesn't match");
-//        } else {
-//            assertThrows(expectedType, () -> levelService.getByLevelNumberIfPlayable(levelNumber, userId), "should throw");
-//        }
+        if (expectedType == null) {
+            var expected = expectedLevelNumber > 0
+                    ? levelRepository.findByLevelNumber(expectedLevelNumber)
+                    : Optional.empty();
+            assertEquals(expected, levelService.getByLevelNumberIfPlayable(levelNumber, userId), "doesn't match");
+        } else {
+            assertThrows(expectedType, () -> levelService.getByLevelNumberIfPlayable(levelNumber, userId), "should throw");
+        }
     }
 
     @DisplayName(" returns the correct level exists by number")

@@ -1,26 +1,16 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.statistics;
 
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
-import ch.usi.si.bsc.sa4.devinecodemy.model.EOrientation;
-import ch.usi.si.bsc.sa4.devinecodemy.model.EWorld;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.StatisticInexistentException;
-import ch.usi.si.bsc.sa4.devinecodemy.model.item.CoinItem;
-import ch.usi.si.bsc.sa4.devinecodemy.model.item.Item;
-import ch.usi.si.bsc.sa4.devinecodemy.model.level.Board;
-import ch.usi.si.bsc.sa4.devinecodemy.model.level.Level;
-import ch.usi.si.bsc.sa4.devinecodemy.model.level.Robot;
+import ch.usi.si.bsc.sa4.devinecodemy.model.language.ActionMoveForward;
+import ch.usi.si.bsc.sa4.devinecodemy.model.language.Program;
 import ch.usi.si.bsc.sa4.devinecodemy.model.levelvalidation.LevelValidation;
-import ch.usi.si.bsc.sa4.devinecodemy.model.tile.GrassTile;
-import ch.usi.si.bsc.sa4.devinecodemy.model.tile.Tile;
-import ch.usi.si.bsc.sa4.devinecodemy.service.GamePlayer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.HashMap;
 import java.util.List;
@@ -37,20 +27,11 @@ public class UserStatisticsTests {
     private UserStatistics statistics1;
     private UserStatistics statistics2;
 
-    @MockBean
-    private GamePlayer gamePlayer;
-
-    @MockBean
-    private Level level;
-
-    @MockBean
     private LevelValidation levelValidation;
-
-    @MockBean
-    private LevelStatistics levelStatistics;
 
     @BeforeEach
     void setup() {
+        levelValidation = mock(LevelValidation.class);
         statistics1 = new UserStatistics("1");
         HashMap<Integer, LevelStatistics> levelData = new HashMap<>();
         levelData.put(1,new LevelStatistics(true));
@@ -103,33 +84,22 @@ public class UserStatisticsTests {
 
         @BeforeEach
         void addAttempt() {
-            List<Tile> grid = List.of(
-                    new GrassTile(0, 0, 0)
-            );
-            List<Item> items = List.of(
-                    new CoinItem(4, 7)
-            );
-            var board = new Board(grid, items, 1);
-            var robot = new Robot(0, 0, EOrientation.DOWN);
-            var commands = List.of(EAction.MOVE_FORWARD);
-            level = new Level( "test name", "test description", 1, EWorld.EARTH, 10, board, robot, commands, "../assets/level10.png");
-            gamePlayer = mock(GamePlayer.class);
-            given(gamePlayer.getLevel()).willReturn(level);
-            given(gamePlayer.getParsedCommands()).willReturn(List.of(EAction.MOVE_FORWARD));
-            given(gamePlayer.play(any())).willReturn(levelValidation);
+            var program = new Program(List.of(new ActionMoveForward(null)));
+            program = mock(Program.class);
+            given(program.execute(any())).willReturn(levelValidation);
+
             given(levelValidation.isCompleted()).willReturn(false);
-            given(levelStatistics.isCompleted()).willReturn(false);
-//            statistics1.addData(gamePlayer,levelValidation);
+            statistics1.addData(1,"attempt0",false);
             given(levelValidation.isCompleted()).willReturn(true);
         }
 
         @DisplayName("it should be possible to retrieve the last attempt")
         @Test
         public void testGetAttemptFromLevel1() {
-//            var actualActions = statistics1.getAttemptFromLevel(1,0);
-//            var expectedActions = List.of(EAction.MOVE_FORWARD);
-//            assertEquals(expectedActions, actualActions,
-//                    "The attempt received doesn't match the inserted commands");
+            var actualActions = statistics1.getAttemptFromLevel(1,0);
+            var expectedActions = "attempt0";
+            assertEquals(expectedActions, actualActions,
+                    "The attempt received doesn't match the inserted commands");
         }
 
         @DisplayName("it should not be possible to retrieve the next level's statistics before completing the actual level")
@@ -148,14 +118,14 @@ public class UserStatisticsTests {
 
             @BeforeEach
             public void testAddDataCompleting() {
-//                statistics1.addData(gamePlayer,levelValidation);
+                statistics1.addData(1,"attempt1",true);
             }
 
             @DisplayName("it should be possible to add another attempt to the same level" +
                     " even after completing it, but without changing the completion state")
             @Test
             public void testAddDataAfterCompleting() {
-//                statistics1.addData(gamePlayer,levelValidation);
+                statistics1.addData(1,"attempt1",false);
             }
         }
     }
