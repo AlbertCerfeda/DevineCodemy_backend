@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Optional;
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.EWorldDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EWorld;
-import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.InvalidAuthTokenException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.LevelInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
 import org.springframework.beans.factory.annotation.Autowired;
