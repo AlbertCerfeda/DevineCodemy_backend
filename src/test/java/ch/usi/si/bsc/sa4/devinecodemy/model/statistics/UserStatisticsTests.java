@@ -87,7 +87,7 @@ public class UserStatisticsTests {
             var program = new Program(List.of(new ActionMoveForward(null)));
             program = mock(Program.class);
             given(program.execute(any())).willReturn(levelValidation);
-
+            
             given(levelValidation.isCompleted()).willReturn(false);
             statistics1.addData(1,"attempt0",false);
             given(levelValidation.isCompleted()).willReturn(true);

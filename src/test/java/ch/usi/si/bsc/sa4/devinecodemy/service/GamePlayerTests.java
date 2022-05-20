@@ -55,7 +55,7 @@ public class GamePlayerTests {
                 new CoinItem(0,1));
         board = new Board(grid,items,2);
         List<EAction> allowedCommands = List.of(EAction.MOVE_FORWARD,EAction.COLLECT_COIN,EAction.TURN_LEFT);
-        level = new Level("Level 1", "the first level",1, EWorld.EARTH,
+        level = new Level("Level 1", "the first level",1, EWorld.PURGATORY,
                 6,board,robot,allowedCommands,"../../assets/thumbnail.jpg");
         gamePlayer = new GamePlayer(level);
         levelValidation = new LevelValidation();
@@ -210,7 +210,7 @@ public class GamePlayerTests {
                 EAction.COLLECT_COIN,
                 EAction.TURN_LEFT,
                 EAction.TURN_RIGHT);
-        level = new Level("Level 1", "the first level",1, EWorld.EARTH,
+        level = new Level("Level 1", "the first level",1, EWorld.PURGATORY,
                 6,board,robot,allowedCommands,"../../assets/thumbnail.jpg");
         gamePlayer = new GamePlayer(level);
         LevelValidation actualValidation = gamePlayer.play(
