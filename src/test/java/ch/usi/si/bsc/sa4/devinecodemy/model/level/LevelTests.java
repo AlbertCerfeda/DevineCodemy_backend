@@ -39,7 +39,7 @@ public class LevelTests {
         var board = new Board(grid, items, 1);
         var robot = new Robot(0, 0, EOrientation.DOWN);
         var commands = List.of(EAction.MOVE_FORWARD);
-        level = new Level( "test name", "test description", 10, EWorld.SKY, 10, board, robot, commands, "../assets/level10.png");
+        level = new Level( "test name", "test description", 10, EWorld.PARADISE, 10, board, robot, commands, "../assets/level10.png");
     }
 
     @DisplayName("after creation")

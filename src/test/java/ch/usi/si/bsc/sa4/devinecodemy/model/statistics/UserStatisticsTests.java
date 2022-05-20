@@ -112,7 +112,7 @@ public class UserStatisticsTests {
             var board = new Board(grid, items, 1);
             var robot = new Robot(0, 0, EOrientation.DOWN);
             var commands = List.of(EAction.MOVE_FORWARD);
-            level = new Level( "test name", "test description", 1, EWorld.EARTH, 10, board, robot, commands, "../assets/level10.png");
+            level = new Level( "test name", "test description", 1, EWorld.PURGATORY, 10, board, robot, commands, "../assets/level10.png");
             gamePlayer = mock(GamePlayer.class);
             given(gamePlayer.getLevel()).willReturn(level);
             given(gamePlayer.getParsedCommands()).willReturn(List.of(EAction.MOVE_FORWARD));
