@@ -206,6 +206,13 @@ public class AuthenticationControllerTests {
         assertEquals("/", noAccess.getUrl());
     }
 
+
+    @DisplayName("should be able to logout a user")
+    @Test
+    public void testUserLogout() {
+        authController.logout(fakeAuthenticationToken);
+    }
+
     @DisplayName("get user login access token")
     @Test
     public void testUserLoginGetAccessToken() {
