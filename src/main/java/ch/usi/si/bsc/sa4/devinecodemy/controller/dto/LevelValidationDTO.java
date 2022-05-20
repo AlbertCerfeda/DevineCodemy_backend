@@ -13,7 +13,7 @@ public class LevelValidationDTO {
     /**
      * A boolean indicating whether the level was completed or not.
      */
-    private final boolean completed;
+    private boolean completed;
     /**
      * A list of errors thrown when the level was played.
      * Possible errors:
@@ -21,12 +21,12 @@ public class LevelValidationDTO {
      *  - The command doesn't exist.
      *  - Too many commands inserted.
      */
-    private final List<String> errors;
+    private List<String> errors;
     /**
      * A list of animations to be played on the client to show
      * the level execution.
      */
-    private final List<String> animations;
+    private List<String> animations;
 
     /**
      * Constructs a LevelValidationDTO object matching the given levelValidation.
@@ -37,6 +37,24 @@ public class LevelValidationDTO {
         completed = levelValidation.isCompleted();
         errors = levelValidation.getErrors();
         animations = levelValidation.getAnimationsAsStrings();
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+
+    public void setErrors(List<String> errors) {
+        this.errors = errors;
+    }
+
+    public void setAnimations(List<String> animations) {
+        this.animations = animations;
+    }
+
+    /**
+     * Constructs an empty LevelValidationDTO object.
+     */
+    public LevelValidationDTO() {
     }
 
     /**
