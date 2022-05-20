@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Optional;
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.EWorldDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EWorld;
-import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.InvalidAuthTokenException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.LevelInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +21,7 @@ import ch.usi.si.bsc.sa4.devinecodemy.service.UserService;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Request router for /levels
@@ -60,8 +60,6 @@ public class LevelController {
                     unplayableLevels.stream().map(Level::toLevelInfoDTO).collect(Collectors.toList())));
 
 
-        } catch (InvalidAuthTokenException e) {
-            return ResponseEntity.status(401).build();
         } catch (UserInexistentException e) {
             return ResponseEntity.status(404).build();
         }
@@ -89,11 +87,7 @@ public class LevelController {
             // If the level is not playable, returns just the Level info
             return ResponseEntity.ok(levelService.getByLevelNumber(levelNumber).get().toLevelInfoDTO());
 
-        } catch (InvalidAuthTokenException e) {
-            return ResponseEntity.status(401).build();
-        } catch (UserInexistentException e) {
-            return ResponseEntity.status(404).build();
-        } catch (LevelInexistentException e) {
+        } catch (UserInexistentException | LevelInexistentException e) {
             return ResponseEntity.status(404).build();
         }
     }
@@ -106,7 +100,7 @@ public class LevelController {
      */
     @GetMapping("/worlds")
     public ResponseEntity<List<EWorldDTO>> getLevelWorlds(OAuth2AuthenticationToken authenticationToken){
-        return ResponseEntity.ok(List.of(EWorld.values()).stream()
+        return ResponseEntity.ok(Stream.of(EWorld.values())
                 .map(world-> world.toEWorldDTO(levelService.getLevelNumberRangeForWorld(world)))
                 .collect(Collectors.toList()));
     }

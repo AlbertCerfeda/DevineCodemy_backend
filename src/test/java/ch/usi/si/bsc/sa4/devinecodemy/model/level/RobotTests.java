@@ -6,8 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("The robot")
 public class RobotTests {
@@ -56,6 +55,27 @@ public class RobotTests {
             assertEquals(robot.getOrientation().toString(), actualRobotDTO.getOrientation(), "robotDTO does not have the same orientation as its robot");
         }
 
+        @DisplayName("can compare to another robot")
+        @Test
+        void testEquals() {
+            var robot1 = new Robot(23,3,EOrientation.DOWN);
+            assertEquals(robot,robot1,
+                    "robots with same values are not equal");
+            robot1 = new Robot(23,3,EOrientation.UP);
+            assertNotEquals(robot,robot1,
+                    "robot is equal when compared to a robot with same x,y but different orientation");
+            robot1 = new Robot(23,2,EOrientation.DOWN);
+            assertNotEquals(robot,robot1,
+                    "robot is equal when compared to a robot with same x but different y");
+            robot1 = new Robot(22,3,EOrientation.DOWN);
+            assertNotEquals(robot,robot1,
+                    "robot is equal when compared to a robot with different x");
+            assertEquals(robot,robot,
+                    "robot is not equal when compared to itself");
+            robot1 = new Robot(23,3,EOrientation.DOWN);
+            assertNotEquals(robot,robot1.toRobotDTO(),
+                    "robot is equal when compared to a different class object");
+        }
     }
 
 }

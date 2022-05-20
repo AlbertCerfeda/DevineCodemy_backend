@@ -163,12 +163,9 @@ public class UserService {
         User u;
         try {
             u = getUserByToken(authenticationToken);
-        } catch (InvalidAuthTokenException e) {
-            return false;
-        } catch (UserInexistentException e) {
+        } catch (InvalidAuthTokenException | UserInexistentException e) {
             return false;
         }
-
         return u.getId().equals(id);
     }
 

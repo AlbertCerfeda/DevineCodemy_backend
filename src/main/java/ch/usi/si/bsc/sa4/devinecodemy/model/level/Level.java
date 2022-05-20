@@ -100,8 +100,9 @@ public class Level {
             return false;
         }
         final Level level = (Level) o;
-        return this.id.equals(level.id) && this.name.equals(level.name) && this.description.equals(level.description) && this.levelNumber == level.levelNumber &&
-                this.allowedCommands.equals(level.allowedCommands) && level.board.equals(this.board) && level.robot.equals(this.robot) && this.maxCommandsNumber == level.maxCommandsNumber;
+        return this.name.equals(level.name) && this.description.equals(level.description) && this.levelNumber == level.levelNumber &&
+                this.allowedCommands.equals(level.allowedCommands) && level.board.equals(this.board) && level.robot.equals(this.robot)
+                && this.maxCommandsNumber == level.maxCommandsNumber && this.levelWorld.equals(level.levelWorld);
     }
 
     @Override
