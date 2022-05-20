@@ -9,9 +9,33 @@ import org.springframework.data.util.Pair;
  */
 public enum EWorld {
 
-    EARTH("Earth", 1, "Sample description for the EARTH world !", "Congrats!"), //Example descriptions
-    SKY("Sky", 2, "Sample description for the SKY world !", "Congrats!"),
-    LAVA("Lava", 3, "Sample description for the LAVA world !", "Congrats!");
+    PURGATORY("Purgatory", 1,
+            "<h1>Let's start programming!</h1>" +
+                    "<p>If you are here, I suppose you have interest in coding, or at least you want to discover the " +
+                    "magical world of programming.<br>Of course, before running we have to learn how to walk. " +
+                    "In this world, you are going to learn about basic commands, and use them in order for" +
+                    " <b>RoboDante</b>, the main character of Devine Codemy, to reach Paradise <br><br><br>" +
+                    " In this world you'll have the possibility to use the following " +
+                    "commands:</p> <ul><li>moveForward</li><li>turnLeft</li>" +
+                    "<li>turnRight</li><li>collectCoin</li></ul><br><p>Are you ready? Let's go!</p>"
+            
+            , "Congratulations ! You just completed the purgatory world and reached paradise ! " +
+            "<br> In this series of levels, you learnt how to use the various basic commands." +
+            "<br><br><br> Be prepared for what's next! "),
+    PARADISE("Paradise", 2,
+            "<h1>Conditionals</h1><p>Now things get more interesting. Conditionals are the bread " +
+                    "and butter in programming, so make sure to learn them !</p><br>" +
+                    "<p> In the previous world, you had a list of commands, and you could choose and write them" +
+                    " in a specific order to complete the level. With conditionals, you will have some code" +
+                    " like this:<br><br>if ( //condition to check)  {<br><br> // if the condition is true, " +
+                    "this block of code will be executed <br><br> } else {<br><br>// Otherwise, this block of " +
+                    "code will be executed<br><br>}</p>",
+            "Congratulations! You just completed the paradise world and reached the inferno. <br> " +
+                    "In this series of levels, you learnt how to use conditionals in order to complete " +
+                    "the tasks.<br><br><br> Be prepared for what's next! "),
+    INFERNO("Inferno", 3,
+            "Sample description for the Inferno world !",
+            "Congrats!");
 
 
     private final String displayName;
