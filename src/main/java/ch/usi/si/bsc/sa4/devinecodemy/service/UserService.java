@@ -44,6 +44,7 @@ public class UserService {
     public List<User> getAll() {
         return userRepository.findAll();
     }
+
     /**
      * Get a list of all public users
      * @return a list of all public users
@@ -140,7 +141,12 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public boolean checkBodyFormat(CreateUserDTO user) {
+    /**
+     * Checks if the body of the request is valid.
+     * @param user The user to be created.
+     * @return true if the body is valid, else false
+     */
+    public static boolean checkBodyFormat(CreateUserDTO user) {
         return !(Objects.equals(user.getName(), "") ||
                 Objects.equals(user.getEmail(), "") ||
                 Objects.equals(user.getUsername(), "") ||
@@ -159,7 +165,6 @@ public class UserService {
         try {
             u = getUserByToken(authenticationToken);
         } catch (InvalidAuthTokenException e) {
-            e.printStackTrace();
             return false;
         } catch (UserInexistentException e) {
             return false;

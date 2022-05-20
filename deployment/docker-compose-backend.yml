@@ -1,0 +1,26 @@
+version: '3.5'
+
+services:
+
+  mongodb:
+    image: mongo:4.0
+    networks: [codeland-network]
+    restart: always
+
+  backend:
+    image: registry.gitlab.com/usi-si-teaching/bachelor-inf/2022/software-atelier-4/2-pipelinepredators/backend:dev
+    container_name: codeland-backend
+    networks: [codeland-network]
+    environment: 
+      - CLIENT_ID=${CLIENT_ID}
+      - CLIENT_SECRET=${CLIENT_SECRET}
+      - MONGODB_HOST=mongodb
+      - MONGODB_PORT=27017
+      - MONGODB_DATABASE=codeland
+      - CODELAND_FRONTEND_BASE_URL=${CODELAND_FRONTEND_BASE_URL}
+      - CODELAND_BACKEND_BASE_URL=${CODELAND_BACKEND_BASE_URL}
+
+networks: 
+  codeland-network:
+    external: true
+    name: codeland-network    

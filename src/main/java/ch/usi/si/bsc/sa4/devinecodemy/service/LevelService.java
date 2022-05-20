@@ -71,13 +71,11 @@ public class LevelService {
      */
     public Pair<Integer, Integer> getLevelNumberRangeForWorld(EWorld world) {
         Optional<Level> first = levelRepository.findFirstByLevelWorldOrderByLevelNumberAsc(world);
-        if (first.isEmpty()) {
+        Optional<Level> second = levelRepository.findFirstByLevelWorldOrderByLevelNumberDesc(world);
+        if (first.isEmpty() || second.isEmpty()) {
             return Pair.of(-1,-1);
         }
-        return Pair.of(first.get().getLevelNumber(),
-                levelRepository.findFirstByLevelWorldOrderByLevelNumberDesc(world)
-                    .get()
-                    .getLevelNumber());
+        return Pair.of(first.get().getLevelNumber(), second.get().getLevelNumber());
     }
 
 
@@ -102,12 +100,12 @@ public class LevelService {
         int max = 0;
         // Finds the highest levelNumber among the completed levels.
         for (Integer key : statistics.getData().keySet()) {
-            if (statistics.getData().get(key).isCompleted() && key > max) {
+            if (statistics.getData().get(key).isCompleted()) {
                 max = key;
             }
         }
 
-        return getRange(1, max+1);
+        return getRange(max+1);
     }
 
 
@@ -122,17 +120,12 @@ public class LevelService {
     
     /**
      * Returns a list of Levels whose levelNumber lies in between the provided range.
-     * @param start the lower bound of the range.
      * @param end the upper bound of the range.
-     * @throws IllegalArgumentException if the provided range is not valid.
      * @return list of Levels whose levelNumber lies in between the provided range.
+     * @throws IllegalArgumentException if the provided range is not valid.
      */
-    private List<Level> getRange(int start, int end) throws IllegalArgumentException {
-        if(start > end) {
-            throw new IllegalArgumentException("Parameter 'start' needs to be less or equal to 'end'");
-        }
-        
-        return getAll().stream().filter((Level l)->l.getLevelNumber() >= start && l.getLevelNumber() <= end).collect(Collectors.toList());
+    private List<Level> getRange(int end) throws IllegalArgumentException {
+        return getAll().stream().filter((Level l) -> l.getLevelNumber() <= end).collect(Collectors.toList());
     }
 
     /**
@@ -147,19 +140,10 @@ public class LevelService {
         Optional<Level> l = getByLevelNumber(levelNumber);
         if (l.isEmpty()) {
             throw new LevelInexistentException(levelNumber);
-        } else if(!userService.userIdExists(userId)) {
+        } else if (!userService.userIdExists(userId)) {
             throw new UserInexistentException(userId);
         }
-
-        if(isLevelPlayable(levelNumber, userId)) {
-
-            Optional<Level> level = getByLevelNumber(levelNumber);
-            if (level.isEmpty()) {
-                throw new LevelInexistentException(levelNumber);
-            }
-            return level;
-        }
-        return Optional.empty();
+        return isLevelPlayable(levelNumber, userId) ? l : Optional.empty();
     }
     
     /**

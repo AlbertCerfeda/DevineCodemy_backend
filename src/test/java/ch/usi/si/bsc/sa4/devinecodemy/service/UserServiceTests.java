@@ -2,6 +2,7 @@ package ch.usi.si.bsc.sa4.devinecodemy.service;
 
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user.CreateUserDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.InvalidAuthTokenException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserAlreadyExistsException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.user.SocialMedia;
 import ch.usi.si.bsc.sa4.devinecodemy.model.user.User;
@@ -21,28 +22,33 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 public class UserServiceTests {
+    // Mocks
     UserRepository userRepository;
     StatisticsRepository statisticsRepository;
-
     UserService userService;
     StatisticsService statisticsService;
 
+    // Variables related to users
+    SocialMedia socialMedia;
     User user;
     User user1;
     User user2;
 
     @BeforeEach
     void beforeAllTests() {
+        //Mocking repositories
         userRepository = mock(UserRepository.class);
         statisticsRepository = mock(StatisticsRepository.class);
 
+        // Statistics service
         statisticsService = new StatisticsService(statisticsRepository);
-
         userService = new UserService(userRepository,statisticsService);
-        
-        user = new User("an id", "a name", "a username", "an email", "an avatar", "a bio" , new SocialMedia("twitter", "skype", "linkedin"));
-        user1 = new User("an id1", "a name1", "a username1", "an email1", "an avatar1", "a bio1", new SocialMedia("twitter", "skype", "linkedin"));
-        user2 = new User("an id2", "a name2", "a username2", "an email2", "an avatar2", "a bio2", new SocialMedia("twitter", "skype", "linkedin"));
+
+        // Setting up users
+        socialMedia = new SocialMedia("a twitter", "a skype", "a linkedin");
+        user = new User("an id", "a name", "a username", "an email", "an avatar", "a bio" , socialMedia);
+        user1 = new User("an id1", "a name1", "a username1", "an email1", "an avatar1", "a bio1", socialMedia);
+        user2 = new User("an id2", "a name2", "a username2", "an email2", "an avatar2", "a bio2", socialMedia);
     }
 
     @Test
@@ -68,7 +74,11 @@ public class UserServiceTests {
         user.setPublicProfile(true);
         given(userRepository.isUserPublic("an id")).willReturn(Optional.of(user));
 
+        user1.setPublicProfile(false);
+        given(userRepository.isUserPublic("an id1")).willReturn(Optional.of(user1));
+
         assertEquals(Optional.of(true), userService.isUserPublic("an id"), "isUserPublic returns the wrong value");
+        assertEquals(Optional.of(false), userService.isUserPublic("an id1"), "isUserPublic returns the wrong value");
     }
 
     @Test
@@ -81,10 +91,10 @@ public class UserServiceTests {
     @Test
     public void testSearchByNameContaining() {
         given(userService.searchByNameContaining("a name", true)).willReturn(List.of(user));
-        given(userService.searchByNameContaining("a name1", false)).willReturn(List.of(user2));
+        given(userService.searchByNameContaining("a name1", false)).willReturn(List.of(user1));
 
-        assertEquals(List.of(user), userService.searchByNameContaining("a name", true), "It didn't get the right users");
-        assertEquals(List.of(user2), userService.searchByNameContaining("a name1", false), "It didn't get the right users");
+        assertEquals(List.of(user), userService.searchByNameContaining("a name", true), "It didn't get the right user list, given a name");
+        assertEquals(List.of(user1), userService.searchByNameContaining("a name1", false), "It didn't get the right user list, given a name");
     }
 
     @Test
@@ -103,14 +113,42 @@ public class UserServiceTests {
 
     @Test
     public void testAddUser() {
-        CreateUserDTO createUserDTO = new CreateUserDTO("an id0", "a name0", "a username0", "an email0", "an avatar0", "a bio0", "linkedin", "twitter", "skype");
-        User user0 = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail(), createUserDTO.getAvatarUrl(),
-                createUserDTO.getBio(), new SocialMedia(createUserDTO.getTwitter(), createUserDTO.getSkype(), createUserDTO.getLinkedin()));
+        CreateUserDTO userDTO = new CreateUserDTO("an id", "a name", "a username", "an email", "an avatar", "a bio", "a twitter", "a skype", "a linkedin");
+        CreateUserDTO UserDTO_empty = new CreateUserDTO("", "", "", "", "an avatar", "a bio", "a twitter", "a skype", "a linkedin");
+        CreateUserDTO UserDTO_noID = new CreateUserDTO(null, "a name", "a username", "an email", "an avatar", "a bio", "a twitter", "a skype", "a linkedin");
+        CreateUserDTO userDTO_noName = new CreateUserDTO("an id", null, "a username", "an email", "an avatar", "a bio", "a twitter", "a skype", "a linkedin");
+        CreateUserDTO userDTO_noUsername = new CreateUserDTO("an id", "a name", null, "an email", "an avatar", "a bio", "a twitter", "a skype", "a linkedin");
+
+        User user_complete = new User(userDTO.getId(),userDTO.getName(),userDTO.getUsername(),userDTO.getEmail(), userDTO.getAvatarUrl(),
+                userDTO.getBio(), new SocialMedia(userDTO.getTwitter(), userDTO.getSkype(), userDTO.getLinkedin()));
+        User user_empty = new User(userDTO.getId(),userDTO.getName(),userDTO.getUsername(),userDTO.getEmail(), userDTO.getAvatarUrl(),
+                userDTO.getBio(), new SocialMedia(userDTO.getTwitter(), userDTO.getSkype(), userDTO.getLinkedin()));
         when(userRepository.save(any())).then(AdditionalAnswers.returnsFirstArg());
 
         assertDoesNotThrow(() -> {
-            assertEquals(user0.getId(), userService.addUser(createUserDTO).getId(), "It didn't create the user");
+            assertEquals(user_complete.getId(), userService.addUser(userDTO).getId(), "It didn't create the user");
         });
+        assertThrows(IllegalArgumentException.class, () -> {
+            userService.addUser(UserDTO_empty);
+        }   , "It created a user with empty fields");
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            userService.addUser(UserDTO_noID);
+        }   , "It created a user with no id");
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            userService.addUser(userDTO_noName);
+        }   , "It created a user with no name");
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            userService.addUser(userDTO_noUsername);
+        }   , "It created a user with no username");
+
+        given(userRepository.existsById(userDTO.getId())).willReturn(true);
+        assertThrows(UserAlreadyExistsException.class, () -> {
+            userService.addUser(userDTO);
+        }  , "It created a user with an id that already exists");
+
     }
 
     @Test
@@ -120,24 +158,44 @@ public class UserServiceTests {
     }
 
     @Test
-    public void testDeleteUser() {
+    public void testDeleteUserById() {
         userService.deleteUserById("an id");
         verify(userRepository).deleteById("an id");
     }
 
     @Test
-
     public void testCheckBodyFormat() {
-        CreateUserDTO createUserDTO = new CreateUserDTO("", "a name", "a username", "an email", "an avatar", "a bio", "twitter", "skype", "linkedin");
-        CreateUserDTO createUserDTO0 = new CreateUserDTO("an id0", "a name0", "a username0", "an email0", "an avatar", "a bio", "twitter", "skype", "linkedin");
+        CreateUserDTO userDTO = new CreateUserDTO("an id", "a name", "a username", "an email", "an avatar", "a bio", "a twitter", "a skype", "a linkedin");
+        CreateUserDTO UserDTO_empty = new CreateUserDTO("", "", "", "", "an avatar", "a bio", "a twitter", "a skype", "a linkedin");
+        CreateUserDTO UserDTO_noID = new CreateUserDTO("", "a name", "a username", "an email", "an avatar", "a bio", "a twitter", "a skype", "a linkedin");
+        CreateUserDTO userDTO_noName = new CreateUserDTO("an id", "", "a username", "an email", "an avatar", "a bio", "a twitter", "a skype", "a linkedin");
+        CreateUserDTO userDTO_noUsername = new CreateUserDTO("an id", "a name", "", "an email", "an avatar", "a bio", "a twitter", "a skype", "a linkedin");
+        CreateUserDTO userDTO_noEmail = new CreateUserDTO("an id", "a name", "a username", "", "an avatar", "a bio", "a twitter", "a skype", "a linkedin");
 
-        User user = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail(),createUserDTO.getAvatarUrl(), createUserDTO.getBio(),
-                new SocialMedia(createUserDTO.getTwitter(), createUserDTO0.getSkype(), createUserDTO0.getLinkedin()));
-        User user0 = new User(createUserDTO.getId(),createUserDTO.getName(),createUserDTO.getUsername(),createUserDTO.getEmail(),createUserDTO.getAvatarUrl(), createUserDTO.getBio(),
-                new SocialMedia(createUserDTO.getTwitter(), createUserDTO0.getSkype(), createUserDTO0.getLinkedin()));
+        assertTrue(userService.checkBodyFormat(userDTO), "The body format is correct");
+        assertFalse(userService.checkBodyFormat(UserDTO_noID), "The body format is not incorrect");
+        assertFalse(userService.checkBodyFormat(userDTO_noName), "The body format is not incorrect");
+        assertFalse(userService.checkBodyFormat(userDTO_noUsername), "The body format is not incorrect");
+        assertFalse(userService.checkBodyFormat(userDTO_noEmail), "The body format is not incorrect");
+        assertFalse(userService.checkBodyFormat(UserDTO_empty), "The body format is not incorrect");
+    }
 
-        assertTrue(userService.checkBodyFormat(createUserDTO0), "The body format is correct");
-        assertFalse(userService.checkBodyFormat(createUserDTO), "The body format is not incorrect");
+    @Test
+    public void testIsIdEqualToken(){
+        OAuth2AuthenticationToken token = mock(OAuth2AuthenticationToken.class);
+        OAuth2AuthenticationToken tokenInvalid = mock(OAuth2AuthenticationToken.class);
+        OAuth2User oAuth2User = mock(OAuth2User.class);
+        OAuth2User oAuth2UserInvalid = mock(OAuth2User.class);
+
+        given(oAuth2User.getName()).willReturn("an id");
+        given(oAuth2UserInvalid.getName()).willReturn("an invalid id");
+        given(token.getPrincipal()).willReturn(oAuth2User);
+        given(tokenInvalid.getPrincipal()).willReturn(oAuth2UserInvalid);
+        given(userRepository.findById("an id")).willReturn(Optional.of(user));
+
+        assertFalse(userService.isIdEqualToken(null,"something"));
+        assertFalse(userService.isIdEqualToken(tokenInvalid, "something"));
+        assertTrue(userService.isIdEqualToken(token, "an id"));
     }
 
     @Test
