@@ -30,6 +30,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.view.RedirectView;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -64,6 +65,10 @@ public class AuthenticationControllerTests {
     private FakeOAuth2User invalidOAuth2User;
     private FakeOAuth2User noAccessOAuth2User;
 
+    private OAuth2AuthenticationToken fakeAuthenticationToken;
+    private OAuth2AuthenticationToken invalidAuthenticationToken;
+    private OAuth2AuthenticationToken noAccessAuthenticationToken;
+
     private String fakeAccessTokenValue = "someAccessToken";
 
     @Mock
@@ -97,16 +102,19 @@ public class AuthenticationControllerTests {
                 .willThrow(new UserInexistentException());
 
         /// Login: Mocks for making login test work
-        OAuth2AuthenticationToken fakeToken = fakeOAuth2User.getOAuth2AuthenticationToken();
-        OAuth2AuthenticationToken invalidToken = invalidOAuth2User.getOAuth2AuthenticationToken();
-        OAuth2AuthenticationToken noAccessToken = noAccessOAuth2User.getOAuth2AuthenticationToken();
-        given(this.authorizedClientService.loadAuthorizedClient(fakeToken.getAuthorizedClientRegistrationId(), fakeToken.getName())).willReturn(fakeAuthorizedClient);
-        given(this.authorizedClientService.loadAuthorizedClient(invalidToken.getAuthorizedClientRegistrationId(), invalidToken.getName())).willReturn(null);
-        given(this.authorizedClientService.loadAuthorizedClient(noAccessToken.getAuthorizedClientRegistrationId(), noAccessToken.getName())).willReturn(noAccessAuthorizedClient);
-        given(this.fakeAuthorizedClient.getAccessToken()).willReturn(fakeAccessToken);
+        fakeAuthenticationToken = fakeOAuth2User.getOAuth2AuthenticationToken();
+        invalidAuthenticationToken = invalidOAuth2User.getOAuth2AuthenticationToken();
+        noAccessAuthenticationToken = noAccessOAuth2User.getOAuth2AuthenticationToken();
+
+        given(this.authorizedClientService.loadAuthorizedClient(fakeAuthenticationToken.getAuthorizedClientRegistrationId(), fakeAuthenticationToken.getName())).willReturn(fakeAuthorizedClient);
+        given(this.authorizedClientService.loadAuthorizedClient(invalidAuthenticationToken.getAuthorizedClientRegistrationId(), invalidAuthenticationToken.getName())).willReturn(null);
+        given(this.authorizedClientService.loadAuthorizedClient(noAccessAuthenticationToken.getAuthorizedClientRegistrationId(), noAccessAuthenticationToken.getName())).willReturn(noAccessAuthorizedClient);
+
         given(this.fakeAccessToken.getTokenValue()).willReturn(fakeAccessTokenValue);
-        given(this.noAccessAuthorizedClient.getAccessToken()).willReturn(noAccessAccessToken);
         given(this.noAccessAccessToken.getTokenValue()).willReturn("");
+
+        given(this.fakeAuthorizedClient.getAccessToken()).willReturn(fakeAccessToken);
+        given(this.noAccessAuthorizedClient.getAccessToken()).willReturn(noAccessAccessToken);
 
 
         // Build a
@@ -151,7 +159,7 @@ public class AuthenticationControllerTests {
 
         // Mocks an unauthorized login attempt
         Mockito.when(restTemplate
-                        .exchange(Mockito.eq("https://gitlab.com/api/v4/user?access_token="),
+                        .exchange(Mockito.eq("https://gitlab.com/api/v4/user?access_token=invalid"),
                                 Mockito.any(),
                                 Mockito.any(),
                                 Mockito.eq(String.class)))
@@ -191,7 +199,11 @@ public class AuthenticationControllerTests {
     @DisplayName("should be able to log in a user")
     @Test
     public void testUserLogin() {
+        RedirectView success = authController.userLogin(fakeAuthenticationToken);
+        assertEquals("http://localhost:3000/profile", success.getUrl());
 
+        RedirectView noAccess = authController.userLogin(noAccessAuthenticationToken);
+        assertEquals("/", noAccess.getUrl());
     }
 
     @DisplayName("get user login access token")
@@ -215,7 +227,7 @@ public class AuthenticationControllerTests {
         assertEquals("fakeBio", result.getBio());
 
         assertThrows(SessionAuthenticationException.class, () -> {
-            authController.userLoginFetchUserInfoFromGitLab("");
+            authController.userLoginFetchUserInfoFromGitLab("invalid");
         });
         assertThrows(RestClientException.class, () -> {
             authController.userLoginFetchUserInfoFromGitLab("connection_problem");
