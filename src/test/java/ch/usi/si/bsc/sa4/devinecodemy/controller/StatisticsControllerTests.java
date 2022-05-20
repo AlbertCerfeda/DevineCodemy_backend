@@ -59,12 +59,12 @@ public class StatisticsControllerTests {
     private UserStatistics stats2;
     private User user1;
     private User user2;
-    private List<EAction> attempt;
+    private String attempt;
 
 
     @BeforeAll
     void setup() {
-        attempt = List.of(EAction.MOVE_FORWARD,EAction.COLLECT_COIN);
+        attempt = "";
         stats1 = new UserStatistics("id");
         stats2 = new UserStatistics("another id");
         user1 = new User("id","a name", "a username", "an email","an avatar",
@@ -133,25 +133,12 @@ public class StatisticsControllerTests {
                         .with(SecurityMockMvcRequestPostProcessors
                                 .authentication(fakeOAuth2User1.getOAuth2AuthenticationToken())))
                 .andReturn();
-        List<EActionDTO> statisticsDTOS = objectMapper
-                .readValue(result.getResponse().getContentAsString(),
-                        new TypeReference<List<EActionDTO>>() {});
-        var actual1 = statisticsDTOS.get(0);
-        var attempt1 = attempt.get(0).toEActionDTO();
-        assertEquals(attempt1.getDescription(),actual1.getDescription(),
+        String actual = result.getResponse().getContentAsString();
+        assertEquals(attempt,actual,
                 "description of the first command of the returned attempt" +
                         "doesn't match the given one");
-        assertEquals(attempt1.getName(),actual1.getName(),
+        assertEquals(attempt,actual,
                 "name of the first command of the returned attempt" +
-                        "doesn't match the given one");
-
-        var actual2 = statisticsDTOS.get(1);
-        var attempt2 = attempt.get(1).toEActionDTO();
-        assertEquals(attempt2.getDescription(),actual2.getDescription(),
-                "description of the second command of the returned attempt" +
-                        "doesn't match the given one");
-        assertEquals(attempt2.getName(),actual2.getName(),
-                "name of the second command of the returned attempt" +
                         "doesn't match the given one");
     }
 

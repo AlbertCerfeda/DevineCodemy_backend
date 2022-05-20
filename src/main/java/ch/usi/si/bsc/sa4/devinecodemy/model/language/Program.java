@@ -144,4 +144,7 @@ public class Program {
     }
 
 
+    public List<LanguageBlock> getBlocks() {
+        return blocks;
+    }
 }
