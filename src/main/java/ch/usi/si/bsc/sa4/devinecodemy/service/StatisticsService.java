@@ -1,8 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.service;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.StatisticInexistentException;
-import ch.usi.si.bsc.sa4.devinecodemy.model.levelvalidation.LevelValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,18 +39,19 @@ public class StatisticsService {
 
 
     /**
-     * Updates the statistics of a user.
-     *
-     * @param userId          the user whose statistics we want to keep track of.
-     * @param game            the game from which to retrieve the statistics.
-     * @param levelValidation the result of the validation of the game
+     * Updates the statistics of a user with a new attempt.
+     * @param userId the id of the user statistics to look for.
+     * @param levelNumber the level number of the level that was attempted.
+     * @param attempt the attempt that was made.
+     * @param isLevelCompleted whether the level was completed.
+     * @return the updated statistics.
      */
-    public UserStatistics addStats(String userId, GamePlayer game, LevelValidation levelValidation) {
+    public UserStatistics addStats(String userId, int levelNumber, String attempt, boolean isLevelCompleted) {
         final Optional<UserStatistics> userStats = statisticsRepository.findById(userId);
         final UserStatistics stats = userStats.orElse(new UserStatistics(userId));
 
-        if (game != null) {
-            stats.addData(game, levelValidation);
+        if (attempt != null) {
+            stats.addData(levelNumber, attempt, isLevelCompleted);
         }
 
         return statisticsRepository.save(stats);
@@ -84,7 +83,7 @@ public class StatisticsService {
      * @throws StatisticInexistentException if there is no statistic for the user
      *                                      or the level.
      */
-    public List<EAction> getAttempt(String userId, int levelNumber, int attemptNumber) throws StatisticInexistentException{
+    public String getAttempt(String userId, int levelNumber, int attemptNumber) throws StatisticInexistentException{
         final Optional<UserStatistics> userStats = statisticsRepository.findById(userId);
         if (userStats.isEmpty()) {
             throw new StatisticInexistentException();

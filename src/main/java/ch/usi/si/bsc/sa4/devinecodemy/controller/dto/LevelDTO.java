@@ -4,7 +4,7 @@ package ch.usi.si.bsc.sa4.devinecodemy.controller.dto;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
+import ch.usi.si.bsc.sa4.devinecodemy.model.ECategory;
 import ch.usi.si.bsc.sa4.devinecodemy.model.level.Level;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -22,7 +22,7 @@ public class LevelDTO {
     private BoardDTO board;
     private RobotDTO robot;
 
-    private final List<EActionDTO> allowedCommands;
+    private final List<ECategoryDTO> allowedCommands;
 
     private final String thumbnailSrc;
 
@@ -50,7 +50,7 @@ public class LevelDTO {
                     @JsonProperty("maxCommandsNumber") int maxCommandsNumber,
                     @JsonProperty("board") BoardDTO board,
                     @JsonProperty("robot") RobotDTO robot,
-                    @JsonProperty("allowedCommands") List<EActionDTO> allowedCommands,
+                    @JsonProperty("allowedCommands") List<ECategoryDTO> allowedCommands,
                     @JsonProperty("thumbnailSrc") String thumbnailSrc) {
         this.name = name;
         this.description = description;
@@ -82,7 +82,7 @@ public class LevelDTO {
 
         this.levelNumber = level.getLevelNumber();
 
-        allowedCommands = level.getAllowedCommands().stream().map(EAction::toEActionDTO).collect(Collectors.toList());
+        allowedCommands = level.getAllowedCommands().stream().map(ECategory::toEActionDTO).collect(Collectors.toList());
 
         if(onlyInfo) {
             this.board = null;
@@ -114,7 +114,7 @@ public class LevelDTO {
     }
 
 
-    public List<EActionDTO> getAllowedCommands() {
+    public List<ECategoryDTO> getAllowedCommands() {
         return allowedCommands;
     }
 

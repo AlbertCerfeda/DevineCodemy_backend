@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.LevelDTO;
-import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
+import ch.usi.si.bsc.sa4.devinecodemy.model.ECategory;
 
 import java.util.List;
 import java.util.Objects;
@@ -39,7 +39,7 @@ public class Level {
      * A collection of commands that is possible
      * to play in this Level.
      */
-    private final List<EAction> allowedCommands;
+    private final List<ECategory> allowedCommands;
 
     /**
      * Constructs a new Level object given the fields
@@ -66,7 +66,7 @@ public class Level {
                  @JsonProperty("maxCommandsNumber") int maxCommandsNumber,
                  @JsonProperty("board") Board board,
                  @JsonProperty("robot") Robot robot,
-                 @JsonProperty("allowedCommands") List<EAction> allowedCommands,
+                 @JsonProperty("allowedCommands") List<ECategory> allowedCommands,
                  @JsonProperty("thumbnailSrc") String thumbnailSrc) {
         this.name = name;
         this.description = description;
@@ -131,7 +131,7 @@ public class Level {
         return maxCommandsNumber;
     }
 
-    public List<EAction> getAllowedCommands(){
+    public List<ECategory> getAllowedCommands(){
         return allowedCommands;
     }
 

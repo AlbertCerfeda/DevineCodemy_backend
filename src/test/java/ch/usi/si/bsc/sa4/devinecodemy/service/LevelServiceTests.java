@@ -5,6 +5,10 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.EWorld;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.LevelInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserNotAllowedException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.language.ActionCollectCoin;
+import ch.usi.si.bsc.sa4.devinecodemy.model.language.ActionMoveForward;
+import ch.usi.si.bsc.sa4.devinecodemy.model.language.LanguageBlock;
+import ch.usi.si.bsc.sa4.devinecodemy.model.language.Program;
 import ch.usi.si.bsc.sa4.devinecodemy.model.levelvalidation.LevelValidation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.statistics.UserStatistics;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.LevelRepository;
@@ -22,12 +26,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.util.Pair;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 @SpringBootTest
 @DisplayName("The level service")
@@ -37,8 +40,6 @@ public class LevelServiceTests {
     LevelService levelService;
 
     @MockBean
-    GamePlayer gamePlayer;
-    @MockBean
     UserService userService;
     @MockBean
     StatisticsService statisticsService;
@@ -46,32 +47,27 @@ public class LevelServiceTests {
     @Autowired
     LevelRepository levelRepository;
 
+    Program program;
+
     @BeforeEach
     void testSetup() {
+        program = mock(Program.class);
         var level1 = levelRepository.findAll().get(0);
-        var gameLevel1 = new GamePlayer(level1);
         var level2 = levelRepository.findAll().get(1);
-        var gameLevel2 = new GamePlayer(level2);
 
-        // user 1 completed level 1
         var validation1 = new LevelValidation();
-        validation1.setCompleted(true);
+        // user 1 completed level 1
         var stats1 = new UserStatistics("1");
-        stats1.addData(gameLevel1, validation1);
+        stats1.addData(1, "attempt1", true);
 
         // user 2 completed no levels
-        var validation2 = new LevelValidation();
         var stats2 = new UserStatistics("2");
-        stats2.addData(gameLevel1, validation2);
+        stats2.addData(2, "attempt1", false);
 
-        // user 5 completed levels 1 and 2
-        var validation3 = new LevelValidation();
-        validation3.setCompleted(true);
-        var validation4 = new LevelValidation();
-        validation4.setCompleted(true);
-        var stats5 = new UserStatistics("5");
-        stats5.addData(gameLevel2, validation4);
-        stats5.addData(gameLevel1, validation3);
+        // user 3 completed levels 1 and 2
+        var stats5 = new UserStatistics("5`");
+        stats5.addData(1, "attempt1",true);
+        stats5.addData(2, "attempt1",true);
 
         given(userService.userIdExists(any())).willReturn(false);
         given(userService.userIdExists("1")).willReturn(true);
@@ -85,8 +81,7 @@ public class LevelServiceTests {
         given(statisticsService.getById("5")).willReturn(Optional.of(stats5));
         given(statisticsService.addStats("3")).willReturn(new UserStatistics("3"));
 
-        given(gamePlayer.play(any())).willReturn(validation2);
-        given(gamePlayer.play(List.of())).willReturn(validation1);
+        given(program.execute(any())).willReturn(validation1);
     }
 
     @DisplayName(" returns two playable levels when user exists")
@@ -217,22 +212,23 @@ public class LevelServiceTests {
         expected.addAnimation(EAnimation.MOVE_FORWARD);
         expected.addAnimation(EAnimation.JUMP);
         expected.addAnimation(EAnimation.EMOTE_DANCE);
-        assertEquals(expected, levelService.playLevel(1, "1", List.of("moveForward","moveForward","moveForward","moveForward","collectCoin")), "validations don't match");
+
+        List<LanguageBlock> languageBlocks = List.of(new ActionMoveForward(new ActionMoveForward(new ActionMoveForward(new ActionMoveForward(new ActionCollectCoin(null))))));
+        Program program = new Program(languageBlocks);
+        assertEquals(expected, levelService.playLevel(1, "1", program, ""), "validations don't match");
     }
 
     @DisplayName(" correctly plays a level with invalid commands")
     @Test
     void testPlayLevelInvalid() {
-        var expected = new LevelValidation();
-        expected.setCompleted(false);
-        assertEquals(expected, levelService.playLevel(1, "1", List.of()), "validations don't match");
+        assertFalse(levelService.playLevel(1, "1", new Program(List.of()), "").isCompleted(), "validations don't match");
     }
 
     @DisplayName(" correctly plays a level with exception")
     @Test
     void testPlayLevelException() {
-        assertThrows(LevelInexistentException.class, () -> levelService.playLevel(20, "3", List.of()), "should throw on no level");
-        assertThrows(UserInexistentException.class, () -> levelService.playLevel(1, "4", List.of()), "should throw on no user");
-        assertThrows(UserNotAllowedException.class, () -> levelService.playLevel(10, "2", List.of()), "should throw on high level for user");
+        assertThrows(LevelInexistentException.class, () -> levelService.playLevel(20, "3", new Program(List.of()), ""), "should throw on no level");
+        assertThrows(UserInexistentException.class, () -> levelService.playLevel(1, "4", new Program(List.of()), ""), "should throw on no user");
+        assertThrows(UserNotAllowedException.class, () -> levelService.playLevel(10, "2", new Program(List.of()), ""), "should throw on high level for user");
     }
 }

@@ -3,7 +3,7 @@ package ch.usi.si.bsc.sa4.devinecodemy.controller;
 import ch.usi.si.bsc.sa4.devinecodemy.DevineCodemyBackend;
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.*;
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.tile.TileDTO;
-import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
+import ch.usi.si.bsc.sa4.devinecodemy.model.ECategory;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EOrientation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EWorld;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.LevelInexistentException;
@@ -88,19 +88,19 @@ public class LevelControllerTests {
 
         level2 = new Level("level 2", "description of 2", 2, EWorld.PURGATORY, 1,
                 new Board(List.of(new GrassTile(1, 1, 1)), List.of(new CoinItem(1, 1)), 1),
-                new Robot(1, 1, EOrientation.UP), List.of(EAction.COLLECT_COIN),
+                new Robot(1, 1, EOrientation.UP), List.of(ECategory.BASIC_COMMANDS),
                 "../assets/thumbnailSrc2.jpg");
 
         level3 = new Level("level 3", "description of 3", 3, EWorld.PURGATORY, 2,
                 new Board(List.of(new GrassTile(1, 1, 0), new GrassTile(1, 2, 0)),
                         List.of(new CoinItem(1, 1)), 1),
-                new Robot(1, 1, EOrientation.UP), List.of(EAction.MOVE_FORWARD, EAction.COLLECT_COIN),
+                new Robot(1, 1, EOrientation.UP), List.of(ECategory.BASIC_COMMANDS, ECategory.BASIC_COMMANDS),
                 "../assets/thumbnailSrc3.jpg");
 
         level4 = new Level("level 4", "description of 4", 4, EWorld.PURGATORY, 4,
                 new Board(List.of(new GrassTile(1, 1, 0), new GrassTile(2, 1, 0)),
                         List.of(new CoinItem(2, 1)), 1),
-                new Robot(1, 1, EOrientation.UP), List.of(EAction.TURN_RIGHT, EAction.MOVE_FORWARD, EAction.COLLECT_COIN),
+                new Robot(1, 1, EOrientation.UP), List.of(ECategory.BASIC_COMMANDS, ECategory.BASIC_COMMANDS, ECategory.BASIC_COMMANDS),
                 "../assets/thumbnailSrc4.jpg");
 
         level5 = new Level("level 5", "description of 5", 5, EWorld.PURGATORY, 6,
@@ -108,7 +108,7 @@ public class LevelControllerTests {
                         new GrassTile(2, 2, 0)),
                         List.of(new CoinItem(1, 1), new CoinItem(1, 2)), 2),
                 new Robot(1, 1, EOrientation.UP),
-                List.of(EAction.COLLECT_COIN, EAction.MOVE_FORWARD, EAction.TURN_LEFT, EAction.TURN_RIGHT),
+                List.of(ECategory.BASIC_COMMANDS, ECategory.BASIC_COMMANDS, ECategory.BASIC_COMMANDS, ECategory.BASIC_COMMANDS),
                 "../assets/thumbnailSrc5.jpg");
     }
 
@@ -228,7 +228,7 @@ public class LevelControllerTests {
                         "the thumbnail source number of the " + second + " level");
     }
 
-    public void testAllowedCommandsEquals(List<EActionDTO> expected, List<EActionDTO> actual, String message) {
+    public void testAllowedCommandsEquals(List<ECategoryDTO> expected, List<ECategoryDTO> actual, String message) {
         assertEquals(expected.size(),actual.size(),
                 "the size of "+message);
         for (int i = 0; i < expected.size(); i++) {
@@ -236,7 +236,7 @@ public class LevelControllerTests {
         }
     }
 
-    public void testEActionDtoEquals(EActionDTO expected, EActionDTO actual, String message) {
+    public void testEActionDtoEquals(ECategoryDTO expected, ECategoryDTO actual, String message) {
         assertEquals(expected.getDescription(),actual.getDescription(),message);
         assertEquals(expected.getName(),actual.getName(),message);
     }
