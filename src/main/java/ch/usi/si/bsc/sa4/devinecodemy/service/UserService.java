@@ -208,7 +208,7 @@ public class UserService {
 
     public List<LBUserDTO> getLeaderboardUsers() {
         List<LBUserDTO> lb_users = new ArrayList<>();
-        List<User> users = getAllPublic();
+        List<User> users = getAll();
         for (User u : users) {
             LBUserDTO lbuser = u.toLBUserDTO(getCompletedLevels(u));
             lb_users.add(lbuser);
