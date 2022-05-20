@@ -270,8 +270,8 @@ public class BoardTests {
                 new WaterTile(5, 9, 0),
                 new WaterTile(6, 9, 0),
                 new WaterTile(7, 9, 0),
-                new WaterTile(8, 9, 0),
-                new GrassTile(9, 9, 0)
+                new TeleportTile(8, 9, 0),
+                new TeleportTile(9, 9, 0)
         );
         List<Item> items = List.of(
                 new CoinItem(4, 7),
@@ -412,10 +412,30 @@ public class BoardTests {
                     new WaterTile(5, 9, 0),
                     new WaterTile(6, 9, 0),
                     new WaterTile(7, 9, 0),
-                    new WaterTile(8, 9, 0),
-                    new GrassTile(9, 9, 0)
+                    new TeleportTile(8, 9, 0),
+                    new TeleportTile(9, 9, 0)
             );
             assertEquals(expectedGrid, actualGrid, "grid is not the one provided in the constructor");
+            assertEquals(board, board,"board is not equal to itself");
+            assertNotEquals(board, board.toBoardDTO(),"board is equal when compared to another class");
+            Board board1 = new Board(expectedGrid,List.of(),0);
+            assertNotEquals(board, board1,"board is equal when compared to board with different grid");
+            Board board2 = new Board(List.of(new GrassTile(2,2,0)),List.of(),0);
+            assertNotEquals(board, board2,"board is equal when compared to board with different dimension x");
+            board1 = new Board(List.of(
+                    new GrassTile(0,1,0),
+                    new GrassTile(1,2,0),
+                    new GrassTile(2,1,0)),List.of(),0);
+            assertNotEquals(board1, board2,"board is equal when compared to board with " +
+                    "same dimension x,y,nCoins but different grid");
+            board1 = new Board(List.of(new GrassTile(2,2,0)),
+                    List.of(new CoinItem(0,0)),0);
+            assertNotEquals(board1, board2,"board is equal when compared to board with " +
+                    "same dimension x,y,nCoins,grid, but different items");
+            board1 = new Board(List.of(new GrassTile(2,1,0)),
+                    List.of(new CoinItem(0,0)),0);
+            assertNotEquals(board1, board2,"board is equal when compared to board with " +
+                    "same dimension x, but different dimension y");
         }
 
         @DisplayName("has the same items provided in the constructor")
@@ -460,10 +480,88 @@ public class BoardTests {
                     "WWWCWWWG W\n" +
                     "WWWWWWWGWW\n" +
                     "WWWWWWW*WW\n" +
-                    "WWWWWWWGWW\n" +
-                    "WWGGGGGGGG\n";
+                    "WWWWWWWGWT\n" +
+                    "WWGGGGGGGT\n";
             assertEquals(expectedString, actualString, "strings don't match");
         }
 
+    }
+
+    @ParameterizedTest(name = "can compare the tile with another tile object")
+    @MethodSource("tileEqualsArguments")
+    public void testTileEquals(boolean equals, Tile tile1, String same, String difference) {
+        var tile = board.getTileAt(0,0);
+        if (equals) {
+            assertEquals(tile,tile1,
+                    "tile is not equal when compared to " + same);
+        } else {
+            assertNotEquals(tile,tile1,
+                    "tile is equal when compared to a level with same " + same +
+                            " but different " + difference);
+        }
+    }
+
+    public static Stream<Arguments> tileEqualsArguments() {
+        var tile1 = new WaterTile(0,0,0);
+        tile1.setWalkable(true);
+        return Stream.of(
+                arguments(false,new WaterTile(1,0,0),
+                        "","x"),
+                arguments(false,new WaterTile(0,1,0),
+                        "x","y"),
+                arguments(false,new WaterTile(0,0,1),
+                        "x,y","z"),
+                arguments(false,tile1,
+                        "x,y,z","walkable status"),
+                arguments(false,new NormalSkyTile(0,0,0),
+                        "x,y,z,walkable status","type"),
+                arguments(true,new WaterTile(0,0,0),
+                        "another tile with equal values","")
+        );
+    }
+
+    @DisplayName("can compare a tile with itself")
+    @Test
+    public void testTileEqualsSpecialCases() {
+        var tile = board.getTileAt(0,0);
+        assertEquals(tile,tile,"tile is not equal when compared to itself");
+        assertNotEquals(tile,tile.toTileDTO(),
+                "tile is equal when compared to an object of another class");
+    }
+
+    @ParameterizedTest(name = "can compare the level with another level object")
+    @MethodSource("itemEqualsArguments")
+    public void testItemEquals(boolean equals, Item item1, String same, String difference) {
+        var item = board.getItemAt(4,7);
+        if (equals) {
+            assertEquals(item,item1,
+                    "item is not equal when compared to " + same);
+        } else {
+            assertNotEquals(item,item1,
+                    "item is equal when compared to a level with same " + same +
+                            " but different " + difference);
+        }
+    }
+
+    public static Stream<Arguments> itemEqualsArguments() {
+        var tile1 = new WaterTile(0,0,0);
+        tile1.setWalkable(true);
+        return Stream.of(
+                arguments(false,new CoinItem(5,7),
+                        "","x"),
+                arguments(false,new CoinItem(4,8),
+                        "x","y"),
+                arguments(true,new CoinItem(4,7),
+                        "another item with equal values","")
+        );
+    }
+
+    @DisplayName("can compare an item with itself")
+    @Test
+    public void testItemEqualsSpecialCases() {
+        var item = board.getItemAt(4,7);
+        assertEquals(item,item,"item is not equal when compared to itself");
+        assertNotEquals(item,item.toItemDTO(),
+                "item is equal when compared to an object of another class");
     }
 }

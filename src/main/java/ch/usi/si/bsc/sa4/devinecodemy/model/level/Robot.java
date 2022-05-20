@@ -12,12 +12,12 @@ import java.util.Objects;
  * The Robot class represents the robot playing the level.
  */
 public class Robot {
-    private final int posX;
-    private final int posY;
+    private int posX;
+    private int posY;
     /**
      * An enum of all the Orientations the Robot can have.
      */
-    private final EOrientation orientation;
+    private EOrientation orientation;
 
     /**
      * Constructs a new Robot object with the given values.
@@ -54,6 +54,36 @@ public class Robot {
     public EOrientation getOrientation() {
         return orientation;
     }
+
+    /**
+     * Moves the robot forward if allowed by its position in the given board.
+     * @param board the board to be moved on.
+     * @throws IllegalStateException if it can't move forward.
+     */
+    public void moveForward(Board board) throws IllegalStateException {
+        if (board.canStep(posX, posY, orientation)) {
+            posX += orientation.getDeltaX();
+            posY += orientation.getDeltaY();
+        } else {
+            throw new IllegalStateException("Cannot move forward");
+        }
+    }
+
+    /**
+     * Turns the robot orientation left.
+     */
+    public void turnLeft() {
+        orientation = orientation.turnLeft();
+    }
+
+    /**
+     * Turns the robot orientation right.
+     */
+    public void turnRight() {
+        orientation = orientation.turnRight();
+    }
+
+
 
     @Override
     public boolean equals(Object o) {

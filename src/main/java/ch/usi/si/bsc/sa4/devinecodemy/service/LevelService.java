@@ -3,6 +3,8 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.EWorld;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.LevelInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserNotAllowedException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.language.Context;
+import ch.usi.si.bsc.sa4.devinecodemy.model.language.Program;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
@@ -36,13 +38,13 @@ public class LevelService {
      * Simulates a gameplay on a specific level.
      * @param levelNumber the level number.
      * @param userId the ID of the user that is playing the level. Used or saving game statistics.
-     * @param commands the list of commands to play on the level.
+     * @param program the program to execute.
      * @return a LevelValidationDTO object containing the result of the gameplay.
      * @throws LevelInexistentException if the level does not exist.
      * @throws UserInexistentException if the user with the given userId does not exist.
      * @throws UserNotAllowedException if the user is not allowed to play this level.
      */
-    public LevelValidation playLevel(int levelNumber, String userId, List<String> commands) throws LevelInexistentException, UserInexistentException, UserNotAllowedException {
+    public LevelValidation playLevel(int levelNumber, String userId, Program program, String attempt) throws LevelInexistentException, UserInexistentException, UserNotAllowedException {
         Optional<Level> optionalLevel = getByLevelNumber(levelNumber);
         if(optionalLevel.isEmpty()) {
             throw new LevelInexistentException(levelNumber);
@@ -52,14 +54,16 @@ public class LevelService {
             throw new UserNotAllowedException(userId,levelNumber);
         }
 
-        GamePlayer gameplayer = new GamePlayer(optionalLevel.get());
+        Level level = optionalLevel.get();
+        LevelValidation levelValidation = new LevelValidation();
+        Context context = new Context(level.getBoard(), level.getRobot(), level.getMaxCommandsNumber(), levelValidation);
 
-        LevelValidation validation = gameplayer.play(commands);
+        LevelValidation result = program.execute(context);
 
         // Here we create the new statistics for the user after playing the game.
-        statisticsService.addStats(userId, gameplayer, validation);
+        statisticsService.addStats(userId, levelNumber, attempt, result.isCompleted());
 
-        return validation;
+        return result;
     }
     
     /**

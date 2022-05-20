@@ -1,6 +1,8 @@
 package ch.usi.si.bsc.sa4.devinecodemy.controller.dto;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.item.Item;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The ItemDTO class represents the Item to be consumed.
@@ -13,6 +15,21 @@ public class ItemDTO {
     
     private final int posX;
     private final int posY;
+
+
+    /**
+     * Constructs a new ItemDTO object with the given values.
+     * @param posX the x position of the Item.
+     * @param posY the y position of the Item.
+     */
+    @JsonCreator
+    public ItemDTO(@JsonProperty("posX") int posX,
+                   @JsonProperty("posY") int posY,
+                   @JsonProperty("type") String type) {
+        this.posX = posX;
+        this.posY = posY;
+        this.type = type;
+    }
 
     /**
      * Constructs a new ItemDTO object of the given item.

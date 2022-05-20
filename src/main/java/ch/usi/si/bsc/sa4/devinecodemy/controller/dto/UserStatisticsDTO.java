@@ -1,6 +1,5 @@
 package ch.usi.si.bsc.sa4.devinecodemy.controller.dto;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.statistics.LevelStatistics;
@@ -14,12 +13,12 @@ public class UserStatisticsDTO {
     /**
      * The id of the user of whose statistics belong to.
      */
-    private final String id;
+    private String id;
     /**
      * The collection of the levels played mapping from the levelNumber
      * to the LevelStatistics of the Level played by the user.
      */
-    private final HashMap<Integer, LevelStatistics> levelData;
+    private Map<Integer, LevelStatistics> levelData;
 
     /**
      * Constructs a UserStatisticsDTO object of the given userStatistic.
@@ -27,7 +26,13 @@ public class UserStatisticsDTO {
      */
     public UserStatisticsDTO(UserStatistics userStatistics){
         this.id = userStatistics.getId();
-        this.levelData = (HashMap<Integer, LevelStatistics>) userStatistics.getData();
+        this.levelData = userStatistics.getData();
+    }
+
+    /**
+     * Constructs an empty UserStatisticsDTO object.
+     */
+    public UserStatisticsDTO(){
     }
 
     /**
@@ -46,4 +51,15 @@ public class UserStatisticsDTO {
         return this.levelData;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    /**
+     * Sets the levelData to the given value.
+     * @param levelData the new levelData.
+     */
+    public void setData(Map<Integer, LevelStatistics> levelData) {
+        this.levelData = levelData;
+    }
 }
