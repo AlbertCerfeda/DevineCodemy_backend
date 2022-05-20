@@ -17,23 +17,23 @@ public class EWorldTests {
 
     @BeforeEach
     void setup() {
-        earth = EWorld.EARTH;
-        sky = EWorld.SKY;
-        lava = EWorld.LAVA;
+        earth = EWorld.PURGATORY;
+        sky = EWorld.PARADISE;
+        lava = EWorld.INFERNO;
     }
 
     @DisplayName("should be able to get the EWorld of a given string")
     @Test
     public void testGetEWorldFromString() {
-        var actualWorld1 = EWorld.getEWorldFromString("Earth");
-        var actualWorld2 = EWorld.getEWorldFromString("Sky");
-        var actualWorld3 = EWorld.getEWorldFromString("Lava");
+        var actualWorld1 = EWorld.getEWorldFromString("Purgatory");
+        var actualWorld2 = EWorld.getEWorldFromString("Paradise");
+        var actualWorld3 = EWorld.getEWorldFromString("Inferno");
         assertEquals(earth,actualWorld1,
-                "EWorld of EARTH is not EARTH");
+                "EWorld of PURGATORY is not PURGATORY");
         assertEquals(sky,actualWorld2,
-                "EWorld of SKY is not SKY");
+                "EWorld of PARADISE is not PARADISE");
         assertEquals(lava,actualWorld3,
-                "EWorld of LAVA is not LAVA");
+                "EWorld of INFERNO is not INFERNO");
     }
 
     @DisplayName("should throw when getting the EWorld of an unknown world")

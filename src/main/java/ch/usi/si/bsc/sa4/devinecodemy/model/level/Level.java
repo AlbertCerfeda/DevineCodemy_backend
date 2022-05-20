@@ -31,11 +31,6 @@ public class Level {
     private final int maxCommandsNumber;
 
     private final String thumbnailSrc;
-    /*
-    TODO: Add additional fields
-    - Goal of the level in order to complete it
-    - Thumbnail image of the level
-     */
 
     private final Board board;
     private final Robot robot;
