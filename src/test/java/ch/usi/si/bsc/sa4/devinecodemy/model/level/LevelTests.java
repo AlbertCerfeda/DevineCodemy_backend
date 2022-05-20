@@ -167,7 +167,7 @@ public class LevelTests {
     @ParameterizedTest(name = "can compare the level with another level object")
     @MethodSource("equalsArguments")
     public void testEquals(boolean equals, Level level1, String same, String difference) {
-        level = new Level( "name", "description", 10, EWorld.SKY,
+        level = new Level( "name", "description", 10, EWorld.PARADISE,
                 10, new Board(List.of(),List.of(),0),
                 new Robot(0,0,EOrientation.UP), List.of(),
                 "../assets/level10.png");
@@ -184,7 +184,7 @@ public class LevelTests {
     public static Stream<Arguments> equalsArguments() {
         return Stream.of(
                 arguments(false,
-                        new Level("name","description", 10, EWorld.SKY,
+                        new Level("name","description", 10, EWorld.PARADISE,
                                 10, new Board(List.of(),List.of(),0),
                                 new Robot(0,0,EOrientation.UP), List.of(EAction.MOVE_FORWARD),
                                 "../assets/level10.png"),
@@ -192,56 +192,56 @@ public class LevelTests {
                         "commands"
                 ),
                 arguments(false,
-                        new Level("name","description", 10, EWorld.SKY,
+                        new Level("name","description", 10, EWorld.PARADISE,
                                 10, new Board(List.of(),List.of(),0),
                                 new Robot(0,0,EOrientation.DOWN), List.of(),"../assets/level10.png"),
                         "name,description,number,world,maxCommandsNumber,board",
                         "robot"
                 ),
                 arguments(false,
-                        new Level("name","description", 10, EWorld.SKY, 10,
+                        new Level("name","description", 10, EWorld.PARADISE, 10,
                                 new Board(List.of(new GrassTile(0,0,0)),List.of(),0),
                                 new Robot(0,0,EOrientation.UP), List.of(),"../assets/level10.png"),
                         "name,description,number,world,maxCommandsNumber",
                         "board"
                 ),
                 arguments(false,
-                        new Level("name","description", 10, EWorld.SKY, 9,
+                        new Level("name","description", 10, EWorld.PARADISE, 9,
                                 new Board(List.of(),List.of(),0),
                                 new Robot(0,0,EOrientation.UP), List.of(),"../assets/level10.png"),
                         "name,description,number,world",
                         "maxCommandsNumber"
                 ),
                 arguments(false,
-                        new Level("name","description", 10, EWorld.LAVA, 10,
+                        new Level("name","description", 10, EWorld.INFERNO, 10,
                                 new Board(List.of(),List.of(),0),
                                 new Robot(0,0,EOrientation.UP), List.of(),"../assets/level10.png"),
                         "name,description,number",
                         "world"
                 ),
                 arguments(false,
-                        new Level("name","description", 9, EWorld.SKY, 10,
+                        new Level("name","description", 9, EWorld.PARADISE, 10,
                                 new Board(List.of(),List.of(),0),
                                 new Robot(0,0,EOrientation.UP), List.of(),"../assets/level10.png"),
                         "name,description",
                         "number"
                 ),
                 arguments(false,
-                        new Level("name","", 10, EWorld.SKY, 10,
+                        new Level("name","", 10, EWorld.PARADISE, 10,
                                 new Board(List.of(),List.of(),0),
                                 new Robot(0,0,EOrientation.UP), List.of(),"../assets/level10.png"),
                         "name",
                         "description"
                 ),
                 arguments(false,
-                        new Level("","description", 10, EWorld.SKY, 10,
+                        new Level("","description", 10, EWorld.PARADISE, 10,
                                 new Board(List.of(),List.of(),0),
                                 new Robot(0,0,EOrientation.UP), List.of(),"../assets/level10.png"),
                         "",
                         "name"
                 ),
                 arguments(true,
-                        new Level("name","description", 10, EWorld.SKY, 10,
+                        new Level("name","description", 10, EWorld.PARADISE, 10,
                                 new Board(List.of(),List.of(),0),
                                 new Robot(0,0,EOrientation.UP), List.of(),"../assets/level10.png"),
                         "another level with same values",
