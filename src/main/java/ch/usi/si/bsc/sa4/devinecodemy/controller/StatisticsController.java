@@ -1,7 +1,5 @@
 package ch.usi.si.bsc.sa4.devinecodemy.controller;
 
-import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.EActionDTO;
-import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.StatisticInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.user.User;
@@ -16,7 +14,6 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.statistics.UserStatistics;
 import ch.usi.si.bsc.sa4.devinecodemy.service.StatisticsService;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -61,14 +58,14 @@ public class StatisticsController {
      * @return an Optional<UserStatistics> containing the UserStatistics if present.
      */
     @GetMapping("/level/{levelNumber}")
-    public ResponseEntity<List<EActionDTO>> getAttempt(OAuth2AuthenticationToken authenticationToken, @PathVariable("levelNumber") int levelNumber,@RequestParam(name = "attemptNumber", defaultValue = "-1") Integer attemptNumber){
+    public ResponseEntity<String> getAttempt(OAuth2AuthenticationToken authenticationToken, @PathVariable("levelNumber") int levelNumber,@RequestParam(name = "attemptNumber", defaultValue = "-1") Integer attemptNumber){
 
         try{
             User user = userService.getUserByToken(authenticationToken);
             String userId = user.getId();
 
-            List<EAction> attempt = statisticsService.getAttempt(userId,levelNumber,attemptNumber);
-            return ResponseEntity.ok(attempt.stream().map(EAction::toEActionDTO).collect(Collectors.toList()));
+            String attempt = statisticsService.getAttempt(userId,levelNumber,attemptNumber);
+            return ResponseEntity.ok(attempt);
 
         } catch (StatisticInexistentException | UserInexistentException e) {
             return ResponseEntity.status(404).build();

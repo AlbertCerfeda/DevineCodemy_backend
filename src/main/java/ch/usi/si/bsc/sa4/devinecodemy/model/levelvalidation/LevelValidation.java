@@ -51,6 +51,10 @@ public class LevelValidation {
         return animations;
     }
 
+    public boolean hasErrors() {
+        return !errors.isEmpty();
+    }
+
     public List<String> getAnimationsAsStrings() {
         return animations.stream().map(EAnimation::toString).collect(Collectors.toList());
     }
