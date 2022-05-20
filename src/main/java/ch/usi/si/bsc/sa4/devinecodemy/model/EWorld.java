@@ -9,7 +9,7 @@ import org.springframework.data.util.Pair;
  */
 public enum EWorld {
 
-    EARTH("Earth", 1,
+    PURGATORY("Purgatory", 1,
             "<h1>Let's start programming!</h1>" +
                     "<p>If you are here, I suppose you have interest in coding, or at least you want to discover the " +
                     "magical world of programming.<br>Of course, before running we have to learn how to walk. " +
@@ -22,7 +22,7 @@ public enum EWorld {
             , "Congratulations! You just ended the earth world. " +
             "<br> In this series of levels, you learnt how to use the various commands in order to complete the tasks." +
             "<br><br><br> Be prepared for what's next! "),
-    SKY("Sky", 2,
+    PARADISE("Paradise", 2,
             "<h1>Conditionals</h1><p>Now things get more interesting. Conditionals in programming " +
                     "language are kinda the basis, so focus on them!</p><br>" +
                     "<p> In the previous world, we had a list of commands, and we could choose and write them" +
@@ -33,7 +33,7 @@ public enum EWorld {
             "Congratulations! You just ended the sky world. <br> " +
                     "In this series of levels, you learnt how to use conditionals in order to complete " +
                     "the tasks.<br><br><br> Be prepared for what's next! "),
-    LAVA("Lava", 3,
+    INFERNO("Inferno", 3,
             "Sample description for the LAVA world !",
             "Congrats!");
 

@@ -192,9 +192,9 @@ public class LevelServiceTests {
 
     public static Stream<Arguments> getLevelNumberRangeForWorldTestsArgumentProvider() {
         return Stream.of(
-                arguments(EWorld.EARTH, Pair.of(1, 5)), // test Earth levels
-                arguments(EWorld.LAVA, Pair.of(-1, -1)), // test Lava levels
-                arguments(EWorld.SKY, Pair.of(6, 10)), // test Sky levels
+                arguments(EWorld.PURGATORY, Pair.of(1, 5)), // test Earth levels
+                arguments(EWorld.INFERNO, Pair.of(-1, -1)), // test Lava levels
+                arguments(EWorld.PARADISE, Pair.of(6, 10)), // test Sky levels
                 arguments(null, Pair.of(-1, -1)) // test no levels
         );
     }
