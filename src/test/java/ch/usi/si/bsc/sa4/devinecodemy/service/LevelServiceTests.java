@@ -53,9 +53,7 @@ public class LevelServiceTests {
     void testSetup() {
         program = mock(Program.class);
         var level1 = levelRepository.findAll().get(0);
-        var gameLevel1 = new GamePlayer(level1);
         var level2 = levelRepository.findAll().get(1);
-        var gameLevel2 = new GamePlayer(level2);
 
         var validation1 = new LevelValidation();
         // user 1 completed level 1

@@ -1,6 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.controller.dto;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
+import ch.usi.si.bsc.sa4.devinecodemy.model.ECategory;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -16,7 +16,7 @@ public class EActionDTO {
      * Constructs a new EActionDTO object given the EAction.
      * @param action the action to be converted.
      */
-    public EActionDTO (EAction action) {
+    public EActionDTO (ECategory action) {
         name = action.getFuncCall();
         description = action.getDescription();
     }

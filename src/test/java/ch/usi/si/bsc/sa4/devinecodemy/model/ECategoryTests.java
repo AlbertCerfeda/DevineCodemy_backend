@@ -8,28 +8,28 @@ import org.junit.jupiter.api.function.Executable;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("The EAction")
-public class EActionTests {
+public class ECategoryTests {
 
-    EAction moveForward;
-    EAction turnLeft;
-    EAction turnRight;
-    EAction collectCoin;
+    ECategory moveForward;
+    ECategory turnLeft;
+    ECategory turnRight;
+    ECategory collectCoin;
 
     @BeforeEach
     void setup() {
-        moveForward = EAction.MOVE_FORWARD;
-        turnLeft = EAction.TURN_LEFT;
-        turnRight = EAction.TURN_RIGHT;
-        collectCoin = EAction.COLLECT_COIN;
+        moveForward = ECategory.MOVE_FORWARD;
+        turnLeft = ECategory.TURN_LEFT;
+        turnRight = ECategory.TURN_RIGHT;
+        collectCoin = ECategory.COLLECT_COIN;
     }
 
     @DisplayName("should be able to return the description after creation")
     @Test
     public void testGetEActionFromCommand() {
-        var actualAction1 = EAction.getEActionFromCommand("moveForward");
-        var actualAction2 = EAction.getEActionFromCommand("turnLeft");
-        var actualAction3 = EAction.getEActionFromCommand("turnRight");
-        var actualAction4 = EAction.getEActionFromCommand("collectCoin");
+        var actualAction1 = ECategory.getEActionFromCommand("moveForward");
+        var actualAction2 = ECategory.getEActionFromCommand("turnLeft");
+        var actualAction3 = ECategory.getEActionFromCommand("turnRight");
+        var actualAction4 = ECategory.getEActionFromCommand("collectCoin");
         assertEquals(moveForward,actualAction1,
                 "EAction of moveForward is not MOVE_FORWARD");
         assertEquals(turnLeft,actualAction2,
@@ -43,7 +43,7 @@ public class EActionTests {
     @DisplayName("should throw when getting the EAction of an unknown world")
     @Test
     public void testGetEWorldFromStringThrows() {
-        Executable actualResult = ()-> EAction.getEActionFromCommand("");
+        Executable actualResult = ()-> ECategory.getEActionFromCommand("");
         assertThrows(IllegalArgumentException.class,actualResult,
                 "EAction of empty doesn't throw");
     }

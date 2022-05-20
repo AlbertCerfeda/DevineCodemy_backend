@@ -5,7 +5,7 @@ import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.EActionDTO;
 /**
  * The EAction class represents the actions at the disposal of the player.
  */
-public enum EAction {
+public enum ECategory {
     MOVE_FORWARD("moveForward", "Moves Robot forward"),
     TURN_LEFT("turnLeft", "Turns Robot left"),
     TURN_RIGHT("turnRight", "Turns Robot right"),
@@ -21,7 +21,7 @@ public enum EAction {
      * @param funcCall the name of the func to be called when the action is executed.
      * @param description the description of the action.
      */
-    EAction(String funcCall, String description) {
+    ECategory(String funcCall, String description) {
         this.funcCall = funcCall;
         this.description = description;
     }
@@ -34,8 +34,8 @@ public enum EAction {
      * @throws IllegalArgumentException if the command does not correspond
      *                                  to a valid function call.
      */
-    public static EAction getEActionFromCommand(String command) throws IllegalArgumentException {
-        for (final EAction action : EAction.values()) {
+    public static ECategory getEActionFromCommand(String command) throws IllegalArgumentException {
+        for (final ECategory action : ECategory.values()) {
             if (action.getFuncCall().equals(command)) {
                 return action;
             }

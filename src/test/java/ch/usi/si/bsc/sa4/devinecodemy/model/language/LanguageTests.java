@@ -1,6 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.language;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
+import ch.usi.si.bsc.sa4.devinecodemy.model.ECategory;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EAnimation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EOrientation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EWorld;
@@ -58,7 +58,7 @@ public class LanguageTests {
         List<Item> items = List.of(new CoinItem(0,2),
                 new CoinItem(0,1));
         board = new Board(grid,items,2);
-        List<EAction> allowedCommands = List.of(EAction.MOVE_FORWARD,EAction.COLLECT_COIN,EAction.TURN_LEFT);
+        List<ECategory> allowedCommands = List.of(ECategory.MOVE_FORWARD, ECategory.COLLECT_COIN, ECategory.TURN_LEFT);
         level = new Level("Level 1", "the first level",1, EWorld.PURGATORY,
                 6,board,robot,allowedCommands,"../../assets/thumbnail.jpg");
         levelValidation = new LevelValidation();

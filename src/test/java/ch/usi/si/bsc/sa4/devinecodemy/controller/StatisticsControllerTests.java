@@ -1,9 +1,7 @@
 package ch.usi.si.bsc.sa4.devinecodemy.controller;
 
 import ch.usi.si.bsc.sa4.devinecodemy.DevineCodemyBackend;
-import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.EActionDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.UserStatisticsDTO;
-import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.StatisticInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.statistics.UserStatistics;

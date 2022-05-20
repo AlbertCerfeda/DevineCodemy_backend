@@ -1,23 +1,12 @@
 package ch.usi.si.bsc.sa4.devinecodemy.service;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.EAction;
-import ch.usi.si.bsc.sa4.devinecodemy.model.EOrientation;
-import ch.usi.si.bsc.sa4.devinecodemy.model.EWorld;
+import ch.usi.si.bsc.sa4.devinecodemy.model.ECategory;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.StatisticInexistentException;
-import ch.usi.si.bsc.sa4.devinecodemy.model.item.CoinItem;
-import ch.usi.si.bsc.sa4.devinecodemy.model.item.Item;
-import ch.usi.si.bsc.sa4.devinecodemy.model.level.Board;
 import ch.usi.si.bsc.sa4.devinecodemy.model.level.Level;
-import ch.usi.si.bsc.sa4.devinecodemy.model.level.Robot;
 import ch.usi.si.bsc.sa4.devinecodemy.model.levelvalidation.LevelValidation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.statistics.UserStatistics;
-import ch.usi.si.bsc.sa4.devinecodemy.model.tile.GrassTile;
-import ch.usi.si.bsc.sa4.devinecodemy.model.tile.Tile;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.StatisticsRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -43,29 +32,28 @@ public class StatisticsServiceTests {
     @MockBean
     StatisticsRepository statisticsRepository;
 
-    @MockBean
-    GamePlayer gamePlayer;
-
     LevelValidation levelValidation;
 
     UserStatistics userStatistics1;
     UserStatistics userStatistics2;
     UserStatistics userStatistics3;
+    String attemptNull;
+    String attempt;
 
     @BeforeEach
     void setup() {
         statisticsService.addStats("1");
         Level level = mock(Level.class);
         given(level.getLevelNumber()).willReturn(1);
-        given(level.getAllowedCommands()).willReturn(List.of(EAction.MOVE_FORWARD));
-        gamePlayer = new GamePlayer(level);
+        given(level.getAllowedCommands()).willReturn(List.of(ECategory.MOVE_FORWARD));
         levelValidation = mock(LevelValidation.class);
         userStatistics1 = mock(UserStatistics.class);
         userStatistics2 = mock(UserStatistics.class);
         userStatistics3 = mock(UserStatistics.class);
+        attempt = "{}";
         given(userStatistics1.getId()).willReturn("1");
-//        given(userStatistics3.getAttemptFromLevel(anyInt(),anyInt())).willReturn(List.of());
-//        given(userStatistics3.getAttemptFromLevel(1,0)).willReturn(List.of(EAction.MOVE_FORWARD));
+        given(userStatistics3.getAttemptFromLevel(anyInt(),anyInt())).willReturn(attemptNull);
+        given(userStatistics3.getAttemptFromLevel(1,0)).willReturn(attempt);
         given(statisticsRepository.findById("1")).willReturn(Optional.of(userStatistics1));
         given(statisticsRepository.findAll()).willReturn(List.of(userStatistics1,userStatistics2,userStatistics3));
     }
@@ -97,7 +85,7 @@ public class StatisticsServiceTests {
     @DisplayName("should add a stat with a new id and other parameters")
     @Test
     public void testAddStatIfNotAlreadyExisting() {
-//        statisticsService.addStats("2",gamePlayer,levelValidation);
+        statisticsService.addStats("2",1,attempt,false);
     }
 
     @DisplayName("after adding")
@@ -106,7 +94,7 @@ public class StatisticsServiceTests {
 
         @BeforeEach
         void setup() {
-//            statisticsService.addStats("2",gamePlayer,levelValidation);
+            statisticsService.addStats("2",1,attempt,false);
             given(userStatistics2.getId()).willReturn("2");
             given(userStatistics3.getId()).willReturn("3");
             given(statisticsRepository.findById("2")).willReturn(Optional.of(userStatistics2));
@@ -116,13 +104,7 @@ public class StatisticsServiceTests {
         @DisplayName("should not add a stat with a id and other parameters if one with the same id already exists")
         @Test
         public void testAddStatIfAlreadyExisting() {
-//            statisticsService.addStats("2",gamePlayer,levelValidation);
-        }
-
-        @DisplayName("should add a stat with a id and null GamePlayer if id is new")
-        @Test
-        public void testAddStatIfGameNull() {
-//            statisticsService.addStats("3",null,levelValidation);
+            statisticsService.addStats("2",1,attemptNull,false);
         }
 
         @DisplayName("after re-adding")
@@ -131,7 +113,7 @@ public class StatisticsServiceTests {
 
             @BeforeEach
             void setup() {
-//                statisticsService.addStats("3",gamePlayer,levelValidation);
+                statisticsService.addStats("3",1,attempt,false);
             }
 
             @DisplayName("should be able to get all the added statistics")
@@ -150,10 +132,10 @@ public class StatisticsServiceTests {
             @DisplayName("should be able to get added attempt")
             @Test
             public void testGetAttemptExisting() {
-//                var actualAttempt = statisticsService.getAttempt("3",1,0);
-//                var expectedAttempt = List.of(EAction.MOVE_FORWARD);
-//                assertEquals(expectedAttempt,actualAttempt,
-//                        "attempt is not the same provided when played");
+                var actualAttempt = statisticsService.getAttempt("3",1,0);
+                var expectedAttempt = attempt;
+                assertEquals(expectedAttempt,actualAttempt,
+                        "attempt is not the same provided when played");
             }
 
             @DisplayName("should not be able to get attempts on a not existing statistic")
