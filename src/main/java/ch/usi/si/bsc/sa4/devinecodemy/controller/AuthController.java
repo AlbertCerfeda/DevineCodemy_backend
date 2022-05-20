@@ -8,10 +8,13 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.web.authentication.session.SessionAuthenticationException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.view.RedirectView;
@@ -33,7 +36,7 @@ import java.util.logging.Logger;
 public class AuthController {
     private final UserService userService;
     private final OAuth2AuthorizedClientService authorizedClientService;
-    private final RestTemplate restTemplate;
+    private RestTemplate restTemplate;
 
     @Autowired
     public AuthController(UserService userService, OAuth2AuthorizedClientService authorizedClientService) {
@@ -72,6 +75,18 @@ public class AuthController {
     @GetMapping("/logout")
     public void logout(OAuth2AuthenticationToken authenticationToken) {
         // TODO: Implement logout
+    }
+
+
+    /**
+     * Sets the RestTemplate to be able to mock it and test the controller.
+     *
+     * This is necessary, because @InjectMocks doesn't work on the AuthController.
+     *
+     * @param restTemplate The RestTemplate.
+     */
+    protected void setRestTemplate(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
     }
 
 
@@ -139,8 +154,10 @@ public class AuthController {
                             entity,
                             String.class)
                     .getBody();
+        } catch (HttpClientErrorException ex) {
+            throw new SessionAuthenticationException(ex.getMessage());
         } catch (Exception ex) {
-            throw new RestClientException("Couldn't retrieve the user from GitLab");
+            throw new RestClientException(ex.getMessage());
         }
 
         final ObjectMapper o = new ObjectMapper()
