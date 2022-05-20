@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Represents the state of a usable command that the player can use.
  */
-public class EActionDTO {
+public class ECategoryDTO {
     
     private final String name;
     private final String description;
@@ -16,8 +16,8 @@ public class EActionDTO {
      * Constructs a new EActionDTO object given the EAction.
      * @param action the action to be converted.
      */
-    public EActionDTO (ECategory action) {
-        name = action.getFuncCall();
+    public ECategoryDTO(ECategory action) {
+        name = action.getName();
         description = action.getDescription();
     }
 
@@ -27,8 +27,8 @@ public class EActionDTO {
      * @param description the description of the EAction.
      */
     @JsonCreator
-    public EActionDTO (@JsonProperty("name") String name,
-                       @JsonProperty("description") String description) {
+    public ECategoryDTO(@JsonProperty("name") String name,
+                        @JsonProperty("description") String description) {
         this.name = name;
         this.description = description;
     }

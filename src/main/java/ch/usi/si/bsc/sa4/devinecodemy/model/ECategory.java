@@ -1,52 +1,34 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model;
 
-import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.EActionDTO;
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.ECategoryDTO;
 
 /**
  * The EAction class represents the actions at the disposal of the player.
  */
 public enum ECategory {
-    MOVE_FORWARD("moveForward", "Moves Robot forward"),
-    TURN_LEFT("turnLeft", "Turns Robot left"),
-    TURN_RIGHT("turnRight", "Turns Robot right"),
-    COLLECT_COIN("collectCoin", "Collects a Coin");
+    BASIC_COMMANDS("Basic commands", "To move the robot."),
+    LOGIC("Logic", "To execute code if a condition is true."),
+    CONDITIONS("Conditions","Boolean conditions to eventually execute code."),
+    LOOPS("Loops", "To execute the same code several times in a row."),
+    FUNCTIONS("Functions","To define a block of code inside a separate body");
 
     /** The function call for this command (eg 'moveForward' ) */
-    private final String funcCall;
+    private final String name;
     /** The description for the command */
     private final String description;
 
     /**
      * Creates an EAction with the given funcCall and description.
-     * @param funcCall the name of the func to be called when the action is executed.
+     * @param name the name of the func to be called when the action is executed.
      * @param description the description of the action.
      */
-    ECategory(String funcCall, String description) {
-        this.funcCall = funcCall;
+    ECategory(String name, String description) {
+        this.name = name;
         this.description = description;
     }
 
-    /**
-     * Create a new EAction from a command name.
-     * Example: "moveForward" -> EAction.MOVE_FORWARD, name: "moveForward"
-     *
-     * @param command the given command
-     * @throws IllegalArgumentException if the command does not correspond
-     *                                  to a valid function call.
-     */
-    public static ECategory getEActionFromCommand(String command) throws IllegalArgumentException {
-        for (final ECategory action : ECategory.values()) {
-            if (action.getFuncCall().equals(command)) {
-                return action;
-            }
-        }
-
-
-        throw new IllegalArgumentException("Unknown command: '" + command + "'");
-    }
-
-    public String getFuncCall() {
-        return funcCall;
+    public String getName() {
+        return name;
     }
 
     public String getDescription() {
@@ -57,7 +39,7 @@ public enum ECategory {
      * Returns the EActionDTO of this EAction object.
      * @return the EActionDTO of this EAction object.
      */
-    public EActionDTO toEActionDTO() {
-        return new EActionDTO(this);
+    public ECategoryDTO toEActionDTO() {
+        return new ECategoryDTO(this);
     }
 }

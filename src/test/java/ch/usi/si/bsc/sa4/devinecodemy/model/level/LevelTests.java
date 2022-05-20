@@ -38,7 +38,7 @@ public class LevelTests {
         );
         var board = new Board(grid, items, 1);
         var robot = new Robot(0, 0, EOrientation.DOWN);
-        var commands = List.of(ECategory.MOVE_FORWARD);
+        var commands = List.of(ECategory.BASIC_COMMANDS);
         level = new Level( "test name", "test description", 10, EWorld.PARADISE, 10, board, robot, commands, "../assets/level10.png");
     }
 
@@ -90,7 +90,7 @@ public class LevelTests {
         @Test
         void testGetAllowedCommands() {
             var actualAllowedCommands = level.getAllowedCommands();
-            var expectedAllowedCommands = List.of(ECategory.MOVE_FORWARD);
+            var expectedAllowedCommands = List.of(ECategory.BASIC_COMMANDS);
             assertEquals(expectedAllowedCommands, actualAllowedCommands, "allowedCommands is not the one provided in the constructor");
         }
 
@@ -186,7 +186,7 @@ public class LevelTests {
                 arguments(false,
                         new Level("name","description", 10, EWorld.PARADISE,
                                 10, new Board(List.of(),List.of(),0),
-                                new Robot(0,0,EOrientation.UP), List.of(ECategory.MOVE_FORWARD),
+                                new Robot(0,0,EOrientation.UP), List.of(ECategory.BASIC_COMMANDS),
                                 "../assets/level10.png"),
                         "name,description,number,world,maxCommandsNumber,board,robot",
                         "commands"

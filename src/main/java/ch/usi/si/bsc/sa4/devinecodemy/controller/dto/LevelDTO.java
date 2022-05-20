@@ -22,7 +22,7 @@ public class LevelDTO {
     private BoardDTO board;
     private RobotDTO robot;
 
-    private final List<EActionDTO> allowedCommands;
+    private final List<ECategoryDTO> allowedCommands;
 
     private final String thumbnailSrc;
 
@@ -50,7 +50,7 @@ public class LevelDTO {
                     @JsonProperty("maxCommandsNumber") int maxCommandsNumber,
                     @JsonProperty("board") BoardDTO board,
                     @JsonProperty("robot") RobotDTO robot,
-                    @JsonProperty("allowedCommands") List<EActionDTO> allowedCommands,
+                    @JsonProperty("allowedCommands") List<ECategoryDTO> allowedCommands,
                     @JsonProperty("thumbnailSrc") String thumbnailSrc) {
         this.name = name;
         this.description = description;
@@ -114,7 +114,7 @@ public class LevelDTO {
     }
 
 
-    public List<EActionDTO> getAllowedCommands() {
+    public List<ECategoryDTO> getAllowedCommands() {
         return allowedCommands;
     }
 

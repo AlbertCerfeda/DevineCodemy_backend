@@ -130,10 +130,7 @@
       "orientation": "DOWN"
     },
     "allowedCommands": [
-      "MOVE_FORWARD",
-      "TURN_LEFT",
-      "TURN_RIGHT",
-      "COLLECT_COIN"
+      "BASIC_COMMANDS"
     ],
     "thumbnailSrc": "../assets/level1.png"
   },
@@ -269,10 +266,7 @@
       "orientation": "DOWN"
     },
     "allowedCommands": [
-      "MOVE_FORWARD",
-      "TURN_LEFT",
-      "TURN_RIGHT",
-      "COLLECT_COIN"
+      "BASIC_COMMANDS"
     ],
     "thumbnailSrc": "../assets/level2.png"
   },
@@ -408,10 +402,7 @@
       "orientation": "UP"
     },
     "allowedCommands": [
-      "MOVE_FORWARD",
-      "TURN_LEFT",
-      "TURN_RIGHT",
-      "COLLECT_COIN"
+      "BASIC_COMMANDS"
     ],
     "thumbnailSrc": "../assets/level3.png"
   },
@@ -549,10 +540,7 @@
       "orientation": "RIGHT"
     },
     "allowedCommands": [
-      "MOVE_FORWARD",
-      "TURN_LEFT",
-      "TURN_RIGHT",
-      "COLLECT_COIN"
+      "BASIC_COMMANDS"
     ],
     "thumbnailSrc": "../assets/level4.png"
   },
@@ -690,10 +678,7 @@
       "orientation": "RIGHT"
     },
     "allowedCommands": [
-      "MOVE_FORWARD",
-      "TURN_LEFT",
-      "TURN_RIGHT",
-      "COLLECT_COIN"
+      "BASIC_COMMANDS"
     ],
     "thumbnailSrc": "../assets/level5.png"
   },
@@ -836,10 +821,9 @@
       "orientation": "RIGHT"
     },
     "allowedCommands": [
-      "MOVE_FORWARD",
-      "TURN_LEFT",
-      "TURN_RIGHT",
-      "COLLECT_COIN"
+      "BASIC_COMMANDS",
+      "LOGIC",
+      "CONDITIONS"
     ],
     "thumbnailSrc": "../assets/level6.png"
   },
@@ -978,10 +962,9 @@
       "orientation": "RIGHT"
     },
     "allowedCommands": [
-      "MOVE_FORWARD",
-      "TURN_LEFT",
-      "TURN_RIGHT",
-      "COLLECT_COIN"
+      "BASIC_COMMANDS",
+      "LOGIC",
+      "CONDITIONS"
     ],
     "thumbnailSrc": "../assets/level7.png"
   },
@@ -1121,10 +1104,9 @@
       "orientation": "RIGHT"
     },
     "allowedCommands": [
-      "MOVE_FORWARD",
-      "TURN_LEFT",
-      "TURN_RIGHT",
-      "COLLECT_COIN"
+      "BASIC_COMMANDS",
+      "LOGIC",
+      "CONDITIONS"
     ],
     "thumbnailSrc": "../assets/level8.png"
   },
@@ -1264,10 +1246,9 @@
       "orientation": "RIGHT"
     },
     "allowedCommands": [
-      "MOVE_FORWARD",
-      "TURN_LEFT",
-      "TURN_RIGHT",
-      "COLLECT_COIN"
+      "BASIC_COMMANDS",
+      "LOGIC",
+      "CONDITIONS"
     ],
     "thumbnailSrc": "../assets/level9.png"
   },
@@ -1404,10 +1385,9 @@
       "orientation": "RIGHT"
     },
     "allowedCommands": [
-      "MOVE_FORWARD",
-      "TURN_LEFT",
-      "TURN_RIGHT",
-      "COLLECT_COIN"
+      "BASIC_COMMANDS",
+      "LOGIC",
+      "CONDITIONS"
     ],
     "thumbnailSrc": "../assets/level10.png"
   }

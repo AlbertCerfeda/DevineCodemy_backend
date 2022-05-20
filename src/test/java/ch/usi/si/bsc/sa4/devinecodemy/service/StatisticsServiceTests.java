@@ -17,7 +17,6 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -45,7 +44,7 @@ public class StatisticsServiceTests {
         statisticsService.addStats("1");
         Level level = mock(Level.class);
         given(level.getLevelNumber()).willReturn(1);
-        given(level.getAllowedCommands()).willReturn(List.of(ECategory.MOVE_FORWARD));
+        given(level.getAllowedCommands()).willReturn(List.of(ECategory.BASIC_COMMANDS));
         levelValidation = mock(LevelValidation.class);
         userStatistics1 = mock(UserStatistics.class);
         userStatistics2 = mock(UserStatistics.class);

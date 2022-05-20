@@ -58,7 +58,7 @@ public class LanguageTests {
         List<Item> items = List.of(new CoinItem(0,2),
                 new CoinItem(0,1));
         board = new Board(grid,items,2);
-        List<ECategory> allowedCommands = List.of(ECategory.MOVE_FORWARD, ECategory.COLLECT_COIN, ECategory.TURN_LEFT);
+        List<ECategory> allowedCommands = List.of(ECategory.BASIC_COMMANDS, ECategory.CONDITIONS, ECategory.LOGIC);
         level = new Level("Level 1", "the first level",1, EWorld.PURGATORY,
                 6,board,robot,allowedCommands,"../../assets/thumbnail.jpg");
         levelValidation = new LevelValidation();
