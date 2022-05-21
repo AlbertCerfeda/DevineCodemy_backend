@@ -233,16 +233,4 @@ public class LevelServiceTests {
         assertThrows(UserInexistentException.class, () -> levelService.playLevel(1, "4", new Program(List.of()), ""), "should throw on no user");
         assertThrows(UserNotAllowedException.class, () -> levelService.playLevel(10, "2", new Program(List.of()), ""), "should throw on high level for user");
     }
-
-    @DisplayName("The deletion of a level by a number")
-    @Test
-    void testDeleteByLevelNumber(){
-        assertThrows(LevelInexistentException.class, () -> {
-            levelService.deleteByLevelNumber(-1);
-        });
-
-        assertTrue(levelService.levelExists(1));
-        levelService.deleteByLevelNumber(1);
-        assertFalse(levelService.levelExists(1));
-    }
 }
