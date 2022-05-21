@@ -119,6 +119,13 @@ public class UserControllerTests {
         ResponseEntity<UserDTO> okResponse = userController.updateUser(fakeAuthenticationToken, "an id", updateUserDTO);
         assertEquals(HttpStatus.OK, okResponse.getStatusCode());
         verify(updateUserDTO).isPublicProfile();
+
+        UpdateUserDTO privateUpdateUserDTO = Mockito.mock(UpdateUserDTO.class);
+        given(privateUpdateUserDTO.isPublicProfileInitialized()).willReturn(false);
+
+        ResponseEntity<UserDTO> okResponse2 = userController.updateUser(fakeAuthenticationToken, "an id", privateUpdateUserDTO);
+        assertEquals(HttpStatus.OK, okResponse2.getStatusCode());
+        verify(privateUpdateUserDTO, Mockito.never()).isPublicProfile();
     }
 
     @Test
@@ -149,13 +156,24 @@ public class UserControllerTests {
 
         given(userService.isIdEqualToken(any(), any())).willReturn(false);
 
-        ResponseEntity<UserDTO> publicResponse = userController.getById(fakeAuthenticationToken, "public");
-        assertEquals(HttpStatus.OK, publicResponse.getStatusCode());
+        ResponseEntity<UserDTO> publicResponseMismatchingToken = userController.getById(fakeAuthenticationToken, "public");
+        assertEquals(HttpStatus.OK, publicResponseMismatchingToken.getStatusCode());
         verify(publicUser).toPublicUserDTO();
 
-        ResponseEntity<UserDTO> privateResponse = userController.getById(fakeAuthenticationToken, "private");
-        assertEquals(HttpStatus.OK, privateResponse.getStatusCode());
+        ResponseEntity<UserDTO> privateResponseMismatchingToken = userController.getById(fakeAuthenticationToken, "private");
+        assertEquals(HttpStatus.OK, privateResponseMismatchingToken.getStatusCode());
         verify(privateUser).toPrivateUserDTO();
+
+        Mockito.reset(publicUser, privateUser); // Clears the `verify()` counter
+        given(userService.isIdEqualToken(any(), any())).willReturn(true);
+
+        ResponseEntity<UserDTO> publicResponseMatchingToken = userController.getById(fakeAuthenticationToken, "public");
+        assertEquals(HttpStatus.OK, publicResponseMatchingToken.getStatusCode());
+        verify(publicUser).toPublicUserDTO();
+
+        ResponseEntity<UserDTO> privateResponseMatchingToken = userController.getById(fakeAuthenticationToken, "private");
+        assertEquals(HttpStatus.OK, privateResponseMatchingToken.getStatusCode());
+        verify(privateUser).toPublicUserDTO();
     }
 
     @Test
