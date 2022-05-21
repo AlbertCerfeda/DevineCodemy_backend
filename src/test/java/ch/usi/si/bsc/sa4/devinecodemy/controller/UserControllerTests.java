@@ -2,6 +2,8 @@ package ch.usi.si.bsc.sa4.devinecodemy.controller;
 
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user.UpdateUserDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user.UserDTO;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.InvalidAuthTokenException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.user.SocialMedia;
 import ch.usi.si.bsc.sa4.devinecodemy.model.user.User;
 import ch.usi.si.bsc.sa4.devinecodemy.service.UserService;
@@ -53,8 +55,10 @@ public class UserControllerTests {
 
     private FakeOAuth2User fakeOAuth2User;
     private FakeOAuth2User invalidOAuth2User;
+
     private OAuth2AuthenticationToken fakeAuthenticationToken;
     private OAuth2AuthenticationToken invalidAuthenticationToken;
+    private OAuth2AuthenticationToken nonexistentAuthenticationToken;
 
     @BeforeEach
     void setup() {
@@ -72,6 +76,7 @@ public class UserControllerTests {
 
         fakeOAuth2User = new FakeOAuth2User("a name");
         invalidOAuth2User = new FakeOAuth2User("invalid");
+
         fakeAuthenticationToken = fakeOAuth2User.getOAuth2AuthenticationToken();
         invalidAuthenticationToken = invalidOAuth2User.getOAuth2AuthenticationToken();
 
@@ -156,7 +161,21 @@ public class UserControllerTests {
     @Test
     @DisplayName("GET /users/user")
     void testGetUser(){
-        // TODO
+        User publicUser = Mockito.mock(User.class);
+
+        given(userService.getUserByToken(fakeAuthenticationToken)).willReturn(publicUser);
+        given(userService.getUserByToken(invalidAuthenticationToken)).willThrow(new InvalidAuthTokenException());
+        given(userService.getUserByToken(nonexistentAuthenticationToken)).willThrow(new UserInexistentException());
+
+        ResponseEntity<UserDTO> okResponse = userController.getUser(fakeAuthenticationToken);
+        assertEquals(HttpStatus.OK, okResponse.getStatusCode());
+        verify(publicUser).toPublicUserDTO();
+
+        ResponseEntity<UserDTO> unauthorizedResponse = userController.getUser(invalidAuthenticationToken);
+        assertEquals(HttpStatus.UNAUTHORIZED, unauthorizedResponse.getStatusCode());
+
+        ResponseEntity<UserDTO> nonexistentResponse = userController.getUser(nonexistentAuthenticationToken);
+        assertEquals(HttpStatus.NOT_FOUND, nonexistentResponse.getStatusCode());
     }
 }
 
