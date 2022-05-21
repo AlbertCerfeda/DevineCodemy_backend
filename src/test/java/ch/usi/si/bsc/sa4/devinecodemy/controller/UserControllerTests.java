@@ -26,6 +26,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -131,7 +132,25 @@ public class UserControllerTests {
     @Test
     @DisplayName("GET /users/{id}}")
     void testGetById(){
-        // TODO
+        ResponseEntity<UserDTO> nonexistentResponse = userController.getById(null, "nonexistent id");
+        assertEquals(HttpStatus.NOT_FOUND, nonexistentResponse.getStatusCode());
+
+        User publicUser = Mockito.mock(User.class);
+        given(publicUser.isProfilePublic()).willReturn(true);
+        User privateUser = Mockito.mock(User.class);
+        given(privateUser.isProfilePublic()).willReturn(false);
+        given(userService.getById("public")).willReturn(Optional.of(publicUser));
+        given(userService.getById("private")).willReturn(Optional.of(privateUser));
+
+        given(userService.isIdEqualToken(any(), any())).willReturn(false);
+
+        ResponseEntity<UserDTO> publicResponse = userController.getById(fakeAuthenticationToken, "public");
+        assertEquals(HttpStatus.OK, publicResponse.getStatusCode());
+        verify(publicUser).toPublicUserDTO();
+
+        ResponseEntity<UserDTO> privateResponse = userController.getById(fakeAuthenticationToken, "private");
+        assertEquals(HttpStatus.OK, privateResponse.getStatusCode());
+        verify(privateUser).toPrivateUserDTO();
     }
 
     @Test
