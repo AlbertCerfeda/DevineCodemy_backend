@@ -1,9 +1,11 @@
 package ch.usi.si.bsc.sa4.devinecodemy.controller;
 
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user.UpdateUserDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user.UserDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.model.user.SocialMedia;
 import ch.usi.si.bsc.sa4.devinecodemy.model.user.User;
 import ch.usi.si.bsc.sa4.devinecodemy.service.UserService;
+import ch.usi.si.bsc.sa4.devinecodemy.utils.FakeOAuth2User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,12 +18,16 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 @SpringBootTest(classes = UserController.class)
 @AutoConfigureMockMvc
@@ -31,7 +37,10 @@ public class UserControllerTests {
     @MockBean
     private UserService userService;
 
-    @Autowired
+    @MockBean
+    private OAuth2AuthorizedClientService authorizedClientService;
+
+    @InjectMocks
     private UserController userController;
 
     @Autowired
@@ -41,6 +50,10 @@ public class UserControllerTests {
     private User user2;
     private List<User> userList;
 
+    private FakeOAuth2User fakeOAuth2User;
+    private FakeOAuth2User invalidOAuth2User;
+    private OAuth2AuthenticationToken fakeAuthenticationToken;
+    private OAuth2AuthenticationToken invalidAuthenticationToken;
 
     @BeforeEach
     void setup() {
@@ -55,6 +68,20 @@ public class UserControllerTests {
         userList = List.of(user1, user2);
 
         given(this.userService.getAllPublic()).willReturn(userList);
+
+        fakeOAuth2User = new FakeOAuth2User("a name");
+        invalidOAuth2User = new FakeOAuth2User("invalid");
+        fakeAuthenticationToken = fakeOAuth2User.getOAuth2AuthenticationToken();
+        invalidAuthenticationToken = invalidOAuth2User.getOAuth2AuthenticationToken();
+
+        given(userService.getById("an id")).willReturn(Optional.of(user1));
+        given(userService.getById("invalid")).willReturn(Optional.of(user1));
+        given(userService.getById("nonexistent id")).willReturn(Optional.empty());
+
+        given(userService.isIdEqualToken(invalidAuthenticationToken, "invalid")).willReturn(false);
+        given(userService.isIdEqualToken(fakeAuthenticationToken, "an id")).willReturn(true);
+
+        given(userService.updateUser(user1)).willReturn(user1);
     }
 
     @Test
@@ -72,7 +99,20 @@ public class UserControllerTests {
     @Test
     @DisplayName("Put /user/{id}")
     void testUpdateUser(){
-        // TODO
+        ResponseEntity<UserDTO> nonexistentResponse = userController.updateUser(null, "nonexistent", null);
+        assertEquals(HttpStatus.NOT_FOUND, nonexistentResponse.getStatusCode());
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            userController.updateUser(invalidAuthenticationToken, "invalid", null);
+        });
+
+        UpdateUserDTO updateUserDTO = Mockito.mock(UpdateUserDTO.class);
+        given(updateUserDTO.isPublicProfileInitialized()).willReturn(true);
+        given(updateUserDTO.isPublicProfile()).willReturn(true);
+
+        ResponseEntity<UserDTO> okResponse = userController.updateUser(fakeAuthenticationToken, "an id", updateUserDTO);
+        assertEquals(HttpStatus.OK, okResponse.getStatusCode());
+        verify(updateUserDTO).isPublicProfile();
     }
 
     @Test
