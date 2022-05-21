@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -31,6 +32,7 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 @DisplayName("The level service")
@@ -230,5 +232,17 @@ public class LevelServiceTests {
         assertThrows(LevelInexistentException.class, () -> levelService.playLevel(20, "3", new Program(List.of()), ""), "should throw on no level");
         assertThrows(UserInexistentException.class, () -> levelService.playLevel(1, "4", new Program(List.of()), ""), "should throw on no user");
         assertThrows(UserNotAllowedException.class, () -> levelService.playLevel(10, "2", new Program(List.of()), ""), "should throw on high level for user");
+    }
+
+    @DisplayName("The deletion of a level by a number")
+    @Test
+    void testDeleteByLevelNumber(){
+        assertThrows(LevelInexistentException.class, () -> {
+            levelService.deleteByLevelNumber(-1);
+        });
+
+        assertTrue(levelService.levelExists(1));
+        levelService.deleteByLevelNumber(1);
+        assertFalse(levelService.levelExists(1));
     }
 }
