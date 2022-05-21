@@ -118,7 +118,14 @@ public class UserControllerTests {
     @Test
     @DisplayName("GET /users/search?name=string")
     void testGetByNameContaining(){
-        // TODO
+        given(userService.searchByNameContaining("name", true)).willReturn(userList);
+        ResponseEntity<List<UserDTO>> responseEntity = userController.getByNameContaining("name");
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
+        List<UserDTO> responseList = responseEntity.getBody();
+        assertEquals(2, responseList.size());
+        assertEquals("a name", responseList.get(0).getName());
+        assertEquals("another name", responseList.get(1).getName());
     }
 
     @Test
