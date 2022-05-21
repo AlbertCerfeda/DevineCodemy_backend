@@ -22,7 +22,7 @@ public class LevelRepositoryTest {
     @DisplayName("should insert record on start")
     public void testInsertRecordOnStart() {
         List<Level> levels = levelRepository.findAll();
-        assertEquals(10, levels.size(), "record count is not matching");
+        assertEquals(15, levels.size(), "record count is not matching");
     }
 
     @Test
