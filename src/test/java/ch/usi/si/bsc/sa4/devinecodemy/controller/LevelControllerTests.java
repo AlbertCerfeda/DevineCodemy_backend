@@ -49,9 +49,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(classes = DevineCodemyBackend.class)
 @ContextConfiguration(classes = DevineCodemyBackend.class)
-@DisplayName("The level controller")
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@DisplayName("The level controller")
 public class LevelControllerTests {
 
     @MockBean
