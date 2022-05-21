@@ -191,18 +191,4 @@ public class LevelService {
     public Optional<Level> getByLevelNumber(int levelNumber) {
         return levelRepository.findByLevelNumber(levelNumber);
     }
-    
-    
-    /**
-     * Deletes a Level with a specific level number.
-     * @throws LevelInexistentException if the level with the given levelNumber does not exist.
-     * @param levelNumber the number of the level to delete.
-     */
-    public void deleteByLevelNumber(int levelNumber) throws LevelInexistentException {
-        if(!levelExists(levelNumber)) {
-            throw new LevelInexistentException(levelNumber);
-        }
-        
-        levelRepository.deleteByLevelNumber(levelNumber);
-    }
 }
