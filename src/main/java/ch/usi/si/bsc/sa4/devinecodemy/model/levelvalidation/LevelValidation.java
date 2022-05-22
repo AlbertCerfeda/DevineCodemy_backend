@@ -6,7 +6,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.LevelValidationDTO;
-import ch.usi.si.bsc.sa4.devinecodemy.model.EAnimation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.Animation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.SAnimation;
 
 /**
  * Represents the result of the code validation done by the GamePlayer.
@@ -15,7 +16,7 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.EAnimation;
 public class LevelValidation {
     private boolean completed;
     private final List<String> errors;
-    private final List<EAnimation> animations;
+    private final List<Animation> animations;
 
     public LevelValidation() {
         completed = false;
@@ -31,7 +32,7 @@ public class LevelValidation {
         errors.add(message);
     }
 
-    public void addAnimation(EAnimation animation) {
+    public void addAnimation(Animation animation) {
         animations.add(animation);
     }
 
@@ -47,7 +48,7 @@ public class LevelValidation {
         return errors;
     }
 
-    public List<EAnimation> getAnimations() {
+    public List<Animation> getAnimations() {
         return animations;
     }
 
@@ -56,7 +57,7 @@ public class LevelValidation {
     }
 
     public List<String> getAnimationsAsStrings() {
-        return animations.stream().map(EAnimation::toString).collect(Collectors.toList());
+        return animations.stream().map(Animation::toString).collect(Collectors.toList());
     }
 
     public LevelValidationDTO toLevelValidationDTO() {

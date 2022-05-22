@@ -1,7 +1,7 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.language;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.ECategory;
-import ch.usi.si.bsc.sa4.devinecodemy.model.EAnimation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.SAnimation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EOrientation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EWorld;
 import ch.usi.si.bsc.sa4.devinecodemy.model.item.CoinItem;
@@ -129,9 +129,9 @@ public class LanguageTests {
         Program thisProgram = new Program(List.of(new ActionMoveForward(new ActionTurnLeft(new ActionTurnRight(new ActionCollectCoin(null))))));
         LevelValidation result = thisProgram.execute(context);
         assertFalse(result.isCompleted(), "The level should not be completed");
-        assertFalse(result.getAnimations().contains(EAnimation.EMOTE_DEATH),
+        assertFalse(result.getAnimations().contains(SAnimation.EMOTE_DEATH),
                 "doesn't add death animation when the player is not dead");
-        assertTrue(result.getAnimations().contains(EAnimation.MOVE_FORWARD), "adds move forward animation");
+        assertTrue(result.getAnimations().contains(SAnimation.MOVE_FORWARD), "adds move forward animation");
     }
 
     @DisplayName("should not be able to run a program with two main blocks")
@@ -140,7 +140,7 @@ public class LanguageTests {
         Program thisProgram = new Program(List.of(new ActionMoveForward(null), new ActionMoveForward(null)));
         LevelValidation result = thisProgram.execute(context);
         assertFalse(result.isCompleted(), "The level should not be completed");
-        assertTrue(result.getAnimations().contains(EAnimation.EMOTE_DEATH),
+        assertTrue(result.getAnimations().contains(SAnimation.EMOTE_DEATH),
                 "adds death animation when the program cannot be executed");
         assertTrue(result.hasErrors(), "adds error when the program cannot be executed");
     }
@@ -151,7 +151,7 @@ public class LanguageTests {
         Program thisProgram = new Program(List.of());
         LevelValidation result = thisProgram.execute(context);
         assertFalse(result.isCompleted(), "The level should not be completed");
-        assertTrue(result.getAnimations().contains(EAnimation.EMOTE_DEATH),
+        assertTrue(result.getAnimations().contains(SAnimation.EMOTE_DEATH),
                 "adds death animation when the program cannot be executed");
         assertTrue(result.hasErrors(), "adds error when the program cannot be executed");
     }
@@ -162,7 +162,7 @@ public class LanguageTests {
         Program thisProgram = new Program(List.of(new FunctionDefinition("pippo", new ActionMoveForward(null))));
         LevelValidation result = thisProgram.execute(context);
         assertFalse(result.isCompleted(), "The level should not be completed");
-        assertTrue(result.getAnimations().contains(EAnimation.EMOTE_DEATH),
+        assertTrue(result.getAnimations().contains(SAnimation.EMOTE_DEATH),
                 "adds death animation when the program cannot be executed");
         assertTrue(result.hasErrors(), "adds error when the program cannot be executed");
     }
@@ -175,9 +175,9 @@ public class LanguageTests {
                                                                           new ActionMoveForward(null))));
         LevelValidation result = thisProgram.execute(context);
         assertFalse(result.isCompleted(), "The level should not be completed");
-        assertFalse(result.getAnimations().contains(EAnimation.EMOTE_DEATH),
+        assertFalse(result.getAnimations().contains(SAnimation.EMOTE_DEATH),
                 "doesn't add death animation when the player is not dead");
-        assertTrue(result.getAnimations().contains(EAnimation.MOVE_FORWARD), "adds move forward animation");
+        assertTrue(result.getAnimations().contains(SAnimation.MOVE_FORWARD), "adds move forward animation");
         assertFalse(result.hasErrors(), "doesn't add error when the program can be executed");
         assertTrue(context.getFunctionTable().containsKey("pippo"), "adds function to the function table");
     }
@@ -188,7 +188,7 @@ public class LanguageTests {
         Program thisProgram = new Program(List.of(new FunctionDefinition("moveForward", new ActionMoveForward(null))));
         LevelValidation result = thisProgram.execute(context);
         assertFalse(result.isCompleted(), "The level should not be completed");
-        assertTrue(result.getAnimations().contains(EAnimation.EMOTE_DEATH),
+        assertTrue(result.getAnimations().contains(SAnimation.EMOTE_DEATH),
                 "adds death animation when the program cannot be executed");
         assertTrue(result.hasErrors(), "adds error when the program cannot be executed");
     }
@@ -200,7 +200,7 @@ public class LanguageTests {
                                                   new FunctionDefinition("pippo", new ActionMoveForward(null))));
         LevelValidation result = thisProgram.execute(context);
         assertFalse(result.isCompleted(), "The level should not be completed");
-        assertTrue(result.getAnimations().contains(EAnimation.EMOTE_DEATH),
+        assertTrue(result.getAnimations().contains(SAnimation.EMOTE_DEATH),
                 "adds death animation when the program cannot be executed");
         assertTrue(result.hasErrors(), "adds error when the program cannot be executed");
     }
@@ -211,7 +211,7 @@ public class LanguageTests {
         Program thisProgram = new Program(List.of(new ActionFunctionCall("pippo", null)));
         LevelValidation result = thisProgram.execute(context);
         assertFalse(result.isCompleted(), "The level should not be completed");
-        assertTrue(result.getAnimations().contains(EAnimation.EMOTE_DEATH),
+        assertTrue(result.getAnimations().contains(SAnimation.EMOTE_DEATH),
                 "adds death animation when the program cannot be executed");
         assertTrue(result.hasErrors(), "adds error when the program cannot be executed");
     }
@@ -227,7 +227,7 @@ public class LanguageTests {
                                                                  new ActionTurnLeft(null)))))));
         LevelValidation result = thisProgram.execute(context);
         assertFalse(result.isCompleted(), "The level should not be completed");
-        assertTrue(result.getAnimations().contains(EAnimation.EMOTE_DEATH),
+        assertTrue(result.getAnimations().contains(SAnimation.EMOTE_DEATH),
                 "adds death animation when the program cannot be executed");
         assertTrue(result.hasErrors(), "adds error when the program cannot be executed");
     }
@@ -239,9 +239,9 @@ public class LanguageTests {
         LevelValidation result = thisProgram.execute(context);
         assertTrue(this.context.getBoard().getTeleportAt(3, 0).isActive());
         assertTrue(result.isCompleted(), "The level should be completed");
-        assertTrue(result.getAnimations().contains(EAnimation.MOVE_FORWARD), "adds move forward animation");
-        assertTrue(result.getAnimations().contains(EAnimation.JUMP), "adds jump animation");
-        assertTrue(result.getAnimations().contains(EAnimation.EMOTE_DANCE),
+        assertTrue(result.getAnimations().contains(SAnimation.MOVE_FORWARD), "adds move forward animation");
+        assertTrue(result.getAnimations().contains(SAnimation.JUMP), "adds jump animation");
+        assertTrue(result.getAnimations().contains(SAnimation.EMOTE_DANCE),
                     "adds emote dance animation when the level is completed");
         assertEquals(2, context.getCollectedCoins(), "count collected coins");
         assertFalse(context.isDead(), "The player should not be dead");
@@ -254,7 +254,7 @@ public class LanguageTests {
         Program thisProgram = new Program(List.of(new ActionCollectCoin(new ActionMoveForward(new ActionCollectCoin(null)))));
         LevelValidation result = thisProgram.execute(context);
         assertFalse(result.isCompleted(), "The level should be completed");
-        assertTrue(result.getAnimations().contains(EAnimation.JUMP), "adds jump animation");
+        assertTrue(result.getAnimations().contains(SAnimation.JUMP), "adds jump animation");
         assertEquals(1, context.getCollectedCoins(), "count collected coins");
         assertFalse(result.hasErrors(), "The level validation should not have errors");
     }
@@ -268,7 +268,7 @@ public class LanguageTests {
                                                                     new ActionTurnRight(null))))));
         LevelValidation result = thisProgram.execute(context);
         assertFalse(result.isCompleted(), "The level should be completed");
-        assertTrue(result.getAnimations().contains(EAnimation.EMOTE_DEATH), "adds death animation");
+        assertTrue(result.getAnimations().contains(SAnimation.EMOTE_DEATH), "adds death animation");
         assertTrue(context.isDead(), "The player should be dead");
         assertFalse(result.hasErrors(), "The level validation should not have errors");
 
@@ -278,7 +278,7 @@ public class LanguageTests {
                                                             new ActionCollectCoin(null))))));
         result = thisProgram2.execute(context);
         assertFalse(result.isCompleted(), "The level should be completed");
-        assertTrue(result.getAnimations().contains(EAnimation.EMOTE_DEATH), "adds death animation");
+        assertTrue(result.getAnimations().contains(SAnimation.EMOTE_DEATH), "adds death animation");
         assertTrue(context.isDead(), "The player should be dead");
         assertFalse(result.hasErrors(), "The level validation should not have errors");
     }
@@ -336,7 +336,7 @@ public class LanguageTests {
 
         LevelValidation result = thisProgram.execute(context);
         assertFalse(result.isCompleted(), "The level should be completed");
-        assertTrue(result.getAnimations().contains(EAnimation.TURN_RIGHT), "should turn right if the condition is false");
+        assertTrue(result.getAnimations().contains(SAnimation.TURN_RIGHT), "should turn right if the condition is false");
         assertFalse(result.hasErrors(), "The level validation should not have errors");
     }
 
@@ -351,7 +351,7 @@ public class LanguageTests {
 
         LevelValidation result = thisProgram.execute(context);
         assertFalse(result.isCompleted(), "The level should be completed");
-        assertTrue(result.getAnimations().contains(EAnimation.MOVE_FORWARD), "should move forward if the condition is false");
+        assertTrue(result.getAnimations().contains(SAnimation.MOVE_FORWARD), "should move forward if the condition is false");
         assertFalse(result.hasErrors(), "The level validation should not have errors");
     }
 
@@ -379,7 +379,7 @@ public class LanguageTests {
 
         LevelValidation result = thisProgram.execute(context);
         assertFalse(result.isCompleted(), "The level should be completed");
-        assertTrue(result.getAnimations().contains(EAnimation.MOVE_FORWARD), "should move forward if the condition is true");
+        assertTrue(result.getAnimations().contains(SAnimation.MOVE_FORWARD), "should move forward if the condition is true");
         assertFalse(result.hasErrors(), "The level validation should not have errors");
     }
 
@@ -409,7 +409,7 @@ public class LanguageTests {
                                                         null)));
 
         LevelValidation result = thisProgram.execute(context);
-        assertTrue(result.getAnimations().contains(EAnimation.MOVE_FORWARD),
+        assertTrue(result.getAnimations().contains(SAnimation.MOVE_FORWARD),
                 "should move forward if the condition is true");
         assertFalse(result.hasErrors(), "The level validation should not have errors");
     }

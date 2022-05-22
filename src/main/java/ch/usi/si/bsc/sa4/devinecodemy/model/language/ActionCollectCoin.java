@@ -1,6 +1,7 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.language;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.EAnimation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.SAnimation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.TAnimation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.ExecutionTimeoutException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.level.Robot;
 import ch.usi.si.bsc.sa4.devinecodemy.model.tile.TeleportTile;
@@ -27,7 +28,7 @@ public class ActionCollectCoin extends Action {
         context.incrementClock();
         if (!context.isDead()) {
             final Robot robot = context.getRobot();
-            context.getLevelValidation().addAnimation(EAnimation.JUMP);
+            context.getLevelValidation().addAnimation(SAnimation.JUMP);
 
             if (context.getBoard().containsItemAt(robot.getPosX(), robot.getPosY())) {
                 context.incrementCollectedCoins();
@@ -39,7 +40,7 @@ public class ActionCollectCoin extends Action {
                         if (!teleport.isActive() && teleport.getCoinsToActivate() <= context.getCollectedCoins()) {
                             teleport.setActive(true);
 
-                            EAnimation animation = EAnimation.ACTIVATE_TELEPORT_AT;
+                            TAnimation animation = TAnimation.ACTIVATE_TELEPORT_AT;
                             animation.setTargetX(teleport.getPosX());
                             animation.setTargetY(teleport.getPosY());
                             context.getLevelValidation().addAnimation(animation); // activate teleport animation
@@ -47,7 +48,7 @@ public class ActionCollectCoin extends Action {
                     }
                 });
             } else {
-                context.getLevelValidation().addAnimation(EAnimation.EMOTE_NO);
+                context.getLevelValidation().addAnimation(SAnimation.EMOTE_NO);
             }
         }
 

@@ -7,29 +7,29 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("The user")
-public class EAnimationTests {
+public class SAnimationTests {
 
-    EAnimation moveForward;
-    EAnimation turnLeft;
-    EAnimation turnRight;
-    EAnimation jump;
-    EAnimation idle;
-    EAnimation death;
-    EAnimation no;
-    EAnimation thumbsUp;
-    EAnimation dance;
+    SAnimation moveForward;
+    SAnimation turnLeft;
+    SAnimation turnRight;
+    SAnimation jump;
+    SAnimation idle;
+    SAnimation death;
+    SAnimation no;
+    SAnimation thumbsUp;
+    SAnimation dance;
 
     @BeforeEach
     void setup() {
-        moveForward = EAnimation.MOVE_FORWARD;
-        turnLeft = EAnimation.TURN_LEFT;
-        turnRight = EAnimation.TURN_RIGHT;
-        jump = EAnimation.JUMP;
-        idle = EAnimation.IDLE;
-        death = EAnimation.EMOTE_DEATH;
-        no = EAnimation.EMOTE_NO;
-        thumbsUp = EAnimation.EMOTE_THUMBS_UP;
-        dance = EAnimation.EMOTE_DANCE;
+        moveForward = SAnimation.MOVE_FORWARD;
+        turnLeft = SAnimation.TURN_LEFT;
+        turnRight = SAnimation.TURN_RIGHT;
+        jump = SAnimation.JUMP;
+        idle = SAnimation.IDLE;
+        death = SAnimation.EMOTE_DEATH;
+        no = SAnimation.EMOTE_NO;
+        thumbsUp = SAnimation.EMOTE_THUMBS_UP;
+        dance = SAnimation.EMOTE_DANCE;
     }
 
     @DisplayName("should be possible to get the string representation after creation")
