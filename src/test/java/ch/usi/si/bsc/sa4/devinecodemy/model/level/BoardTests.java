@@ -270,8 +270,8 @@ public class BoardTests {
                 new WaterTile(5, 9, 0),
                 new WaterTile(6, 9, 0),
                 new WaterTile(7, 9, 0),
-                new TeleportTile(8, 9, 0),
-                new TeleportTile(9, 9, 0)
+                new TeleportTile(8, 9, 0, true, 9, 9, 0),
+                new TeleportTile(9, 9, 0, true, 8, 9, 0)
         );
         List<Item> items = List.of(
                 new CoinItem(4, 7),
@@ -412,8 +412,8 @@ public class BoardTests {
                     new WaterTile(5, 9, 0),
                     new WaterTile(6, 9, 0),
                     new WaterTile(7, 9, 0),
-                    new TeleportTile(8, 9, 0),
-                    new TeleportTile(9, 9, 0)
+                    new TeleportTile(8, 9, 0, false, 9, 9, 1),
+                    new TeleportTile(9, 9, 0, false, 8, 9, 1)
             );
             assertEquals(expectedGrid, actualGrid, "grid is not the one provided in the constructor");
             assertEquals(board, board,"board is not equal to itself");

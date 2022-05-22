@@ -10,10 +10,7 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.level.Board;
 import ch.usi.si.bsc.sa4.devinecodemy.model.level.Level;
 import ch.usi.si.bsc.sa4.devinecodemy.model.level.Robot;
 import ch.usi.si.bsc.sa4.devinecodemy.model.levelvalidation.LevelValidation;
-import ch.usi.si.bsc.sa4.devinecodemy.model.tile.ConcreteTile;
-import ch.usi.si.bsc.sa4.devinecodemy.model.tile.GrassTile;
-import ch.usi.si.bsc.sa4.devinecodemy.model.tile.Tile;
-import ch.usi.si.bsc.sa4.devinecodemy.model.tile.WaterTile;
+import ch.usi.si.bsc.sa4.devinecodemy.model.tile.*;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.StatisticsRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -53,7 +50,9 @@ public class LanguageTests {
                 new GrassTile(1,2,0),
                 new WaterTile(2,0,0),
                 new WaterTile(2,1,0),
-                new WaterTile(2,2,0)
+                new WaterTile(2,2,0),
+                new TeleportTile(3,0,0, false, 3, 1, 1),
+                new TeleportTile(3,1,0, false, 3, 0, 1)
         );
         List<Item> items = List.of(new CoinItem(0,2),
                 new CoinItem(0,1));
@@ -238,6 +237,7 @@ public class LanguageTests {
     public void testCompleteLevel() {
         Program thisProgram = new Program(List.of(new ActionMoveForward(new ActionCollectCoin(new ActionMoveForward(new ActionCollectCoin(null))))));
         LevelValidation result = thisProgram.execute(context);
+        assertTrue(this.context.getBoard().getTeleportAt(3, 0).isActive());
         assertTrue(result.isCompleted(), "The level should be completed");
         assertTrue(result.getAnimations().contains(EAnimation.MOVE_FORWARD), "adds move forward animation");
         assertTrue(result.getAnimations().contains(EAnimation.JUMP), "adds jump animation");

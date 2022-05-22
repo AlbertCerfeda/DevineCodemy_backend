@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class LeverTile extends Tile{
 
+    private final int teleportX;
+    private final int teleportY;
     /**
      * Constructor for LeverTile object.
      * @param posX the x position of the lever.
@@ -18,8 +20,19 @@ public class LeverTile extends Tile{
     @JsonCreator
     public LeverTile(@JsonProperty("posX") int posX,
                      @JsonProperty("posY") int posY,
-                     @JsonProperty("posZ") int posZ) {
+                     @JsonProperty("posZ") int posZ,
+                     @JsonProperty("teleportX") int teleportX,
+                     @JsonProperty("teleportY") int teleportY) {
         super(ETile.LEVER, posX, posY, posZ, true);
+        this.teleportX = teleportX;
+        this.teleportY = teleportY;
     }
 
+    public int getTeleportX() {
+        return teleportX;
+    }
+
+    public int getTeleportY() {
+        return teleportY;
+    }
 }
