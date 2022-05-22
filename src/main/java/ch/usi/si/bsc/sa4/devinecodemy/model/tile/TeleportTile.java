@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class TeleportTile extends Tile {
 
+    private boolean active;
+
     /**
      * Construct for Teleport tiles.
      * @param posX the x position of the tile.
@@ -19,5 +21,15 @@ public class TeleportTile extends Tile {
                      @JsonProperty("posY") int posY,
                      @JsonProperty("posZ") int posZ) {
         super(ETile.TELEPORT, posX, posY, posZ, true);
+        active = true;
     }
+
+    public boolean isActive(){
+        return active;
+    }
+
+    public void setActive(boolean status){
+        this.active = status;
+    }
+
 }

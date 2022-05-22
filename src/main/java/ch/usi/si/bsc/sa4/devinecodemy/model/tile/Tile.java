@@ -106,6 +106,14 @@ public abstract class Tile {
     }
 
     /**
+     * Checks if the tile is a teleport tile.
+     * @return true if this tile is a teleport, otherwise false.
+     */
+    public boolean isTeleport(){
+        return type == ETile.TELEPORT;
+    }
+
+    /**
      * To get if the tile has been already visited or not.
      * Useful when creating board.
      * @return true if visited, false otherwise.
