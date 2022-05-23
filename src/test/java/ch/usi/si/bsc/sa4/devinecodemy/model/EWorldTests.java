@@ -17,9 +17,9 @@ public class EWorldTests {
 
     @BeforeEach
     void setup() {
-        earth = EWorld.PURGATORY;
-        sky = EWorld.PARADISE;
-        lava = EWorld.INFERNO;
+        earth = EWorld.INFERNO;
+        sky = EWorld.PURGATORY;
+        lava = EWorld.PARADISE;
     }
 
     @DisplayName("should be able to get the EWorld of a given string")

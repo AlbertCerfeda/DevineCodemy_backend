@@ -59,7 +59,7 @@ public class LanguageTests {
                 new CoinItem(0,1));
         board = new Board(grid,items,2);
         List<ECategory> allowedCommands = List.of(ECategory.BASIC_COMMANDS, ECategory.CONDITIONS, ECategory.LOGIC);
-        level = new Level("Level 1", "the first level",1, EWorld.PURGATORY,
+        level = new Level("Level 1", "the first level",1, EWorld.INFERNO,
                 6,board,robot,allowedCommands,"../../assets/thumbnail.jpg");
         levelValidation = new LevelValidation();
         context = new Context(board, robot, 4, levelValidation);

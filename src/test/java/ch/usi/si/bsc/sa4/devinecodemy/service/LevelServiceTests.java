@@ -1,7 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.service;
 
 import ch.usi.si.bsc.sa4.devinecodemy.DevineCodemyBackend;
-import ch.usi.si.bsc.sa4.devinecodemy.model.EAnimation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.ECategory;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EOrientation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EWorld;
@@ -68,9 +67,9 @@ public class LevelServiceTests {
     @BeforeAll
     void init(){
         levelService = new LevelService(levelRepository,statisticsService,userService);
-        inferno = EWorld.INFERNO;
-        purgatory = EWorld.PURGATORY;
-        paradise = EWorld.PARADISE;
+        inferno = EWorld.PARADISE;
+        purgatory = EWorld.INFERNO;
+        paradise = EWorld.PURGATORY;
     }
 
     @BeforeEach
