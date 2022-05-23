@@ -6,8 +6,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.LevelValidationDTO;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Animation;
-import ch.usi.si.bsc.sa4.devinecodemy.model.SAnimation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.animation.Animation;
 
 /**
  * Represents the result of the code validation done by the GamePlayer.

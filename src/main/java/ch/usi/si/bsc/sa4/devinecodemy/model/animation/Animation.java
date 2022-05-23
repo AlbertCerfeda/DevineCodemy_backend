@@ -1,4 +1,4 @@
-package ch.usi.si.bsc.sa4.devinecodemy.model;
+package ch.usi.si.bsc.sa4.devinecodemy.model.animation;
 
 /**
  * Interface for the animations recognized

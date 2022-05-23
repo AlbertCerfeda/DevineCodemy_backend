@@ -1,10 +1,10 @@
-package ch.usi.si.bsc.sa4.devinecodemy.model;
+package ch.usi.si.bsc.sa4.devinecodemy.model.animation;
 
 /**
  * The SAnimation class represents the standard animations recognized
  * by the frontend through their name.
  */
-public enum SAnimation implements Animation {
+public enum ERobotAnimation implements Animation {
     MOVE_FORWARD("MoveForward"),
     TURN_LEFT("TurnLeft"),
     TURN_RIGHT("TurnRight"),
@@ -20,7 +20,7 @@ public enum SAnimation implements Animation {
     private final String name;
 
 
-    SAnimation(String animationName) {
+    ERobotAnimation(String animationName) {
         this.name = animationName;
     }
 

@@ -11,6 +11,7 @@ public class TeleportTile extends Tile {
     private boolean active;
     private final int targetX;
     private final int targetY;
+    private final int targetZ;
 
     private final int coinsToActivate;
 
@@ -27,11 +28,13 @@ public class TeleportTile extends Tile {
                         @JsonProperty("active") boolean active,
                         @JsonProperty("targetX") final int targetX,
                         @JsonProperty("targetY") final int targetY,
+                        @JsonProperty("targetZ") final int targetZ,
                         @JsonProperty("coinsToActivate") int coinsToActivate) {
         super(ETile.TELEPORT, posX, posY, posZ, true);
         this.active = active;
         this.targetX = targetX;
         this.targetY = targetY;
+        this.targetZ = targetZ;
         this.coinsToActivate = coinsToActivate;
     }
 
@@ -49,6 +52,10 @@ public class TeleportTile extends Tile {
 
     public int getTargetY(){
         return targetY;
+    }
+
+    public int getTargetZ(){
+        return targetZ;
     }
 
     public int getCoinsToActivate(){

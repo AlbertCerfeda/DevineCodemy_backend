@@ -1,7 +1,8 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.language;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.SAnimation;
-import ch.usi.si.bsc.sa4.devinecodemy.model.TAnimation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.animation.CoordinatesAnimation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.animation.ECoordinatesAnimation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.animation.ERobotAnimation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.ExecutionTimeoutException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.level.Robot;
 import ch.usi.si.bsc.sa4.devinecodemy.model.tile.LeverTile;
@@ -38,14 +39,12 @@ public class ActionActivateLever extends Action {
                 if (teleport instanceof TeleportTile) {
                     TeleportTile teleportTile = (TeleportTile) teleport;
                     teleportTile.setActive(true);
-                    TAnimation animation = TAnimation.ACTIVATE_TELEPORT_AT;
-                    animation.setTargetX(teleportTile.getTargetX());
-                    animation.setTargetY(teleportTile.getTargetY());
-                    context.getLevelValidation().addAnimation(animation);
+
+                    context.getLevelValidation().addAnimation(new CoordinatesAnimation(ECoordinatesAnimation.ACTIVATE_LEVER, teleportTile.getTargetX(), teleportTile.getTargetY(), teleportTile.getTargetZ()));
                 }
 
             } else {
-                context.getLevelValidation().addAnimation(SAnimation.EMOTE_NO);
+                context.getLevelValidation().addAnimation(ERobotAnimation.EMOTE_NO);
             }
         }
 

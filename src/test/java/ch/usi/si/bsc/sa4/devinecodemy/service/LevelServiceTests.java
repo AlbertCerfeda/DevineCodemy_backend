@@ -1,6 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.service;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.SAnimation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.animation.ERobotAnimation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EWorld;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.LevelInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
@@ -207,12 +207,12 @@ public class LevelServiceTests {
     void testPlayLevelValid() {
         var expected = new LevelValidation();
         expected.setCompleted(true);
-        expected.addAnimation(SAnimation.MOVE_FORWARD);
-        expected.addAnimation(SAnimation.MOVE_FORWARD);
-        expected.addAnimation(SAnimation.MOVE_FORWARD);
-        expected.addAnimation(SAnimation.MOVE_FORWARD);
-        expected.addAnimation(SAnimation.JUMP);
-        expected.addAnimation(SAnimation.EMOTE_DANCE);
+        expected.addAnimation(ERobotAnimation.MOVE_FORWARD);
+        expected.addAnimation(ERobotAnimation.MOVE_FORWARD);
+        expected.addAnimation(ERobotAnimation.MOVE_FORWARD);
+        expected.addAnimation(ERobotAnimation.MOVE_FORWARD);
+        expected.addAnimation(ERobotAnimation.JUMP);
+        expected.addAnimation(ERobotAnimation.EMOTE_DANCE);
 
         List<LanguageBlock> languageBlocks = List.of(new ActionMoveForward(new ActionMoveForward(new ActionMoveForward(new ActionMoveForward(new ActionCollectCoin(null))))));
         Program program = new Program(languageBlocks);

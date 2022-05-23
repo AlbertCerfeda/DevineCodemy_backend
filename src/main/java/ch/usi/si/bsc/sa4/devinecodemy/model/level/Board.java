@@ -153,7 +153,11 @@ public class Board {
 
     public TeleportTile getTeleportAt(final int x, final int y) {
         try {
-            return (TeleportTile) getTileAt(x, y);
+            Tile tile = getTileAt(x, y);
+            if(tile instanceof TeleportTile) {
+                return (TeleportTile) tile;
+            }
+            return null;
         } catch (IndexOutOfBoundsException e) {
             return null;
         }

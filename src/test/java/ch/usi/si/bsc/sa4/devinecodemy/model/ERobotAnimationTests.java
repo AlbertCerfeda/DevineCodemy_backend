@@ -1,5 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model;
 
+import ch.usi.si.bsc.sa4.devinecodemy.model.animation.ERobotAnimation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -7,29 +8,29 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("The user")
-public class SAnimationTests {
+public class ERobotAnimationTests {
 
-    SAnimation moveForward;
-    SAnimation turnLeft;
-    SAnimation turnRight;
-    SAnimation jump;
-    SAnimation idle;
-    SAnimation death;
-    SAnimation no;
-    SAnimation thumbsUp;
-    SAnimation dance;
+    ERobotAnimation moveForward;
+    ERobotAnimation turnLeft;
+    ERobotAnimation turnRight;
+    ERobotAnimation jump;
+    ERobotAnimation idle;
+    ERobotAnimation death;
+    ERobotAnimation no;
+    ERobotAnimation thumbsUp;
+    ERobotAnimation dance;
 
     @BeforeEach
     void setup() {
-        moveForward = SAnimation.MOVE_FORWARD;
-        turnLeft = SAnimation.TURN_LEFT;
-        turnRight = SAnimation.TURN_RIGHT;
-        jump = SAnimation.JUMP;
-        idle = SAnimation.IDLE;
-        death = SAnimation.EMOTE_DEATH;
-        no = SAnimation.EMOTE_NO;
-        thumbsUp = SAnimation.EMOTE_THUMBS_UP;
-        dance = SAnimation.EMOTE_DANCE;
+        moveForward = ERobotAnimation.MOVE_FORWARD;
+        turnLeft = ERobotAnimation.TURN_LEFT;
+        turnRight = ERobotAnimation.TURN_RIGHT;
+        jump = ERobotAnimation.JUMP;
+        idle = ERobotAnimation.IDLE;
+        death = ERobotAnimation.EMOTE_DEATH;
+        no = ERobotAnimation.EMOTE_NO;
+        thumbsUp = ERobotAnimation.EMOTE_THUMBS_UP;
+        dance = ERobotAnimation.EMOTE_DANCE;
     }
 
     @DisplayName("should be possible to get the string representation after creation")

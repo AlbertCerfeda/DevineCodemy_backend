@@ -1,7 +1,8 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.language;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.SAnimation;
-import ch.usi.si.bsc.sa4.devinecodemy.model.TAnimation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.animation.CoordinatesAnimation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.animation.ECoordinatesAnimation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.animation.ERobotAnimation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.ExecutionTimeoutException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.level.Robot;
 import ch.usi.si.bsc.sa4.devinecodemy.model.tile.TeleportTile;
@@ -28,7 +29,7 @@ public class ActionCollectCoin extends Action {
         context.incrementClock();
         if (!context.isDead()) {
             final Robot robot = context.getRobot();
-            context.getLevelValidation().addAnimation(SAnimation.JUMP);
+            context.getLevelValidation().addAnimation(ERobotAnimation.JUMP);
 
             if (context.getBoard().containsItemAt(robot.getPosX(), robot.getPosY())) {
                 context.incrementCollectedCoins();
@@ -40,15 +41,17 @@ public class ActionCollectCoin extends Action {
                         if (!teleport.isActive() && teleport.getCoinsToActivate() <= context.getCollectedCoins()) {
                             teleport.setActive(true);
 
-                            TAnimation animation = TAnimation.ACTIVATE_TELEPORT_AT;
-                            animation.setTargetX(teleport.getPosX());
-                            animation.setTargetY(teleport.getPosY());
-                            context.getLevelValidation().addAnimation(animation); // activate teleport animation
+                            context.getLevelValidation().addAnimation(
+                                    new CoordinatesAnimation(
+                                            ECoordinatesAnimation.ACTIVATE_TELEPORT_AT,
+                                            teleport.getPosX(),
+                                            teleport.getPosY(),
+                                            teleport.getTargetZ())); // activate teleport animation
                         }
                     }
                 });
             } else {
-                context.getLevelValidation().addAnimation(SAnimation.EMOTE_NO);
+                context.getLevelValidation().addAnimation(ERobotAnimation.EMOTE_NO);
             }
         }
 
