@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/users")
-@CrossOrigin(origins = "http://localhost:3000/")
 public class UserController {
     private final UserService userService;
 
@@ -91,7 +90,6 @@ public class UserController {
      * @constraint user's profile is public or of the user itself
      */
     @GetMapping("/{id}")
-    @CrossOrigin(origins = "http://localhost:3000/")
     public ResponseEntity<UserDTO> getById(OAuth2AuthenticationToken authenticationToken, @PathVariable("id") String id) {
         Optional<User> optionalUser = userService.getById(id);
         

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 /**
  * Controller that enables the user to play a level.
  */
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/play")
 public class PlayController {
@@ -43,7 +42,7 @@ public class PlayController {
      */
     @PutMapping()
     @ResponseBody
-    public ResponseEntity<LevelValidationDTO>play(OAuth2AuthenticationToken authenticationToken, @RequestBody PlayLevelDTO playLevelDTO) {
+    public ResponseEntity<LevelValidationDTO> play(OAuth2AuthenticationToken authenticationToken, @RequestBody PlayLevelDTO playLevelDTO) {
         final User user = userService.getUserByToken(authenticationToken);
         final LevelValidation playedLevel = levelService.playLevel(playLevelDTO.getLevelNumber(), user.getId(), playLevelDTO.getProgram(), playLevelDTO.getAttempt());
 
