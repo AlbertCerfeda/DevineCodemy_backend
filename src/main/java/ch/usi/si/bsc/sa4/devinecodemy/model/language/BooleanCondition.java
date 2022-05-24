@@ -17,7 +17,8 @@ import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
         @JsonSubTypes.Type(value=ConditionTrue.class, name = "true"),
         @JsonSubTypes.Type(value = ConditionOR.class, name = "or"),
         @JsonSubTypes.Type(value = ConditionXOR.class, name = "xor"),
-        @JsonSubTypes.Type(value = ConditionNOT.class, name = "not")
+        @JsonSubTypes.Type(value = ConditionNOT.class, name = "not"),
+        @JsonSubTypes.Type(value = ConditionAND.class, name = "and")
 
 })
 public interface BooleanCondition {
