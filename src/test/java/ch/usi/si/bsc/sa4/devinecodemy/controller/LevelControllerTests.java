@@ -418,9 +418,9 @@ public class LevelControllerTests {
 
     public static Stream<Arguments> getWorldArgumentsProvider() {
         return Stream.of(
-                arguments(EWorld.INFERNO, "Purgatory", Pair.of(1,5)),
-                arguments(EWorld.PURGATORY, "Paradise", Pair.of(6,10)),
-                arguments(EWorld.PARADISE, "Inferno", Pair.of(11,15))
+                arguments(EWorld.INFERNO, "Inferno", Pair.of(1,5)),
+                arguments(EWorld.PURGATORY, "Purgatory", Pair.of(6,10)),
+                arguments(EWorld.PARADISE, "Paradise", Pair.of(11,15))
         );
     }
 
