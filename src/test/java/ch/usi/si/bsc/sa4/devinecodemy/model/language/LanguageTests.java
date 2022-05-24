@@ -567,5 +567,69 @@ public class LanguageTests {
                 "should move forward if the condition is true");
     }
 
+    @DisplayName("test boolean and")
+    @Test
+    public void testBooleanAnd() {
+        Program thisProgram = new Program(List.of(new ActionIfElse(
+                                                        new ConditionAND(
+                                                                new ConditionTrue(),
+                                                                new ConditionTrue()),
+                                                        new ActionMoveForward(null),
+                                                        new ActionTurnLeft(null),
+                                                        null)));
+
+        LevelValidation result = thisProgram.execute(context);
+        assertTrue(result.getAnimations().contains(EAnimation.MOVE_FORWARD),
+                "should move forward if the condition is true");
+    }
+
+    @DisplayName("test boolean and with false")
+    @Test
+    public void testBooleanAndFalse() {
+        Program thisProgram = new Program(List.of(new ActionIfElse(
+                                                        new ConditionAND(
+                                                                new ConditionTrue(),
+                                                                new ConditionFalse()),
+                                                        new ActionMoveForward(null),
+                                                        new ActionTurnLeft(null),
+                                                        null)));
+
+        LevelValidation result = thisProgram.execute(context);
+        assertTrue(result.getAnimations().contains(EAnimation.TURN_LEFT),
+                "should turn left if the condition is true");
+    }
+
+    @DisplayName("test boolean and with false and true")
+    @Test
+    public void testBooleanAndFalseTrue() {
+        Program thisProgram = new Program(List.of(new ActionIfElse(
+                                                        new ConditionAND(
+                                                                new ConditionFalse(),
+                                                                new ConditionTrue()),
+                                                        new ActionMoveForward(null),
+                                                        new ActionTurnLeft(null),
+                                                        null)));
+
+        LevelValidation result = thisProgram.execute(context);
+        assertTrue(result.getAnimations().contains(EAnimation.TURN_LEFT),
+                "should turn left if the condition is true");
+    }
+
+    @DisplayName("test boolean and with false and false")
+    @Test
+    public void testBooleanAndFalseFalse() {
+        Program thisProgram = new Program(List.of(new ActionIfElse(
+                                                        new ConditionAND(
+                                                                new ConditionFalse(),
+                                                                new ConditionFalse()),
+                                                        new ActionMoveForward(null),
+                                                        new ActionTurnLeft(null),
+                                                        null)));
+
+        LevelValidation result = thisProgram.execute(context);
+        assertTrue(result.getAnimations().contains(EAnimation.TURN_LEFT),
+                "should turn left if the condition is true");
+    }
+
 
 }
