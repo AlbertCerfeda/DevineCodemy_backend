@@ -14,7 +14,7 @@ public class ConditionAND implements BooleanCondition{
     private final BooleanCondition condition2;
 
     @JsonCreator
-    public ConditionAND(@JsonProperty("condition1") BooleanCondition condition1, @JsonProperty("condition2") BooleanCondition condition2) {
+    public ConditionAND(@JsonProperty("operandA") BooleanCondition condition1, @JsonProperty("operandB") BooleanCondition condition2) {
         this.condition1 = condition1;
         this.condition2 = condition2;
     }

@@ -9,7 +9,7 @@ public class ConditionNOT implements BooleanCondition{
 
     private final BooleanCondition condition;
 
-    public ConditionNOT(@JsonProperty("condition") BooleanCondition condition){
+    public ConditionNOT(@JsonProperty("body") BooleanCondition condition){
         this.condition = condition;
     }
 

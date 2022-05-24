@@ -14,7 +14,7 @@ public class ConditionOR implements BooleanCondition{
     private final BooleanCondition cond2;
 
     @JsonCreator
-    public ConditionOR(@JsonProperty("cond1") BooleanCondition cond1, @JsonProperty("cond2") BooleanCondition cond2){
+    public ConditionOR(@JsonProperty("operandA") BooleanCondition cond1, @JsonProperty("operandB") BooleanCondition cond2){
         this.cond1 = cond1;
         this.cond2 = cond2;
     }
