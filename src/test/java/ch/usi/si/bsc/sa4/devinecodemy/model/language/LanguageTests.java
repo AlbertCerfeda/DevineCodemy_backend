@@ -425,4 +425,147 @@ public class LanguageTests {
         assertTrue(result.hasErrors(), "The level validation should have errors");
     }
 
+    @DisplayName("test boolean or")
+    @Test
+    public void testBooleanOr() {
+        Program thisProgram = new Program(List.of(new ActionIfElse(
+                                                        new ConditionOR(
+                                                                new ConditionTrue(),
+                                                                new ConditionFalse()),
+                                                        new ActionMoveForward(null),
+                                                        new ActionTurnLeft(null),
+                                                        null)));
+
+        LevelValidation result = thisProgram.execute(context);
+        assertTrue(result.getAnimations().contains(EAnimation.MOVE_FORWARD),
+                "should move forward if the condition is true");
+    }
+
+    @DisplayName("test boolean or with false")
+    @Test
+    public void testBooleanOrFalse() {
+        Program thisProgram = new Program(List.of(new ActionIfElse(
+                                                        new ConditionOR(
+                                                                new ConditionFalse(),
+                                                                new ConditionFalse()),
+                                                        new ActionMoveForward(null),
+                                                        new ActionTurnLeft(null),
+                                                        null)));
+
+        LevelValidation result = thisProgram.execute(context);
+        assertTrue(result.getAnimations().contains(EAnimation.TURN_LEFT),
+                "should turn left if the condition is false");
+    }
+
+    @DisplayName("test boolean or with false")
+    @Test
+    public void testBooleanOrFalseTrue() {
+        Program thisProgram = new Program(List.of(new ActionIfElse(
+                                                        new ConditionOR(
+                                                                new ConditionFalse(),
+                                                                new ConditionTrue()),
+                                                        new ActionMoveForward(null),
+                                                        new ActionTurnLeft(null),
+                                                        null)));
+
+        LevelValidation result = thisProgram.execute(context);
+        assertTrue(result.getAnimations().contains(EAnimation.MOVE_FORWARD),
+                "should move forward if the condition is true");
+    }
+
+    @DisplayName("test boolean not")
+    @Test
+    public void testBooleanNot() {
+        Program thisProgram = new Program(List.of(new ActionIfElse(
+                                                        new ConditionNOT(
+                                                                new ConditionTrue()),
+                                                        new ActionTurnLeft(null),
+                                                        new ActionMoveForward(null),
+                                                        null)));
+
+        LevelValidation result = thisProgram.execute(context);
+        assertTrue(result.getAnimations().contains(EAnimation.MOVE_FORWARD),
+                "should turn left if the condition is true");
+    }
+
+    @DisplayName("test boolean not with false")
+    @Test
+    public void testBooleanNotFalse() {
+        Program thisProgram = new Program(List.of(new ActionIfElse(
+                                                        new ConditionNOT(
+                                                                new ConditionFalse()),
+                                                        new ActionMoveForward(null),
+                                                        new ActionTurnLeft(null),
+                                                        null)));
+
+        LevelValidation result = thisProgram.execute(context);
+        assertTrue(result.getAnimations().contains(EAnimation.MOVE_FORWARD),
+                "should move forward if the condition is true");
+    }
+
+    @DisplayName("test boolean xor")
+    @Test
+    public void testBooleanXor() {
+        Program thisProgram = new Program(List.of(new ActionIfElse(
+                                                        new ConditionXOR(
+                                                                new ConditionTrue(),
+                                                                new ConditionFalse()),
+                                                        new ActionMoveForward(null),
+                                                        new ActionTurnLeft(null),
+                                                        null)));
+
+        LevelValidation result = thisProgram.execute(context);
+        assertTrue(result.getAnimations().contains(EAnimation.MOVE_FORWARD),
+                "should turn left if the condition is true");
+    }
+
+    @DisplayName("test boolean xor with false")
+    @Test
+    public void testBooleanXorFalse() {
+        Program thisProgram = new Program(List.of(new ActionIfElse(
+                                                        new ConditionXOR(
+                                                                new ConditionFalse(),
+                                                                new ConditionTrue()),
+                                                        new ActionMoveForward(null),
+                                                        new ActionTurnLeft(null),
+                                                        null)));
+
+        LevelValidation result = thisProgram.execute(context);
+        assertTrue(result.getAnimations().contains(EAnimation.MOVE_FORWARD),
+                "should move forward if the condition is true");
+    }
+
+    @DisplayName("test boolean xor with true")
+    @Test
+    public void testBooleanXorTrue() {
+        Program thisProgram = new Program(List.of(new ActionIfElse(
+                                                        new ConditionXOR(
+                                                                new ConditionTrue(),
+                                                                new ConditionTrue()),
+                                                        new ActionMoveForward(null),
+                                                        new ActionTurnLeft(null),
+                                                        null)));
+
+        LevelValidation result = thisProgram.execute(context);
+        assertTrue(result.getAnimations().contains(EAnimation.TURN_LEFT),
+                "should turn left if the condition is true");
+    }
+
+    @DisplayName("test boolean xor with true and false")
+    @Test
+    public void testBooleanXorTrueFalse() {
+        Program thisProgram = new Program(List.of(new ActionIfElse(
+                                                        new ConditionXOR(
+                                                                new ConditionTrue(),
+                                                                new ConditionFalse()),
+                                                        new ActionMoveForward(null),
+                                                        new ActionTurnLeft(null),
+                                                        null)));
+
+        LevelValidation result = thisProgram.execute(context);
+        assertTrue(result.getAnimations().contains(EAnimation.MOVE_FORWARD),
+                "should move forward if the condition is true");
+    }
+
+
 }
