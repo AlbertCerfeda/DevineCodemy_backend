@@ -40,10 +40,21 @@ public class ActionMoveForward extends Action {
                         robot.teleportTo(teleport.getTargetX(), teleport.getTargetY());
 
                         context.getLevelValidation().addAnimation(
+                                new CoordinatesAnimation(ECoordinatesAnimation.ACTIVATE_TELEPORT_AT,
+                                        teleport.getPosX(),
+                                        teleport.getPosY(),
+                                        teleport.getPosZ()));
+
+                        context.getLevelValidation().addAnimation(
                                 new CoordinatesAnimation(ECoordinatesAnimation.TELEPORT_TO,
                                                         teleport.getTargetX(),
                                                         teleport.getTargetY(),
                                                         teleport.getTargetZ()));
+                        context.getLevelValidation().addAnimation(
+                                new CoordinatesAnimation(ECoordinatesAnimation.ACTIVATE_TELEPORT_AT,
+                                        teleport.getTargetX(),
+                                        teleport.getTargetY(),
+                                        teleport.getTargetZ()));
                     }
                 }
             } catch (Exception e) {

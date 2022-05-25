@@ -719,7 +719,11 @@
         { "posX": 0, "posY": 2, "posZ": 0, "type": "WATER" },
         { "posX": 1, "posY": 2, "posZ": 0, "type": "BRIDGE" },
         { "posX": 2, "posY": 2, "posZ": 0, "type": "SAND" },
-        { "posX": 3, "posY": 2, "posZ": 0, "type": "TELEPORT" },
+        { "posX": 3, "posY": 2, "posZ": 0, "type": "TELEPORT",
+          "active": true,
+          "targetX": 8, "targetY": 2, "targetZ": 0,
+          "coinsToActivate": 0
+        },
         { "posX": 4, "posY": 2, "posZ": 0, "type": "WATER" },
         { "posX": 5, "posY": 2, "posZ": 0, "type": "WATER" },
         { "posX": 6, "posY": 2, "posZ": 0, "type": "SAND" },
@@ -773,7 +777,11 @@
 
         { "posX": 0, "posY": 7, "posZ": 0, "type": "WATER" },
         { "posX": 1, "posY": 7, "posZ": 0, "type": "BRIDGE" },
-        { "posX": 2, "posY": 7, "posZ": 0, "type": "TELEPORT" },
+        { "posX": 2, "posY": 7, "posZ": 0, "type": "TELEPORT",
+          "active": true,
+          "targetX": 3, "targetY": 2, "targetZ": 0,
+          "coinsToActivate": 0
+        },
         { "posX": 3, "posY": 7, "posZ": 0, "type": "WATER" },
         { "posX": 4, "posY": 7, "posZ": 0, "type": "GRASS" },
         { "posX": 5, "posY": 7, "posZ": 0, "type": "SAND" },
