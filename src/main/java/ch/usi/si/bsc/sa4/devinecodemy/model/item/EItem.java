@@ -6,5 +6,8 @@ package ch.usi.si.bsc.sa4.devinecodemy.model.item;
 public enum EItem {
     PLACEHOLDER,
     
-    COIN
+    COIN,
+    REDGEM,
+    BLUEGEM
+
 }

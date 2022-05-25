@@ -16,6 +16,8 @@ import java.util.Objects;
 )
 @JsonSubTypes({
         @JsonSubTypes.Type(value = CoinItem.class, name = "COIN"),
+        @JsonSubTypes.Type(value = RedGem.class, name = "REDGEM"),
+        @JsonSubTypes.Type(value = BlueGem.class, name = "BLUEGEM"),
 })
 public abstract class Item {
     protected EItem type;

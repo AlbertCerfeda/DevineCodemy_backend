@@ -20,4 +20,5 @@ public enum ETile {
     LAVA,
     OBSIDIAN,
     LEVER,
+    RAINBOW
 }
