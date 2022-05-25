@@ -1,7 +1,12 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.language;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.EAnimation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.animation.CoordinatesAnimation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.animation.ECoordinatesAnimation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.animation.ERobotAnimation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.ExecutionTimeoutException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.level.Board;
+import ch.usi.si.bsc.sa4.devinecodemy.model.level.Robot;
+import ch.usi.si.bsc.sa4.devinecodemy.model.tile.TeleportTile;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -24,10 +29,25 @@ public class ActionMoveForward extends Action {
         context.incrementClock();
         if (!context.isDead()) {
             try {
-                context.getRobot().moveForward(context.getBoard());
-                context.getLevelValidation().addAnimation(EAnimation.MOVE_FORWARD);
+                Board board = context.getBoard();
+                Robot robot = context.getRobot();
+                robot.moveForward(context.getBoard());
+                context.getLevelValidation().addAnimation(ERobotAnimation.MOVE_FORWARD);
+
+                if (board.containsTeleportAt(context.getRobot().getPosX(), context.getRobot().getPosY())) {
+                    TeleportTile teleport = (TeleportTile)board.getTileAt(context.getRobot().getPosX(), context.getRobot().getPosY());
+                    if (teleport.isActive()) {
+                        robot.teleportTo(teleport.getTargetX(), teleport.getTargetY());
+
+                        context.getLevelValidation().addAnimation(
+                                new CoordinatesAnimation(ECoordinatesAnimation.TELEPORT_TO,
+                                                        teleport.getTargetX(),
+                                                        teleport.getTargetY(),
+                                                        teleport.getTargetZ()));
+                    }
+                }
             } catch (Exception e) {
-                context.getLevelValidation().addAnimation(EAnimation.EMOTE_DEATH);
+                context.getLevelValidation().addAnimation(ERobotAnimation.EMOTE_DEATH);
                 context.setDead(true);
             }
         }

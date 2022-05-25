@@ -1,6 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.language;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.EAnimation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.animation.ERobotAnimation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.levelvalidation.LevelValidation;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -100,14 +100,14 @@ public class Program {
         if (levelValidation.hasErrors()) {
             levelValidation.setCompleted(false);
             levelValidation.clearAnimations();
-            levelValidation.addAnimation(EAnimation.EMOTE_DEATH);
+            levelValidation.addAnimation(ERobotAnimation.EMOTE_DEATH);
             return levelValidation;
         }
 
 
         // level completed
         if (context.getCollectedCoins() == context.getBoard().getCoinsNumber()) { // level completed
-            levelValidation.addAnimation(EAnimation.EMOTE_DANCE);
+            levelValidation.addAnimation(ERobotAnimation.EMOTE_DANCE);
             levelValidation.setCompleted(true);
         }
 

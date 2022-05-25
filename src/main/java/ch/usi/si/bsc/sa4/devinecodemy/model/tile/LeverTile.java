@@ -4,21 +4,42 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A tile made with a Lever. You can walk on it.
+ * The LeverTile class represents the Lever's Tile.
  */
-public class LeverTile extends Tile {
+public class LeverTile extends Tile{
 
+    private final int teleportX;
+    private final int teleportY;
+    private final int teleportZ;
     /**
-     * Constructor for Lever tiles.
-     * @param posX the x position of the tile.
-     * @param posY the y position of the tile.
-     * @param posZ the z position of the tile.
+     * Constructor for LeverTile object.
+     * @param posX the x position of the lever.
+     * @param posY the y position of the lever.
+     * @param posZ the z position of the lever.
      */
+
     @JsonCreator
     public LeverTile(@JsonProperty("posX") int posX,
-                        @JsonProperty("posY") int posY,
-                        @JsonProperty("posZ") int posZ) {
+                     @JsonProperty("posY") int posY,
+                     @JsonProperty("posZ") int posZ,
+                     @JsonProperty("teleportX") int teleportX,
+                     @JsonProperty("teleportY") int teleportY,
+                     @JsonProperty("teleportZ") int teleportZ) {
         super(ETile.LEVER, posX, posY, posZ, true);
+        this.teleportX = teleportX;
+        this.teleportY = teleportY;
+        this.teleportZ = teleportZ;
+    }
+
+    public int getTeleportX() {
+        return teleportX;
+    }
+
+    public int getTeleportY() {
+        return teleportY;
+    }
+
+    public int getTeleportZ() {
+        return teleportZ;
     }
 }
-
