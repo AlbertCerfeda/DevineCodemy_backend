@@ -6,6 +6,7 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.user.SocialMedia;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
@@ -28,13 +29,15 @@ import java.util.logging.Logger;
 /**
  * Request router for  /auth
  */
-@CrossOrigin(origins = "http://localhost200 >= response.status || response.status >= 300:3000")
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
     private final UserService userService;
     private final OAuth2AuthorizedClientService authorizedClientService;
     private RestTemplate restTemplate;
+
+		@Value("${codeland.frontend.url:http://localhost:3000}")
+		private String frontendUrl;	
 
     @Autowired
     public AuthController(UserService userService, OAuth2AuthorizedClientService authorizedClientService) {
@@ -114,7 +117,7 @@ public class AuthController {
 
         // For redirecting back to Home Page
         final RedirectView redirectView = new RedirectView();
-        redirectView.setUrl("http://localhost:3000/profile");
+        redirectView.setUrl(frontendUrl + "/profile");
         return redirectView;
     }
 
