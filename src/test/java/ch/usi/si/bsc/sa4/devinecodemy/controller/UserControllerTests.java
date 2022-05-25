@@ -71,6 +71,7 @@ public class UserControllerTests {
 
     private FakeOAuth2User fakeOAuth2User;
     private FakeOAuth2User invalidOAuth2User;
+    private FakeOAuth2User nonexistentOAuth2User;
 
     private OAuth2AuthenticationToken fakeAuthenticationToken;
     private OAuth2AuthenticationToken invalidAuthenticationToken;
@@ -92,9 +93,11 @@ public class UserControllerTests {
 
         fakeOAuth2User = new FakeOAuth2User("a name");
         invalidOAuth2User = new FakeOAuth2User("invalid");
+        nonexistentOAuth2User = new FakeOAuth2User("nonexistent");
 
         fakeAuthenticationToken = fakeOAuth2User.getOAuth2AuthenticationToken();
         invalidAuthenticationToken = invalidOAuth2User.getOAuth2AuthenticationToken();
+        nonexistentAuthenticationToken = nonexistentOAuth2User.getOAuth2AuthenticationToken();
 
         given(userService.getById("an id")).willReturn(Optional.of(user1));
         given(userService.getById("invalid")).willReturn(Optional.of(user1));
@@ -257,22 +260,37 @@ public class UserControllerTests {
 
     @Test
     @DisplayName("GET /users/user")
-    void testGetUser(){
+    void testGetUser() throws Exception {
+        // To check publicUser has been called
         User publicUser = Mockito.mock(User.class);
-
-        given(userService.getUserByToken(fakeAuthenticationToken)).willReturn(publicUser);
+        given(userService.getUserByToken(fakeOAuth2User.getOAuth2AuthenticationToken())).willReturn(publicUser);
         given(userService.getUserByToken(invalidAuthenticationToken)).willThrow(new InvalidAuthTokenException());
         given(userService.getUserByToken(nonexistentAuthenticationToken)).willThrow(new UserInexistentException());
 
-        ResponseEntity<UserDTO> okResponse = userController.getUser(fakeAuthenticationToken);
-        assertEquals(HttpStatus.OK, okResponse.getStatusCode());
+        // Test for Status 200 OK
+        MvcResult resultOk = mockMvc.perform(get("/users/user/")
+                        .with(SecurityMockMvcRequestPostProcessors
+                                .authentication(fakeOAuth2User.getOAuth2AuthenticationToken())))
+                .andReturn();
+
+        assertEquals(200, resultOk.getResponse().getStatus(), "It should return 200 OK");
         verify(publicUser).toPublicUserDTO();
 
-        ResponseEntity<UserDTO> unauthorizedResponse = userController.getUser(invalidAuthenticationToken);
-        assertEquals(HttpStatus.UNAUTHORIZED, unauthorizedResponse.getStatusCode());
+        // Test for Status 401 UNATHORIZED
+        MvcResult resultUnauthorized = mockMvc.perform(get("/users/user/")
+                        .with(SecurityMockMvcRequestPostProcessors
+                                .authentication(invalidAuthenticationToken)))
+                .andReturn();
 
-        ResponseEntity<UserDTO> nonexistentResponse = userController.getUser(nonexistentAuthenticationToken);
-        assertEquals(HttpStatus.NOT_FOUND, nonexistentResponse.getStatusCode());
+        assertEquals(401, resultUnauthorized.getResponse().getStatus(), "It should return 401 UNATHORIZED. Invalid user");
+
+        // Test for Status 404 NOT FOUND
+        MvcResult resultNotFound = mockMvc.perform(get("/users/user/")
+                        .with(SecurityMockMvcRequestPostProcessors
+                                .authentication(nonexistentAuthenticationToken)))
+                .andReturn();
+
+        assertEquals(404, resultNotFound.getResponse().getStatus(), "It should return 404 NOT FOUND. Nonexistent user");
     }
 }
 
