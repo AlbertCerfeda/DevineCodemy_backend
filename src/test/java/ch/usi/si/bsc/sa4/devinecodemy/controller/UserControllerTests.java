@@ -180,52 +180,52 @@ public class UserControllerTests {
 
     @Test
     @DisplayName("GET /users/search?name=string")
-    void testGetByNameContaining(){
+    void testGetByNameContaining() throws Exception {
         given(userService.searchByNameContaining("name", true)).willReturn(userList);
-        ResponseEntity<List<UserDTO>> responseEntity = userController.getByNameContaining("name");
 
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        MvcResult resultOk = mockMvc.perform(get("/users/search?name=name")
+                        .with(SecurityMockMvcRequestPostProcessors
+                                .authentication(fakeOAuth2User.getOAuth2AuthenticationToken())))
+                .andReturn();
 
-        List<UserDTO> responseList = responseEntity.getBody();
+        // We have to use DynamicJsonObject as it's not possible for Jackson to deserialize a UserDTO.
+        List<DynamicJsonObject> responseList = objectMapper.readValue(
+                resultOk.getResponse().getContentAsString(),
+                new TypeReference<List<DynamicJsonObject>>() {});
+
         assertEquals(2, responseList.size());
-        assertEquals("a name", responseList.get(0).getName());
-        assertEquals("another name", responseList.get(1).getName());
+        assertEquals("a name", responseList.get(0).get("name"));
+        assertEquals("another name", responseList.get(1).get("name"));
     }
 
     @Test
     @DisplayName("GET /users/{id}}")
-    //void testGetById() throws JsonProcessingException {
     void testGetById() throws Exception {
-        // _____________________________________________________
-        // Test for Status 200 OK
-        ResponseEntity<UserDTO> okResponse = userController.getById(fakeAuthenticationToken, "an id");
 
-        MvcResult resultOk = mockMvc.perform(put("/users/an id/")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(okResponse))
+        // Test for Status 200 OK
+        MvcResult resultOk = mockMvc.perform(get("/users/an id/")
                         .with(SecurityMockMvcRequestPostProcessors
                                 .authentication(fakeOAuth2User.getOAuth2AuthenticationToken())))
                 .andReturn();
 
         assertEquals(200, resultOk.getResponse().getStatus(), "It should return 200 OK");
-        // -------------------------------------------------------
 
-        // _____________________________________________________
         // Test for Status 404 NOT FOUND
-
-        ResponseEntity<UserDTO> nonexistentResponse = userController.getById(null, "nonexistent"); //User empty
-
-        MvcResult resultNotFound = mockMvc.perform(put("/users/nonexistent/")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(nonexistentResponse))
+        MvcResult resultNotFound = mockMvc.perform(get("/users/nonexistent/")
                         .with(SecurityMockMvcRequestPostProcessors
                                 .authentication(fakeOAuth2User.getOAuth2AuthenticationToken())))
                 .andReturn();
 
         assertEquals(404, resultNotFound.getResponse().getStatus(), "It should return 404 NOT FOUND");
-        assertEquals(HttpStatus.NOT_FOUND, nonexistentResponse.getStatusCode(), "It should return 404 NOT FOUND");
-        // -------------------------------------------------------
 
+        // Test for Status 400 BAD REQUEST
+                MvcResult resultInvalid = mockMvc.perform(put("/users/invalid/")
+                        .with(SecurityMockMvcRequestPostProcessors
+                                .authentication(fakeOAuth2User.getOAuth2AuthenticationToken())))
+                .andReturn();
+        assertEquals(400, resultInvalid.getResponse().getStatus(), "It should return 400 BAD REQUEST");
+
+        // Don't mockMvc this: Can't supply a mock UserDTO via API endpoint
         User publicUser = Mockito.mock(User.class);
         given(publicUser.isProfilePublic()).willReturn(true);
         User privateUser = Mockito.mock(User.class);
