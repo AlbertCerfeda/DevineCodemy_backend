@@ -8,6 +8,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class TeleportTile extends Tile {
 
+    private boolean active;
+    private final int targetX;
+    private final int targetY;
+    private final int targetZ;
+
+    private final int coinsToActivate;
+
     /**
      * Construct for Teleport tiles.
      * @param posX the x position of the tile.
@@ -16,8 +23,42 @@ public class TeleportTile extends Tile {
      */
     @JsonCreator
     public TeleportTile(@JsonProperty("posX") int posX,
-                     @JsonProperty("posY") int posY,
-                     @JsonProperty("posZ") int posZ) {
+                        @JsonProperty("posY") int posY,
+                        @JsonProperty("posZ") int posZ,
+                        @JsonProperty("active") boolean active,
+                        @JsonProperty("targetX") final int targetX,
+                        @JsonProperty("targetY") final int targetY,
+                        @JsonProperty("targetZ") final int targetZ,
+                        @JsonProperty("coinsToActivate") int coinsToActivate) {
         super(ETile.TELEPORT, posX, posY, posZ, true);
+        this.active = active;
+        this.targetX = targetX;
+        this.targetY = targetY;
+        this.targetZ = targetZ;
+        this.coinsToActivate = coinsToActivate;
+    }
+
+    public boolean isActive(){
+        return active;
+    }
+
+    public void setActive(boolean status){
+        this.active = status;
+    }
+
+    public int getTargetX(){
+        return targetX;
+    }
+
+    public int getTargetY(){
+        return targetY;
+    }
+
+    public int getTargetZ(){
+        return targetZ;
+    }
+
+    public int getCoinsToActivate(){
+        return coinsToActivate;
     }
 }
