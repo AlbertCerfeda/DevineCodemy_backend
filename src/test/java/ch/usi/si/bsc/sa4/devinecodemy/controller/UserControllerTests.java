@@ -12,6 +12,7 @@ import ch.usi.si.bsc.sa4.devinecodemy.utils.DynamicJsonObject;
 import ch.usi.si.bsc.sa4.devinecodemy.utils.FakeOAuth2User;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -182,6 +183,7 @@ public class UserControllerTests {
     void testGetByNameContaining(){
         given(userService.searchByNameContaining("name", true)).willReturn(userList);
         ResponseEntity<List<UserDTO>> responseEntity = userController.getByNameContaining("name");
+
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 
         List<UserDTO> responseList = responseEntity.getBody();
@@ -192,9 +194,37 @@ public class UserControllerTests {
 
     @Test
     @DisplayName("GET /users/{id}}")
-    void testGetById(){
-        ResponseEntity<UserDTO> nonexistentResponse = userController.getById(null, "nonexistent");
-        assertEquals(HttpStatus.NOT_FOUND, nonexistentResponse.getStatusCode());
+    //void testGetById() throws JsonProcessingException {
+    void testGetById() throws Exception {
+        // _____________________________________________________
+        // Test for Status 200 OK
+        ResponseEntity<UserDTO> okResponse = userController.getById(fakeAuthenticationToken, "an id");
+
+        MvcResult resultOk = mockMvc.perform(put("/users/an id/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(okResponse))
+                        .with(SecurityMockMvcRequestPostProcessors
+                                .authentication(fakeOAuth2User.getOAuth2AuthenticationToken())))
+                .andReturn();
+
+        assertEquals(200, resultOk.getResponse().getStatus(), "It should return 200 OK");
+        // -------------------------------------------------------
+
+        // _____________________________________________________
+        // Test for Status 404 NOT FOUND
+
+        ResponseEntity<UserDTO> nonexistentResponse = userController.getById(null, "nonexistent"); //User empty
+
+        MvcResult resultNotFound = mockMvc.perform(put("/users/nonexistent/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(nonexistentResponse))
+                        .with(SecurityMockMvcRequestPostProcessors
+                                .authentication(fakeOAuth2User.getOAuth2AuthenticationToken())))
+                .andReturn();
+
+        assertEquals(404, resultNotFound.getResponse().getStatus(), "It should return 404 NOT FOUND");
+        assertEquals(HttpStatus.NOT_FOUND, nonexistentResponse.getStatusCode(), "It should return 404 NOT FOUND");
+        // -------------------------------------------------------
 
         User publicUser = Mockito.mock(User.class);
         given(publicUser.isProfilePublic()).willReturn(true);
