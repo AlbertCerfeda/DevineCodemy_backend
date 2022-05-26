@@ -7,20 +7,20 @@ package ch.usi.si.bsc.sa4.devinecodemy.model.animation;
 public class CoordinatesAnimation implements Animation {
 
     private final ECoordinatesAnimation animation;
-    private final int targetX;
-    private final int targetY;
-    private final int targetZ;
+    private final int x;
+    private final int y;
+    private final int z;
 
-    public CoordinatesAnimation(ECoordinatesAnimation animation, int targetX, int targetY, int targetZ) {
+    public CoordinatesAnimation(ECoordinatesAnimation animation, int x, int y, int z) {
         this.animation = animation;
-        this.targetX = targetX;
-        this.targetY = targetY;
-        this.targetZ = targetZ;
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
 
     @Override
     public String toString() {
-        return animation.getName() + "(" + targetX + "," + targetY + "," + targetZ + ")";
+        return animation.getName() + "(" + x + "," + y + "," + z + ")";
     }
 
 }

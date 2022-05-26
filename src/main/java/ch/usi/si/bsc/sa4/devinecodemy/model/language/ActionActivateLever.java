@@ -1,6 +1,7 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.language;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.animation.CoordinatesAnimation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.animation.CoordinatesTargetAnimation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.animation.ECoordinatesAnimation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.animation.ERobotAnimation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.ExecutionTimeoutException;
@@ -41,11 +42,14 @@ public class ActionActivateLever extends Action {
                     teleportTile.setActive(true);
 
                     context.getLevelValidation().addAnimation(
-                            new CoordinatesAnimation(
+                            new CoordinatesTargetAnimation(
                                     ECoordinatesAnimation.ACTIVATE_LEVER,
                                     leverTile.getPosX(),
                                     leverTile.getPosY(),
-                                    leverTile.getPosZ()));
+                                    leverTile.getPosZ(),
+                                    teleport.getPosX(),
+                                    teleport.getPosY(),
+                                    teleport.getPosZ()));
                 }
 
             } else {
