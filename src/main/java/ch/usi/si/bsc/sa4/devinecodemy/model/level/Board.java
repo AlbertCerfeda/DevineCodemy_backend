@@ -1,5 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.level;
 
+import ch.usi.si.bsc.sa4.devinecodemy.model.tile.TeleportTile;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.*;
 import org.springframework.data.annotation.PersistenceConstructor;
@@ -139,6 +140,26 @@ public class Board {
             return getItemAt(x, y) != null;
         } catch (IndexOutOfBoundsException e) {
             return false;
+        }
+    }
+
+    public boolean containsTeleportAt(final int x, final int y) {
+        try {
+            return getTileAt(x, y) instanceof TeleportTile;
+        } catch (IndexOutOfBoundsException e) {
+            return false;
+        }
+    }
+
+    public TeleportTile getTeleportAt(final int x, final int y) {
+        try {
+            Tile tile = getTileAt(x, y);
+            if(tile instanceof TeleportTile) {
+                return (TeleportTile) tile;
+            }
+            return null;
+        } catch (IndexOutOfBoundsException e) {
+            return null;
         }
     }
 
