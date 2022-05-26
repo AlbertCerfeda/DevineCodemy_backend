@@ -34,6 +34,11 @@ public class ActionIfElse extends Action{
     }
 
     @Override
+    public int countActions() {
+        return 1 + ifTrue.countActions() + ifFalse.countActions();
+    }
+
+    @Override
     public void execute(Context context) throws ExecutionTimeoutException {
         context.incrementClock();
         if (condition.evaluate(context)) {
