@@ -28,6 +28,11 @@ public class ActionWhile extends Action {
     }
 
     @Override
+    public int countActions() {
+        return 1 + body.countActions();
+    }
+
+    @Override
     public void execute(Context context) throws ExecutionTimeoutException {
         while (condition.evaluate(context)) {
             context.incrementClock();
