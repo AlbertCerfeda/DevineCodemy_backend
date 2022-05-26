@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.tile.TileDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.model.item.Item;
 import ch.usi.si.bsc.sa4.devinecodemy.model.level.Board;
+import ch.usi.si.bsc.sa4.devinecodemy.model.tile.TeleportTile;
 import ch.usi.si.bsc.sa4.devinecodemy.model.tile.Tile;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -47,7 +48,9 @@ public class BoardDTO {
         dimY = board.getDimY();
         
         // Converts the board made of Tile to TileDTOs
-        grid = board.getGrid().stream().map(Tile::toTileDTO).collect(Collectors.toList());
+        grid = board.getGrid().stream().map(tile-> {
+            return (tile instanceof TeleportTile) ? ((TeleportTile) tile).toTeleportTileDTO() : tile.toTileDTO();
+        }).collect(Collectors.toList());
         
         // Converts the grid of Items to ItemDTOs
         items = board.getItems().stream().map(Item::toItemDTO).collect(Collectors.toList());

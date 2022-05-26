@@ -26,10 +26,12 @@ public class TileDTO {
     @JsonCreator
     public TileDTO(@JsonProperty("posX") int posX,
                    @JsonProperty("posY") int posY,
-                   @JsonProperty("posZ") int posZ) {
+                   @JsonProperty("posZ") int posZ,
+                   @JsonProperty("type") String type) {
         this.posX = posX;
         this.posY = posY;
         this.posZ = posZ;
+        this.type = type;
     }
 
     /**

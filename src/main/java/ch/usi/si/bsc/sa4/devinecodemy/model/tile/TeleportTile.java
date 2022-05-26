@@ -1,5 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.tile;
 
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.tile.TeleportTileDTO;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -60,5 +61,9 @@ public class TeleportTile extends Tile {
 
     public int getCoinsToActivate(){
         return coinsToActivate;
+    }
+
+    public TeleportTileDTO toTeleportTileDTO() {
+        return new TeleportTileDTO(this);
     }
 }
