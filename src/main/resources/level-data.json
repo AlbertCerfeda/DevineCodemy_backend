@@ -132,7 +132,7 @@
     "allowedCommands": [
       "BASIC_COMMANDS"
     ],
-    "thumbnailSrc": "../assets/level1.png"
+    "thumbnailSrc": "/assets/level1.png"
   },
   {
     "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.level.Level",
@@ -268,7 +268,7 @@
     "allowedCommands": [
       "BASIC_COMMANDS"
     ],
-    "thumbnailSrc": "../assets/level2.png"
+    "thumbnailSrc": "/assets/level2.png"
   },
   {
     "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.level.Level",
@@ -404,7 +404,7 @@
     "allowedCommands": [
       "BASIC_COMMANDS"
     ],
-    "thumbnailSrc": "../assets/level3.png"
+    "thumbnailSrc": "/assets/level3.png"
   },
   {
     "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.level.Level",
@@ -542,7 +542,7 @@
     "allowedCommands": [
       "BASIC_COMMANDS"
     ],
-    "thumbnailSrc": "../assets/level4.png"
+    "thumbnailSrc": "/assets/level4.png"
   },
   {
     "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.level.Level",
@@ -680,7 +680,7 @@
     "allowedCommands": [
       "BASIC_COMMANDS"
     ],
-    "thumbnailSrc": "../assets/level5.png"
+    "thumbnailSrc": "/assets/level5.png"
   },
 
 
@@ -830,7 +830,7 @@
       "LOGIC",
       "CONDITIONS"
     ],
-    "thumbnailSrc": "../assets/level6.png"
+    "thumbnailSrc": "/assets/level6.png"
   },
 
 
@@ -969,7 +969,7 @@
       "LOGIC",
       "CONDITIONS"
     ],
-    "thumbnailSrc": "../assets/level7.png"
+    "thumbnailSrc": "/assets/level7.png"
   },
 
 
@@ -1111,7 +1111,7 @@
       "LOGIC",
       "CONDITIONS"
     ],
-    "thumbnailSrc": "../assets/level8.png"
+    "thumbnailSrc": "/assets/level8.png"
   },
 
   {
@@ -1251,7 +1251,7 @@
       "LOGIC",
       "CONDITIONS"
     ],
-    "thumbnailSrc": "../assets/level9.png"
+    "thumbnailSrc": "/assets/level9.png"
   },
   {
     "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.level.Level",
@@ -1390,7 +1390,7 @@
       "LOGIC",
       "CONDITIONS"
     ],
-    "thumbnailSrc": "../assets/level10.png"
+    "thumbnailSrc": "/assets/level10.png"
   },
   {
     "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.level.Level",
@@ -1459,7 +1459,7 @@
       "CONDITIONS",
       "LOOPS"
     ],
-    "thumbnailSrc": "../assets/level11.png"
+    "thumbnailSrc": "/assets/level11.png"
   },
   {
     "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.level.Level",
@@ -1526,7 +1526,7 @@
       "CONDITIONS",
       "LOOPS"
     ],
-    "thumbnailSrc": "../assets/level12.png"
+    "thumbnailSrc": "/assets/level12.png"
   },
   {
     "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.level.Level",
@@ -1585,7 +1585,7 @@
       "CONDITIONS",
       "LOOPS"
     ],
-    "thumbnailSrc": "../assets/level13.png"
+    "thumbnailSrc": "/assets/level13.png"
   },
   {
     "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.level.Level",
@@ -1655,7 +1655,7 @@
       "CONDITIONS",
       "LOOPS"
     ],
-    "thumbnailSrc": "../assets/level14.png"
+    "thumbnailSrc": "/assets/level14.png"
   },
   {
     "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.level.Level",
@@ -1740,6 +1740,6 @@
       "CONDITIONS",
       "LOOPS"
     ],
-    "thumbnailSrc": "../assets/level15.png"
+    "thumbnailSrc": "/assets/level15.png"
   }
 ]
