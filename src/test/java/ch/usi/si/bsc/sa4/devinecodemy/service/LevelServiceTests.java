@@ -1,6 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.service;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.EAnimation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.animation.ERobotAnimation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EWorld;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.LevelInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
@@ -21,7 +21,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -208,12 +207,12 @@ public class LevelServiceTests {
     void testPlayLevelValid() {
         var expected = new LevelValidation();
         expected.setCompleted(true);
-        expected.addAnimation(EAnimation.MOVE_FORWARD);
-        expected.addAnimation(EAnimation.MOVE_FORWARD);
-        expected.addAnimation(EAnimation.MOVE_FORWARD);
-        expected.addAnimation(EAnimation.MOVE_FORWARD);
-        expected.addAnimation(EAnimation.JUMP);
-        expected.addAnimation(EAnimation.EMOTE_DANCE);
+        expected.addAnimation(ERobotAnimation.MOVE_FORWARD);
+        expected.addAnimation(ERobotAnimation.MOVE_FORWARD);
+        expected.addAnimation(ERobotAnimation.MOVE_FORWARD);
+        expected.addAnimation(ERobotAnimation.MOVE_FORWARD);
+        expected.addAnimation(ERobotAnimation.JUMP);
+        expected.addAnimation(ERobotAnimation.EMOTE_DANCE);
 
         List<LanguageBlock> languageBlocks = List.of(new ActionMoveForward(new ActionMoveForward(new ActionMoveForward(new ActionMoveForward(new ActionCollectCoin(null))))));
         Program program = new Program(languageBlocks);
