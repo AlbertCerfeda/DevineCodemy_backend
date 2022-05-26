@@ -105,6 +105,7 @@ public class Board {
     public boolean canStep(final int x, final int y, EOrientation direction) {
         try {
             final Tile nextTile = getNextTileFromPositionAndDirection(x, y, direction);
+            if (nextTile == null) {return false;}
             final int deltaZ = Math.abs(nextTile.getPosZ() - getTileAt(x,y).getPosZ());
             return nextTile.isWalkable() && deltaZ <= 1;
         } catch (IndexOutOfBoundsException e) {

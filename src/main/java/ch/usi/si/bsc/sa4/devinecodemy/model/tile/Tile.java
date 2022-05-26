@@ -28,7 +28,7 @@ import java.util.Objects;
         @JsonSubTypes.Type(value = LavaTile.class, name = "LAVA"),
         @JsonSubTypes.Type(value = ObsidianTile.class, name = "OBSIDIAN"),
         @JsonSubTypes.Type(value = LeverTile.class, name = "LEVER"),
-        @JsonSubTypes.Type(value = LeverTile.class, name = "RAINBOW"),
+        @JsonSubTypes.Type(value = RainbowTile.class, name = "RAINBOW"),
 })
 public abstract class Tile {
     /** Used by the TileDTO to indicate the type of the Tile.

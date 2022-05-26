@@ -38,7 +38,7 @@ public class ActionCollectCoin extends Action {
                 context.getBoard().getGrid().forEach(tile -> {
                     if (tile.isTeleport()) {
                         TeleportTile teleport = (TeleportTile) tile;
-                        if (!teleport.isActive() && teleport.getCoinsToActivate() <= context.getCollectedCoins()) {
+                        if (!teleport.isActive() && teleport.getCoinsToActivate() == context.getCollectedCoins() && context.getCollectedCoins() > 0) {
                             teleport.setActive(true);
 
                             context.getLevelValidation().addAnimation(

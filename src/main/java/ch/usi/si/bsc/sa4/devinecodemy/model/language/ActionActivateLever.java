@@ -40,7 +40,12 @@ public class ActionActivateLever extends Action {
                     TeleportTile teleportTile = (TeleportTile) teleport;
                     teleportTile.setActive(true);
 
-                    context.getLevelValidation().addAnimation(new CoordinatesAnimation(ECoordinatesAnimation.ACTIVATE_LEVER, teleportTile.getTargetX(), teleportTile.getTargetY(), teleportTile.getTargetZ()));
+                    context.getLevelValidation().addAnimation(
+                            new CoordinatesAnimation(
+                                    ECoordinatesAnimation.ACTIVATE_LEVER,
+                                    leverTile.getPosX(),
+                                    leverTile.getPosY(),
+                                    leverTile.getPosZ()));
                 }
 
             } else {
