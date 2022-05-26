@@ -29,6 +29,11 @@ public class ActionIf extends Action{
     }
 
     @Override
+    public int countActions() {
+        return 1 + body.countActions();
+    }
+
+    @Override
     public void execute(Context context) throws ExecutionTimeoutException {
         context.incrementClock();
         if (condition.evaluate(context)) {

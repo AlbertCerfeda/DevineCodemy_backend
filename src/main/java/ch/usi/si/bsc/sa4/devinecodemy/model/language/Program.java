@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -125,12 +126,20 @@ public class Program {
      *                      Action to be executed.
      */
     private void executeParsedProgram(Action main, LevelValidation levelValidation, Context context, Map<String, Action> functionTable) {
-        // if there is no action, error
+
         if (main == null) {
             levelValidation.addError("No executable block in the program");
-        } else if (main.countActions() > context.getMaxCommandsNumber()) {
+            return;
+        }
+        AtomicInteger actionsCount = new AtomicInteger(main.countActions());
+        functionTable.forEach((name, action) -> {
+            actionsCount.addAndGet(action.countActions());
+        });
+
+        // if there is no action, error
+        if (actionsCount.get() > context.getMaxCommandsNumber()) {
             levelValidation.addError("Too many commands in the program, we can only have " +
-                    context.getMaxCommandsNumber());
+                                      context.getMaxCommandsNumber() + " while there are " + actionsCount.get());
         } else if (!levelValidation.hasErrors()) {
             // set the function table in the context
             context.setFunctionTable(functionTable);
