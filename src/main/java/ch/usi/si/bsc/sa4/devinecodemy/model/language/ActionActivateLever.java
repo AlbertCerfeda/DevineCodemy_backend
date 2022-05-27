@@ -44,18 +44,20 @@ public class ActionActivateLever extends Action {
                     context.getLevelValidation().addAnimation(
                             new CoordinatesTargetAnimation(
                                     ECoordinatesAnimation.ACTIVATE_LEVER,
-                                    leverTile.getPosX(),
-                                    leverTile.getPosY(),
-                                    leverTile.getPosZ(),
-                                    teleport.getPosX(),
-                                    teleport.getPosY(),
-                                    teleport.getPosZ()));
+                                    leverTile,
+                                    teleportTile,
+                                    new TeleportTile(
+                                            teleportTile.getTargetX(),
+                                            teleportTile.getTargetY(),
+                                            teleportTile.getTargetZ(),
+                                            false,0,0,0,-1
+                                    )));
                 }
-
             } else {
                 context.getLevelValidation().addAnimation(ERobotAnimation.EMOTE_NO);
             }
         }
+        System.out.println(context.getLevelValidation().getAnimations());
 
         super.executeNextAction(context);
     }
