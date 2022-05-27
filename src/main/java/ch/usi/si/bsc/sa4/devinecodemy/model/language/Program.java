@@ -1,6 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.language;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.EAnimation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.animation.ERobotAnimation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.levelvalidation.LevelValidation;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -100,14 +101,14 @@ public class Program {
         if (levelValidation.hasErrors()) {
             levelValidation.setCompleted(false);
             levelValidation.clearAnimations();
-            levelValidation.addAnimation(EAnimation.EMOTE_DEATH);
+            levelValidation.addAnimation(ERobotAnimation.EMOTE_DEATH);
             return levelValidation;
         }
 
 
         // level completed
         if (context.getCollectedCoins() == context.getBoard().getCoinsNumber()) { // level completed
-            levelValidation.addAnimation(EAnimation.EMOTE_DANCE);
+            levelValidation.addAnimation(ERobotAnimation.EMOTE_DANCE);
             levelValidation.setCompleted(true);
         }
 
@@ -125,12 +126,20 @@ public class Program {
      *                      Action to be executed.
      */
     private void executeParsedProgram(Action main, LevelValidation levelValidation, Context context, Map<String, Action> functionTable) {
-        // if there is no action, error
+
         if (main == null) {
             levelValidation.addError("No executable block in the program");
-        } else if (main.countActions() > context.getMaxCommandsNumber()) {
+            return;
+        }
+        AtomicInteger actionsCount = new AtomicInteger(main.countActions());
+        functionTable.forEach((name, action) -> {
+            actionsCount.addAndGet(action.countActions());
+        });
+
+        // if there is no action, error
+        if (actionsCount.get() > context.getMaxCommandsNumber()) {
             levelValidation.addError("Too many commands in the program, we can only have " +
-                    context.getMaxCommandsNumber());
+                                      context.getMaxCommandsNumber() + " while there are " + actionsCount.get());
         } else if (!levelValidation.hasErrors()) {
             // set the function table in the context
             context.setFunctionTable(functionTable);

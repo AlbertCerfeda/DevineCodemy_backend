@@ -26,7 +26,6 @@ import java.util.stream.Stream;
 /**
  * Request router for /levels
  */
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/levels")
 public class LevelController {

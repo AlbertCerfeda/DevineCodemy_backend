@@ -1,7 +1,7 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.levelvaldation;
 
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.LevelValidationDTO;
-import ch.usi.si.bsc.sa4.devinecodemy.model.EAnimation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.animation.ERobotAnimation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.levelvalidation.LevelValidation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -76,8 +76,8 @@ public class LevelValidationTests {
         @DisplayName("it should be able to add an animation")
         @Test
         public void testAddAnimation() {
-            levelValidation.addAnimation(EAnimation.EMOTE_DANCE);
-            assertTrue(levelValidation.getAnimations().contains(EAnimation.EMOTE_DANCE),
+            levelValidation.addAnimation(ERobotAnimation.EMOTE_DANCE);
+            assertTrue(levelValidation.getAnimations().contains(ERobotAnimation.EMOTE_DANCE),
                     "animation list doesn't contain the new animation");
             assertEquals(levelValidation.getAnimations().size(),1,
                     "animation list does not have the expected size");
@@ -89,7 +89,7 @@ public class LevelValidationTests {
 
             @BeforeEach
             void setup() {
-                levelValidation.addAnimation(EAnimation.EMOTE_DANCE);
+                levelValidation.addAnimation(ERobotAnimation.EMOTE_DANCE);
                 levelValidation.addError("Error!");
             }
 
@@ -98,7 +98,7 @@ public class LevelValidationTests {
             public void testGetAnimationsAsStrings() {
                 var actualAnimationsStrings = levelValidation.getAnimationsAsStrings();
                 var expectedAnimationsStrings = List.of("EmoteDance");
-                assertTrue(levelValidation.getAnimations().contains(EAnimation.EMOTE_DANCE),
+                assertTrue(levelValidation.getAnimations().contains(ERobotAnimation.EMOTE_DANCE),
                         "animation list doesn't contain the new animation");
                 assertEquals(levelValidation.getAnimations().size(),1,
                         "animation list does not have the expected size");
@@ -110,7 +110,7 @@ public class LevelValidationTests {
             @Test
             public void testClearAnimations() {
                 levelValidation.clearAnimations();
-                assertFalse(levelValidation.getAnimations().contains(EAnimation.EMOTE_DANCE),
+                assertFalse(levelValidation.getAnimations().contains(ERobotAnimation.EMOTE_DANCE),
                         "animation list contains the old animation");
                 assertEquals(levelValidation.getAnimations().size(),0,
                         "animation list is not empty after clearing it");
@@ -145,7 +145,7 @@ public class LevelValidationTests {
                 assertNotEquals(levelValidation,levelValidation1,
                         "the comparison of an object with one containing different animations"+
                                 " returns true");
-                levelValidation1.addAnimation(EAnimation.EMOTE_DANCE);
+                levelValidation1.addAnimation(ERobotAnimation.EMOTE_DANCE);
                 assertEquals(levelValidation,levelValidation1,
                         "the comparison of an object with one containing the same fields returns false");
                 levelValidation1.setCompleted(true);
@@ -159,11 +159,11 @@ public class LevelValidationTests {
                 assertNotEquals(levelValidation,levelValidation1,
                         "the comparison of an object with one containing different completed, errors " +
                                 " and animations returns true");
-                levelValidation1.addAnimation(EAnimation.EMOTE_DANCE);
+                levelValidation1.addAnimation(ERobotAnimation.EMOTE_DANCE);
                 assertNotEquals(levelValidation,levelValidation1,
                         "the comparison of an object with one containing different completed " +
                                 " and errors returns true");
-                levelValidation1.addAnimation(EAnimation.JUMP);
+                levelValidation1.addAnimation(ERobotAnimation.JUMP);
                 assertNotEquals(levelValidation,levelValidation1,
                         "the comparison of an object with one containing different animations " +
                                 " returns true");
