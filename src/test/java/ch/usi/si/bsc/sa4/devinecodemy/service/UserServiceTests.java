@@ -41,7 +41,7 @@ public class UserServiceTests {
         statisticsRepository = mock(StatisticsRepository.class);
 
         // Statistics service
-        statisticsService = new StatisticsService(statisticsRepository);
+        statisticsService = new StatisticsService(statisticsRepository, userRepository);
         userService = new UserService(userRepository,statisticsService);
 
         // Setting up users

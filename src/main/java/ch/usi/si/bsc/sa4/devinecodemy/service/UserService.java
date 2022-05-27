@@ -13,9 +13,7 @@ import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user.CreateUserDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.model.user.User;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.UserRepository;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * The UserService class provides all operations relating users.

@@ -1,5 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.user;
 
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user.LBUserDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user.UserDTO;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
@@ -92,5 +93,7 @@ public class User {
     public void setPublicProfile(boolean publicProfile) {
         this.publicProfile = publicProfile;
     }
+
+    public LBUserDTO toLBUserDTO(int completed_levels) { return new LBUserDTO(this, completed_levels, this.getAvatarUrl()); }
 
 }
