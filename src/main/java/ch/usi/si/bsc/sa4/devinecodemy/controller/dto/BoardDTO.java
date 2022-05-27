@@ -48,9 +48,12 @@ public class BoardDTO {
         dimY = board.getDimY();
         
         // Converts the board made of Tile to TileDTOs
-        grid = board.getGrid().stream().map(tile-> {
-            return (tile instanceof TeleportTile) ? ((TeleportTile) tile).toTeleportTileDTO() : tile.toTileDTO();
-        }).collect(Collectors.toList());
+        grid = board.getGrid().stream().map(tile ->
+                (tile instanceof TeleportTile) ?
+                        ((TeleportTile) tile).toTeleportTileDTO() :
+                        tile.toTileDTO()
+        ).collect(Collectors.toList());
+
         
         // Converts the grid of Items to ItemDTOs
         items = board.getItems().stream().map(Item::toItemDTO).collect(Collectors.toList());

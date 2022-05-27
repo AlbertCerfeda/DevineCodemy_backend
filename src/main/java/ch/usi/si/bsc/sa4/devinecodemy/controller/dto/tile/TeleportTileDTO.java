@@ -26,4 +26,8 @@ public class TeleportTileDTO extends TileDTO {
         super(teleportTile.getPosX(),teleportTile.getPosY(),teleportTile.getPosZ(),teleportTile.getType().toString());
         this.active = teleportTile.isActive();
     }
+
+    public boolean isActive() {
+        return active;
+    }
 }

@@ -1524,7 +1524,8 @@
       "BASIC_COMMANDS",
       "LOGIC",
       "CONDITIONS",
-      "LOOPS"
+      "LOOPS",
+      "FUNCTIONS"
     ],
     "thumbnailSrc": "/assets/level11.png"
   },
