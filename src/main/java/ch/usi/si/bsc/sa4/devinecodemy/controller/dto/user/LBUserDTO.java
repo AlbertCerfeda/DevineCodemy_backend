@@ -2,8 +2,10 @@ package ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.user.User;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Contains the data of a user to be displayd in the leaderboard.
+ */
 public class LBUserDTO extends GeneralUserDTO{
 
     private final int completedLevels;

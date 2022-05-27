@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import ch.usi.si.bsc.sa4.devinecodemy.model.statistics.UserStatistics;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.StatisticsRepository;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -110,21 +109,34 @@ public class StatisticsService {
         return statisticsRepository.findAll();
     }
     
+    /**
+     * Returns the number of completed levels by a certain user.
+     * @param u the user.
+     * @return the number of completed levels by the user.
+     */
     public int getCompletedLevels(User u) {
         Optional<UserStatistics> us = getById(u.getId());
         if(us.isPresent()) {
             UserStatistics uss = us.get();
             return uss.getData().size();
         } else {
-            return -1;
+            return 0;
         }
     }
     
+    /**
+     * Returns the unsorted leaderboard.
+     * @return the unsorted leaderboard.
+     */
     public List<LBUserDTO> getLeaderboardUsers() {
         List<User> users = userRepository.findAll();
         return users.stream().map((User u)-> u.toLBUserDTO(getCompletedLevels(u))).collect(Collectors.toList());
     }
     
+    /**
+     * Returns the leaderboard, sorted by number of completed levels.
+     * @return the leaderboard sorted by number of completed levels.
+     */
     public List<LBUserDTO> sortedLeaderboardUsers() {
         List<LBUserDTO> unordered_list = getLeaderboardUsers();
         List<LBUserDTO> ordered_list = unordered_list.stream()
