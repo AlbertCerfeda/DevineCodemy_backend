@@ -6,11 +6,11 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.user.SocialMedia;
 import ch.usi.si.bsc.sa4.devinecodemy.model.user.User;
 import ch.usi.si.bsc.sa4.devinecodemy.service.UserService;
+import ch.usi.si.bsc.sa4.devinecodemy.utils.DynamicJsonObject;
 import ch.usi.si.bsc.sa4.devinecodemy.utils.FakeOAuth2User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,16 +27,17 @@ import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.view.RedirectView;
+
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -53,11 +54,14 @@ public class AuthenticationControllerTests {
     @MockBean
     private OAuth2AuthorizedClientService authorizedClientService;
 
-    @InjectMocks
+    @Autowired
     private AuthController authController;
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     private static User user1;
     private static User user2;
@@ -84,14 +88,14 @@ public class AuthenticationControllerTests {
 
     @BeforeEach
     void setup() {
-        authController = new AuthController(userService, authorizedClientService);
+        //authController = new AuthController(userService, authorizedClientService);
 
 
-        user1 = new User("an id","a name", "a username", "an email","an avatar",
-                "a bio",new SocialMedia("a twitter","a skype", "a linkedin"));
-        user2 = new User("another id","another name", "another username", "another email",
-                "another avatar","another bio",
-                new SocialMedia("another twitter","another skype", "another linkedin"));
+        user1 = new User("an id", "a name", "a username", "an email", "an avatar",
+                "a bio", new SocialMedia("a twitter", "a skype", "a linkedin"));
+        user2 = new User("another id", "another name", "another username", "another email",
+                "another avatar", "another bio",
+                new SocialMedia("another twitter", "another skype", "another linkedin"));
         fakeOAuth2User = new FakeOAuth2User("garbage");
         invalidOAuth2User = new FakeOAuth2User("invalid");
         noAccessOAuth2User = new FakeOAuth2User("no access");
@@ -137,10 +141,6 @@ public class AuthenticationControllerTests {
         // Login: Mocks the RestTemplate
         authController.setRestTemplate(restTemplate);
 
-        // Checks that RestClient errors are handled
-//        Mockito.when(restTemplate.getForEntity("https://gitlab.com/api/v4/user?access_token=", String.class))
-//            .thenThrow(new RestClientException("Couldn't retrieve the user from GitLab"));
-
         // Mocks a valid response
         Mockito.when(restTemplate
                         .exchange(Mockito.eq("https://gitlab.com/api/v4/user?access_token=" + fakeAccessTokenValue),
@@ -176,7 +176,7 @@ public class AuthenticationControllerTests {
 
     @DisplayName("should be able to check if user is authenticated")
     @Test
-    public void testIsAuthenticated() throws Exception{
+    public void testIsAuthenticated() throws Exception {
         //status 200
         this.mockMvc.perform(get("/auth/check")
                         .with(SecurityMockMvcRequestPostProcessors
@@ -196,22 +196,33 @@ public class AuthenticationControllerTests {
                 .andExpect(status().isNotFound());
     }
 
-    @DisplayName("should be able to log in a user")
-    @Test
-		@Disabled // AM: fix this in another way. 
-    public void testUserLogin() {
-        RedirectView success = authController.userLogin(fakeAuthenticationToken);
-        assertEquals("http://localhost:3000/profile", success.getUrl());
-
-        RedirectView noAccess = authController.userLogin(noAccessAuthenticationToken);
-        assertEquals("/", noAccess.getUrl());
-    }
-
-
     @DisplayName("should be able to logout a user")
     @Test
     public void testUserLogout() {
         authController.logout(fakeAuthenticationToken);
+    }
+
+    // test userLogin
+    @DisplayName("should be able to login a user")
+    @Test
+    public void testUserLogin() throws Exception {
+        // successful login
+        MvcResult resultRedirectSuccess = mockMvc.perform(get("/auth/login")
+                        .with(SecurityMockMvcRequestPostProcessors
+                                .authentication(fakeAuthenticationToken)))
+                .andReturn();
+
+        assertEquals(302, resultRedirectSuccess.getResponse().getStatus());
+        assertEquals("http://localhost:3000/profile", resultRedirectSuccess.getResponse().getRedirectedUrl());
+
+        // unsuccessful login
+        MvcResult resultRedirectUnsuccessful = mockMvc.perform(get("/auth/login")
+                        .with(SecurityMockMvcRequestPostProcessors
+                                .authentication(noAccessAuthenticationToken)))
+                .andReturn();
+
+        assertEquals(302, resultRedirectUnsuccessful.getResponse().getStatus());
+        assertEquals("/", resultRedirectUnsuccessful.getResponse().getRedirectedUrl());
     }
 
     @DisplayName("get user login access token")
