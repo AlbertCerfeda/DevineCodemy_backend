@@ -39,15 +39,17 @@ public class ActionActivateLever extends Action {
                 Tile teleport = context.getBoard().getTileAt(leverTile.getTeleportX(), leverTile.getTeleportY());
                 if (teleport instanceof TeleportTile) {
                     TeleportTile teleportTile = (TeleportTile) teleport;
-                    teleportTile.setActive(true);
+                    teleportTile.setActive(!teleportTile.isActive());
                     Tile targetTile = context.getBoard().getTileAt(teleportTile.getTargetX(), teleportTile.getTargetY());
                     if (targetTile instanceof TeleportTile) {
                         TeleportTile teleportTarget = ((TeleportTile) targetTile);
-                        teleportTarget.setActive(true);
+                        teleportTarget.setActive(teleportTile.isActive());
                     }
                     context.getLevelValidation().addAnimation(
                             new CoordinatesTargetAnimation(
-                                    ECoordinatesAnimation.ACTIVATE_LEVER,
+                                    teleportTile.isActive()
+                                            ? ECoordinatesAnimation.ACTIVATE_LEVER
+                                            : ECoordinatesAnimation.DEACTIVATE_LEVER,
                                     leverTile,
                                     teleportTile,
                                     new TeleportTile(
