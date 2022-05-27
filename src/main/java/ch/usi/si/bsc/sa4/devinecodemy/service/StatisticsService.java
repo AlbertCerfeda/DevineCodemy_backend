@@ -121,14 +121,8 @@ public class StatisticsService {
     }
     
     public List<LBUserDTO> getLeaderboardUsers() {
-        List<LBUserDTO> lb_users = new ArrayList<>();
         List<User> users = userRepository.findAll();
-        for (User u : users) {
-            LBUserDTO lbuser = u.toLBUserDTO(getCompletedLevels(u));
-            lb_users.add(lbuser);
-        }
-        return lb_users;
-        
+        return users.stream().map((User u)-> u.toLBUserDTO(getCompletedLevels(u))).collect(Collectors.toList());
     }
     
     public List<LBUserDTO> sortedLeaderboardUsers() {
