@@ -1,14 +1,20 @@
 package ch.usi.si.bsc.sa4.devinecodemy.service;
 
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user.LBUserDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.StatisticInexistentException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.user.User;
+import ch.usi.si.bsc.sa4.devinecodemy.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.statistics.UserStatistics;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.StatisticsRepository;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * The StatisticsService class provides all operations relating user statistics.
@@ -16,14 +22,17 @@ import java.util.Optional;
 @Service
 public class StatisticsService {
     private final StatisticsRepository statisticsRepository;
-
+    private final UserRepository userRepository;
+    
     /**
      * Constructs a StatisticService by autowiring the dependencies.
      * @param statisticsRepository the Repository of the statistics.
+     * @param userRepository the Repository of the users.
      */
     @Autowired
-    public StatisticsService(StatisticsRepository statisticsRepository) {
+    public StatisticsService(StatisticsRepository statisticsRepository, UserRepository userRepository) {
         this.statisticsRepository = statisticsRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -100,6 +109,33 @@ public class StatisticsService {
     public List<UserStatistics> getAll() {
         return statisticsRepository.findAll();
     }
-
-
+    
+    public int getCompletedLevels(User u) {
+        Optional<UserStatistics> us = getById(u.getId());
+        if(us.isPresent()) {
+            UserStatistics uss = us.get();
+            return uss.getData().size();
+        } else {
+            return -1;
+        }
+    }
+    
+    public List<LBUserDTO> getLeaderboardUsers() {
+        List<LBUserDTO> lb_users = new ArrayList<>();
+        List<User> users = userRepository.findAll();
+        for (User u : users) {
+            LBUserDTO lbuser = u.toLBUserDTO(getCompletedLevels(u));
+            lb_users.add(lbuser);
+        }
+        return lb_users;
+        
+    }
+    
+    public List<LBUserDTO> sortedLeaderboardUsers() {
+        List<LBUserDTO> unordered_list = getLeaderboardUsers();
+        List<LBUserDTO> ordered_list = unordered_list.stream()
+                .sorted(Comparator.comparing(LBUserDTO::getCompletedLevels).reversed())
+                .collect(Collectors.toList());
+        return ordered_list;
+    }
 }

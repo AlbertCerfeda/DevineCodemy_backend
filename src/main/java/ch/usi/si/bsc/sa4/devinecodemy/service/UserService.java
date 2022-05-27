@@ -192,35 +192,6 @@ public class UserService {
             return user.get();
         }
     }
-
-    public int getCompletedLevels(User u) {
-        Optional<UserStatistics> us = statisticsService.getById(u.getId());
-        if(us.isPresent()) {
-            UserStatistics uss = us.get();
-            return uss.getData().size();
-        } else {
-            return -1;
-        }
-    }
-
-    public List<LBUserDTO> getLeaderboardUsers() {
-        List<LBUserDTO> lb_users = new ArrayList<>();
-        List<User> users = getAll();
-        for (User u : users) {
-            LBUserDTO lbuser = u.toLBUserDTO(getCompletedLevels(u));
-            lb_users.add(lbuser);
-        }
-        return lb_users;
-
-    }
-
-    public List<LBUserDTO> sortedLeaderboardUsers() {
-        List<LBUserDTO> unordered_list = getLeaderboardUsers();
-        List<LBUserDTO> ordered_list = unordered_list.stream()
-                .sorted(Comparator.comparing(LBUserDTO::getCompletedLevels).reversed())
-                .collect(Collectors.toList());
-        return ordered_list;
-    }
 }
     
     

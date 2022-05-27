@@ -122,9 +122,4 @@ public class UserController {
             return ResponseEntity.status(404).build();
         }
     }
-
-    @GetMapping("/lbusers")
-    public ResponseEntity<List<LBUserDTO>> getLBUsers() {
-        return ResponseEntity.ok(userService.sortedLeaderboardUsers());
-    }
 }
