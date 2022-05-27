@@ -40,7 +40,11 @@ public class ActionActivateLever extends Action {
                 if (teleport instanceof TeleportTile) {
                     TeleportTile teleportTile = (TeleportTile) teleport;
                     teleportTile.setActive(true);
-
+                    Tile targetTile = context.getBoard().getTileAt(teleportTile.getTargetX(), teleportTile.getTargetY());
+                    if (targetTile instanceof TeleportTile) {
+                        TeleportTile teleportTarget = ((TeleportTile) targetTile);
+                        teleportTarget.setActive(true);
+                    }
                     context.getLevelValidation().addAnimation(
                             new CoordinatesTargetAnimation(
                                     ECoordinatesAnimation.ACTIVATE_LEVER,
@@ -57,7 +61,6 @@ public class ActionActivateLever extends Action {
                 context.getLevelValidation().addAnimation(ERobotAnimation.EMOTE_NO);
             }
         }
-        System.out.println(context.getLevelValidation().getAnimations());
 
         super.executeNextAction(context);
     }
