@@ -46,7 +46,7 @@ public class ActionCollectCoin extends Action {
                                             ECoordinatesAnimation.ACTIVATE_TELEPORT_AT,
                                             teleport.getPosX(),
                                             teleport.getPosY(),
-                                            teleport.getTargetZ())); // activate teleport animation
+                                            teleport.getPosZ())); // activate teleport animation
                         }
                     }
                 });

@@ -46,18 +46,33 @@ public class ActionActivateLever extends Action {
                         teleportTarget.setActive(teleportTile.isActive());
                     }
                     context.getLevelValidation().addAnimation(
-                            new CoordinatesTargetAnimation(
+                            new CoordinatesAnimation(
                                     teleportTile.isActive()
                                             ? ECoordinatesAnimation.ACTIVATE_LEVER
                                             : ECoordinatesAnimation.DEACTIVATE_LEVER,
-                                    leverTile,
-                                    teleportTile,
-                                    new TeleportTile(
-                                            teleportTile.getTargetX(),
-                                            teleportTile.getTargetY(),
-                                            teleportTile.getTargetZ(),
-                                            false,0,0,0,-1
-                                    )));
+                                    leverTile.getPosX(),
+                                    leverTile.getPosY(),
+                                    leverTile.getPosZ()));
+                    context.getLevelValidation().addAnimation(
+                            new CoordinatesAnimation(
+                                    teleportTile.isActive()
+                                            ? ECoordinatesAnimation.ACTIVATE_TELEPORT_AT
+                                            : ECoordinatesAnimation.DEACTIVATE_TELEPORT_AT,
+                                    teleportTile.getPosX(),
+                                    teleportTile.getPosY(),
+                                    teleportTile.getPosZ()
+                            )
+                    );
+                    context.getLevelValidation().addAnimation(
+                            new CoordinatesAnimation(
+                                    teleportTile.isActive()
+                                            ? ECoordinatesAnimation.ACTIVATE_TELEPORT_AT
+                                            : ECoordinatesAnimation.DEACTIVATE_TELEPORT_AT,
+                                    teleportTile.getTargetX(),
+                                    teleportTile.getTargetY(),
+                                    teleportTile.getTargetZ()
+                            )
+                    );
                 }
             } else {
                 context.getLevelValidation().addAnimation(ERobotAnimation.EMOTE_NO);

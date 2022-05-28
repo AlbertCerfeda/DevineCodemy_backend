@@ -40,7 +40,7 @@ public class ActionMoveForward extends Action {
                         robot.teleportTo(teleport.getTargetX(), teleport.getTargetY());
 
                         context.getLevelValidation().addAnimation(
-                                new CoordinatesAnimation(ECoordinatesAnimation.ACTIVATE_TELEPORT_AT,
+                                new CoordinatesAnimation(ECoordinatesAnimation.TOGGLE_TELEPORT,
                                         teleport.getPosX(),
                                         teleport.getPosY(),
                                         teleport.getPosZ()));
@@ -51,12 +51,13 @@ public class ActionMoveForward extends Action {
                                                         teleport.getTargetY(),
                                                         teleport.getTargetZ()));
                         context.getLevelValidation().addAnimation(
-                                new CoordinatesAnimation(ECoordinatesAnimation.ACTIVATE_TELEPORT_AT,
+                                new CoordinatesAnimation(ECoordinatesAnimation.TOGGLE_TELEPORT,
                                         teleport.getTargetX(),
                                         teleport.getTargetY(),
                                         teleport.getTargetZ()));
                     }
                 }
+                System.out.println(context.getLevelValidation().getAnimations());
             } catch (Exception e) {
                 context.getLevelValidation().addAnimation(ERobotAnimation.EMOTE_DEATH);
                 context.setDead(true);

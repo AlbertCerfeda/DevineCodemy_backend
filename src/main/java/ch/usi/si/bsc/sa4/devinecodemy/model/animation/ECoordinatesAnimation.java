@@ -6,7 +6,9 @@ package ch.usi.si.bsc.sa4.devinecodemy.model.animation;
  */
 public enum ECoordinatesAnimation {
     TELEPORT_TO("TeleportTo"),
+    TOGGLE_TELEPORT("ToggleTeleport"),
     ACTIVATE_TELEPORT_AT("AnimateAt"),
+    DEACTIVATE_TELEPORT_AT("DeanimateAt"),
     ACTIVATE_LEVER("ActivateLever"),
     DEACTIVATE_LEVER("DeactivateLever");
 
