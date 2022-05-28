@@ -691,7 +691,7 @@
     "description": "Purgatory level 1",
     "levelNumber": 6,
     "levelWorld": "PURGATORY",
-    "maxCommandsNumber": 37,
+    "maxCommandsNumber": 38,
     "board": {
       "grid": [
         { "posX": 0, "posY": 0, "posZ": 0, "type": "WATER" },
@@ -755,9 +755,9 @@
         { "posX": 6, "posY": 4, "posZ": 0, "type": "BRIDGE" },
         { "posX": 7, "posY": 4, "posZ": 0, "type": "SAND" },
         { "posX": 8, "posY": 4, "posZ": 0, "type": "TELEPORT",
-          "active": true,
+          "active": false,
           "targetX": 2, "targetY": 7, "targetZ": 0,
-          "coinsToActivate": 0},
+          "coinsToActivate": 1},
         { "posX": 9, "posY": 4, "posZ": 0, "type": "WATER" },
 
         { "posX": 0, "posY": 5, "posZ": 0, "type": "WATER" },
@@ -848,7 +848,7 @@
     "description": "Purgatory level 2",
     "levelNumber": 7,
     "levelWorld": "PURGATORY",
-    "maxCommandsNumber": 14,
+    "maxCommandsNumber": 18,
     "board": {
       "grid": [
         { "posX": 0, "posY": 0, "posZ": 0, "type": "WATER" },
@@ -879,7 +879,7 @@
         { "posX": 3, "posY": 2, "posZ": 0, "type": "GRASS" },
         { "posX": 4, "posY": 2, "posZ": 0, "type": "GRASS" },
         { "posX": 5, "posY": 2, "posZ": 0, "type": "TELEPORT",
-          "active": true,
+          "active": false,
           "targetX": 5, "targetY": 7, "targetZ": 0,
           "coinsToActivate": 0},
         { "posX": 6, "posY": 2, "posZ": 0, "type": "WATER" },
@@ -936,7 +936,7 @@
 
         { "posX": 0, "posY": 7, "posZ": 0, "type": "WATER" },
         { "posX": 1, "posY": 7, "posZ": 0, "type": "TELEPORT",
-          "active": false,
+          "active": true,
           "targetX": 5, "targetY": 5, "targetZ": 0,
           "coinsToActivate": 0},
         { "posX": 2, "posY": 7, "posZ": 0, "type": "WATER" },
@@ -974,7 +974,7 @@
         { "posX": 9, "posY": 9, "posZ": 0, "type": "WATER" }
       ],
       "items": [
-        { "posX": 2, "posY": 3, "type": "COIN" }
+        { "posX": 3, "posY": 3, "type": "COIN" }
       ],
       "nCoins": 1
     },
@@ -999,7 +999,7 @@
     "description": "Purgatory level 3",
     "levelNumber": 8,
     "levelWorld": "PURGATORY",
-    "maxCommandsNumber": 13,
+    "maxCommandsNumber": 14,
     "board": {
       "grid": [
         { "posX": 0, "posY": 0, "posZ": 0, "type": "WATER" },
@@ -1146,7 +1146,7 @@
     "description": "Purgatory level 4",
     "levelNumber": 9,
     "levelWorld": "PURGATORY",
-    "maxCommandsNumber": 36,
+    "maxCommandsNumber": 38,
     "board": {
       "grid": [
         { "posX": 0, "posY": 0, "posZ": 0, "type": "WATER" },
@@ -1218,9 +1218,9 @@
         { "posX": 5, "posY": 5, "posZ": 0, "type": "SAND" },
         { "posX": 6, "posY": 5, "posZ": 0, "type": "BRIDGE" },
         { "posX": 7, "posY": 5, "posZ": 0, "type": "TELEPORT",
-          "active": true,
+          "active": false,
           "targetX": 3, "targetY": 8, "targetZ": 0,
-          "coinsToActivate": 0},
+          "coinsToActivate": 2},
         { "posX": 8, "posY": 5, "posZ": 0, "type": "WATER" },
         { "posX": 9, "posY": 5, "posZ": 0, "type": "WATER" },
 
@@ -1250,9 +1250,9 @@
         { "posX": 1, "posY": 8, "posZ": 0, "type": "SAND" },
         { "posX": 2, "posY": 8, "posZ": 0, "type": "BRIDGE" },
         { "posX": 3, "posY": 8, "posZ": 0, "type": "TELEPORT",
-          "active": true,
+          "active": false,
           "targetX": 7, "targetY": 5, "targetZ": 0,
-          "coinsToActivate": 0},
+          "coinsToActivate": 2},
         { "posX": 4, "posY": 8, "posZ": 0, "type": "WATER" },
         { "posX": 5, "posY": 8, "posZ": 0, "type": "WATER" },
         { "posX": 6, "posY": 8, "posZ": 0, "type": "WATER" },
@@ -1297,7 +1297,7 @@
     "description": "Purgatory level 5",
     "levelNumber": 10,
     "levelWorld": "PURGATORY",
-    "maxCommandsNumber": 34,
+    "maxCommandsNumber": 36,
     "board": {
       "grid": [
         { "posX": 0, "posY": 0, "posZ": 0, "type": "WATER" },

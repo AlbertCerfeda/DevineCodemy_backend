@@ -1,6 +1,5 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.level;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.tile.TeleportTile;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

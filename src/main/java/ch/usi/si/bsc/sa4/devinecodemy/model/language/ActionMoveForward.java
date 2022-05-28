@@ -57,7 +57,6 @@ public class ActionMoveForward extends Action {
                                         teleport.getTargetZ()));
                     }
                 }
-                System.out.println(context.getLevelValidation().getAnimations());
             } catch (Exception e) {
                 context.getLevelValidation().addAnimation(ERobotAnimation.EMOTE_DEATH);
                 context.setDead(true);
