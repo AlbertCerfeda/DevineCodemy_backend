@@ -7,7 +7,6 @@ public enum EItem {
     PLACEHOLDER,
     
     COIN,
-    REDGEM,
-    BLUEGEM
+  
 
 }

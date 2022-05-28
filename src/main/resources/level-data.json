@@ -1635,10 +1635,10 @@
         { "posX": 7, "posY": 8, "posZ": 0, "type": "TELEPORT",  "targetX": 7, "targetY": 3, "targetZ": 0 }
       ],
       "items": [
-        { "posX": 4, "posY": 3, "type": "BLUEGEM" },
-        { "posX": 6, "posY": 8, "type": "REDGEM" },
-        { "posX": 2, "posY": 5, "type": "BLUEGEM" },
-        { "posX": 5, "posY": 4, "type": "BLUEGEM" }
+        { "posX": 4, "posY": 3, "type": "COIN" },
+        { "posX": 6, "posY": 8, "type": "COIN" },
+        { "posX": 2, "posY": 5, "type": "COIN" },
+        { "posX": 5, "posY": 4, "type": "COIN" }
       ],
       "nCoins": 3
     },
@@ -1706,7 +1706,7 @@
 
       ],
       "items": [
-        { "posX": 1, "posY": 6, "type": "REDGEM" },
+        { "posX": 1, "posY": 6, "type": "COIN" },
         { "posX": 8, "posY": 5, "type": "COIN" },
         { "posX": 5, "posY": 2, "type": "COIN" }
       ],
@@ -1792,8 +1792,8 @@
       ],
       "items": [
         { "posX": 1, "posY": 9, "type": "COIN" },
-        { "posX": 5, "posY": 6, "type": "REDGEM" },
-        { "posX": 8, "posY": 4, "type": "BLUEGEM" }
+        { "posX": 5, "posY": 6, "type": "COIN" },
+        { "posX": 8, "posY": 4, "type": "COIN" }
       ],
       "nCoins": 3
     },
