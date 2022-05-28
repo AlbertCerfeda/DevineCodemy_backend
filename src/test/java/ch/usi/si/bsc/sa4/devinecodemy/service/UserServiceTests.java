@@ -9,6 +9,7 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.user.User;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.StatisticsRepository;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.AdditionalAnswers;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -52,6 +53,7 @@ public class UserServiceTests {
     }
 
     @Test
+    @DisplayName("Test get list of all users")
     public void testGetAll() {
         List<User> users = List.of(user, user1, user2);
         given(userRepository.findAll()).willReturn(users);
@@ -60,6 +62,7 @@ public class UserServiceTests {
     }
 
     @Test
+    @DisplayName("Test get list of all public users")
     public void testGetAllPublic() {
         user1.setPublicProfile(true);
         user2.setPublicProfile(true);
@@ -70,6 +73,7 @@ public class UserServiceTests {
     }
 
     @Test
+    @DisplayName("Test if the user is public")
     public void testIsUserPublic() {
         user.setPublicProfile(true);
         given(userRepository.isUserPublic("an id")).willReturn(Optional.of(user));
@@ -82,6 +86,7 @@ public class UserServiceTests {
     }
 
     @Test
+    @DisplayName("Test get user by id")
     public void testGetById() {
         given(userRepository.findById("an id")).willReturn(Optional.of(user));
 
@@ -89,6 +94,7 @@ public class UserServiceTests {
     }
 
     @Test
+    @DisplayName("Test search by name containing a specific string")
     public void testSearchByNameContaining() {
         given(userService.searchByNameContaining("a name", true)).willReturn(List.of(user));
         given(userService.searchByNameContaining("a name1", false)).willReturn(List.of(user1));
@@ -98,6 +104,7 @@ public class UserServiceTests {
     }
 
     @Test
+    @DisplayName("Test if the user's id exists")
     public void testUserIdExists() {
         given(userRepository.existsById("an id")).willReturn(true);
 
@@ -105,6 +112,7 @@ public class UserServiceTests {
     }
 
     @Test
+    @DisplayName("Test if the user's name exists")
     public void testUserNameExists() {
         given(userRepository.existsByName("a name")).willReturn(true);
 
@@ -112,6 +120,7 @@ public class UserServiceTests {
     }
 
     @Test
+    @DisplayName("Test adding a user")
     public void testAddUser() {
         CreateUserDTO userDTO = new CreateUserDTO("an id", "a name", "a username", "an email", "an avatar", "a bio", "a twitter", "a skype", "a linkedin");
         CreateUserDTO UserDTO_empty = new CreateUserDTO("", "", "", "", "an avatar", "a bio", "a twitter", "a skype", "a linkedin");
@@ -152,18 +161,21 @@ public class UserServiceTests {
     }
 
     @Test
+    @DisplayName("Test updating a user")
     public void testUpdateUser() {
         when(userRepository.save(any())).then(AdditionalAnswers.returnsFirstArg());
         assertEquals(user, userService.updateUser(user), "It didn't update the user");
     }
 
     @Test
+    @DisplayName("Test deleting a user")
     public void testDeleteUserById() {
         userService.deleteUserById("an id");
         verify(userRepository).deleteById("an id");
     }
 
     @Test
+    @DisplayName("Test if the user's body-format is correct")
     public void testCheckBodyFormat() {
         CreateUserDTO userDTO = new CreateUserDTO("an id", "a name", "a username", "an email", "an avatar", "a bio", "a twitter", "a skype", "a linkedin");
         CreateUserDTO UserDTO_empty = new CreateUserDTO("", "", "", "", "an avatar", "a bio", "a twitter", "a skype", "a linkedin");
@@ -181,6 +193,7 @@ public class UserServiceTests {
     }
 
     @Test
+    @DisplayName("Test if the user's id is the same as the user's token")
     public void testIsIdEqualToken(){
         OAuth2AuthenticationToken token = mock(OAuth2AuthenticationToken.class);
         OAuth2AuthenticationToken tokenInvalid = mock(OAuth2AuthenticationToken.class);
@@ -199,6 +212,7 @@ public class UserServiceTests {
     }
 
     @Test
+    @DisplayName("Test get user when given a token")
     public void testGetUserByToken() {
         OAuth2AuthenticationToken token = mock(OAuth2AuthenticationToken.class);
         OAuth2AuthenticationToken tokenInvalid = mock(OAuth2AuthenticationToken.class);
