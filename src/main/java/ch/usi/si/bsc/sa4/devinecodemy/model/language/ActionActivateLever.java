@@ -1,7 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.language;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.animation.CoordinatesAnimation;
-import ch.usi.si.bsc.sa4.devinecodemy.model.animation.CoordinatesTargetAnimation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.animation.ECoordinatesAnimation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.animation.ERobotAnimation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.ExecutionTimeoutException;

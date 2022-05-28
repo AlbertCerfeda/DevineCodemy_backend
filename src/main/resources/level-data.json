@@ -830,7 +830,7 @@
     "robot": {
       "posX": 4,
       "posY": 8,
-      "orientation": "RIGHT"
+      "orientation": "DOWN"
     },
     "allowedCommands": [
       "BASIC_COMMANDS",
@@ -1536,7 +1536,7 @@
     "description": "Paradise level 2",
     "levelNumber": 12,
     "levelWorld": "PARADISE",
-    "maxCommandsNumber": 10,
+    "maxCommandsNumber": 20,
     "board": {
       "grid": [
         { "posX": 6, "posY": 0, "posZ": 0, "type": "CLOUDG" },

@@ -1,6 +1,7 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.language;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.ECategory;
+import ch.usi.si.bsc.sa4.devinecodemy.model.animation.ECoordinatesAnimation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.animation.ERobotAnimation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EOrientation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EWorld;
@@ -14,6 +15,7 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.tile.*;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.StatisticsRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -673,35 +675,130 @@ public class LanguageTests {
         assertTrue(result.isCompleted(), "The level should be completed");
     }
 
+    @Nested
+    public class testAfterTeleportCreation {
 
-    @DisplayName("test teleport with lever")
-    @Test
-    public void testTeleportWithLever() {
-        // create a context playable with teleports
-        robot = new Robot(0,0,EOrientation.DOWN);
-        List<Tile> grid = List.of(
-                new LeverTile(0,0,0, 0, 1, 0),
-                new TeleportTile(0,1,0, false, 3, 1, 0, 1),
-                new TeleportTile(3,1,0, true, 3, 0, 0, 1)
-        );
-        List<Item> items = List.of(new CoinItem(3,1));
-        Board thisBoard = new Board(grid,items,1);
-        List<ECategory> allowedCommands = List.of(ECategory.BASIC_COMMANDS, ECategory.CONDITIONS, ECategory.LOGIC);
-        level = new Level("Level 1", "the first level",1, EWorld.PURGATORY,
-                6,board,robot,allowedCommands,"../../assets/thumbnail.jpg");
-        levelValidation = new LevelValidation();
-        Context thisContext = new Context(thisBoard, robot, 4, levelValidation);
+        private Context context;
 
-        Program thisProgram = new Program(List.of(new ActionActivateLever(new ActionMoveForward(new ActionCollectCoin(null)))));
+        @BeforeEach
+        void setup() {
+            // create a context playable with teleports
+            LanguageTests.this.robot = new Robot(0,0,EOrientation.DOWN);
+            List<Tile> grid = List.of(
+                    new LeverTile(0,0,0, 0, 3, 0),
+                    new LeverTile(0,1,0, 0, 0, 0),
+                    new LeverTile(0,2,0, 3, 1, 0),
+                    new LeverTile(1,1,0, 2, 1, 0),
+                    new TeleportTile(0,3,0, false, 3, 1, 0, 1),
+                    new TeleportTile(2,1,0, false, 4, 2, 0, 1),
+                    new GrassTile(4,2,0),
+                    new TeleportTile(3,1,0, true, 3, 0, 0, 1)
+            );
+            List<Item> items = List.of(new CoinItem(3,1));
+            Board board = new Board(grid,items,1);
+            List<ECategory> allowedCommands = List.of(ECategory.BASIC_COMMANDS, ECategory.CONDITIONS, ECategory.LOGIC);
+            LanguageTests.this.level = new Level("Level 1", "the first level",1, EWorld.PURGATORY,
+                    6, LanguageTests.this.board,robot,allowedCommands,"../../assets/thumbnail.jpg");
+            levelValidation = new LevelValidation();
+            context = new Context(board, robot, level.getMaxCommandsNumber(), levelValidation);
+        }
 
-        assertFalse(thisContext.getBoard().getTeleportAt(0, 1).isActive());
+        @DisplayName("test active teleport with lever")
+        @Test
+        public void testActiveTeleportWithLever() {
 
-        LevelValidation result = thisProgram.execute(thisContext);
+            Program thisProgram = new Program(List.of(new ActionActivateLever(new ActionMoveForward(
+                    new ActionMoveForward(new ActionMoveForward(new ActionCollectCoin(null)))))));
 
-        assertTrue(thisContext.getBoard().getTeleportAt(0, 1).isActive());
+            assertFalse(context.getBoard().getTeleportAt(0, 3).isActive());
 
-        assertFalse(result.hasErrors(), "The level validation should not have errors");
-        assertTrue(result.isCompleted(), "The level should be completed");
+            LevelValidation result = thisProgram.execute(context);
+
+            assertTrue(context.getBoard().getTeleportAt(0, 3).isActive());
+            assertFalse(result.hasErrors(), "The level validation should not have errors");
+            assertTrue(result.isCompleted(), "The level should be completed");
+        }
+
+        @DisplayName("test deactivate teleport with lever")
+        @Test
+        public void testDeactivateTeleportWithLever() {
+
+            Program thisProgram = new Program(List.of(new ActionActivateLever(
+                    new ActionActivateLever(new ActionMoveForward(new ActionCollectCoin(null))))));
+
+            assertFalse(context.getBoard().getTeleportAt(0, 3).isActive());
+
+            LevelValidation result = thisProgram.execute(context);
+
+            assertFalse(context.getBoard().getTeleportAt(0, 3).isActive());
+
+            assertFalse(result.hasErrors(), "The level validation should not have errors");
+            assertFalse(result.isCompleted(), "The level should not be completed");
+            var animations = result.getAnimations();
+            assertTrue(animations.get(0).toString().startsWith(ECoordinatesAnimation.ACTIVATE_LEVER.getName()),
+                    "First animation does not match the expected one after lever pulled");
+            assertTrue(animations.get(1).toString().startsWith(ECoordinatesAnimation.ACTIVATE_TELEPORT_AT.getName()),
+                    "Second animation does not match the expected one after lever pulled");
+            assertTrue(animations.get(2).toString().startsWith(ECoordinatesAnimation.ACTIVATE_TELEPORT_AT.getName()),
+                    "Third animation does not match the expected one after lever pulled");
+            assertTrue(animations.get(3).toString().startsWith(ECoordinatesAnimation.DEACTIVATE_LEVER.getName()),
+                    "Fourth animation does not match the expected one after lever pulled");
+            assertTrue(animations.get(4).toString().startsWith(ECoordinatesAnimation.DEACTIVATE_TELEPORT_AT.getName()),
+                    "Fifth animation does not match the expected one after lever pulled");
+            assertTrue(animations.get(5).toString().startsWith(ECoordinatesAnimation.DEACTIVATE_TELEPORT_AT.getName()),
+                    "Sixth animation does not match the expected one after lever pulled");
+        }
+
+        @DisplayName("test activate teleport with lever pointing to a not teleport tile")
+        @Test
+        public void testActivateTeleportWithLeverWrong() {
+            Program thisProgram = new Program(List.of(new ActionMoveForward(new ActionActivateLever(null))));
+
+            LevelValidation result = thisProgram.execute(context);
+
+            assertFalse(result.hasErrors(), "The level validation should not have errors");
+            assertFalse(result.isCompleted(), "The level should not be completed");
+        }
+
+        @DisplayName("should not activate the teleport and give error when pulling a lever on a tile that is not a lever")
+        @Test
+        public void testActivateLeverOnNotLeverTile() {
+            Program thisProgram = new Program(List.of(new ActionMoveForward(
+                    new ActionMoveForward(new ActionMoveForward(new ActionActivateLever(null))))));
+
+            LevelValidation result = thisProgram.execute(context);
+
+            assertFalse(result.hasErrors(), "The level validation should not have errors");
+            assertFalse(result.isCompleted(), "The level should not be completed");
+            assertTrue(result.getAnimations().contains(ERobotAnimation.EMOTE_NO),
+                    "the level validation should contain an emote_no animation");
+        }
+
+        @DisplayName("should not activate teleport with lever pointing to a teleport pointing to a not teleport tile")
+        @Test
+        public void testActivateTeleportWithLeverToWrongTeleport() {
+            Program thisProgram = new Program(List.of(new ActionMoveForward(
+                    new ActionTurnLeft(new ActionMoveForward(new ActionActivateLever(
+                            new ActionMoveForward(null)))))));
+
+            LevelValidation result = thisProgram.execute(context);
+
+            assertFalse(result.hasErrors(), "The level validation should not have errors");
+            assertFalse(result.isCompleted(), "The level should not be completed");
+        }
+
+        @DisplayName("should activate teleport with lever pointing to a teleport pointing to a not teleport tile")
+        @Test
+        public void testActivateLeverAfterError() {
+            Program thisProgram = new Program(List.of(new ActionTurnLeft(new ActionMoveForward(
+                    new ActionMoveForward(new ActionMoveForward(
+                            new ActionActivateLever(null)))))));
+
+            LevelValidation result = thisProgram.execute(context);
+
+            assertFalse(result.hasErrors(), "The level validation should not have errors");
+            assertFalse(result.isCompleted(), "The level should not be completed");
+        }
     }
 
 }
