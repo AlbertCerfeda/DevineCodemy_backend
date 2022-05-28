@@ -1,5 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.controller;
 
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user.LBUserDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.StatisticInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.user.User;
@@ -38,6 +39,15 @@ public class StatisticsController {
     @GetMapping
     public ResponseEntity<List<UserStatisticsDTO>> getAll() {
         return ResponseEntity.ok(statisticsService.getAll().stream().map(UserStatistics::toUserStatisticsDTO).collect(Collectors.toList()));
+    }
+    
+    /**
+     * GET  /stats/leaderboard
+     * @return returns all the stats as DTOs.
+     */
+    @GetMapping("/leaderboard")
+    public ResponseEntity<List<LBUserDTO>> getLBUsers() {
+        return ResponseEntity.ok(statisticsService.sortedLeaderboardUsers());
     }
 
     /**
