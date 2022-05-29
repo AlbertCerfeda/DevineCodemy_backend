@@ -2,6 +2,7 @@ package ch.usi.si.bsc.sa4.devinecodemy.controller;
 
 import ch.usi.si.bsc.sa4.devinecodemy.DevineCodemyBackend;
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.*;
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.tile.TeleportTileDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.tile.TileDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.model.ECategory;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EOrientation;
@@ -13,6 +14,7 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.level.Board;
 import ch.usi.si.bsc.sa4.devinecodemy.model.level.Level;
 import ch.usi.si.bsc.sa4.devinecodemy.model.level.Robot;
 import ch.usi.si.bsc.sa4.devinecodemy.model.tile.GrassTile;
+import ch.usi.si.bsc.sa4.devinecodemy.model.tile.TeleportTile;
 import ch.usi.si.bsc.sa4.devinecodemy.model.user.SocialMedia;
 import ch.usi.si.bsc.sa4.devinecodemy.model.user.User;
 import ch.usi.si.bsc.sa4.devinecodemy.service.LevelService;
@@ -42,6 +44,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.mockito.BDDMockito.given;
@@ -105,7 +108,8 @@ public class LevelControllerTests {
 
         level5 = new Level("level 5", "description of 5", 5, EWorld.INFERNO, 6,
                 new Board(List.of(new GrassTile(1, 1, 0), new GrassTile(1, 2, 0),
-                        new GrassTile(2, 2, 0)),
+                        new GrassTile(2, 2, 0),
+                        new TeleportTile(2,3,0, false,2,2,0,0)),
                         List.of(new CoinItem(1, 1), new CoinItem(1, 2)), 2),
                 new Robot(1, 1, EOrientation.UP),
                 List.of(ECategory.BASIC_COMMANDS, ECategory.BASIC_COMMANDS, ECategory.BASIC_COMMANDS, ECategory.BASIC_COMMANDS),
@@ -282,6 +286,15 @@ public class LevelControllerTests {
         assertEquals(expected.getPosY(),actual.getPosY(),message);
         assertEquals(expected.getPosZ(),actual.getPosZ(),message);
         assertEquals(expected.getType(),actual.getType(),message);
+        if (expected instanceof TeleportTileDTO) {
+            TeleportTileDTO expectedTeleport = (TeleportTileDTO) expected;
+            assertTrue(actual instanceof TeleportTileDTO);
+            var actualTeleport = (TeleportTileDTO) actual;
+            assertEquals(expectedTeleport.getTargetX(),actualTeleport.getTargetX(),message);
+            assertEquals(expectedTeleport.getTargetY(),actualTeleport.getTargetY(),message);
+            assertEquals(expectedTeleport.getTargetZ(),actualTeleport.getTargetZ(),message);
+            assertEquals(expectedTeleport.isActive(),actualTeleport.isActive(),message);
+        }
     }
 
     public void testItemDtoEquals(ItemDTO expected, ItemDTO actual, String message) {
