@@ -1,8 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.controller.dto.tile;
 
 import ch.usi.si.bsc.sa4.devinecodemy.model.tile.TeleportTile;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The TeleportTileDTO class represents the Teleport tile

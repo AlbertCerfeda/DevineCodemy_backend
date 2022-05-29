@@ -11,6 +11,14 @@ public class LBUserDTO extends GeneralUserDTO{
     private final int completedLevels;
     private final String avatarUrl;
 
+    /**
+     * Constructs a new LBUserDTO object of the given user
+     * with the given number of completed levels and avatarUrl.
+     * @param user the user to be mapped in the dto.
+     * @param completedLevels the number of completed levels
+     *                       of the dto.
+     * @param avatarUrl the avatarUrl of the dto.
+     */
     @JsonCreator
     public LBUserDTO(User user, int completedLevels, String avatarUrl) {
         super(user.getId(), user.getName(), user.getUsername(), user.getEmail(), user.getBio());
