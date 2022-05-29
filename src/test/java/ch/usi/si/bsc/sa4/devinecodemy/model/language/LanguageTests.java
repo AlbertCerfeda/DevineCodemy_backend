@@ -700,9 +700,6 @@ public class LanguageTests {
 
         assertTrue(thisContext.getBoard().getTeleportAt(0, 1).isActive());
 
-        System.out.println("----------------------------------------");
-        System.out.println(result.getAnimations());
-        System.out.println("----------------------------------------");
 
         assertFalse(result.hasErrors(), "The level validation should not have errors");
         assertTrue(result.isCompleted(), "The level should be completed");
