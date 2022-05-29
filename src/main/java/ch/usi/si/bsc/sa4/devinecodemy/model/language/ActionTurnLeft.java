@@ -24,9 +24,10 @@ public class ActionTurnLeft extends Action {
     @Override
     public void execute(Context context) throws ExecutionTimeoutException {
         context.incrementClock();
-        context.getRobot().turnLeft();
-        context.getLevelValidation().addAnimation(ERobotAnimation.TURN_LEFT);
-
+        if (!context.isDead()) {
+            context.getRobot().turnLeft();
+            context.getLevelValidation().addAnimation(ERobotAnimation.TURN_LEFT);
+        }
         super.executeNextAction(context);
     }
 

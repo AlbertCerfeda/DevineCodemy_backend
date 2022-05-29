@@ -23,9 +23,10 @@ public class ActionTurnRight extends Action {
     @Override
     public void execute(Context context) throws ExecutionTimeoutException {
         context.incrementClock();
-        context.getRobot().turnRight();
-        context.getLevelValidation().addAnimation(ERobotAnimation.TURN_RIGHT);
-
+        if (!context.isDead()) {
+            context.getRobot().turnRight();
+            context.getLevelValidation().addAnimation(ERobotAnimation.TURN_RIGHT);
+        }
         super.executeNextAction(context);
     }
 }
