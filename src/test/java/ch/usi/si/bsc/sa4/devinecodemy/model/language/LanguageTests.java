@@ -689,8 +689,10 @@ public class LanguageTests {
                     new LeverTile(0,1,0, 0, 0, 0),
                     new LeverTile(0,2,0, 3, 1, 0),
                     new LeverTile(1,1,0, 2, 1, 0),
+                    new LeverTile(1,0,0, 2, 2, 0),
                     new TeleportTile(0,3,0, false, 3, 1, 0, 1),
                     new TeleportTile(2,1,0, false, 4, 2, 0, 1),
+                    new TeleportTile(2,2,0, false, 2, 1, 0, 0),
                     new GrassTile(4,2,0),
                     new TeleportTile(3,1,0, true, 3, 0, 0, 1)
             );
@@ -800,6 +802,36 @@ public class LanguageTests {
             assertFalse(result.isCompleted(), "The level should not be completed");
         }
 
+        @DisplayName("should not activate teleport if collecting a coin but teleport needs lever")
+        @Test
+        public void testActivateTeleportAfterCollectCoin() {
+            Program thisProgram = new Program(List.of(new ActionMoveForward(new ActionMoveForward(new ActionTurnLeft(
+                    new ActionMoveForward(new ActionMoveForward(
+                            new ActionCollectCoin(null))))))));
+
+            LevelValidation result = thisProgram.execute(context);
+
+            var tile = (TeleportTile) context.getBoard().getTileAt(2,2);
+
+            assertFalse(tile.isActive(),"the teleport should still be not active after collecting a coin");
+            assertFalse(result.hasErrors(), "The level validation should not have errors");
+            assertFalse(result.isCompleted(), "The level should not be completed");
+        }
+
+        @DisplayName("should not activate teleport if collecting a coin but teleport needs lever")
+        @Test
+        public void testActivateTeleport() {
+            Program thisProgram = new Program(List.of(new ActionMoveForward(new ActionMoveForward(new ActionTurnLeft(
+                    new ActionMoveForward(new ActionMoveForward(
+                            new ActionCollectCoin(null))))))));
+
+            LevelValidation result = thisProgram.execute(context);
+            var tile = (TeleportTile) context.getBoard().getTileAt(2,2);
+
+            assertFalse(tile.isActive(),"the teleport should still be not active after collecting a coin");
+            assertFalse(result.hasErrors(), "The level validation should not have errors");
+            assertFalse(result.isCompleted(), "The level should not be completed");
+        }
     }
 
 }

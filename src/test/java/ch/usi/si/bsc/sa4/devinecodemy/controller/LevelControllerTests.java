@@ -90,7 +90,9 @@ public class LevelControllerTests {
                 List.of(), "../assets/thumbnailSrc1.jpg");
 
         level2 = new Level("level 2", "description of 2", 2, EWorld.INFERNO, 1,
-                new Board(List.of(new GrassTile(1, 1, 1)), List.of(new CoinItem(1, 1)), 1),
+                new Board(List.of(new GrassTile(1, 1, 1),
+                        new TeleportTile(2,3,0, false,2,2,0,0)),
+                        List.of(new CoinItem(1, 1)), 1),
                 new Robot(1, 1, EOrientation.UP), List.of(ECategory.BASIC_COMMANDS),
                 "../assets/thumbnailSrc2.jpg");
 
@@ -108,8 +110,7 @@ public class LevelControllerTests {
 
         level5 = new Level("level 5", "description of 5", 5, EWorld.INFERNO, 6,
                 new Board(List.of(new GrassTile(1, 1, 0), new GrassTile(1, 2, 0),
-                        new GrassTile(2, 2, 0),
-                        new TeleportTile(2,3,0, false,2,2,0,0)),
+                        new GrassTile(2, 2, 0)),
                         List.of(new CoinItem(1, 1), new CoinItem(1, 2)), 2),
                 new Robot(1, 1, EOrientation.UP),
                 List.of(ECategory.BASIC_COMMANDS, ECategory.BASIC_COMMANDS, ECategory.BASIC_COMMANDS, ECategory.BASIC_COMMANDS),
@@ -259,17 +260,17 @@ public class LevelControllerTests {
                 "the dimension x of " + message);
         assertEquals(expected.getDimY(), actual.getDimY(),
                 "the dimension y of " + message);
-        testGridEquals(expected.getGrid(), actual.getGrid(),
+        testGridEquals(expected, actual,
                 "the grid of " + message);
         testItemsEquals(expected.getItems(), actual.getItems(),
                 "the items of " + message);
     }
 
-    public void testGridEquals(List<TileDTO> expected, List<TileDTO> actual, String message) {
-        assertEquals(expected.size(), actual.size(),
+    public void testGridEquals(BoardDTO expected, BoardDTO actual, String message) {
+        assertEquals(expected.getGrid().size(), actual.getGrid().size(),
                 "the size of " + message);
-        for (int i = 0; i < expected.size(); i++) {
-            testTileDtoEquals(expected.get(i), actual.get(i), message);
+        for (int i = 0; i < expected.getGrid().size(); i++) {
+            testTileDtoEquals(expected.getGrid().get(i), actual.getGrid().get(i), message);
         }
     }
 
@@ -286,15 +287,6 @@ public class LevelControllerTests {
         assertEquals(expected.getPosY(),actual.getPosY(),message);
         assertEquals(expected.getPosZ(),actual.getPosZ(),message);
         assertEquals(expected.getType(),actual.getType(),message);
-        if (expected instanceof TeleportTileDTO) {
-            TeleportTileDTO expectedTeleport = (TeleportTileDTO) expected;
-            assertTrue(actual instanceof TeleportTileDTO);
-            var actualTeleport = (TeleportTileDTO) actual;
-            assertEquals(expectedTeleport.getTargetX(),actualTeleport.getTargetX(),message);
-            assertEquals(expectedTeleport.getTargetY(),actualTeleport.getTargetY(),message);
-            assertEquals(expectedTeleport.getTargetZ(),actualTeleport.getTargetZ(),message);
-            assertEquals(expectedTeleport.isActive(),actualTeleport.isActive(),message);
-        }
     }
 
     public void testItemDtoEquals(ItemDTO expected, ItemDTO actual, String message) {

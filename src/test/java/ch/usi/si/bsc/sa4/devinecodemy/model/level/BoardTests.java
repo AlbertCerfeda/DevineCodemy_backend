@@ -1,5 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.level;
 
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.tile.TeleportTileDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EOrientation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.item.CoinItem;
 import ch.usi.si.bsc.sa4.devinecodemy.model.item.Item;
@@ -482,6 +483,28 @@ public class BoardTests {
                     "same dimension x, but different dimension y");
         }
 
+        @DisplayName("should be able to get a lever tile")
+        @Test
+        void testGetTileAtLever() {
+            var lever = new LeverTile(7,9,0,8,9,0);
+            var actual = board.getTileAt(7,9);
+            assertTrue(actual instanceof LeverTile,
+                    "the created board does not contain a lever tile where supposed");
+            var actualLever = (LeverTile) actual;
+            assertEquals(lever.getPosX(),actualLever.getPosX(),
+                    "x position of a lever is not equal after creation");
+            assertEquals(lever.getPosY(),actualLever.getPosY(),
+                    "y position of a lever is not equal after creation");
+            assertEquals(lever.getPosZ(),actualLever.getPosZ(),
+                    "z position of a lever is not equal after creation");
+            assertEquals(lever.getTeleportX(),actualLever.getTeleportX(),
+                    "target x of a lever is not equal after creation");
+            assertEquals(lever.getTeleportY(),actualLever.getTeleportY(),
+                    "target y of a lever is not equal after creation");
+            assertEquals(lever.getTeleportZ(),actualLever.getTeleportZ(),
+                    "target z of a lever is not equal after creation");
+        }
+
         @DisplayName("has the same items provided in the constructor")
         @Test
         void testGetItems() {
@@ -510,6 +533,29 @@ public class BoardTests {
             assertEquals(board.getDimY(), actualBoardDTO.getDimY(), "boardDTO does not have the same dimY as its board");
             assertNotNull(actualBoardDTO.getGrid(), "boardDTO grid is null");
             assertNotNull(actualBoardDTO.getItems(), "boardDTO items is null");
+        }
+        
+        @DisplayName("should be able to get the dto of a teleport tile")
+        @Test
+        void testToTeleportDTO() {
+            var expected = new TeleportTile(0,0,0, false,0,0,0,0);
+            var actual = expected.toTeleportTileDTO();
+            assertEquals(expected.getPosX(),actual.getPosX(),
+                    "x of the teleport should be equal to the original object");
+            assertEquals(expected.getPosX(),actual.getPosY(),
+                    "y of the teleport should be equal to the original object");
+            assertEquals(expected.getPosZ(),actual.getPosZ(),
+                    "z of the teleport should be equal to the original object");
+            assertEquals(expected.getTargetX(),actual.getTargetX(),
+                    "x of the target teleport should be equal to the original object");
+            assertEquals(expected.getTargetY(),actual.getTargetY(),
+                    "y of the target teleport should be equal to the original object");
+            assertEquals(expected.getTargetZ(),actual.getTargetZ(),
+                    "z of the target teleport should be equal to the original object");
+            assertEquals(expected.isActive(),actual.isActive(),
+                    "active state of the teleport should be equal to the original object");
+            assertEquals(expected.getType().name(),actual.getType(),
+                    "type of the teleport tile should be equal to the original teleport object");
         }
 
         @DisplayName("can return the correct string of itself")
