@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class TileDTO {
     /** Field 'type' is needed by the client
      * to distinguish the different type of tiles */
-    private String type;
+    private final String type;
     
     private final int posX;
     private final int posY;

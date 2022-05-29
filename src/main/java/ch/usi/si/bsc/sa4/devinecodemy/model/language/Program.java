@@ -147,7 +147,6 @@ public class Program {
                 main.execute(context);
             } catch (RuntimeException e) {
                 levelValidation.addError(e.getMessage());
-                System.out.println(e.getMessage());
             }
         }
     }

@@ -63,6 +63,10 @@ public class TeleportTile extends Tile {
         return coinsToActivate;
     }
 
+    /**
+     * Returns the DTO of the object.
+     * @return the TeleportTileDTO of this object.
+     */
     public TeleportTileDTO toTeleportTileDTO() {
         return new TeleportTileDTO(this);
     }

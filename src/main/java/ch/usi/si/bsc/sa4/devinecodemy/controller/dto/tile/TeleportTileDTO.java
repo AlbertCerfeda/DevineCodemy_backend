@@ -15,22 +15,10 @@ public class TeleportTileDTO extends TileDTO {
     private final int targetY;
     private final int targetZ;
 
-    @JsonCreator
-    public TeleportTileDTO(@JsonProperty("active") boolean active,
-                           @JsonProperty("posX") int posX,
-                           @JsonProperty("posY") int posY,
-                           @JsonProperty("posZ") int posZ,
-                           @JsonProperty("type") String type,
-                           @JsonProperty("targetX") int targetX,
-                           @JsonProperty("targetY") int targetY,
-                           @JsonProperty("targetZ") int targetZ) {
-        super(posX,posY,posZ,type);
-        this.active = active;
-        this.targetX = targetX;
-        this.targetY = targetY;
-        this.targetZ = targetZ;
-    }
-
+    /**
+     * Constructs a new TeleportTileDTO object of the given TeleportTile.
+     * @param teleportTile the teleport tile to be mapped.
+     */
     public TeleportTileDTO(TeleportTile teleportTile) {
         super(teleportTile.getPosX(),teleportTile.getPosY(),teleportTile.getPosZ(),teleportTile.getType().toString());
         this.active = teleportTile.isActive();
