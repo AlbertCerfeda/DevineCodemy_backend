@@ -5,5 +5,9 @@ package ch.usi.si.bsc.sa4.devinecodemy.model.animation;
  * by the frontend through their name.
  */
 public interface Animation {
+     /**
+      * Returns the String version of the object.
+      * @return the String version of the object.
+      */
      String toString();
 }

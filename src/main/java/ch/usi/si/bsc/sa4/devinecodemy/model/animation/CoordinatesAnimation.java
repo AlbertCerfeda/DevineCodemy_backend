@@ -11,6 +11,13 @@ public class CoordinatesAnimation implements Animation {
     private final int targetY;
     private final int targetZ;
 
+    /**
+     * Constructs a CoordinatesAnimation object with the given values.
+     * @param animation the type of animation of the Animation.
+     * @param targetX the target x of the Animation.
+     * @param targetY the target y of the Animation.
+     * @param targetZ the target z of the Animation.
+     */
     public CoordinatesAnimation(ECoordinatesAnimation animation, int targetX, int targetY, int targetZ) {
         this.animation = animation;
         this.targetX = targetX;

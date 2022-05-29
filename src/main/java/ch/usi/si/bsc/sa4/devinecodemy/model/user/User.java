@@ -94,6 +94,12 @@ public class User {
         this.publicProfile = publicProfile;
     }
 
-    public LBUserDTO toLBUserDTO(int completed_levels) { return new LBUserDTO(this, completed_levels, this.getAvatarUrl()); }
+    /**
+     * Returns the LeaderBoard dto version of the given user with the given
+     * number of completed levels.
+     * @param completedLevels the number of completed levels of the user.
+     * @return the LeaderBoard dto version of the given user.
+     */
+    public LBUserDTO toLBUserDTO(int completedLevels) { return new LBUserDTO(this, completedLevels, this.getAvatarUrl()); }
 
 }

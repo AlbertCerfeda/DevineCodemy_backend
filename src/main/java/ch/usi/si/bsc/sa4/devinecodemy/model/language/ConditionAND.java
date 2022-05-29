@@ -13,6 +13,11 @@ public class ConditionAND implements BooleanCondition{
     private final BooleanCondition condition1;
     private final BooleanCondition condition2;
 
+    /**
+     * Constructs a new ConditionAND object with the given values.
+     * @param condition1 the first boolean condition.
+     * @param condition2 the second boolean condition.
+     */
     @JsonCreator
     public ConditionAND(@JsonProperty("operandA") BooleanCondition condition1, @JsonProperty("operandB") BooleanCondition condition2) {
         this.condition1 = condition1;
