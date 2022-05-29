@@ -2,6 +2,7 @@ package ch.usi.si.bsc.sa4.devinecodemy.controller;
 
 import ch.usi.si.bsc.sa4.devinecodemy.DevineCodemyBackend;
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.UserStatisticsDTO;
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user.LBUserDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.StatisticInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
 import ch.usi.si.bsc.sa4.devinecodemy.model.statistics.UserStatistics;
@@ -9,6 +10,7 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.user.SocialMedia;
 import ch.usi.si.bsc.sa4.devinecodemy.model.user.User;
 import ch.usi.si.bsc.sa4.devinecodemy.service.StatisticsService;
 import ch.usi.si.bsc.sa4.devinecodemy.service.UserService;
+import ch.usi.si.bsc.sa4.devinecodemy.utils.DynamicJsonObject;
 import ch.usi.si.bsc.sa4.devinecodemy.utils.FakeOAuth2User;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -161,5 +163,24 @@ public class StatisticsControllerTests {
                         .with(SecurityMockMvcRequestPostProcessors
                                 .authentication(fakeOAuth2User2.getOAuth2AuthenticationToken())))
                 .andExpect(status().isNotFound());
+    }
+
+    @DisplayName("should be able to retrieve the list of users for the leaderboard")
+    @Test
+    public void testGetLBUsers() throws Exception{
+        var userLBDto1 = user1.toLBUserDTO(2);
+        var userLBDto2 = user2.toLBUserDTO(1);
+        given(statisticsService.sortedLeaderboardUsers()).willReturn(List.of(userLBDto1,userLBDto2));
+        MvcResult result = mockMvc.perform(get("/stats/leaderboard")
+                        .with(SecurityMockMvcRequestPostProcessors
+                                .authentication(fakeOAuth2User1.getOAuth2AuthenticationToken())))
+                .andReturn();
+        final String plainResult = result.getResponse().getContentAsString();
+        List<DynamicJsonObject> users = objectMapper.readValue(plainResult,
+                new TypeReference<>() {});
+        assertEquals(userLBDto1.getAvatarUrl(),users.get(0).get("avatarUrl"),
+                "the first user of the LeaderBoard is not the one with most completed levels");
+        assertEquals(userLBDto2.getAvatarUrl(),users.get(1).get("avatarUrl"),
+                "the last user of the LeaderBoard is not the one with less completed levels");
     }
 }
