@@ -1,6 +1,5 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.level;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.tile.TeleportTile;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -70,6 +69,11 @@ public class Robot {
         }
     }
 
+    /**
+     * Moves the robot at the given coordinates.
+     * @param x the x target of the movement.
+     * @param y the y target of the movement.
+     */
     public void teleportTo(final int x, final int y) {
         posX = x;
         posY = y;

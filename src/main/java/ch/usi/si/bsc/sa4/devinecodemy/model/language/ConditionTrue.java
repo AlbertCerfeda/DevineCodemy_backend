@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 public class ConditionTrue implements BooleanCondition {
 
     /**
-     * Creates a new ConditionTrue.
+     * Creates a new ConditionTrue object evaluating to true.
      */
     @JsonCreator
     public ConditionTrue() {

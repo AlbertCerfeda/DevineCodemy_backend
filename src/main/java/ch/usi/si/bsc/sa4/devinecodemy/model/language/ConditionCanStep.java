@@ -13,8 +13,9 @@ public class ConditionCanStep implements BooleanCondition {
     private final String direction;
 
     /**
-     * Creates a new condition that checks if the robot can step in a given direction.
-     *
+     * Creates a new ConditionCanStep object that checks
+     * if the robot can step in a given direction.
+     * @param direction the direction to check if the step is possible
      */
     @JsonCreator
     public ConditionCanStep(@JsonProperty("orientation") String direction) {

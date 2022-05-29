@@ -29,13 +29,13 @@ public class ActionMoveForward extends Action {
         context.incrementClock();
         if (!context.isDead()) {
             try {
-                Board board = context.getBoard();
-                Robot robot = context.getRobot();
+                final Board board = context.getBoard();
+                final Robot robot = context.getRobot();
                 robot.moveForward(context.getBoard());
                 context.getLevelValidation().addAnimation(ERobotAnimation.MOVE_FORWARD);
 
                 if (board.containsTeleportAt(context.getRobot().getPosX(), context.getRobot().getPosY())) {
-                    TeleportTile teleport = (TeleportTile)board.getTileAt(context.getRobot().getPosX(), context.getRobot().getPosY());
+                    final TeleportTile teleport = (TeleportTile)board.getTileAt(context.getRobot().getPosX(), context.getRobot().getPosY());
                     if (teleport.isActive()) {
                         robot.teleportTo(teleport.getTargetX(), teleport.getTargetY());
 
@@ -46,7 +46,7 @@ public class ActionMoveForward extends Action {
                                                         teleport.getTargetZ()));
                     }
                 }
-            } catch (Exception e) {
+            } catch (IllegalStateException e) {
                 context.getLevelValidation().addAnimation(ERobotAnimation.EMOTE_DEATH);
                 context.setDead(true);
             }
