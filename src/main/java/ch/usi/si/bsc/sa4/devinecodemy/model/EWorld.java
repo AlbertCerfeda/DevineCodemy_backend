@@ -35,8 +35,17 @@ public enum EWorld {
                     "In this series of levels, you learnt how to use conditionals in order to complete " +
                     "the tasks.<br><br><br> Be prepared for what's next! "),
     PARADISE("Paradise", 3,
-            "Sample description for the paradise world",
-            "Congrats !");
+            "<h1>Loops</h1><p>Now things get more and more interesting. Loops are the bread " +
+                    "and butter in programming, so make sure to learn them !</p><br>" +
+                    "<p> In the previous world, you had a list of commands, and you could choose and write them" +
+                    " in a specific order to complete the level. With loops, you will have some code" +
+                    " like this:<br><br>repeat ( //number of times) {<br><br>do // if the condition is true, " +
+                    "this block of code will be executed <br><br> } <br><br>repeat while (//condition) {" +
+                    "<br><br>do // if the condition is true, this block of code will be executed <br><br> }" +
+                    "<br><br>You can also define functions now!",
+            "Congratulations! You just completed the paradise world and completed the game!. <br> " +
+                    "In this series of levels, you learnt how to use loops in order to complete " +
+                    "the tasks.<br><br><br> Thanks for playing our game! ");
 
 
     private final String displayName;
