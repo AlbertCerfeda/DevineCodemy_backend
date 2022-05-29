@@ -9,6 +9,11 @@ public class ConditionNOT implements BooleanCondition{
 
     private final BooleanCondition condition;
 
+    /**
+     * Constructs a new ConditionNOT object that reverts the value
+     * of the given condition.
+     * @param condition the condition to be reverted.
+     */
     public ConditionNOT(@JsonProperty("body") BooleanCondition condition){
         this.condition = condition;
     }

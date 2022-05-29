@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 public class ConditionContainsCoin implements BooleanCondition {
 
     /**
-     * Creates a new condition that checks
+     * Creates a new ConditionContainsCoin object that checks
      * if the board contains a coin at the robot's position.
      */
     @JsonCreator

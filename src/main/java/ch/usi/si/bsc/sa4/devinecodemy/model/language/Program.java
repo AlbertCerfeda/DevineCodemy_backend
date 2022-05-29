@@ -131,9 +131,9 @@ public class Program {
             return;
         }
         AtomicInteger actionsCount = new AtomicInteger(main.countActions());
-        functionTable.forEach((name, action) -> {
-            actionsCount.addAndGet(action.countActions());
-        });
+        functionTable.forEach((name, action) ->
+            actionsCount.addAndGet(action.countActions())
+        );
 
         // if there is no action, error
         if (actionsCount.get() > context.getMaxCommandsNumber()) {

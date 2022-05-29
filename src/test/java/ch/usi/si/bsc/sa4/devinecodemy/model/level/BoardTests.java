@@ -4,10 +4,7 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.EOrientation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.item.CoinItem;
 import ch.usi.si.bsc.sa4.devinecodemy.model.item.Item;
 import ch.usi.si.bsc.sa4.devinecodemy.model.tile.*;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -20,10 +17,14 @@ import org.springframework.data.util.Pair;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
+
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DisplayName("The board")
 public class BoardTests {
 
     private Board board;
+    private static TeleportTile teleport1;
+    private static TeleportTile teleport2;
 
     public static Stream<Arguments> getItemAtTestsArgumentProvider() {
         return Stream.of(
@@ -64,8 +65,8 @@ public class BoardTests {
                 arguments(0, -5, true, Pair.of(0, 0)), // test when y is negative
                 arguments(20, 0, true, Pair.of(0, 0)), // test when x is out of bounds
                 arguments(0, 29, true, Pair.of(0, 0)), // test when y is out of bounds
-                arguments(3, 4, false, Pair.of(3, 4)) // test when x and y are both within bounds
-//                arguments(5, 8, false, null) // test when x and y are both within bounds but no tile
+                arguments(3, 4, false, Pair.of(3, 4)), // test when x and y are both within bounds
+                arguments(5, 8, false, null) // test when x and y are both within bounds but no tile
         );
     }
 
@@ -160,8 +161,51 @@ public class BoardTests {
         assertEquals(expected, actual);
     }
 
-    @BeforeEach
+    @ParameterizedTest(name = "should return {0} when checking if contains teleport at x {1} and y {2}")
+    @MethodSource("testContainsTeleportAtArgumentProvider")
+    void testContainsTeleport(boolean result, int x, int y) {
+        if (result) {
+            assertTrue(board.containsTeleportAt(x,y));
+        } else {
+            assertFalse(board.containsTeleportAt(x,y));
+        }
+    }
+
+    public static Stream<Arguments> testContainsTeleportAtArgumentProvider() {
+        return Stream.of(
+            arguments(false, 0, 0),
+            arguments(false, 0, 2),
+            arguments(false, 0, 0),
+            arguments(true, 8, 9),
+            arguments(false, 10, 10)
+        );
+    }
+
+    @ParameterizedTest(name = "should return {0} when checking if contains teleport at x {1} and y {2}")
+    @MethodSource("testGetTeleportAtArgumentProvider")
+    void testGetTeleportAt(TeleportTile expected, int x, int y) {
+        var result = board.getTeleportAt(x,y);
+        if (expected == null) {
+            assertNull(result);
+        } else {
+            assertEquals(expected,result);
+        }
+    }
+
+    public static Stream<Arguments> testGetTeleportAtArgumentProvider() {
+        return Stream.of(
+                arguments(null, 0, 0),
+                arguments(null, 0, 2),
+                arguments(null, 10, 10),
+                arguments(teleport1, 8, 9),
+                arguments(teleport2, 9, 9)
+        );
+    }
+
+    @BeforeAll
     void setup() {
+        teleport1 = new TeleportTile(8, 9, 0, true, 9, 9, 0,0);
+        teleport2 = new TeleportTile(9, 9, 0, true, 8, 9, 0, 0);
         var grid = Arrays.asList(
                 new WaterTile(0, 0, 0),
                 new WaterTile(1, 0, 0),

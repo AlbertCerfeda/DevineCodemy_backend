@@ -32,16 +32,16 @@ public class ActionActivateLever extends Action {
         if (!context.isDead()) {
             final Robot robot = context.getRobot();
 
-            Tile lever = context.getBoard().getTileAt(robot.getPosX(), robot.getPosY());
+            final Tile lever = context.getBoard().getTileAt(robot.getPosX(), robot.getPosY());
             if (lever instanceof LeverTile) {
-                LeverTile leverTile = (LeverTile) lever;
-                Tile teleport = context.getBoard().getTileAt(leverTile.getTeleportX(), leverTile.getTeleportY());
+                final LeverTile leverTile = (LeverTile) lever;
+                final Tile teleport = context.getBoard().getTileAt(leverTile.getTeleportX(), leverTile.getTeleportY());
                 if (teleport instanceof TeleportTile) {
-                    TeleportTile teleportTile = (TeleportTile) teleport;
+                    final TeleportTile teleportTile = (TeleportTile) teleport;
                     teleportTile.setActive(!teleportTile.isActive());
-                    Tile targetTile = context.getBoard().getTileAt(teleportTile.getTargetX(), teleportTile.getTargetY());
+                    final Tile targetTile = context.getBoard().getTileAt(teleportTile.getTargetX(), teleportTile.getTargetY());
                     if (targetTile instanceof TeleportTile) {
-                        TeleportTile teleportTarget = ((TeleportTile) targetTile);
+                        final TeleportTile teleportTarget = ((TeleportTile) targetTile);
                         teleportTarget.setActive(teleportTile.isActive());
                     }
                     context.getLevelValidation().addAnimation(

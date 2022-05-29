@@ -11,11 +11,18 @@ public class CoordinatesAnimation implements Animation {
     private final int y;
     private final int z;
 
-    public CoordinatesAnimation(ECoordinatesAnimation animation, int x, int y, int z) {
+    /**
+     * Constructs a CoordinatesAnimation object with the given values.
+     * @param animation the type of animation of the Animation.
+     * @param targetX the target x of the Animation.
+     * @param targetY the target y of the Animation.
+     * @param targetZ the target z of the Animation.
+     */
+    public CoordinatesAnimation(ECoordinatesAnimation animation, int targetX, int targetY, int targetZ) {
         this.animation = animation;
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        this.x = targetX;
+        this.y = targetY;
+        this.z = targetZ;
     }
 
     @Override
