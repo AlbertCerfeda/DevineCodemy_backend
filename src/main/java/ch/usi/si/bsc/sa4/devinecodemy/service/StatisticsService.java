@@ -139,9 +139,8 @@ public class StatisticsService {
      */
     public List<LBUserDTO> sortedLeaderboardUsers() {
         List<LBUserDTO> unordered_list = getLeaderboardUsers();
-        List<LBUserDTO> ordered_list = unordered_list.stream()
+        return unordered_list.stream()
                 .sorted(Comparator.comparing(LBUserDTO::getCompletedLevels).reversed())
                 .collect(Collectors.toList());
-        return ordered_list;
     }
 }
