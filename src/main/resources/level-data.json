@@ -722,7 +722,7 @@
         { "posX": 3, "posY": 2, "posZ": 0, "type": "TELEPORT",
           "active": false,
           "targetX": 8, "targetY": 2, "targetZ": 0,
-          "coinsToActivate": 1
+          "coinsToActivate": 2
         },
         { "posX": 4, "posY": 2, "posZ": 0, "type": "WATER" },
         { "posX": 5, "posY": 2, "posZ": 0, "type": "WATER" },
@@ -731,7 +731,7 @@
         { "posX": 8, "posY": 2, "posZ": 0, "type": "TELEPORT",
           "active": false,
           "targetX": 3, "targetY": 2, "targetZ": 0,
-          "coinsToActivate": 1
+          "coinsToActivate": 2
         },
         { "posX": 9, "posY": 2, "posZ": 0, "type": "WATER" },
 
@@ -830,7 +830,7 @@
     "robot": {
       "posX": 4,
       "posY": 8,
-      "orientation": "DOWN"
+      "orientation": "UP"
     },
     "allowedCommands": [
       "BASIC_COMMANDS",
@@ -879,7 +879,7 @@
         { "posX": 3, "posY": 2, "posZ": 0, "type": "GRASS" },
         { "posX": 4, "posY": 2, "posZ": 0, "type": "GRASS" },
         { "posX": 5, "posY": 2, "posZ": 0, "type": "TELEPORT",
-          "active": false,
+          "active": true,
           "targetX": 5, "targetY": 7, "targetZ": 0,
           "coinsToActivate": 0},
         { "posX": 6, "posY": 2, "posZ": 0, "type": "WATER" },
@@ -943,7 +943,7 @@
         { "posX": 3, "posY": 7, "posZ": 0, "type": "WATER" },
         { "posX": 4, "posY": 7, "posZ": 0, "type": "WATER" },
         { "posX": 5, "posY": 7, "posZ": 0, "type": "TELEPORT",
-          "active": false,
+          "active": true,
           "targetX": 5, "targetY": 2, "targetZ": 0,
           "coinsToActivate": 0},
         { "posX": 6, "posY": 7, "posZ": 0, "type": "WATER" },
@@ -981,7 +981,7 @@
     "robot": {
       "posX": 8,
       "posY": 8,
-      "orientation": "RIGHT"
+      "orientation": "UP"
     },
     "allowedCommands": [
       "BASIC_COMMANDS",
@@ -1121,15 +1121,13 @@
       "items": [
         { "posX": 7, "posY": 4, "type": "COIN" },
         { "posX": 1, "posY": 5, "type": "COIN" }
-
-
       ],
       "nCoins": 2
     },
     "robot": {
       "posX": 7,
       "posY": 6,
-      "orientation": "RIGHT"
+      "orientation": "UP"
     },
     "allowedCommands": [
       "BASIC_COMMANDS",
@@ -1318,9 +1316,9 @@
         { "posX": 4, "posY": 1, "posZ": 0, "type": "WATER" },
         { "posX": 5, "posY": 1, "posZ": 0, "type": "WATER" },
         { "posX": 6, "posY": 1, "posZ": 0, "type": "TELEPORT",
-          "active": true,
+          "active": false,
           "targetX": 1, "targetY": 8, "targetZ": 0,
-          "coinsToActivate": 0},
+          "coinsToActivate": 2},
         { "posX": 7, "posY": 1, "posZ": 0, "type": "GRASS"},
         { "posX": 8, "posY": 1, "posZ": 0, "type": "GRASS" },
         { "posX": 9, "posY": 1, "posZ": 0, "type": "WATER" },
@@ -1360,9 +1358,9 @@
 
         { "posX": 0, "posY": 5, "posZ": 0, "type": "WATER" },
         { "posX": 1, "posY": 5, "posZ": 0, "type": "TELEPORT",
-          "active": true,
+          "active": false,
           "targetX": 5, "targetY": 9, "targetZ": 0,
-          "coinsToActivate": 0},
+          "coinsToActivate": 2},
         { "posX": 2, "posY": 5, "posZ": 0, "type": "WATER" },
         { "posX": 3, "posY": 5, "posZ": 0, "type": "WATER" },
         { "posX": 4, "posY": 5, "posZ": 0, "type": "WATER"},
@@ -1396,9 +1394,9 @@
 
         { "posX": 0, "posY": 8, "posZ": 0, "type": "WATER" },
         { "posX": 1, "posY": 8, "posZ": 0, "type": "TELEPORT",
-          "active": true,
+          "active": false,
           "targetX": 6, "targetY": 1, "targetZ": 0,
-          "coinsToActivate": 0},
+          "coinsToActivate": 2},
         { "posX": 2, "posY": 8, "posZ": 0, "type": "WATER" },
         { "posX": 3, "posY": 8, "posZ": 0, "type": "WATER" },
         { "posX": 4, "posY": 8, "posZ": 0, "type": "WATER" },
@@ -1414,9 +1412,9 @@
         { "posX": 3, "posY": 9, "posZ": 0, "type": "WATER" },
         { "posX": 4, "posY": 9, "posZ": 0, "type": "WATER" },
         { "posX": 5, "posY": 9, "posZ": 0, "type": "TELEPORT",
-          "active": true,
+          "active": false,
           "targetX": 1, "targetY": 5, "targetZ": 0,
-          "coinsToActivate": 0},
+          "coinsToActivate": 2},
         { "posX": 6, "posY": 9, "posZ": 0, "type": "SAND" },
         { "posX": 7, "posY": 9, "posZ": 0, "type": "SAND" },
         { "posX": 8, "posY": 9, "posZ": 0, "type": "WATER" },
@@ -1536,7 +1534,7 @@
     "description": "Paradise level 2",
     "levelNumber": 12,
     "levelWorld": "PARADISE",
-    "maxCommandsNumber": 20,
+    "maxCommandsNumber": 15,
     "board": {
       "grid": [
         { "posX": 6, "posY": 0, "posZ": 0, "type": "CLOUDG" },
@@ -1568,20 +1566,21 @@
         { "posX": 4, "posY": 7, "posZ": 0, "type": "CLOUDG" },
         { "posX": 6, "posY": 7, "posZ": 0, "type": "TELEPORT", "targetX": 1, "targetY": 5, "targetZ": 0 },
         { "posX": 7, "posY": 7, "posZ": 0, "type": "CLOUDG" },
-        { "posX": 1, "posY": 8, "posZ": 0, "type": "TELEPORT", "targetX": 3, "targetY": 3, "targetZ": 0 },
+        { "posX": 1, "posY": 8, "posZ": 0, "type": "TELEPORT", "targetX": 9, "targetY": 9, "targetZ": 0 },
         { "posX": 2, "posY": 8, "posZ": 0, "type": "CLOUDG" },
         { "posX": 5, "posY": 8, "posZ": 0, "type": "CLOUDB" },
         { "posX": 6, "posY": 8, "posZ": 0, "type": "CLOUDB" },
         { "posX": 6, "posY": 9, "posZ": 0, "type": "CLOUDB" },
         { "posX": 8, "posY": 9, "posZ": 0, "type": "CLOUDB" },
-        { "posX": 9, "posY": 9, "posZ": 0, "type": "CLOUDG" }
+        { "posX": 9, "posY": 9, "posZ": 0, "type": "TELEPORT", "targetX": 1, "targetY": 8, "targetZ": 0 }
       ],
       "items": [
         { "posX": 8, "posY": 2, "type": "COIN" },
         { "posX": 6, "posY": 5, "type": "COIN" },
-        { "posX": 1, "posY": 6, "type": "COIN" }
+        { "posX": 1, "posY": 6, "type": "COIN" },
+        { "posX": 8, "posY": 9, "type": "COIN" }
       ],
-      "nCoins": 3
+      "nCoins": 4
     },
     "robot": {
       "posX": 0,
