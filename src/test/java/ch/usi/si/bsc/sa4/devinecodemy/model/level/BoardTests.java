@@ -513,8 +513,6 @@ public class BoardTests {
                         "x,y","z"),
                 arguments(false,tile1,
                         "x,y,z","walkable status"),
-                arguments(false,new NormalSkyTile(0,0,0),
-                        "x,y,z,walkable status","type"),
                 arguments(true,new WaterTile(0,0,0),
                         "another tile with equal values","")
         );
