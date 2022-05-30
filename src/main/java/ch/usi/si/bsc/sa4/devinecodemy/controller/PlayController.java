@@ -2,8 +2,8 @@ package ch.usi.si.bsc.sa4.devinecodemy.controller;
 
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.LevelValidationDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.PlayLevelDTO;
-import ch.usi.si.bsc.sa4.devinecodemy.model.LevelValidation.LevelValidation;
-import ch.usi.si.bsc.sa4.devinecodemy.model.User.User;
+import ch.usi.si.bsc.sa4.devinecodemy.model.levelvalidation.LevelValidation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.user.User;
 import ch.usi.si.bsc.sa4.devinecodemy.service.LevelService;
 import ch.usi.si.bsc.sa4.devinecodemy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 /**
  * Controller that enables the user to play a level.
  */
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/play")
 public class PlayController {
@@ -23,7 +22,11 @@ public class PlayController {
     private final LevelService levelService;
     private final UserService userService;
 
-
+    /**
+     * Instantiates the PlayController object by autowiring the dependencies.
+     * @param levelService the LevelService.
+     * @param userService the UserService.
+     */
     @Autowired
     public PlayController(LevelService levelService, UserService userService){
         this.levelService = levelService;
@@ -39,9 +42,9 @@ public class PlayController {
      */
     @PutMapping()
     @ResponseBody
-    public ResponseEntity<LevelValidationDTO>play(OAuth2AuthenticationToken authenticationToken, @RequestBody PlayLevelDTO playLevelDTO) { // Fix how parameters are passed
-        User user = userService.getUserByToken(authenticationToken);
-        LevelValidation playedLevel = levelService.playLevel(playLevelDTO.getLevelNumber(), user.getId(), playLevelDTO.getCommands());
+    public ResponseEntity<LevelValidationDTO> play(OAuth2AuthenticationToken authenticationToken, @RequestBody PlayLevelDTO playLevelDTO) {
+        final User user = userService.getUserByToken(authenticationToken);
+        final LevelValidation playedLevel = levelService.playLevel(playLevelDTO.getLevelNumber(), user.getId(), playLevelDTO.getProgram(), playLevelDTO.getAttempt());
 
         return ResponseEntity.ok(playedLevel.toLevelValidationDTO());
 

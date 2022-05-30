@@ -1,13 +1,17 @@
 package ch.usi.si.bsc.sa4.devinecodemy.service;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.LevelInexistentException;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.UserInexistentException;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Exceptions.UserNotAllowedException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.EWorld;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.LevelInexistentException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserInexistentException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.exceptions.UserNotAllowedException;
+import ch.usi.si.bsc.sa4.devinecodemy.model.language.Context;
+import ch.usi.si.bsc.sa4.devinecodemy.model.language.Program;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
-import ch.usi.si.bsc.sa4.devinecodemy.model.Level.Level;
-import ch.usi.si.bsc.sa4.devinecodemy.model.LevelValidation.LevelValidation;
-import ch.usi.si.bsc.sa4.devinecodemy.model.Statistics.UserStatistics;
+import ch.usi.si.bsc.sa4.devinecodemy.model.level.Level;
+import ch.usi.si.bsc.sa4.devinecodemy.model.levelvalidation.LevelValidation;
+import ch.usi.si.bsc.sa4.devinecodemy.model.statistics.UserStatistics;
 import ch.usi.si.bsc.sa4.devinecodemy.repository.LevelRepository;
 
 import java.util.*;
@@ -19,8 +23,8 @@ import java.util.stream.Collectors;
 @Service
 public class LevelService {
     private final UserService userService;
-    private LevelRepository levelRepository;
-    private StatisticsService statisticsService;
+    private final LevelRepository levelRepository;
+    private final StatisticsService statisticsService;
 
     @Autowired
     public LevelService(LevelRepository levelRepository, StatisticsService statisticsService, UserService userService) {
@@ -34,33 +38,49 @@ public class LevelService {
      * Simulates a gameplay on a specific level.
      * @param levelNumber the level number.
      * @param userId the ID of the user that is playing the level. Used or saving game statistics.
-     * @param commands the list of commands to play on the level.
+     * @param program the program to execute.
      * @return a LevelValidationDTO object containing the result of the gameplay.
      * @throws LevelInexistentException if the level does not exist.
      * @throws UserInexistentException if the user with the given userId does not exist.
      * @throws UserNotAllowedException if the user is not allowed to play this level.
      */
-    public LevelValidation playLevel(int levelNumber, String userId, List<String> commands) throws LevelInexistentException, UserInexistentException, UserNotAllowedException {
+    public LevelValidation playLevel(int levelNumber, String userId, Program program, String attempt) throws LevelInexistentException, UserInexistentException, UserNotAllowedException {
         Optional<Level> optionalLevel = getByLevelNumber(levelNumber);
         if(optionalLevel.isEmpty()) {
             throw new LevelInexistentException(levelNumber);
         } else if(!userService.userIdExists(userId)) {
             throw new UserInexistentException(userId);
         } else if(!isLevelPlayable(levelNumber, userId)) {
-            throw new UserNotAllowedException("Level #"+levelNumber+" is not playable by user '"+userId+"' !");
+            throw new UserNotAllowedException(userId,levelNumber);
         }
 
-        GamePlayer gameplayer = new GamePlayer(optionalLevel.get());
+        Level level = optionalLevel.get();
+        LevelValidation levelValidation = new LevelValidation();
+        Context context = new Context(level.getBoard(), level.getRobot(), level.getMaxCommandsNumber(), levelValidation);
 
-        LevelValidation validation = gameplayer.play(commands);
+        LevelValidation result = program.execute(context);
 
         // Here we create the new statistics for the user after playing the game.
-        statisticsService.addStats(userId, gameplayer, validation);
+        statisticsService.addStats(userId, levelNumber, attempt, result.isCompleted());
 
-        return validation;
+        return result;
     }
-
-
+    
+    /**
+     * Returns a Pair of integers representing the lower and upper bound
+     *  levelNumbers for the levels in that World.
+     * @param world the World of the levels to return the range of.
+     * @return  Pair of integers representing the lower and upper bound
+     *  levelNumbers for the levels in that World.
+     */
+    public Pair<Integer, Integer> getLevelNumberRangeForWorld(EWorld world) {
+        Optional<Level> first = levelRepository.findFirstByLevelWorldOrderByLevelNumberAsc(world);
+        Optional<Level> second = levelRepository.findFirstByLevelWorldOrderByLevelNumberDesc(world);
+        if (first.isEmpty() || second.isEmpty()) {
+            return Pair.of(-1,-1);
+        }
+        return Pair.of(first.get().getLevelNumber(), second.get().getLevelNumber());
+    }
 
 
 
@@ -77,20 +97,19 @@ public class LevelService {
         
         Optional<UserStatistics> stats = statisticsService.getById(userId);
         // If there no stats yet for this user, create empty statistics for the user in the db.
-        if (stats.isEmpty()) {
-            statisticsService.addStats(userId);
-        }
-        
-        UserStatistics statistics = stats.get();
+        UserStatistics statistics = stats.isEmpty()
+                ? statisticsService.addStats(userId)
+                : stats.get();
+
         int max = 0;
         // Finds the highest levelNumber among the completed levels.
         for (Integer key : statistics.getData().keySet()) {
-            if (statistics.getData().get(key).isCompleted() && key > max) {
+            if (statistics.getData().get(key).isCompleted()) {
                 max = key;
             }
         }
 
-        return getRange(1, max+1);
+        return getRange(max+1);
     }
 
 
@@ -105,17 +124,12 @@ public class LevelService {
     
     /**
      * Returns a list of Levels whose levelNumber lies in between the provided range.
-     * @param start the lower bound of the range.
      * @param end the upper bound of the range.
-     * @throws IllegalArgumentException if the provided range is not valid.
      * @return list of Levels whose levelNumber lies in between the provided range.
+     * @throws IllegalArgumentException if the provided range is not valid.
      */
-    private List<Level> getRange(int start, int end) throws IllegalArgumentException {
-        if(start > end) {
-            throw new IllegalArgumentException("Parameter 'start' needs to be less or equal to 'end'");
-        }
-        
-        return getAll().stream().filter((Level l)->l.getLevelNumber() >= start && l.getLevelNumber() <= end).collect(Collectors.toList());
+    private List<Level> getRange(int end) throws IllegalArgumentException {
+        return getAll().stream().filter((Level l) -> l.getLevelNumber() <= end).collect(Collectors.toList());
     }
 
     /**
@@ -130,14 +144,10 @@ public class LevelService {
         Optional<Level> l = getByLevelNumber(levelNumber);
         if (l.isEmpty()) {
             throw new LevelInexistentException(levelNumber);
-        } else if(!userService.userIdExists(userId)) {
+        } else if (!userService.userIdExists(userId)) {
             throw new UserInexistentException(userId);
         }
-
-        if(isLevelPlayable(levelNumber, userId)) {
-            return Optional.of(getByLevelNumber(levelNumber).get());
-        }
-        return Optional.empty();
+        return isLevelPlayable(levelNumber, userId) ? l : Optional.empty();
     }
     
     /**
@@ -180,19 +190,5 @@ public class LevelService {
      */
     public Optional<Level> getByLevelNumber(int levelNumber) {
         return levelRepository.findByLevelNumber(levelNumber);
-    }
-    
-    
-    /**
-     * Deletes a Level with a specific level number.
-     * @throws LevelInexistentException if the level with the given levelNumber does not exist.
-     * @param levelNumber the number of the level to delete.
-     */
-    public void deleteByLevelNumber(int levelNumber) throws LevelInexistentException {
-        if(!levelExists(levelNumber)) {
-            throw new LevelInexistentException(levelNumber);
-        }
-        
-        levelRepository.deleteByLevelNumber(levelNumber);
     }
 }

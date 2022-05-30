@@ -9,9 +9,11 @@ variables:
   SONARQUBE_PROJECT_KEY: ${CI_PROJECT_ID}:${CI_COMMIT_REF_SLUG}
   SONARQUBE_PROJECT_NAME: sa4/2022/2-pipelinepredators/backend:${CI_COMMIT_REF_SLUG}
   SONARQUBE_GROUP_ID: AYAETsxiKvyE7mJiVutx
-
-before_script:
-  - export GRADLE_USER_HOME=`pwd`/.gradle
+  SSH_HOST: "gitlab-cd@thepipelinepredators.sa4.si.usi.ch"
+  DOCKER_STAGING_HOST: "thepipelinepredators.sa4.si.usi.ch"
+  CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX_SLASH: ${FROM ${CI_DEPENDENCY_PROXY_DIRECT_GROUP_IMAGE_PREFIX}/
+  CODELAND_BACKEND_BASE_URL: "https://thepipelinepredators.sa4.si.usi.ch:8080"
+  CODELAND_FRONTEND_BASE_URL: "https://thepipelinepredators.sa4.si.usi.ch"
 
 stages:
   - compile
@@ -19,6 +21,8 @@ stages:
   - sonarqube
   - checkstyle
   - build
+  - release
+  - deploy
 
 compile:
   stage: compile
@@ -98,9 +102,65 @@ sonarqube-check:
   extends: .sonarqube-check
   rules:
       - if: ($CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH == "main")
-  allow_failure: true
+  allow_failure: false
   script:
     - "curl -u ${SONAR_TOKEN}: -X POST \"https://lab.si.usi.ch/sonarqube/api/projects/create?name=${SONARQUBE_PROJECT_NAME}&project=${SONARQUBE_PROJECT_KEY}\" || echo Project already exists"    
     - "curl -u ${SONAR_TOKEN}: -X POST \"https://lab.si.usi.ch/sonarqube/api/permissions/add_group?projectKey=${SONARQUBE_PROJECT_KEY}&groupId=${SONARQUBE_GROUP_ID}&permission=user\" || echo Project permission already set or has error"
     - "curl -u ${SONAR_TOKEN}: -X POST \"https://lab.si.usi.ch/sonarqube/api/permissions/add_group?projectKey=${SONARQUBE_PROJECT_KEY}&groupId=${SONARQUBE_GROUP_ID}&permission=codeviewer\" || echo Project permission already set or has error"  
     - sonar-scanner  
+
+release_backend:
+  stage: release
+  image: ${CI_DEPENDENCY_PROXY_DIRECT_GROUP_IMAGE_PREFIX}/docker:stable-git
+  rules:
+    - if: ($CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH)
+  services:
+    - name: ${CI_DEPENDENCY_PROXY_DIRECT_GROUP_IMAGE_PREFIX}/docker:stable-dind
+      alias: docker
+  script:
+    - echo "Logging to GitLab Container Registry with CI credentials..."
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
+    - echo ""
+    - docker build -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
+    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
+
+deploy_backend:
+  rules:
+      - if: ($CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH)
+  stage: deploy
+  services:
+    - name: ${CI_DEPENDENCY_PROXY_DIRECT_GROUP_IMAGE_PREFIX}/docker:stable-dind
+      alias: docker
+  image: ${CI_DEPENDENCY_PROXY_DIRECT_GROUP_IMAGE_PREFIX}/docker/compose:latest
+  script:
+    - setup_ssh_docker_host
+    - echo "Logging to GitLab Container Registry with CI credentials..."
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
+    - echo ""
+    - cd deployment
+    - docker-compose -f docker-compose-backend.yml down
+    - docker-compose -f docker-compose-backend.yml pull
+    - docker-compose -f docker-compose-backend.yml up -d
+
+.devops: &devops |
+  function setup_ssh_docker_host() {
+    echo "Setting up ssh agent proxy..."
+    apk add openssh-client
+
+    # Run ssh-agent (inside the build environment)
+    eval $(ssh-agent -s)
+
+    mkdir -p ~/.ssh
+
+    echo "$DOCKER_CD_KEY_PP" >~/.ssh/id_rsa
+    chmod 600 ~/.ssh/id_rsa
+
+    ssh-keyscan -H "$DOCKER_STAGING_HOST" >>~/.ssh/known_hosts
+    ssh-add ~/.ssh/id_rsa
+
+    export DOCKER_HOST="ssh://$SSH_HOST"
+  }
+
+before_script:
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+  - *devops    
