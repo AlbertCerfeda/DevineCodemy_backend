@@ -75,10 +75,6 @@ public class AuthController {
      */
     @GetMapping("/logout")
     public RedirectView logout(OAuth2AuthenticationToken authenticationToken) {
-        // TODO: Implement logout
-        System.out.println("WE ARE LOGGING OUT!!!");
-        System.out.println(authenticationToken);
-
         final HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON, MediaType.TEXT_HTML, MediaType.TEXT_PLAIN));
         final HttpEntity<String> entity = new HttpEntity<>(headers);
