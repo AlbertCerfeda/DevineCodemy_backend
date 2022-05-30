@@ -314,7 +314,7 @@ public class BoardTests {
                 new WaterTile(4, 9, 0),
                 new WaterTile(5, 9, 0),
                 new WaterTile(6, 9, 0),
-                new LeverTile(7, 9, 0,8,9,0),
+                new LeverTile(7, 9, 0,8,9,0, false),
                 new TeleportTile(8, 9, 0, true, 9, 9, 0,0),
                 new TeleportTile(9, 9, 0, true, 8, 9, 0, 0)
         );
@@ -456,7 +456,7 @@ public class BoardTests {
                     new WaterTile(4, 9, 0),
                     new WaterTile(5, 9, 0),
                     new WaterTile(6, 9, 0),
-                    new LeverTile(7, 9, 0,8,9,0),
+                    new LeverTile(7, 9, 0,8,9,0, false),
                     new TeleportTile(8, 9, 0, false, 9, 9, 0, 0),
                     new TeleportTile(9, 9, 0, false, 8, 9, 0, 0)
             );
@@ -486,7 +486,7 @@ public class BoardTests {
         @DisplayName("should be able to get a lever tile")
         @Test
         void testGetTileAtLever() {
-            var lever = new LeverTile(7,9,0,8,9,0);
+            var lever = new LeverTile(7,9,0,8,9,0, false);
             var actual = board.getTileAt(7,9);
             assertTrue(actual instanceof LeverTile,
                     "the created board does not contain a lever tile where supposed");
