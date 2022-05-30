@@ -111,7 +111,6 @@ public class Program {
             levelValidation.addAnimation(ERobotAnimation.EMOTE_DANCE);
             levelValidation.setCompleted(true);
         }
-
         return levelValidation;
     }
 

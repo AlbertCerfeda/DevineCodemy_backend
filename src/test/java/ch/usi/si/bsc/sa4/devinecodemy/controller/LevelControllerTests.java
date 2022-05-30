@@ -2,6 +2,7 @@ package ch.usi.si.bsc.sa4.devinecodemy.controller;
 
 import ch.usi.si.bsc.sa4.devinecodemy.DevineCodemyBackend;
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.*;
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.tile.TeleportTileDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.tile.TileDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.model.ECategory;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EOrientation;
@@ -13,6 +14,7 @@ import ch.usi.si.bsc.sa4.devinecodemy.model.level.Board;
 import ch.usi.si.bsc.sa4.devinecodemy.model.level.Level;
 import ch.usi.si.bsc.sa4.devinecodemy.model.level.Robot;
 import ch.usi.si.bsc.sa4.devinecodemy.model.tile.GrassTile;
+import ch.usi.si.bsc.sa4.devinecodemy.model.tile.TeleportTile;
 import ch.usi.si.bsc.sa4.devinecodemy.model.user.SocialMedia;
 import ch.usi.si.bsc.sa4.devinecodemy.model.user.User;
 import ch.usi.si.bsc.sa4.devinecodemy.service.LevelService;
@@ -42,6 +44,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.mockito.BDDMockito.given;
@@ -49,9 +52,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(classes = DevineCodemyBackend.class)
 @ContextConfiguration(classes = DevineCodemyBackend.class)
-@DisplayName("The level controller")
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@DisplayName("The level controller")
 public class LevelControllerTests {
 
     @MockBean
@@ -82,28 +85,30 @@ public class LevelControllerTests {
         user2 = new User("another id", "name", "username", "email", "avatarl",
                 "bio", new SocialMedia("twitter", "skype", "linkedin"));
         fakeOAuth2User1 = new FakeOAuth2User(user1.getId());
-        level1 = new Level("level 1", "description of 1", 1, EWorld.PURGATORY, 0,
+        level1 = new Level("level 1", "description of 1", 1, EWorld.INFERNO, 0,
                 new Board(List.of(), List.of(), 0), new Robot(0, 0, EOrientation.UP),
                 List.of(), "../assets/thumbnailSrc1.jpg");
 
-        level2 = new Level("level 2", "description of 2", 2, EWorld.PURGATORY, 1,
-                new Board(List.of(new GrassTile(1, 1, 1)), List.of(new CoinItem(1, 1)), 1),
+        level2 = new Level("level 2", "description of 2", 2, EWorld.INFERNO, 1,
+                new Board(List.of(new GrassTile(1, 1, 1),
+                        new TeleportTile(2,3,0, false,2,2,0,0)),
+                        List.of(new CoinItem(1, 1)), 1),
                 new Robot(1, 1, EOrientation.UP), List.of(ECategory.BASIC_COMMANDS),
                 "../assets/thumbnailSrc2.jpg");
 
-        level3 = new Level("level 3", "description of 3", 3, EWorld.PURGATORY, 2,
+        level3 = new Level("level 3", "description of 3", 3, EWorld.INFERNO, 2,
                 new Board(List.of(new GrassTile(1, 1, 0), new GrassTile(1, 2, 0)),
                         List.of(new CoinItem(1, 1)), 1),
                 new Robot(1, 1, EOrientation.UP), List.of(ECategory.BASIC_COMMANDS, ECategory.BASIC_COMMANDS),
                 "../assets/thumbnailSrc3.jpg");
 
-        level4 = new Level("level 4", "description of 4", 4, EWorld.PURGATORY, 4,
+        level4 = new Level("level 4", "description of 4", 4, EWorld.INFERNO, 4,
                 new Board(List.of(new GrassTile(1, 1, 0), new GrassTile(2, 1, 0)),
                         List.of(new CoinItem(2, 1)), 1),
                 new Robot(1, 1, EOrientation.UP), List.of(ECategory.BASIC_COMMANDS, ECategory.BASIC_COMMANDS, ECategory.BASIC_COMMANDS),
                 "../assets/thumbnailSrc4.jpg");
 
-        level5 = new Level("level 5", "description of 5", 5, EWorld.PURGATORY, 6,
+        level5 = new Level("level 5", "description of 5", 5, EWorld.INFERNO, 6,
                 new Board(List.of(new GrassTile(1, 1, 0), new GrassTile(1, 2, 0),
                         new GrassTile(2, 2, 0)),
                         List.of(new CoinItem(1, 1), new CoinItem(1, 2)), 2),
@@ -255,17 +260,17 @@ public class LevelControllerTests {
                 "the dimension x of " + message);
         assertEquals(expected.getDimY(), actual.getDimY(),
                 "the dimension y of " + message);
-        testGridEquals(expected.getGrid(), actual.getGrid(),
+        testGridEquals(expected, actual,
                 "the grid of " + message);
         testItemsEquals(expected.getItems(), actual.getItems(),
                 "the items of " + message);
     }
 
-    public void testGridEquals(List<TileDTO> expected, List<TileDTO> actual, String message) {
-        assertEquals(expected.size(), actual.size(),
+    public void testGridEquals(BoardDTO expected, BoardDTO actual, String message) {
+        assertEquals(expected.getGrid().size(), actual.getGrid().size(),
                 "the size of " + message);
-        for (int i = 0; i < expected.size(); i++) {
-            testTileDtoEquals(expected.get(i), actual.get(i), message);
+        for (int i = 0; i < expected.getGrid().size(); i++) {
+            testTileDtoEquals(expected.getGrid().get(i), actual.getGrid().get(i), message);
         }
     }
 
@@ -369,18 +374,18 @@ public class LevelControllerTests {
         @DisplayName("should be able to retrieve all the worlds")
     @Test
     public void testGetLevelWorlds() throws Exception {
-        given(levelService.getLevelNumberRangeForWorld(EWorld.PURGATORY)).willReturn(Pair.of(1,5));
-        given(levelService.getLevelNumberRangeForWorld(EWorld.PARADISE)).willReturn(Pair.of(6,10));
-        given(levelService.getLevelNumberRangeForWorld(EWorld.INFERNO)).willReturn(Pair.of(11,15));
+        given(levelService.getLevelNumberRangeForWorld(EWorld.INFERNO)).willReturn(Pair.of(1,5));
+        given(levelService.getLevelNumberRangeForWorld(EWorld.PURGATORY)).willReturn(Pair.of(6,10));
+        given(levelService.getLevelNumberRangeForWorld(EWorld.PARADISE)).willReturn(Pair.of(11,15));
         MvcResult result = mockMvc.perform(get("/levels/worlds")
                         .with(SecurityMockMvcRequestPostProcessors
                                 .authentication(fakeOAuth2User1.getOAuth2AuthenticationToken())))
                 .andReturn();
         List<EWorldDTO> worldList = objectMapper.readValue(result.getResponse().getContentAsString(),
                 new TypeReference<>() {});
-        List<EWorldDTO> expected = List.of(EWorld.PURGATORY.toEWorldDTO(Pair.of(1,5)),
-                EWorld.PARADISE.toEWorldDTO(Pair.of(6,10)),
-                EWorld.INFERNO.toEWorldDTO(Pair.of(11,15)));
+        List<EWorldDTO> expected = List.of(EWorld.INFERNO.toEWorldDTO(Pair.of(1,5)),
+                EWorld.PURGATORY.toEWorldDTO(Pair.of(6,10)),
+                EWorld.PARADISE.toEWorldDTO(Pair.of(11,15)));
         testWorldsEquals(expected,worldList,
                 "the worlds don't match the inserted worlds");
     }
@@ -418,9 +423,9 @@ public class LevelControllerTests {
 
     public static Stream<Arguments> getWorldArgumentsProvider() {
         return Stream.of(
-                arguments(EWorld.PURGATORY, "Purgatory", Pair.of(1,5)),
-                arguments(EWorld.PARADISE, "Paradise", Pair.of(6,10)),
-                arguments(EWorld.INFERNO, "Inferno", Pair.of(11,15))
+                arguments(EWorld.INFERNO, "Inferno", Pair.of(1,5)),
+                arguments(EWorld.PURGATORY, "Purgatory", Pair.of(6,10)),
+                arguments(EWorld.PARADISE, "Paradise", Pair.of(11,15))
         );
     }
 

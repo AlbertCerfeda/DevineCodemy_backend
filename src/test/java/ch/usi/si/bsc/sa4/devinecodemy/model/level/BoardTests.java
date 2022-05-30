@@ -1,5 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.level;
 
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.tile.TeleportTileDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EOrientation;
 import ch.usi.si.bsc.sa4.devinecodemy.model.item.CoinItem;
 import ch.usi.si.bsc.sa4.devinecodemy.model.item.Item;
@@ -313,7 +314,7 @@ public class BoardTests {
                 new WaterTile(4, 9, 0),
                 new WaterTile(5, 9, 0),
                 new WaterTile(6, 9, 0),
-                new WaterTile(7, 9, 0),
+                new LeverTile(7, 9, 0,8,9,0),
                 new TeleportTile(8, 9, 0, true, 9, 9, 0,0),
                 new TeleportTile(9, 9, 0, true, 8, 9, 0, 0)
         );
@@ -455,7 +456,7 @@ public class BoardTests {
                     new WaterTile(4, 9, 0),
                     new WaterTile(5, 9, 0),
                     new WaterTile(6, 9, 0),
-                    new WaterTile(7, 9, 0),
+                    new LeverTile(7, 9, 0,8,9,0),
                     new TeleportTile(8, 9, 0, false, 9, 9, 0, 0),
                     new TeleportTile(9, 9, 0, false, 8, 9, 0, 0)
             );
@@ -480,6 +481,28 @@ public class BoardTests {
                     List.of(new CoinItem(0,0)),0);
             assertNotEquals(board1, board2,"board is equal when compared to board with " +
                     "same dimension x, but different dimension y");
+        }
+
+        @DisplayName("should be able to get a lever tile")
+        @Test
+        void testGetTileAtLever() {
+            var lever = new LeverTile(7,9,0,8,9,0);
+            var actual = board.getTileAt(7,9);
+            assertTrue(actual instanceof LeverTile,
+                    "the created board does not contain a lever tile where supposed");
+            var actualLever = (LeverTile) actual;
+            assertEquals(lever.getPosX(),actualLever.getPosX(),
+                    "x position of a lever is not equal after creation");
+            assertEquals(lever.getPosY(),actualLever.getPosY(),
+                    "y position of a lever is not equal after creation");
+            assertEquals(lever.getPosZ(),actualLever.getPosZ(),
+                    "z position of a lever is not equal after creation");
+            assertEquals(lever.getTeleportX(),actualLever.getTeleportX(),
+                    "target x of a lever is not equal after creation");
+            assertEquals(lever.getTeleportY(),actualLever.getTeleportY(),
+                    "target y of a lever is not equal after creation");
+            assertEquals(lever.getTeleportZ(),actualLever.getTeleportZ(),
+                    "target z of a lever is not equal after creation");
         }
 
         @DisplayName("has the same items provided in the constructor")
@@ -511,6 +534,29 @@ public class BoardTests {
             assertNotNull(actualBoardDTO.getGrid(), "boardDTO grid is null");
             assertNotNull(actualBoardDTO.getItems(), "boardDTO items is null");
         }
+        
+        @DisplayName("should be able to get the dto of a teleport tile")
+        @Test
+        void testToTeleportDTO() {
+            var expected = new TeleportTile(0,0,0, false,0,0,0,0);
+            var actual = expected.toTeleportTileDTO();
+            assertEquals(expected.getPosX(),actual.getPosX(),
+                    "x of the teleport should be equal to the original object");
+            assertEquals(expected.getPosX(),actual.getPosY(),
+                    "y of the teleport should be equal to the original object");
+            assertEquals(expected.getPosZ(),actual.getPosZ(),
+                    "z of the teleport should be equal to the original object");
+            assertEquals(expected.getTargetX(),actual.getTargetX(),
+                    "x of the target teleport should be equal to the original object");
+            assertEquals(expected.getTargetY(),actual.getTargetY(),
+                    "y of the target teleport should be equal to the original object");
+            assertEquals(expected.getTargetZ(),actual.getTargetZ(),
+                    "z of the target teleport should be equal to the original object");
+            assertEquals(expected.isActive(),actual.isActive(),
+                    "active state of the teleport should be equal to the original object");
+            assertEquals(expected.getType().name(),actual.getType(),
+                    "type of the teleport tile should be equal to the original teleport object");
+        }
 
         @DisplayName("can return the correct string of itself")
         @Test
@@ -523,7 +569,7 @@ public class BoardTests {
                     "WWWCCCC*WW\n" +
                     "WWWCWWWG W\n" +
                     "WWWWWWWGWW\n" +
-                    "WWWWWWW*WW\n" +
+                    "WWWWWWW*WL\n" +
                     "WWWWWWWGWT\n" +
                     "WWGGGGGGGT\n";
             assertEquals(expectedString, actualString, "strings don't match");
@@ -557,7 +603,7 @@ public class BoardTests {
                         "x,y","z"),
                 arguments(false,tile1,
                         "x,y,z","walkable status"),
-                arguments(false,new NormalSkyTile(0,0,0),
+                arguments(false,new LavaTile(0,0,0),
                         "x,y,z,walkable status","type"),
                 arguments(true,new WaterTile(0,0,0),
                         "another tile with equal values","")
@@ -573,7 +619,7 @@ public class BoardTests {
                 "tile is equal when compared to an object of another class");
     }
 
-    @ParameterizedTest(name = "can compare the level with another level object")
+    @ParameterizedTest(name = "can compare an item with another item object")
     @MethodSource("itemEqualsArguments")
     public void testItemEquals(boolean equals, Item item1, String same, String difference) {
         var item = board.getItemAt(4,7);

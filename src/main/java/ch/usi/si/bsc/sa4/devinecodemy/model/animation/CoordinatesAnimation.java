@@ -7,9 +7,9 @@ package ch.usi.si.bsc.sa4.devinecodemy.model.animation;
 public class CoordinatesAnimation implements Animation {
 
     private final ECoordinatesAnimation animation;
-    private final int targetX;
-    private final int targetY;
-    private final int targetZ;
+    private final int x;
+    private final int y;
+    private final int z;
 
     /**
      * Constructs a CoordinatesAnimation object with the given values.
@@ -20,14 +20,14 @@ public class CoordinatesAnimation implements Animation {
      */
     public CoordinatesAnimation(ECoordinatesAnimation animation, int targetX, int targetY, int targetZ) {
         this.animation = animation;
-        this.targetX = targetX;
-        this.targetY = targetY;
-        this.targetZ = targetZ;
+        this.x = targetX;
+        this.y = targetY;
+        this.z = targetZ;
     }
 
     @Override
     public String toString() {
-        return animation.getName() + "(" + targetX + "," + targetY + "," + targetZ + ")";
+        return animation.getName() + "(" + x + "," + y + "," + z + ")";
     }
 
 }

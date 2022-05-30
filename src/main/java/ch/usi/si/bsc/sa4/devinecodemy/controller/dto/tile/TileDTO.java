@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class TileDTO {
     /** Field 'type' is needed by the client
      * to distinguish the different type of tiles */
-    private String type;
+    private final String type;
     
     private final int posX;
     private final int posY;
@@ -26,10 +26,12 @@ public class TileDTO {
     @JsonCreator
     public TileDTO(@JsonProperty("posX") int posX,
                    @JsonProperty("posY") int posY,
-                   @JsonProperty("posZ") int posZ) {
+                   @JsonProperty("posZ") int posZ,
+                   @JsonProperty("type") String type) {
         this.posX = posX;
         this.posY = posY;
         this.posZ = posZ;
+        this.type = type;
     }
 
     /**

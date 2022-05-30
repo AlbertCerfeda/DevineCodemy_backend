@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A lever allows the character to interact with a teleport portal.
+ * The LeverTile class represents the Lever's Tile.
  */
 public class LeverTile extends Tile{
 
