@@ -42,7 +42,8 @@ public enum EWorld {
                     " like this:<br><br>repeat ( //number of times) {<br><br>do // if the condition is true, " +
                     "this block of code will be executed <br><br> } <br><br>repeat while (//condition) {" +
                     "<br><br>do // if the condition is true, this block of code will be executed <br><br> }" +
-                    "<br><br>You can also define functions now!",
+                    "<br><br>You can also define functions now!<br>You can reuse blocks of code defined as a function " +
+                    "to resolve the levels.",
             "Congratulations! You just completed the paradise world and completed the game!. <br> " +
                     "In this series of levels, you learnt how to use loops in order to complete " +
                     "the tasks.<br><br><br> Thanks for playing our game! ");
