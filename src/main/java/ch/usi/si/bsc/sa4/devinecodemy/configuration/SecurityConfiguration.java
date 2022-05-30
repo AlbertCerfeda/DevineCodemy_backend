@@ -23,11 +23,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests()
-                .antMatchers("/auth/check").permitAll()
+                .antMatchers("/auth/check","/auth/logout").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .oauth2Login()
                 .defaultSuccessUrl("/auth/login", true)
+                .and()
+                .logout()
+                .logoutSuccessUrl("/auth/logout")
                 .and().csrf().disable();
     }
 }

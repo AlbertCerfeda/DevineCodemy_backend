@@ -74,8 +74,10 @@ public class AuthController {
      * @param authenticationToken token that belongs to user.
      */
     @GetMapping("/logout")
-    public void logout(OAuth2AuthenticationToken authenticationToken) {
-        // TODO: Implement logout
+    public RedirectView logout(OAuth2AuthenticationToken authenticationToken) {
+        final RedirectView redirectView = new RedirectView();
+        redirectView.setUrl(frontendUrl + "/");
+        return redirectView;
     }
 
 

@@ -196,8 +196,11 @@ public class AuthenticationControllerTests {
 
     @DisplayName("should be able to logout a user")
     @Test
-    public void testUserLogout() {
-        authController.logout(fakeAuthenticationToken);
+    public void testUserLogout() throws Exception {
+        mockMvc.perform(get("/auth/logout")
+                .with(SecurityMockMvcRequestPostProcessors
+                        .authentication(invalidOAuth2User.getOAuth2AuthenticationToken())))
+                .andExpect(status().is3xxRedirection());
     }
 
     // test userLogin
