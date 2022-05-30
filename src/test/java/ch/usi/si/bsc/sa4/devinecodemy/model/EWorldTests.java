@@ -11,29 +11,29 @@ import static org.junit.jupiter.api.Assertions.*;
 @DisplayName("The EWorld")
 public class EWorldTests {
 
-    EWorld earth;
-    EWorld sky;
-    EWorld lava;
+    EWorld inferno;
+    EWorld purgatory;
+    EWorld paradise;
 
     @BeforeEach
     void setup() {
-        earth = EWorld.PURGATORY;
-        sky = EWorld.PARADISE;
-        lava = EWorld.INFERNO;
+        inferno = EWorld.INFERNO;
+        purgatory = EWorld.PURGATORY;
+        paradise = EWorld.PARADISE;
     }
 
     @DisplayName("should be able to get the EWorld of a given string")
     @Test
     public void testGetEWorldFromString() {
-        var actualWorld1 = EWorld.getEWorldFromString("Purgatory");
-        var actualWorld2 = EWorld.getEWorldFromString("Paradise");
-        var actualWorld3 = EWorld.getEWorldFromString("Inferno");
-        assertEquals(earth,actualWorld1,
+        var actualWorld1 = EWorld.getEWorldFromString("Inferno");
+        var actualWorld2 = EWorld.getEWorldFromString("Purgatory");
+        var actualWorld3 = EWorld.getEWorldFromString("Paradise");
+        assertEquals(inferno,actualWorld1,
+                "EWorld of Inferno is not INFERNO");
+        assertEquals(purgatory,actualWorld2,
                 "EWorld of PURGATORY is not PURGATORY");
-        assertEquals(sky,actualWorld2,
+        assertEquals(paradise,actualWorld3,
                 "EWorld of PARADISE is not PARADISE");
-        assertEquals(lava,actualWorld3,
-                "EWorld of INFERNO is not INFERNO");
     }
 
     @DisplayName("should throw when getting the EWorld of an unknown world")
@@ -47,96 +47,96 @@ public class EWorldTests {
     @DisplayName("should be able to get description of any EWorld")
     @Test
     public void testGetDescriptionMessage() {
-        var actualDescription1 = earth.getDescriptionMessage();
-        var actualDescription2 = sky.getDescriptionMessage();
-        var actualDescription3 = lava.getDescriptionMessage();
+        var actualDescription1 = inferno.getDescriptionMessage();
+        var actualDescription2 = purgatory.getDescriptionMessage();
+        var actualDescription3 = paradise.getDescriptionMessage();
         assertNotNull(actualDescription1,
-                "description is null after creating earth");
+                "description is null after creating inferno");
         assertNotNull(actualDescription2,
-                "description is null after creating sky");
+                "description is null after creating purgatory");
         assertNotNull(actualDescription3,
-                "description is null after creating lava");
+                "description is null after creating paradise");
     }
 
     @DisplayName("should be able to get the congrats message of any EWorld")
     @Test
     public void testGetCongratsMessage() {
-        var actualDescription1 = earth.getCongratulationsMessage();
-        var actualDescription2 = sky.getCongratulationsMessage();
-        var actualDescription3 = lava.getCongratulationsMessage();
+        var actualDescription1 = inferno.getCongratulationsMessage();
+        var actualDescription2 = purgatory.getCongratulationsMessage();
+        var actualDescription3 = paradise.getCongratulationsMessage();
         assertNotNull(actualDescription1,
-                "congrats message is null after creating earth");
+                "congrats message is null after creating inferno");
         assertNotNull(actualDescription2,
-                "congrats message is null after creating sky");
+                "congrats message is null after creating purgatory");
         assertNotNull(actualDescription3,
-                "congrats message is null after creating lava");
+                "congrats message is null after creating paradise");
     }
 
     @DisplayName("should be able to get the display name of any EWorld")
     @Test
     public void testGetDisplayName() {
-        var actualName1 = earth.getCongratulationsMessage();
-        var actualName2 = sky.getCongratulationsMessage();
-        var actualName3 = lava.getCongratulationsMessage();
+        var actualName1 = inferno.getCongratulationsMessage();
+        var actualName2 = purgatory.getCongratulationsMessage();
+        var actualName3 = paradise.getCongratulationsMessage();
         assertNotNull(actualName1,
-                "display name is null after creating earth");
+                "display name is null after creating inferno");
         assertNotNull(actualName2,
-                "display name is null after creating sky");
+                "display name is null after creating purgatory");
         assertNotNull(actualName3,
-                "display name is null after creating lava");
+                "display name is null after creating paradise");
     }
 
     @DisplayName("should be able to get the world number of any EWorld")
     @Test
     public void testGetWorldNumber() {
-        var actualWorldNumber1 = earth.getWorldNumber();
-        var actualWorldNumber2 = sky.getWorldNumber();
-        var actualWorldNumber3 = lava.getWorldNumber();
+        var actualWorldNumber1 = inferno.getWorldNumber();
+        var actualWorldNumber2 = purgatory.getWorldNumber();
+        var actualWorldNumber3 = paradise.getWorldNumber();
         assertEquals(1,actualWorldNumber1,
-                "world number is null after creating earth");
+                "world number is null after creating inferno");
         assertEquals(2,actualWorldNumber2,
-                "world number is null after creating sky");
+                "world number is null after creating purgatory");
         assertEquals(3,actualWorldNumber3,
-                "world number is null after creating lava");
+                "world number is null after creating paradise");
     }
 
     @DisplayName("should be able to get the dto of any EWorld")
     @Test
     public void testToEWorldDTO() {
-        var earthDTO = earth.toEWorldDTO(Pair.of(1,5));
-        var skyDTO = sky.toEWorldDTO(Pair.of(6,10));
-        var lavaDTO = lava.toEWorldDTO(Pair.of(11,15));
-        assertEquals(earth.getWorldNumber(),earthDTO.getWorldNumber(),
+        var earthDTO = inferno.toEWorldDTO(Pair.of(1,5));
+        var skyDTO = purgatory.toEWorldDTO(Pair.of(6,10));
+        var lavaDTO = paradise.toEWorldDTO(Pair.of(11,15));
+        assertEquals(inferno.getWorldNumber(),earthDTO.getWorldNumber(),
                 "world number of the dto is not the same of the object of creation");
-        assertEquals(earth.getDisplayName(),earthDTO.getName(),
+        assertEquals(inferno.getDisplayName(),earthDTO.getName(),
                 "display name of the dto is not the same of the object of creation");
-        assertEquals(earth.getDescriptionMessage(),earthDTO.getDescriptionMessage(),
+        assertEquals(inferno.getDescriptionMessage(),earthDTO.getDescriptionMessage(),
                 "description of the dto is not the same of the object of creation");
-        assertEquals(earth.getCongratulationsMessage(),earthDTO.getCongratulationsMessage(),
+        assertEquals(inferno.getCongratulationsMessage(),earthDTO.getCongratulationsMessage(),
                 "congrats message of the dto is not the same of the object of creation");
         assertEquals(1,earthDTO.getFirstLevelNumber(),
                 "the first level of the dto is not the same of the object of creation");
         assertEquals(5,earthDTO.getLastLevelNumber(),
                 "the last level of the dto is not the same of the object of creation");
-        assertEquals(sky.getWorldNumber(),skyDTO.getWorldNumber(),
+        assertEquals(purgatory.getWorldNumber(),skyDTO.getWorldNumber(),
                 "world number of the dto is not the same of the object of creation");
-        assertEquals(sky.getDisplayName(),skyDTO.getName(),
+        assertEquals(purgatory.getDisplayName(),skyDTO.getName(),
                 "display name of the dto is not the same of the object of creation");
-        assertEquals(sky.getDescriptionMessage(),skyDTO.getDescriptionMessage(),
+        assertEquals(purgatory.getDescriptionMessage(),skyDTO.getDescriptionMessage(),
                 "description of the dto is not the same of the object of creation");
-        assertEquals(sky.getCongratulationsMessage(),skyDTO.getCongratulationsMessage(),
+        assertEquals(purgatory.getCongratulationsMessage(),skyDTO.getCongratulationsMessage(),
                 "congrats message of the dto is not the same of the object of creation");
         assertEquals(6,skyDTO.getFirstLevelNumber(),
                 "the first level of the dto is not the same of the object of creation");
         assertEquals(10,skyDTO.getLastLevelNumber(),
                 "the last level of the dto is not the same of the object of creation");
-        assertEquals(lava.getWorldNumber(),lavaDTO.getWorldNumber(),
+        assertEquals(paradise.getWorldNumber(),lavaDTO.getWorldNumber(),
                 "world number of the dto is not the same of the object of creation");
-        assertEquals(lava.getDisplayName(),lavaDTO.getName(),
+        assertEquals(paradise.getDisplayName(),lavaDTO.getName(),
                 "display name of the dto is not the same of the object of creation");
-        assertEquals(lava.getDescriptionMessage(),lavaDTO.getDescriptionMessage(),
+        assertEquals(paradise.getDescriptionMessage(),lavaDTO.getDescriptionMessage(),
                 "description of the dto is not the same of the object of creation");
-        assertEquals(lava.getCongratulationsMessage(),lavaDTO.getCongratulationsMessage(),
+        assertEquals(paradise.getCongratulationsMessage(),lavaDTO.getCongratulationsMessage(),
                 "congrats message of the dto is not the same of the object of creation");
         assertEquals(11,lavaDTO.getFirstLevelNumber(),
                 "the first level of the dto is not the same of the object of creation");

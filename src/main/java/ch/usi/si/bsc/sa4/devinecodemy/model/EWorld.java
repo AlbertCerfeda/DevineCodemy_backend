@@ -9,7 +9,7 @@ import org.springframework.data.util.Pair;
  */
 public enum EWorld {
 
-    PURGATORY("Purgatory", 1,
+    INFERNO("Inferno", 1,
             "<h1>Let's start programming!</h1>" +
                     "<p>If you are here, I suppose you have interest in coding, or at least you want to discover the " +
                     "magical world of programming.<br>Of course, before running we have to learn how to walk. " +
@@ -17,12 +17,12 @@ public enum EWorld {
                     " <b>RoboDante</b>, the main character of Devine Codemy, to reach Paradise <br><br><br>" +
                     " In this world you'll have the possibility to use the following " +
                     "commands:</p> <ul><li>moveForward</li><li>turnLeft</li>" +
-                    "<li>turnRight</li><li>collectCoin</li></ul><br><p>Are you ready? Let's go!</p>"
+                    "<li>turnRight</li><li>collectCoin</li></ul><br><p>Are you ready? Let's go!</p>",
             
-            , "Congratulations ! You just completed the purgatory world and reached paradise ! " +
+            "Congratulations ! You just completed the inferno world and reached purgatory ! " +
             "<br> In this series of levels, you learnt how to use the various basic commands." +
             "<br><br><br> Be prepared for what's next! "),
-    PARADISE("Paradise", 2,
+    PURGATORY("Purgatory", 2,
             "<h1>Conditionals</h1><p>Now things get more interesting. Conditionals are the bread " +
                     "and butter in programming, so make sure to learn them !</p><br>" +
                     "<p> In the previous world, you had a list of commands, and you could choose and write them" +
@@ -30,12 +30,22 @@ public enum EWorld {
                     " like this:<br><br>if ( //condition to check)  {<br><br> // if the condition is true, " +
                     "this block of code will be executed <br><br> } else {<br><br>// Otherwise, this block of " +
                     "code will be executed<br><br>}</p>",
-            "Congratulations! You just completed the paradise world and reached the inferno. <br> " +
+            
+            "Congratulations! You just completed the purgatory world and reached paradise. <br> " +
                     "In this series of levels, you learnt how to use conditionals in order to complete " +
                     "the tasks.<br><br><br> Be prepared for what's next! "),
-    INFERNO("Inferno", 3,
-            "Sample description for the Inferno world !",
-            "Congrats!");
+    PARADISE("Paradise", 3,
+            "<h1>Loops</h1><p>Now things get more and more interesting. Loops are the bread " +
+                    "and butter in programming, so make sure to learn them !</p><br>" +
+                    "<p> In the previous world, you had a list of commands, and you could choose and write them" +
+                    " in a specific order to complete the level. With loops, you will have some code" +
+                    " like this:<br><br>repeat ( //number of times) {<br><br>do // if the condition is true, " +
+                    "this block of code will be executed <br><br> } <br><br>repeat while (//condition) {" +
+                    "<br><br>do // if the condition is true, this block of code will be executed <br><br> }" +
+                    "<br><br>You can also define functions now!",
+            "Congratulations! You just completed the paradise world and completed the game!. <br> " +
+                    "In this series of levels, you learnt how to use loops in order to complete " +
+                    "the tasks.<br><br><br> Thanks for playing our game! ");
 
 
     private final String displayName;

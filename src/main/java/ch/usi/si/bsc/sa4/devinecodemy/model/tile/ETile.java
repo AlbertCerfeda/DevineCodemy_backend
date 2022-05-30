@@ -15,7 +15,9 @@ public enum ETile {
     NORMALS,
     CLOUDB,
     CLOUDG,
-    STAR,
     TELEPORT,
-    LEVER
+    LAVA,
+    OBSIDIAN,
+    LEVER,
+
 }

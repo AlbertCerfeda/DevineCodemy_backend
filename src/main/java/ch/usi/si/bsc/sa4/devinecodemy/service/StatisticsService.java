@@ -138,10 +138,9 @@ public class StatisticsService {
      * @return the leaderboard sorted by number of completed levels.
      */
     public List<LBUserDTO> sortedLeaderboardUsers() {
-        List<LBUserDTO> unordered_list = getLeaderboardUsers();
-        List<LBUserDTO> ordered_list = unordered_list.stream()
+        List<LBUserDTO> unorderedList = getLeaderboardUsers();
+        return unorderedList.stream()
                 .sorted(Comparator.comparing(LBUserDTO::getCompletedLevels).reversed())
                 .collect(Collectors.toList());
-        return ordered_list;
     }
 }

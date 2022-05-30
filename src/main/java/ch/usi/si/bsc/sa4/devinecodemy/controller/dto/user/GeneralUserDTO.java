@@ -12,12 +12,6 @@ public abstract class GeneralUserDTO {
     protected String bio;
 
     /**
-     * General constructor needed by ObjectMapper.
-     */
-    protected GeneralUserDTO() {
-    }
-
-    /**
      * Constructor for any userDTO.
      * @param id id of the user.
      * @param name name of the user.

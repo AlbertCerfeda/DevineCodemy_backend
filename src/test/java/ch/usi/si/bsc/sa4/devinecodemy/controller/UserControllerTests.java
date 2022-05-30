@@ -100,7 +100,6 @@ public class UserControllerTests {
 
         given(userService.isIdEqualToken(fakeAuthenticationToken, "invalid")).willReturn(false);
         given(userService.isIdEqualToken(fakeAuthenticationToken, "an id")).willReturn(true);
-//        given(userService.isIdEqualToken(any(), any())).willReturn(true);
 
         given(userService.updateUser(user1)).willReturn(user1);
     }

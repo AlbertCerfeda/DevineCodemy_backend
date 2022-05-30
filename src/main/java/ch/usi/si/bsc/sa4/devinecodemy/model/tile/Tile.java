@@ -20,11 +20,14 @@ import java.util.Objects;
         @JsonSubTypes.Type(value = GrassTile.class, name = "GRASS"),
         @JsonSubTypes.Type(value = ConcreteTile.class, name = "ROCK"),
         @JsonSubTypes.Type(value = BridgeTile.class, name = "BRIDGE"),
-        @JsonSubTypes.Type(value = NormalSkyTile.class, name = "NORMALS"),
         @JsonSubTypes.Type(value = GreyCloudTile.class, name = "CLOUDG"),
         @JsonSubTypes.Type(value = BlackCloudTile.class, name = "CLOUDB"),
-        @JsonSubTypes.Type(value = StarTile.class, name = "STAR"),
-        @JsonSubTypes.Type(value = StarTile.class, name = "TELEPORT"),
+        @JsonSubTypes.Type(value = ConcreteTile.class, name = "CONCRETE"),
+        @JsonSubTypes.Type(value = TeleportTile.class, name = "TELEPORT"),
+        @JsonSubTypes.Type(value = LavaTile.class, name = "LAVA"),
+        @JsonSubTypes.Type(value = ObsidianTile.class, name = "OBSIDIAN"),
+        @JsonSubTypes.Type(value = LeverTile.class, name = "LEVER"),
+
 })
 public abstract class Tile {
     /** Used by the TileDTO to indicate the type of the Tile.

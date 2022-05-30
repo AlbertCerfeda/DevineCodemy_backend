@@ -87,7 +87,6 @@ public class LevelDTO {
         if(onlyInfo) {
             this.board = null;
             this.robot = null;
-
         }
 
         this.thumbnailSrc= level.getThumbnailSrc();
@@ -112,7 +111,6 @@ public class LevelDTO {
     public String getLevelWorld(){
         return levelWorld;
     }
-
 
     public List<ECategoryDTO> getAllowedCommands() {
         return allowedCommands;

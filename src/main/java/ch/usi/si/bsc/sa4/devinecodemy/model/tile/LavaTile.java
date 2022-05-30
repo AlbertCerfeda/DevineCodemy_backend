@@ -4,20 +4,21 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A tile made Sky. You can NOT walk on it.
+ * A tile made of Lava. You can NOT walk on it.
  */
-public class NormalSkyTile extends Tile {
+public class LavaTile extends Tile {
 
     /**
-     * Construct for NormalSkyTile tiles.
+     * Constructor for Lava tiles.
      * @param posX the x position of the tile.
      * @param posY the y position of the tile.
      * @param posZ the z position of the tile.
      */
     @JsonCreator
-    public NormalSkyTile(@JsonProperty("posX") int posX,
+    public LavaTile(@JsonProperty("posX") int posX,
                      @JsonProperty("posY") int posY,
                      @JsonProperty("posZ") int posZ) {
-        super(ETile.NORMALS, posX, posY, posZ, false);
+        super(ETile.LAVA, posX, posY, posZ, false);
     }
 }
+

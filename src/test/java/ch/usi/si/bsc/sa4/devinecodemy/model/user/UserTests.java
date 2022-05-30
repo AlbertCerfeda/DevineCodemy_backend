@@ -1,5 +1,6 @@
 package ch.usi.si.bsc.sa4.devinecodemy.model.user;
 
+import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user.LBUserDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user.UpdateUserDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.user.UserDTO;
 import org.junit.jupiter.api.BeforeEach;
@@ -159,6 +160,21 @@ public class UserTests {
                 "public profile is not false after creation without parameters");
         assertFalse(userDTO1.isPublicProfileInitialized(),
                 "public profile initialized status is not false after creation without parameters");
+    }
+
+    @DisplayName("should be able to return the LeaderBoard dto of itself")
+    @Test
+    public void testToLBUserDTO() {
+        LBUserDTO userDTO = user.toLBUserDTO(2);
+        assertEquals(user.getAvatarUrl(),userDTO.getAvatarUrl(),
+                "avatar url of the LeaderBoard dto does not match the one of the user");
+        assertEquals(2,userDTO.getCompletedLevels(),
+                "the number of completed levels LeaderBoard dto does not match the one of the user");
+        LBUserDTO userDTO1 = user2.toLBUserDTO(0);
+        assertEquals(user2.getAvatarUrl(),userDTO1.getAvatarUrl(),
+                "avatar url of the LeaderBoard dto does not match the one of the user");
+        assertEquals(0,userDTO1.getCompletedLevels(),
+                "the number of completed levels LeaderBoard dto does not match the one of the user");
     }
 
     @DisplayName("should be able to set the visibility to the given value")

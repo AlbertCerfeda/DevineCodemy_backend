@@ -29,24 +29,35 @@ public class ActionMoveForward extends Action {
         context.incrementClock();
         if (!context.isDead()) {
             try {
-                Board board = context.getBoard();
-                Robot robot = context.getRobot();
+                final Board board = context.getBoard();
+                final Robot robot = context.getRobot();
                 robot.moveForward(context.getBoard());
                 context.getLevelValidation().addAnimation(ERobotAnimation.MOVE_FORWARD);
 
                 if (board.containsTeleportAt(context.getRobot().getPosX(), context.getRobot().getPosY())) {
-                    TeleportTile teleport = (TeleportTile)board.getTileAt(context.getRobot().getPosX(), context.getRobot().getPosY());
+                    final TeleportTile teleport = (TeleportTile)board.getTileAt(context.getRobot().getPosX(), context.getRobot().getPosY());
                     if (teleport.isActive()) {
                         robot.teleportTo(teleport.getTargetX(), teleport.getTargetY());
+
+                        context.getLevelValidation().addAnimation(
+                                new CoordinatesAnimation(ECoordinatesAnimation.TOGGLE_TELEPORT,
+                                        teleport.getPosX(),
+                                        teleport.getPosY(),
+                                        teleport.getPosZ()));
 
                         context.getLevelValidation().addAnimation(
                                 new CoordinatesAnimation(ECoordinatesAnimation.TELEPORT_TO,
                                                         teleport.getTargetX(),
                                                         teleport.getTargetY(),
                                                         teleport.getTargetZ()));
+                        context.getLevelValidation().addAnimation(
+                                new CoordinatesAnimation(ECoordinatesAnimation.TOGGLE_TELEPORT,
+                                        teleport.getTargetX(),
+                                        teleport.getTargetY(),
+                                        teleport.getTargetZ()));
                     }
                 }
-            } catch (Exception e) {
+            } catch (IllegalStateException e) {
                 context.getLevelValidation().addAnimation(ERobotAnimation.EMOTE_DEATH);
                 context.setDead(true);
             }

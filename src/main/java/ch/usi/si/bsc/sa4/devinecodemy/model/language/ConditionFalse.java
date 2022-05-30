@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 public class ConditionFalse implements BooleanCondition {
 
     /**
-     * Creates a new ConditionFalse.
+     * Creates a new ConditionFalse object evaluating false.
      */
     @JsonCreator
     public ConditionFalse() {
