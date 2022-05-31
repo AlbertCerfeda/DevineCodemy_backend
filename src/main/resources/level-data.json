@@ -1528,7 +1528,7 @@
     "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.level.Level",
     "id": 12,
     "name": "Level 12",
-    "description": "Welcome to level 2 of Purgatory! <br> Collect all coins to complete the level! <br> Pull the levers to activate the portals! <br><br> each lever unlocks a teleport! <br><br> <i>“Ch'in te avrà sì benigno riguardo, che del fare e del chieder, tra voi due, fia primo quel che tra li altri è più tardo”</i>",
+    "description": "Welcome to level 2 of Paradise! <br> Collect all coins to complete the level! <br> Pull the levers to activate the portals! <br><br> each lever unlocks a teleport! <br><br> <i>“Ch'in te avrà sì benigno riguardo, che del fare e del chieder, tra voi due, fia primo quel che tra li altri è più tardo”</i>",
     "levelNumber": 12,
     "levelWorld": "PARADISE",
     "maxCommandsNumber": 15,
@@ -1597,7 +1597,7 @@
     "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.level.Level",
     "id": 13,
     "name": "Level 13",
-    "description": "<i>“Intra due cibi, distanti e moventi, d'un modo, prima si morria di fame, che liber'omo l'un recasse ai denti”</i>",
+    "description": "Welcome to level 3 of Paradise! <br> Collect all coins to complete the level! <br> Pull the levers to activate the portals! <br><br> each lever unlocks a teleport! <br><br> <i>“Ch'in te avrà sì benigno riguardo, che del fare e del chieder, tra voi due, fia primo quel che tra li altri è più tardo”</i>",
     "levelNumber": 13,
     "levelWorld": "PARADISE",
     "maxCommandsNumber": 3,
@@ -1659,10 +1659,10 @@
     "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.level.Level",
     "id": 14,
     "name": "Level 14",
-    "description": "<i>“Ben tetragono ai colpi di ventura”</i>",
+    "description": "Welcome to level 4 of Paradise! <br> Collect all coins to complete the level! ",
     "levelNumber": 14,
     "levelWorld": "PARADISE",
-    "maxCommandsNumber": 3,
+    "maxCommandsNumber": 30,
     "board": {
       "grid": [
 
@@ -1671,46 +1671,40 @@
         { "posX": 6, "posY": 0, "posZ": 0, "type": "CLOUDB" },
         { "posX": 7, "posY": 0, "posZ": 0, "type": "CLOUDB" },
         { "posX": 8, "posY": 0, "posZ": 0, "type": "CLOUDG" },
-
         { "posX": 1, "posY": 1, "posZ": 0, "type": "CLOUDG" },
-
         { "posX": 1, "posY": 2, "posZ": 0, "type": "CLOUDB" },
-
-        { "posX": 3, "posY": 2, "posZ": 0, "type": "TELEPORT" },
+        { "posX": 3, "posY": 2, "posZ": 0, "type": "TELEPORT", "active": true, "targetX": 6, "targetY": 5, "targetZ": 0 },
         { "posX": 4, "posY": 2, "posZ": 0, "type": "CLOUDG" },
         { "posX": 5, "posY": 2, "posZ": 0, "type": "CLOUDG" },
-        { "posX": 6, "posY": 2, "posZ": 0, "type": "TELEPORT" },
+        { "posX": 6, "posY": 2, "posZ": 0, "type": "TELEPORT", "active": true, "targetX": 5, "targetY": 0, "targetZ": 0 },
         { "posX": 1, "posY": 3, "posZ": 0, "type": "CLOUDG" },
-        { "posX": 8, "posY": 3, "posZ": 0, "type": "TELEPORT",  "targetX": 2, "targetY": 8, "targetZ": 0  },
-
+        { "posX": 8, "posY": 3, "posZ": 0, "type": "TELEPORT",  "active": true, "targetX": 2, "targetY": 8, "targetZ": 0  },
         { "posX": 1, "posY": 4, "posZ": 0, "type": "CLOUDB" },
-
         { "posX": 8, "posY": 4, "posZ": 0, "type": "CLOUDG" },
-
         { "posX": 1, "posY": 5, "posZ": 0, "type": "CLOUDG" },
-
-        { "posX": 3, "posY": 5, "posZ": 0, "type": "TELEPORT",  "targetX": 6, "targetY": 5, "targetZ": 0  },
+        { "posX": 3, "posY": 5, "posZ": 0, "type": "TELEPORT",  "active": true, "targetX": 5, "targetY": 8, "targetZ": 0  },
         { "posX": 4, "posY": 5, "posZ": 0, "type": "CLOUDG"},
         { "posX": 5, "posY": 5, "posZ": 0, "type": "CLOUDG" },
-        { "posX": 6, "posY": 5, "posZ": 0, "type": "TELEPORT",  "targetX": 3, "targetY": 2, "targetZ": 0  },
+        { "posX": 6, "posY": 5, "posZ": 0, "type": "TELEPORT",  "active": true, "targetX": 3, "targetY": 2, "targetZ": 0  },
         { "posX": 8, "posY": 5, "posZ": 0, "type": "CLOUDB" },
-        { "posX": 1, "posY": 6, "posZ": 0, "type": "TELEPORT",  "targetX": 8, "targetY": 9, "targetZ": 0  },
+        { "posX": 1, "posY": 6, "posZ": 0, "type": "TELEPORT",  "active": true, "targetX": 8, "targetY": 9, "targetZ": 0  },
         { "posX": 8, "posY": 6, "posZ": 0, "type": "CLOUDG" },
         { "posX": 8, "posY": 7, "posZ": 0, "type": "CLOUDB" },
-        { "posX": 2, "posY": 8, "posZ": 0, "type": "TELEPORT", "targetX": 5, "targetY": 8, "targetZ": 0  },
+        { "posX": 2, "posY": 8, "posZ": 0, "type": "TELEPORT", "active": true, "targetX": 8, "targetY": 3, "targetZ": 0  },
         { "posX": 3, "posY": 8, "posZ": 0, "type": "CLOUDB" },
         { "posX": 4, "posY": 8, "posZ": 0, "type": "CLOUDB" },
-        { "posX": 5, "posY": 8, "posZ": 0, "type": "TELEPORT" },
+        { "posX": 5, "posY": 8, "posZ": 0, "type": "TELEPORT", "active": true, "targetX": 3, "targetY": 5, "targetZ": 0  },
         { "posX": 8, "posY": 8, "posZ": 0, "type": "CLOUDG" },
-        { "posX": 8, "posY": 9, "posZ": 0, "type": "TELEPORT",  "targetX": 8, "targetY": 3, "targetZ": 0 }
+        { "posX": 8, "posY": 9, "posZ": 0, "type": "TELEPORT",  "active": true, "targetX": 1, "targetY": 6, "targetZ": 0 }
 
       ],
       "items": [
-        { "posX": 1, "posY": 6, "type": "COIN" },
+        { "posX": 1, "posY": 4, "type": "COIN" },
         { "posX": 8, "posY": 5, "type": "COIN" },
-        { "posX": 5, "posY": 2, "type": "COIN" }
+        { "posX": 4, "posY": 8, "type": "COIN" },
+        { "posX": 5, "posY": 5, "type": "COIN" }
       ],
-      "nCoins": 3
+      "nCoins": 4
     },
     "robot": {
       "posX": 1,
@@ -1721,19 +1715,18 @@
       "BASIC_COMMANDS",
       "LOGIC",
       "CONDITIONS",
-      "LOOPS",
-      "FUNCTIONS"
+      "LOOPS"
     ],
     "thumbnailSrc": "/assets/level14.png"
   },
   {
     "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.level.Level",
     "id": 15,
-    "name": "Level 15",
-    "description": "<i>“Molte fïate già pianser li figli per la colpa del padre, e non si creda che Dio trasmuti l’arme per suoi gigli!”</i>",
+    "name": "Welcome to level 5 of Paradise! <br> Collect all coins to complete the level! ",
+    "description": "Paradise level 5",
     "levelNumber": 15,
     "levelWorld": "PARADISE",
-    "maxCommandsNumber": 3,
+    "maxCommandsNumber": 30,
     "board": {
       "grid": [
 
@@ -1742,44 +1735,26 @@
         { "posX": 6, "posY": 2, "posZ": 0, "type": "CLOUDB" },
         { "posX": 7, "posY": 2, "posZ": 0, "type": "CLOUDG" },
         { "posX": 8, "posY": 2, "posZ": 0, "type": "CLOUDG" },
-
         { "posX": 5, "posY": 3, "posZ": 0, "type": "CLOUDB" },
         { "posX": 6, "posY": 3, "posZ": 0, "type": "CLOUDB"},
         { "posX": 7, "posY": 3, "posZ": 0, "type": "CLOUDG" },
         { "posX": 8, "posY": 3, "posZ": 0, "type": "CLOUDB" },
-
         { "posX": 0, "posY": 4, "posZ": 0, "type": "CLOUDB" },
         { "posX": 1, "posY": 4, "posZ": 0, "type": "CLOUDG" },
         { "posX": 2, "posY": 4, "posZ": 0, "type": "CLOUDB" },
-
         { "posX": 5, "posY": 4, "posZ": 0, "type": "CLOUDG" },
-
         { "posX": 8, "posY": 4, "posZ": 0, "type": "CLOUDB" },
-
-
         { "posX": 0, "posY": 5, "posZ": 0, "type": "CLOUDG" },
-
         { "posX": 5, "posY": 5, "posZ": 0, "type": "CLOUDB" },
-
         { "posX": 8, "posY": 5, "posZ": 0, "type": "CLOUDB" },
-
-
         { "posX": 0, "posY": 6, "posZ": 0, "type": "CLOUDB" },
-
         { "posX": 5, "posY": 6, "posZ": 0, "type": "CLOUDG" },
         { "posX": 8, "posY": 6, "posZ": 0, "type": "CLOUDG" },
         { "posX": 0, "posY": 7, "posZ": 0, "type": "CLOUDB" },
-
         { "posX": 5, "posY": 7, "posZ": 0, "type": "CLOUDB"},
-
         { "posX": 8, "posY": 7, "posZ": 0, "type": "CLOUDB" },
-
-
         { "posX": 0, "posY": 8, "posZ": 0, "type": "CLOUDG" },
-
         { "posX": 8, "posY": 8, "posZ": 0, "type": "CLOUDG" },
-
-
         { "posX": 0, "posY": 9, "posZ": 0, "type": "CLOUDB" },
         { "posX": 1, "posY": 9, "posZ": 0, "type": "CLOUDG" },
         { "posX": 2, "posY": 9, "posZ": 0, "type": "CLOUDB" },
@@ -1793,10 +1768,9 @@
       ],
       "items": [
         { "posX": 1, "posY": 9, "type": "COIN" },
-        { "posX": 5, "posY": 6, "type": "COIN" },
-        { "posX": 8, "posY": 4, "type": "COIN" }
+        { "posX": 8, "posY": 2, "type": "COIN" }
       ],
-      "nCoins": 3
+      "nCoins": 2
     },
     "robot": {
       "posX": 0,
@@ -1807,8 +1781,7 @@
       "BASIC_COMMANDS",
       "LOGIC",
       "CONDITIONS",
-      "LOOPS",
-      "FUNCTIONS"
+      "LOOPS"
     ],
     "thumbnailSrc": "/assets/level15.png"
   }
