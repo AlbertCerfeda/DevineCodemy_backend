@@ -1659,7 +1659,7 @@
     "description": "Paradise level 4",
     "levelNumber": 14,
     "levelWorld": "PARADISE",
-    "maxCommandsNumber": 3,
+    "maxCommandsNumber": 30,
     "board": {
       "grid": [
 
@@ -1673,12 +1673,12 @@
 
         { "posX": 1, "posY": 2, "posZ": 0, "type": "CLOUDB" },
 
-        { "posX": 3, "posY": 2, "posZ": 0, "type": "TELEPORT" },
+        { "posX": 3, "posY": 2, "posZ": 0, "type": "TELEPORT", "active": true, "targetX": 6, "targetY": 5, "targetZ": 0 },
         { "posX": 4, "posY": 2, "posZ": 0, "type": "CLOUDG" },
-        { "posX": 5, "posY": 2, "posZ": 0, "type": "CLOUDG" },
-        { "posX": 6, "posY": 2, "posZ": 0, "type": "TELEPORT" },
+        { "posX": 5, "posY": 2, "posZ": 0, "type": "CLOUDG" },  
+        { "posX": 6, "posY": 2, "posZ": 0, "type": "TELEPORT", "active": true, "targetX": 5, "targetY": 0, "targetZ": 0 },
         { "posX": 1, "posY": 3, "posZ": 0, "type": "CLOUDG" },
-        { "posX": 8, "posY": 3, "posZ": 0, "type": "TELEPORT",  "targetX": 2, "targetY": 8, "targetZ": 0  },
+        { "posX": 8, "posY": 3, "posZ": 0, "type": "TELEPORT",  "active": true, "targetX": 2, "targetY": 8, "targetZ": 0  },
 
         { "posX": 1, "posY": 4, "posZ": 0, "type": "CLOUDB" },
 
@@ -1686,28 +1686,29 @@
 
         { "posX": 1, "posY": 5, "posZ": 0, "type": "CLOUDG" },
 
-        { "posX": 3, "posY": 5, "posZ": 0, "type": "TELEPORT",  "targetX": 6, "targetY": 5, "targetZ": 0  },
+        { "posX": 3, "posY": 5, "posZ": 0, "type": "TELEPORT",  "active": true, "targetX": 5, "targetY": 8, "targetZ": 0  },
         { "posX": 4, "posY": 5, "posZ": 0, "type": "CLOUDG"},
         { "posX": 5, "posY": 5, "posZ": 0, "type": "CLOUDG" },
-        { "posX": 6, "posY": 5, "posZ": 0, "type": "TELEPORT",  "targetX": 3, "targetY": 2, "targetZ": 0  },
+        { "posX": 6, "posY": 5, "posZ": 0, "type": "TELEPORT",  "active": true, "targetX": 3, "targetY": 2, "targetZ": 0  },
         { "posX": 8, "posY": 5, "posZ": 0, "type": "CLOUDB" },
-        { "posX": 1, "posY": 6, "posZ": 0, "type": "TELEPORT",  "targetX": 8, "targetY": 9, "targetZ": 0  },
+        { "posX": 1, "posY": 6, "posZ": 0, "type": "TELEPORT",  "active": true, "targetX": 8, "targetY": 9, "targetZ": 0  },
         { "posX": 8, "posY": 6, "posZ": 0, "type": "CLOUDG" },
         { "posX": 8, "posY": 7, "posZ": 0, "type": "CLOUDB" },
-        { "posX": 2, "posY": 8, "posZ": 0, "type": "TELEPORT", "targetX": 8, "targetY": 3, "targetZ": 0  },
+        { "posX": 2, "posY": 8, "posZ": 0, "type": "TELEPORT", "active": true, "targetX": 8, "targetY": 3, "targetZ": 0  },
         { "posX": 3, "posY": 8, "posZ": 0, "type": "CLOUDB" },
         { "posX": 4, "posY": 8, "posZ": 0, "type": "CLOUDB" },
-        { "posX": 5, "posY": 8, "posZ": 0, "type": "TELEPORT" },
+        { "posX": 5, "posY": 8, "posZ": 0, "type": "TELEPORT", "active": true, "targetX": 3, "targetY": 5, "targetZ": 0  },
         { "posX": 8, "posY": 8, "posZ": 0, "type": "CLOUDG" },
-        { "posX": 8, "posY": 9, "posZ": 0, "type": "TELEPORT",  "targetX": 8, "targetY": 3, "targetZ": 0 }
+        { "posX": 8, "posY": 9, "posZ": 0, "type": "TELEPORT",  "active": true, "targetX": 1, "targetY": 6, "targetZ": 0 }
 
       ],
       "items": [
-        { "posX": 1, "posY": 6, "type": "COIN" },
+        { "posX": 1, "posY": 4, "type": "COIN" },
         { "posX": 8, "posY": 5, "type": "COIN" },
-        { "posX": 5, "posY": 2, "type": "COIN" }
+        { "posX": 4, "posY": 8, "type": "COIN" },
+        { "posX": 5, "posY": 5, "type": "COIN" }
       ],
-      "nCoins": 3
+      "nCoins": 4
     },
     "robot": {
       "posX": 1,
