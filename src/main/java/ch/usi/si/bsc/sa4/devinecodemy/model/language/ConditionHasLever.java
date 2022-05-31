@@ -27,11 +27,15 @@ public class ConditionHasLever implements BooleanCondition {
     @Override
     public boolean evaluate(Context context) {
         Tile lever = context.getBoard().getTileAt(context.getRobot().getPosX(), context.getRobot().getPosY());
-        if (params.equals("active")) {
-            return lever instanceof LeverTile && ((LeverTile) lever).isActive();
-        } else if (params.equals("inactive")) {
-            return lever instanceof LeverTile && !((LeverTile) lever).isActive();
+
+        if (lever instanceof LeverTile) {
+            if (params.equals("active")) {
+                return ((LeverTile) lever).isActive();
+            } else if (params.equals("inactive")) {
+                return !((LeverTile) lever).isActive();
+            }
+            return true;
         }
-        return lever instanceof LeverTile;
+        return false;
     }
 }

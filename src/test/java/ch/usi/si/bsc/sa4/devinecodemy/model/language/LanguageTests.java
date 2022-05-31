@@ -738,7 +738,7 @@ public class LanguageTests {
         @Test
         public void testHasLever() {
 
-            Program thisProgram = new Program(List.of(new ActionIf(new ConditionHasLever("inactive"),
+            Program thisProgram = new Program(List.of(new ActionIf(new ConditionHasLever(""),
                     new ActionActivateLever(new ActionMoveForward(
                     new ActionMoveForward(new ActionMoveForward(new ActionCollectCoin(null))))), null)));
 
@@ -749,6 +749,71 @@ public class LanguageTests {
             assertTrue(context.getBoard().getTeleportAt(0, 3).isActive());
             assertFalse(result.hasErrors(), "The level validation should not have errors");
             assertTrue(result.isCompleted(), "The level should be completed");
+        }
+        @DisplayName("test hasLever inactive")
+        @Test
+        public void testHasLeverInactive() {
+
+            Program program1 = new Program(List.of(new ActionIf(new ConditionHasLever("inactive"),
+                    new ActionActivateLever(new ActionMoveForward(
+                            new ActionMoveForward(new ActionMoveForward(new ActionCollectCoin(null))))), null)));
+
+
+            LevelValidation result1 = program1.execute(context);
+
+            assertTrue(context.getBoard().getTeleportAt(0, 3).isActive());
+            assertFalse(result1.hasErrors(), "The level validation should not have errors");
+            assertTrue(result1.isCompleted(), "The level should be completed");
+        }
+        @DisplayName("test hasLever inactive")
+        @Test
+        public void testHasLeverInactive2() {
+            Program program2 = new Program(List.of(new ActionActivateLever(new ActionIf(new ConditionHasLever("inactive"),
+                    new ActionActivateLever(new ActionMoveForward(new ActionMoveForward(new ActionCollectCoin(null)))), null))));
+            assertFalse(context.getBoard().getTeleportAt(0, 3).isActive());
+
+            LevelValidation result2 = program2.execute(context);
+
+            assertTrue(context.getBoard().getTeleportAt(0, 3).isActive());
+            assertFalse(result2.hasErrors(), "The level validation should not have errors");
+        }
+
+
+        @DisplayName("test hasLever active")
+        @Test
+        public void testHasLeverActive() {
+
+            Program thisProgram = new Program(List.of(new ActionActivateLever(new ActionIf(new ConditionHasLever("active"),
+                    new ActionMoveForward(new ActionMoveForward(new ActionMoveForward(new ActionCollectCoin(null)))), null))));
+
+            assertFalse(context.getBoard().getTeleportAt(0, 3).isActive());
+
+            LevelValidation result = thisProgram.execute(context);
+            assertTrue(context.getBoard().getTeleportAt(0, 3).isActive());
+
+            assertFalse(result.hasErrors(), "The level validation should not have errors");
+        }
+
+        @DisplayName("test hasLever with non existing lever")
+        @Test
+        public void testHasLeverWithNonExistingLever() {
+
+            Program program1 = new Program(List.of(new ActionMoveForward(new ActionActivateLever(new ActionIf(new ConditionHasLever("inactive"),
+                    new ActionMoveForward(new ActionMoveForward(new ActionCollectCoin(null))), null)))));
+            Program program2 = new Program(List.of(new ActionActivateLever(new ActionIf(new ConditionHasLever("active"),
+                    new ActionMoveForward(new ActionMoveForward(new ActionCollectCoin(null))), null))));
+            Program program3 = new Program(List.of(new ActionMoveForward(new ActionActivateLever(new ActionIf(new ConditionHasLever("sdfa"),
+                    new ActionMoveForward(new ActionMoveForward(new ActionCollectCoin(null))), null)))));
+
+
+            LevelValidation result1 = program1.execute(context);
+            LevelValidation result2 = program2.execute(context);
+            LevelValidation result3 = program3.execute(context);
+            System.out.println(result1.getErrors());
+
+            assertFalse(result1.hasErrors(), "The level validation should not have errors");
+            assertFalse(result2.hasErrors(), "The level validation should not have errors");
+            assertFalse(result3.hasErrors(), "The level validation should not have errors");
         }
 
         @DisplayName("test deactivate teleport with lever")
