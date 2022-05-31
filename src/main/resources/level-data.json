@@ -1606,12 +1606,11 @@
     "maxCommandsNumber": 3,
     "board": {
       "grid": [
-
         { "posX": 2, "posY": 0, "posZ": 0, "type": "CLOUDB" },
         { "posX": 3, "posY": 0, "posZ": 0, "type": "CLOUDG" },
         { "posX": 4, "posY": 0, "posZ": 0, "type": "CLOUDB" },
         { "posX": 5, "posY": 0, "posZ": 0, "type": "CLOUDG" },
-        { "posX": 2, "posY": 3, "posZ": 0, "type": "TELEPORT",  "targetX": 2, "targetY": 3, "targetZ": 0 },
+        { "posX": 2, "posY": 3, "posZ": 0, "type": "TELEPORT",  "targetX": 2, "targetY": 6, "targetZ": 0 },
         { "posX": 3, "posY": 3, "posZ": 0, "type": "CLOUDB" },
         { "posX": 4, "posY": 3, "posZ": 0, "type": "CLOUDG" },
         { "posX": 5, "posY": 3, "posZ": 0, "type": "CLOUDB" },
@@ -1621,10 +1620,10 @@
         { "posX": 7, "posY": 4, "posZ": 0, "type": "CLOUDG" },
         { "posX": 2, "posY": 5, "posZ": 0, "type": "CLOUDB" },
         { "posX": 7, "posY": 5, "posZ": 0, "type": "CLOUDB" },
-        { "posX": 2, "posY": 6, "posZ": 0, "type": "TELEPORT",  "targetX": 5, "targetY": 6, "targetZ": 0  },
+        { "posX": 2, "posY": 6, "posZ": 0, "type": "TELEPORT",  "targetX": 2, "targetY": 3, "targetZ": 0  },
         { "posX": 3, "posY": 6, "posZ": 0, "type": "CLOUDG"},
         { "posX": 4, "posY": 6, "posZ": 0, "type": "CLOUDG"},
-        { "posX": 5, "posY": 6, "posZ": 0, "type": "TELEPORT" },
+        { "posX": 5, "posY": 6, "posZ": 0, "type": "CLOUDG" },
         { "posX": 7, "posY": 6, "posZ": 0, "type": "CLOUDG" },
         { "posX": 7, "posY": 7, "posZ": 0, "type": "CLOUDB" },
         { "posX": 2, "posY": 8, "posZ": 0, "type": "CLOUDB" },
@@ -1635,12 +1634,10 @@
         { "posX": 7, "posY": 8, "posZ": 0, "type": "TELEPORT",  "targetX": 7, "targetY": 3, "targetZ": 0 }
       ],
       "items": [
-        { "posX": 4, "posY": 3, "type": "BLUEGEM" },
-        { "posX": 6, "posY": 8, "type": "REDGEM" },
-        { "posX": 2, "posY": 5, "type": "BLUEGEM" },
-        { "posX": 5, "posY": 4, "type": "BLUEGEM" }
+        { "posX": 6, "posY": 8, "type": "COIN" },
+        { "posX": 3, "posY": 3, "type": "COIN" }
       ],
-      "nCoins": 3
+      "nCoins": 2
     },
     "robot": {
       "posX": 2,
@@ -1697,7 +1694,7 @@
         { "posX": 1, "posY": 6, "posZ": 0, "type": "TELEPORT",  "targetX": 8, "targetY": 9, "targetZ": 0  },
         { "posX": 8, "posY": 6, "posZ": 0, "type": "CLOUDG" },
         { "posX": 8, "posY": 7, "posZ": 0, "type": "CLOUDB" },
-        { "posX": 2, "posY": 8, "posZ": 0, "type": "TELEPORT", "targetX": 5, "targetY": 8, "targetZ": 0  },
+        { "posX": 2, "posY": 8, "posZ": 0, "type": "TELEPORT", "targetX": 8, "targetY": 3, "targetZ": 0  },
         { "posX": 3, "posY": 8, "posZ": 0, "type": "CLOUDB" },
         { "posX": 4, "posY": 8, "posZ": 0, "type": "CLOUDB" },
         { "posX": 5, "posY": 8, "posZ": 0, "type": "TELEPORT" },
@@ -1706,7 +1703,7 @@
 
       ],
       "items": [
-        { "posX": 1, "posY": 6, "type": "REDGEM" },
+        { "posX": 1, "posY": 6, "type": "COIN" },
         { "posX": 8, "posY": 5, "type": "COIN" },
         { "posX": 5, "posY": 2, "type": "COIN" }
       ],
@@ -1792,8 +1789,8 @@
       ],
       "items": [
         { "posX": 1, "posY": 9, "type": "COIN" },
-        { "posX": 5, "posY": 6, "type": "REDGEM" },
-        { "posX": 8, "posY": 4, "type": "BLUEGEM" }
+        { "posX": 5, "posY": 6, "type": "COIN" },
+        { "posX": 8, "posY": 4, "type": "COIN" }
       ],
       "nCoins": 3
     },
