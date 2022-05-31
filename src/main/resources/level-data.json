@@ -1604,38 +1604,40 @@
     "board": {
       "grid": [
 
-        { "posX": 2, "posY": 0, "posZ": 0, "type": "CLOUDB" },
-        { "posX": 3, "posY": 0, "posZ": 0, "type": "CLOUDG" },
-        { "posX": 4, "posY": 0, "posZ": 0, "type": "CLOUDB" },
-        { "posX": 5, "posY": 0, "posZ": 0, "type": "CLOUDG" },
-        { "posX": 2, "posY": 3, "posZ": 0, "type": "TELEPORT",  "targetX": 2, "targetY": 3, "targetZ": 0 },
-        { "posX": 3, "posY": 3, "posZ": 0, "type": "CLOUDB" },
-        { "posX": 4, "posY": 3, "posZ": 0, "type": "CLOUDG" },
-        { "posX": 5, "posY": 3, "posZ": 0, "type": "CLOUDB" },
-        { "posX": 6, "posY": 3, "posZ": 0, "type": "CLOUDG"},
-        { "posX": 7, "posY": 3, "posZ": 0, "type": "TELEPORT",  "targetX": 7, "targetY": 3, "targetZ": 0 },
-        { "posX": 2, "posY": 4, "posZ": 0, "type": "CLOUDG" },
-        { "posX": 7, "posY": 4, "posZ": 0, "type": "CLOUDG" },
-        { "posX": 2, "posY": 5, "posZ": 0, "type": "CLOUDB" },
-        { "posX": 7, "posY": 5, "posZ": 0, "type": "CLOUDB" },
-        { "posX": 2, "posY": 6, "posZ": 0, "type": "TELEPORT",  "targetX": 5, "targetY": 6, "targetZ": 0  },
-        { "posX": 3, "posY": 6, "posZ": 0, "type": "CLOUDG"},
-        { "posX": 4, "posY": 6, "posZ": 0, "type": "CLOUDG"},
-        { "posX": 5, "posY": 6, "posZ": 0, "type": "TELEPORT" },
-        { "posX": 7, "posY": 6, "posZ": 0, "type": "CLOUDG" },
-        { "posX": 7, "posY": 7, "posZ": 0, "type": "CLOUDB" },
+        { "posX": 4, "posY": 6, "posZ": 0, "type": "TELEPORT", "active": false, "targetX": 2, "targetY": 6, "targetZ": 0 },
+        { "posX": 5, "posY": 6, "posZ": 0, "type": "LEVER", "teleportX": 5, "teleportY": 4, "teleportZ": 0 },
+        { "posX": 5, "posY": 5, "posZ": 0, "type": "TELEPORT", "active": false, "targetX": 9, "targetY": 9, "targetZ": 0 },
+        { "posX": 9, "posY": 9, "posZ": 0, "type": "TELEPORT", "active": false, "targetX": 5, "targetY": 5, "targetZ": 0 },
+        { "posX": 9, "posY": 8, "posZ": 0, "type": "CLOUDG"},
+
+        { "posX": 2, "posY": 3, "posZ": 0, "type": "TELEPORT", "active": false, "targetX": 2, "targetY": 1, "targetZ": 0 },
+        { "posX": 2, "posY": 4, "posZ": 0, "type": "CLOUDB" },
+        { "posX": 2, "posY": 5, "posZ": 0, "type": "CLOUDG"},
+        { "posX": 2, "posY": 6, "posZ": 0, "type": "TELEPORT", "active": false, "targetX": 4, "targetY": 6, "targetZ": 0 },
+
+        { "posX": 5, "posY": 1, "posZ": 0, "type": "TELEPORT", "active": false, "targetX": 7, "targetY": 1, "targetZ": 0 },
+        { "posX": 4, "posY": 1, "posZ": 0, "type": "CLOUDB" },
+        { "posX": 3, "posY": 1, "posZ": 0, "type": "CLOUDB" },
+        { "posX": 2, "posY": 1, "posZ": 0, "type": "TELEPORT", "active": false, "targetX": 2, "targetY": 3, "targetZ": 0, "coinsToActivate": 1 },
+
+        { "posX": 7, "posY": 1, "posZ": 0, "type": "TELEPORT", "active": false, "targetX": 5, "targetY": 1, "targetZ": 0},
+        { "posX": 7, "posY": 2, "posZ": 0, "type": "CLOUDG" },
+        { "posX": 7, "posY": 3, "posZ": 0, "type": "CLOUDB" },
+        { "posX": 7, "posY": 4, "posZ": 0, "type": "CLOUDB" },
+        { "posX": 7, "posY": 5, "posZ": 0, "type": "LEVER", "teleportX": 7, "teleportY": 1, "teleportZ": 0 },
+        { "posX": 7, "posY": 6, "posZ": 0, "type": "TELEPORT", "active": false, "targetX": 7, "targetY": 8, "targetZ": 0 },
+
         { "posX": 2, "posY": 8, "posZ": 0, "type": "CLOUDB" },
         { "posX": 3, "posY": 8, "posZ": 0, "type": "CLOUDG" },
-        { "posX": 4, "posY": 8, "posZ": 0, "type": "CLOUDB" },
+        { "posX": 4, "posY": 8, "posZ": 0, "type": "LEVER", "teleportX": 7, "teleportY": 8, "teleportZ": 0 },
         { "posX": 5, "posY": 8, "posZ": 0, "type": "CLOUDG" },
         { "posX": 6, "posY": 8, "posZ": 0, "type": "CLOUDB" },
-        { "posX": 7, "posY": 8, "posZ": 0, "type": "TELEPORT",  "targetX": 7, "targetY": 3, "targetZ": 0 }
+        { "posX": 7, "posY": 8, "posZ": 0, "type": "TELEPORT", "active": false, "targetX": 7, "targetY": 6, "targetZ": 0 }
       ],
       "items": [
-        { "posX": 4, "posY": 3, "type": "COIN" },
-        { "posX": 6, "posY": 8, "type": "COIN" },
+        { "posX": 3, "posY": 1, "type": "COIN" },
         { "posX": 2, "posY": 5, "type": "COIN" },
-        { "posX": 5, "posY": 4, "type": "COIN" }
+        { "posX": 9, "posY": 8, "type": "COIN" }
       ],
       "nCoins": 3
     },
