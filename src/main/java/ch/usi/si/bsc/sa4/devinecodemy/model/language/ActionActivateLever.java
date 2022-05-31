@@ -40,6 +40,7 @@ public class ActionActivateLever extends Action {
                 if (teleport instanceof TeleportTile) {
                     final TeleportTile teleportTile = (TeleportTile) teleport;
                     teleportTile.setActive(!teleportTile.isActive());
+                    leverTile.setActive(!leverTile.isActive());
                     final Tile targetTile = context.getBoard().getTileAt(teleportTile.getTargetX(), teleportTile.getTargetY());
                     if (targetTile instanceof TeleportTile) {
                         final TeleportTile teleportTarget = ((TeleportTile) targetTile);

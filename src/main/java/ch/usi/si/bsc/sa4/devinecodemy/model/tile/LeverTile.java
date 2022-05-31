@@ -11,6 +11,7 @@ public class LeverTile extends Tile{
     private final int teleportX;
     private final int teleportY;
     private final int teleportZ;
+    private boolean active;
     /**
      * Constructor for LeverTile object.
      * @param posX the x position of the lever.
@@ -24,11 +25,13 @@ public class LeverTile extends Tile{
                      @JsonProperty("posZ") int posZ,
                      @JsonProperty("teleportX") int teleportX,
                      @JsonProperty("teleportY") int teleportY,
-                     @JsonProperty("teleportZ") int teleportZ) {
+                     @JsonProperty("teleportZ") int teleportZ,
+                     @JsonProperty("active") boolean active) {
         super(ETile.LEVER, posX, posY, posZ, true);
         this.teleportX = teleportX;
         this.teleportY = teleportY;
         this.teleportZ = teleportZ;
+        this.active = active;
     }
 
     public int getTeleportX() {
@@ -41,5 +44,13 @@ public class LeverTile extends Tile{
 
     public int getTeleportZ() {
         return teleportZ;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean status) {
+        this.active = status;
     }
 }
