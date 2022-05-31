@@ -1603,24 +1603,24 @@
     "description": "Paradise level 3",
     "levelNumber": 13,
     "levelWorld": "PARADISE",
-    "maxCommandsNumber": 3,
+    "maxCommandsNumber": 20,
     "board": {
       "grid": [
         { "posX": 2, "posY": 0, "posZ": 0, "type": "CLOUDB" },
         { "posX": 3, "posY": 0, "posZ": 0, "type": "CLOUDG" },
         { "posX": 4, "posY": 0, "posZ": 0, "type": "CLOUDB" },
         { "posX": 5, "posY": 0, "posZ": 0, "type": "CLOUDG" },
-        { "posX": 2, "posY": 3, "posZ": 0, "type": "TELEPORT",  "targetX": 2, "targetY": 6, "targetZ": 0 },
+        { "posX": 2, "posY": 3, "posZ": 0, "type": "TELEPORT",  "active": true, "targetX": 2, "targetY": 6, "targetZ": 0 },
         { "posX": 3, "posY": 3, "posZ": 0, "type": "CLOUDB" },
         { "posX": 4, "posY": 3, "posZ": 0, "type": "CLOUDG" },
         { "posX": 5, "posY": 3, "posZ": 0, "type": "CLOUDB" },
         { "posX": 6, "posY": 3, "posZ": 0, "type": "CLOUDG"},
-        { "posX": 7, "posY": 3, "posZ": 0, "type": "TELEPORT",  "targetX": 7, "targetY": 3, "targetZ": 0 },
+        { "posX": 7, "posY": 3, "posZ": 0, "type": "TELEPORT",  "active": true, "targetX": 7, "targetY": 3, "targetZ": 0 },
         { "posX": 2, "posY": 4, "posZ": 0, "type": "CLOUDG" },
         { "posX": 7, "posY": 4, "posZ": 0, "type": "CLOUDG" },
         { "posX": 2, "posY": 5, "posZ": 0, "type": "CLOUDB" },
         { "posX": 7, "posY": 5, "posZ": 0, "type": "CLOUDB" },
-        { "posX": 2, "posY": 6, "posZ": 0, "type": "TELEPORT",  "targetX": 2, "targetY": 3, "targetZ": 0  },
+        { "posX": 2, "posY": 6, "posZ": 0, "type": "TELEPORT",  "active": true, "targetX": 2, "targetY": 3, "targetZ": 0  },
         { "posX": 3, "posY": 6, "posZ": 0, "type": "CLOUDG"},
         { "posX": 4, "posY": 6, "posZ": 0, "type": "CLOUDG"},
         { "posX": 5, "posY": 6, "posZ": 0, "type": "CLOUDG" },
@@ -1631,7 +1631,7 @@
         { "posX": 4, "posY": 8, "posZ": 0, "type": "CLOUDB" },
         { "posX": 5, "posY": 8, "posZ": 0, "type": "CLOUDG" },
         { "posX": 6, "posY": 8, "posZ": 0, "type": "CLOUDB" },
-        { "posX": 7, "posY": 8, "posZ": 0, "type": "TELEPORT",  "targetX": 7, "targetY": 3, "targetZ": 0 }
+        { "posX": 7, "posY": 8, "posZ": 0, "type": "TELEPORT",  "active": true, "targetX": 7, "targetY": 3, "targetZ": 0 }
       ],
       "items": [
         { "posX": 6, "posY": 8, "type": "COIN" },
