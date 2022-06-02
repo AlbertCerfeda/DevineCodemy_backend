@@ -2156,7 +2156,7 @@
 
 
 
-        { "posX": 2, "posY": 25, "posZ": 0, "type": "OBSIDIAN" },
+
 
         { "posX": 4, "posY": 25, "posZ": 0, "type": "CLOUDG" },
 
@@ -2168,12 +2168,12 @@
         { "posX": 26, "posY": 25, "posZ": 0, "type": "CLOUDG" },
 
 
-        { "posX": 2, "posY": 26, "posZ": 0, "type": "OBSIDIAN" },
+
 
         { "posX": 4, "posY": 26, "posZ": 0, "type": "CLOUDB" },
-        { "posX": 5, "posY": 26, "posZ": 0, "type": "BRIDGE" },
 
-        { "posX": 8, "posY": 26, "posZ": 0, "type": "OBSIDIAN" },
+
+
         { "posX": 13, "posY": 26, "posZ": 0, "type": "CLOUDB"},
         { "posX": 14, "posY": 26, "posZ": 0, "type": "CLOUDG" },
         { "posX": 15, "posY": 26, "posZ": 0, "type": "CLOUDB" },
