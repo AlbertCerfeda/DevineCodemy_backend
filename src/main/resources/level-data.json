@@ -1910,7 +1910,7 @@
 
     {
     "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.level.Level",
-    "id": 5,
+    "id": 16,
     "name": "Level 5",
     "description": "Welcome to level 5 of Inferno! <br> Collect all coins to complete the level! <br><br><i>“Amor, ch'al cor gentil ratto s'apprende”</i>",
     "levelNumber": 16,
@@ -2874,6 +2874,6 @@
     ],
     "thumbnailSrc": "/assets/level5.png"
     }
-  ],
+  ]
 
-]
+
