@@ -377,6 +377,8 @@ public class LevelControllerTests {
         given(levelService.getLevelNumberRangeForWorld(EWorld.INFERNO)).willReturn(Pair.of(1,5));
         given(levelService.getLevelNumberRangeForWorld(EWorld.PURGATORY)).willReturn(Pair.of(6,10));
         given(levelService.getLevelNumberRangeForWorld(EWorld.PARADISE)).willReturn(Pair.of(11,15));
+        given(levelService.getLevelNumberRangeForWorld(EWorld.EXTRA)).willReturn(Pair.of(16,16));
+        
         MvcResult result = mockMvc.perform(get("/levels/worlds")
                         .with(SecurityMockMvcRequestPostProcessors
                                 .authentication(fakeOAuth2User1.getOAuth2AuthenticationToken())))
@@ -385,7 +387,8 @@ public class LevelControllerTests {
                 new TypeReference<>() {});
         List<EWorldDTO> expected = List.of(EWorld.INFERNO.toEWorldDTO(Pair.of(1,5)),
                 EWorld.PURGATORY.toEWorldDTO(Pair.of(6,10)),
-                EWorld.PARADISE.toEWorldDTO(Pair.of(11,15)));
+                EWorld.PARADISE.toEWorldDTO(Pair.of(11,15)),
+                EWorld.EXTRA.toEWorldDTO(Pair.of(16,16)));
         testWorldsEquals(expected,worldList,
                 "the worlds don't match the inserted worlds");
     }
