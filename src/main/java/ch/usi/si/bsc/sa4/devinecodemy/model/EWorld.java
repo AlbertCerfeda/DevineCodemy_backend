@@ -46,8 +46,11 @@ public enum EWorld {
                     "to resolve the levels.",
             "Congratulations! You just completed the paradise world and completed the game!. <br> " +
                     "In this series of levels, you learnt how to use loops in order to complete " +
-                    "the tasks.<br><br><br> Thanks for playing our game! ");
-
+                    "the tasks.<br><br><br> Thanks for playing our game! "),
+    
+    EXTRA("Extra", 4,
+            "Description",
+            "Congrats");
 
     private final String displayName;
     private final int worldNumber;

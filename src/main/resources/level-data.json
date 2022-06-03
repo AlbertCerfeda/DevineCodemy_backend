@@ -1790,9 +1790,9 @@
     "_class": "ch.usi.si.bsc.sa4.devinecodemy.model.level.Level",
     "id": 16,
     "name": "Bonus Level",
-    "description": "Welcome to level 5 of Inferno! <br> Collect all coins to complete the level! <br><br><i>“Amor, ch'al cor gentil ratto s'apprende”</i>",
+    "description": "Special level !",
     "levelNumber": 16,
-    "levelWorld": "INFERNO",
+    "levelWorld": "EXTRA",
     "maxCommandsNumber": 31,
     "board": {
       "grid": [
@@ -2206,7 +2206,7 @@
     "allowedCommands": [
       "BASIC_COMMANDS"
     ],
-    "thumbnailSrc": "/assets/level5.png"
+    "thumbnailSrc": "/assets/level16.jpeg"
     }
   ]
 
