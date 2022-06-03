@@ -50,7 +50,7 @@ public class LevelService {
             throw new LevelInexistentException(levelNumber);
         } else if(!userService.userIdExists(userId)) {
             throw new UserInexistentException(userId);
-        } else if(!isLevelPlayable(levelNumber, userId)) {
+        } else if(!isLevelPlayable(levelNumber, userId) && optionalLevel.get().getLevelWorld() != EWorld.EXTRA) {
             throw new UserNotAllowedException(userId,levelNumber);
         }
 
@@ -61,7 +61,10 @@ public class LevelService {
         LevelValidation result = program.execute(context);
 
         // Here we create the new statistics for the user after playing the game.
-        statisticsService.addStats(userId, levelNumber, attempt, result.isCompleted());
+        // Doesn't save the statistics for EXTRA levels
+        if(optionalLevel.get().getLevelWorld() != EWorld.EXTRA) {
+            statisticsService.addStats(userId, levelNumber, attempt, result.isCompleted());
+        }
 
         return result;
     }
@@ -116,10 +119,12 @@ public class LevelService {
 
     /**
      * Returns all levels in the game.
+     *  Does not return the levels contained in the EXTRA world.
      * @return List containing all the levels in the game.
      */
     public List<Level> getAll() {
-        return levelRepository.findAll();
+        return levelRepository.findAll().stream().filter(
+                (level) -> level.getLevelWorld() != EWorld.EXTRA).collect(Collectors.toList());
     }
     
     /**
@@ -133,7 +138,8 @@ public class LevelService {
     }
 
     /**
-     * Returns a level with a specific levelNumber if playable for the given user
+     * Returns a level with a specific levelNumber if playable for the given user.
+     * EXTRA levels are always playable.
      * @param levelNumber the levelNumber of the level to look for
      * @param userId the userID of the user to match
      * @return The level with the given levelNumber
@@ -147,7 +153,7 @@ public class LevelService {
         } else if (!userService.userIdExists(userId)) {
             throw new UserInexistentException(userId);
         }
-        return isLevelPlayable(levelNumber, userId) ? l : Optional.empty();
+        return l.get().getLevelWorld() == EWorld.EXTRA || isLevelPlayable(levelNumber, userId) ? l : Optional.empty();
     }
     
     /**
