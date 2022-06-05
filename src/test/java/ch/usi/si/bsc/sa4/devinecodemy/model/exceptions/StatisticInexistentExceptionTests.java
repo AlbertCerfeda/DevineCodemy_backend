@@ -23,6 +23,7 @@ public class StatisticInexistentExceptionTests {
     public void testCreate() {
         assertNotNull(statisticInexistentException,
                 "object is null after calling the constructor");
+
         assertNotNull(statisticInexistentException.getMessage(),
                 "message is null after calling the constructor");
     }

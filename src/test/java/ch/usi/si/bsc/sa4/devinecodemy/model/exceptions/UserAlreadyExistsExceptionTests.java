@@ -18,8 +18,8 @@ public class UserAlreadyExistsExceptionTests {
         userAlreadyExistsException = new UserAlreadyExistsException();
     }
 
-    @DisplayName("should be created after calling the constructor")
     @Test
+    @DisplayName("should be created after calling the constructor")
     public void testCreate() {
         assertNotNull(userAlreadyExistsException,
                 "object is null after calling the constructor");
@@ -27,13 +27,14 @@ public class UserAlreadyExistsExceptionTests {
                 "message is null after calling the constructor");
     }
 
-    @DisplayName("should be created after calling the constructor with user id"
-            + " as a parameter")
     @Test
+    @DisplayName("should be created after calling the constructor with user id as a parameter")
     public void testCreateWithNumber() {
         userAlreadyExistsException = new UserAlreadyExistsException("an id");
+
         assertNotNull(userAlreadyExistsException,
                 "object is null after calling the constructor");
+
         assertNotNull(userAlreadyExistsException.getMessage(),
                 "message is null after calling the constructor");
     }

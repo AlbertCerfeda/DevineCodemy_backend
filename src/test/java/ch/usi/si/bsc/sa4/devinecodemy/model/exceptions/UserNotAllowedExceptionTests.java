@@ -19,8 +19,8 @@ public class UserNotAllowedExceptionTests {
         userNotAllowedException = new UserNotAllowedException("a message");
     }
 
-    @DisplayName("should be created after calling the constructor")
     @Test
+    @DisplayName("It should be created after calling the constructor")
     public void testCreate() {
         assertNotNull(userNotAllowedException,
                 "object is null after calling the constructor");
@@ -28,9 +28,8 @@ public class UserNotAllowedExceptionTests {
                 "message is not the one provided in the constructor");
     }
 
-    @DisplayName("should be created after calling the constructor with id and levelNumber"
-            + " as parameters")
     @Test
+    @DisplayName("After calling the constructor with id and levelNumber as parameters")
     public void testCreateWithNumber() {
         userNotAllowedException = new UserNotAllowedException("an id",0);
         assertNotNull(userNotAllowedException,
