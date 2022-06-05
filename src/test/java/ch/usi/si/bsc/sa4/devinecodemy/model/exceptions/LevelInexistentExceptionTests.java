@@ -18,22 +18,25 @@ public class LevelInexistentExceptionTests {
         levelInexistentException = new LevelInexistentException();
     }
 
-    @DisplayName("should be created after calling the constructor")
     @Test
+    @DisplayName("should be created after calling the constructor")
     public void testCreate() {
+
         assertNotNull(levelInexistentException,
                 "object is null after calling the constructor");
+
         assertNotNull(levelInexistentException.getMessage(),
                 "message is null after calling the constructor");
     }
 
-    @DisplayName("should be created after calling the constructor with levelNumber"
-    + " as a parameter")
     @Test
+    @DisplayName("It should be created after calling the constructor with levelNumber as a parameter")
     public void testCreateWithNumber() {
         levelInexistentException = new LevelInexistentException(0);
+
         assertNotNull(levelInexistentException,
                 "object is null after calling the constructor");
+
         assertNotNull(levelInexistentException.getMessage(),
                 "message is null after calling the constructor");
     }

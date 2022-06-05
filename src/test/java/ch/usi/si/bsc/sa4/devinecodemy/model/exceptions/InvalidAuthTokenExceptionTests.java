@@ -18,11 +18,12 @@ public class InvalidAuthTokenExceptionTests {
         invalidAuthTokenException = new InvalidAuthTokenException();
     }
 
-    @DisplayName("should be created after calling the constructor")
     @Test
+    @DisplayName("should be created after calling the constructor")
     public void testCreate() {
         assertNotNull(invalidAuthTokenException,
                 "object is null after calling the constructor");
+
         assertNotNull(invalidAuthTokenException.getMessage(),
                 "message is null after calling the constructor");
     }

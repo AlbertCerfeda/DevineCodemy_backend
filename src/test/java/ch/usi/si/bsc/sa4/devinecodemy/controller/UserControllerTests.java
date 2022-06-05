@@ -46,7 +46,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @ContextConfiguration(classes = DevineCodemyBackend.class)
 @AutoConfigureMockMvc
 
-@DisplayName("he User Controller")
+@DisplayName("The User Controller")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UserControllerTests {
     @MockBean
