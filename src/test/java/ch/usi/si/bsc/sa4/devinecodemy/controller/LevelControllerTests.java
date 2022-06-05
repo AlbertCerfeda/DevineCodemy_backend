@@ -2,7 +2,6 @@ package ch.usi.si.bsc.sa4.devinecodemy.controller;
 
 import ch.usi.si.bsc.sa4.devinecodemy.DevineCodemyBackend;
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.*;
-import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.tile.TeleportTileDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.controller.dto.tile.TileDTO;
 import ch.usi.si.bsc.sa4.devinecodemy.model.ECategory;
 import ch.usi.si.bsc.sa4.devinecodemy.model.EOrientation;
@@ -44,7 +43,6 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.mockito.BDDMockito.given;
@@ -54,6 +52,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes = DevineCodemyBackend.class)
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+
 @DisplayName("The level controller")
 public class LevelControllerTests {
 
@@ -80,11 +79,16 @@ public class LevelControllerTests {
 
     @BeforeAll
     void setup() {
+        // users to test
         user1 = new User("id", "name", "username", "email", "avatarl",
                 "bio", new SocialMedia("twitter", "skype", "linkedin"));
         user2 = new User("another id", "name", "username", "email", "avatarl",
                 "bio", new SocialMedia("twitter", "skype", "linkedin"));
+
+        // Autorized user to test
         fakeOAuth2User1 = new FakeOAuth2User(user1.getId());
+
+        // levels to test
         level1 = new Level("level 1", "description of 1", 1, EWorld.INFERNO, 0,
                 new Board(List.of(), List.of(), 0), new Robot(0, 0, EOrientation.UP),
                 List.of(), "../assets/thumbnailSrc1.jpg");
@@ -117,8 +121,8 @@ public class LevelControllerTests {
                 "../assets/thumbnailSrc5.jpg");
     }
 
-    @DisplayName("should be redirect when passing a null token")
     @Test
+    @DisplayName("Should be redirect when passing a null token")
     public void testGetPlayableAndUnplayableLevelsRedirect() throws Exception {
         mockMvc.perform(get("/levels")
                 .with(SecurityMockMvcRequestPostProcessors
@@ -126,11 +130,12 @@ public class LevelControllerTests {
                 .andExpect(status().is3xxRedirection());
     }
 
-    @DisplayName("should get not found when searching for not existing user")
     @Test
+    @DisplayName("Should get not found when searching for not existing user")
     public void testGetPlayableAndUnplayableLevelsNotFound() throws Exception {
         given(userService.getUserByToken(fakeOAuth2User1.getOAuth2AuthenticationToken()))
                 .willReturn(user2);
+
         given(levelService.getAllPlayableLevels("another id")).willThrow(UserInexistentException.class);
         mockMvc.perform(get("/levels")
                         .with(SecurityMockMvcRequestPostProcessors
@@ -138,36 +143,8 @@ public class LevelControllerTests {
                 .andExpect(status().isNotFound());
     }
 
-    @DisplayName("should be able to retrieve all the playable and unplayable levels infos for a user")
     @Test
-    public void testGetPlayableAndUnplayableLevelsInfos() throws Exception {
-        given(userService.getUserByToken(fakeOAuth2User1.getOAuth2AuthenticationToken()))
-                .willReturn(user1);
-        given(levelService.getAllPlayableLevels("id")).willReturn(List.of(level1, level2));
-        given(levelService.getAll()).willReturn(List.of(level1, level2, level3, level4, level5));
-        String result = mockMvc.perform(get("/levels?onlyinfo=true")
-                        .with(SecurityMockMvcRequestPostProcessors
-                                .authentication(fakeOAuth2User1.getOAuth2AuthenticationToken())))
-                .andReturn().getResponse().getContentAsString();
-        Pair<List<LevelDTO>, List<LevelDTO>> actualLevels = objectMapper.readValue(result,
-                new TypeReference<>() {
-                });
-        List<LevelDTO> playable = actualLevels.getFirst();
-        List<LevelDTO> unplayable = actualLevels.getSecond();
-        var firstPlayable = playable.get(0);
-        var secondPlayable = playable.get(1);
-        var firstUnplayable = unplayable.get(0);
-        var secondUnplayable = unplayable.get(1);
-        var thirdUnplayable = unplayable.get(2);
-        testLevelDtoEquals(level1.toLevelInfoDTO(), firstPlayable, "first", "first", false);
-        testLevelDtoEquals(level2.toLevelInfoDTO(), secondPlayable, "second", "second", false);
-        testLevelDtoEquals(level3.toLevelInfoDTO(), firstUnplayable, "first", "third", false);
-        testLevelDtoEquals(level4.toLevelInfoDTO(), secondUnplayable, "second", "fourth", false);
-        testLevelDtoEquals(level5.toLevelInfoDTO(), thirdUnplayable, "third", "fifth", false);
-    }
-
-    @DisplayName("should be able to retrieve all the playable and unplayable levels for a user")
-    @Test
+    @DisplayName("Should be able to retrieve all the playable and unplayable levels for a User")
     public void testGetPlayableAndUnplayableLevels() throws Exception {
         given(userService.getUserByToken(fakeOAuth2User1.getOAuth2AuthenticationToken()))
                 .willReturn(user1);
@@ -194,11 +171,48 @@ public class LevelControllerTests {
         testLevelDtoEquals(level5.toLevelInfoDTO(), thirdUnplayable, "third", "fifth", false);
     }
 
+    @Test
+    @DisplayName("Should be able to retrieve all the playable and unplayable levels infos for a User")
+    public void testGetPlayableAndUnplayableLevelsInfos() throws Exception {
+        given(userService.getUserByToken(fakeOAuth2User1.getOAuth2AuthenticationToken()))
+                .willReturn(user1);
+
+        given(levelService.getAllPlayableLevels("id")).willReturn(List.of(level1, level2));
+
+        given(levelService.getAll()).willReturn(List.of(level1, level2, level3, level4, level5));
+
+        String result = mockMvc.perform(get("/levels?onlyinfo=true")
+                        .with(SecurityMockMvcRequestPostProcessors
+                                .authentication(fakeOAuth2User1.getOAuth2AuthenticationToken())))
+                .andReturn().getResponse().getContentAsString();
+        Pair<List<LevelDTO>, List<LevelDTO>> actualLevels = objectMapper.readValue(result,
+                new TypeReference<>() {
+                });
+
+        List<LevelDTO> playable = actualLevels.getFirst();
+        List<LevelDTO> unplayable = actualLevels.getSecond();
+
+        var firstPlayable = playable.get(0);
+        var secondPlayable = playable.get(1);
+        var firstUnplayable = unplayable.get(0);
+        var secondUnplayable = unplayable.get(1);
+        var thirdUnplayable = unplayable.get(2);
+
+        testLevelDtoEquals(level1.toLevelInfoDTO(), firstPlayable, "first", "first", false);
+        testLevelDtoEquals(level2.toLevelInfoDTO(), secondPlayable, "second", "second", false);
+        testLevelDtoEquals(level3.toLevelInfoDTO(), firstUnplayable, "first", "third", false);
+        testLevelDtoEquals(level4.toLevelInfoDTO(), secondUnplayable, "second", "fourth", false);
+        testLevelDtoEquals(level5.toLevelInfoDTO(), thirdUnplayable, "third", "fifth", false);
+    }
+
+    @Test
+    @DisplayName("Should be able to test levelDTO that are equal")
     public void testLevelDtoEquals(LevelDTO expected, LevelDTO actual, String first, String second, boolean playable) {
         if (playable) {
             testBoardDtoEquals(expected.getBoard(), actual.getBoard(),
                     "the board of the " + first + " playable levels is not the same as " +
                             "the board of the " + second + " level");
+
             testRobotDtoEquals(expected.getRobot(), actual.getRobot(),
                     "the robot of the " + first + " playable levels is not the same as " +
                             "the robot of the " + second + " level");
@@ -206,33 +220,43 @@ public class LevelControllerTests {
             assertEquals(expected.getBoard(),actual.getBoard(),
                     "the board of the "+first+" unplayable level is not the same as " +
                             "the board of the "+second+" level");
+
             assertEquals(expected.getRobot(),actual.getRobot(),
                     "the robot of the "+first+" unplayable level is not the same as " +
                             "the robot of the "+second+" level");
         }
+
         assertEquals(expected.getLevelWorld(), actual.getLevelWorld(),
                 "the world of the " + first + (playable ? " " : " un") + "playable level is not the same as " +
                         "the world of the " + second + " level");
+
         assertEquals(expected.getName(), actual.getName(),
                 "the name of the " + first + (playable ? " " : " un") + "playable level is not the same as " +
                         "the name number of the " + second + " level");
+
         assertEquals(expected.getDescription(), actual.getDescription(),
                 "the description of the " + first + (playable ? " " : " un") + "playable level is not the same as " +
                         "the description number of the " + second + " level");
+
         assertEquals(expected.getLevelNumber(), actual.getLevelNumber(),
                 "the level number of the " + first + (playable ? " " : " un") + "playable level is not the same as " +
                         "the level number of the " + second + " level");
+
         assertEquals(expected.getMaxCommandsNumber(), actual.getMaxCommandsNumber(),
                 "the max commands number of the " + first + (playable ? " " : " un") + "playable level is not the same as " +
                         "the max commands number of the " + second + " level");
+
         testAllowedCommandsEquals(expected.getAllowedCommands(), actual.getAllowedCommands(),
                 "the allowed commands of the " + first + (playable ? " " : " un") + "playable level is not the same as " +
                         "the allowed commands number of the " + second + " level");
+
         assertEquals(expected.getThumbnailSrc(), actual.getThumbnailSrc(),
                 "the thumbnail source of the " + first + (playable ? " " : " un") + "playable level is not the same as " +
                         "the thumbnail source number of the " + second + " level");
     }
 
+    @Test
+    @DisplayName("Test the equals method of the LevelDto class")
     public void testAllowedCommandsEquals(List<ECategoryDTO> expected, List<ECategoryDTO> actual, String message) {
         assertEquals(expected.size(),actual.size(),
                 "the size of "+message);
@@ -241,11 +265,15 @@ public class LevelControllerTests {
         }
     }
 
+    @Test
+    @DisplayName("Test the equals method of the EActionDto class")
     public void testEActionDtoEquals(ECategoryDTO expected, ECategoryDTO actual, String message) {
         assertEquals(expected.getDescription(),actual.getDescription(),message);
         assertEquals(expected.getName(),actual.getName(),message);
     }
 
+    @Test
+    @DisplayName("Test the equals method of the RobortDto class")
     public void testRobotDtoEquals(RobotDTO expected, RobotDTO actual, String message) {
         assertEquals(expected.getPosX(), actual.getPosX(),
                 "the position x of " + message);
@@ -254,7 +282,8 @@ public class LevelControllerTests {
         assertEquals(expected.getOrientation(), actual.getOrientation(),
                 "the orientation of " + message);
     }
-
+        @Test
+        @DisplayName("Test the equals method of the BoardDto class")
         public void testBoardDtoEquals(BoardDTO expected, BoardDTO actual, String message) {
         assertEquals(expected.getDimX(), actual.getDimX(),
                 "the dimension x of " + message);
@@ -266,6 +295,8 @@ public class LevelControllerTests {
                 "the items of " + message);
     }
 
+    @Test
+    @DisplayName("Test the equals method of the BoardDto class")
     public void testGridEquals(BoardDTO expected, BoardDTO actual, String message) {
         assertEquals(expected.getGrid().size(), actual.getGrid().size(),
                 "the size of " + message);
@@ -274,6 +305,8 @@ public class LevelControllerTests {
         }
     }
 
+    @Test
+    @DisplayName("Test the equals method of the TileDto class")
     public void testItemsEquals(List<ItemDTO> expected, List<ItemDTO> actual, String message) {
         assertEquals(expected.size(), actual.size(),
                 "the size of " + message);
@@ -281,7 +314,8 @@ public class LevelControllerTests {
             testItemDtoEquals(expected.get(i), actual.get(i), message);
         }
     }
-
+    @Test
+    @DisplayName("Test the equals method of the TileDto class-POS X,Y,Z")
     public void testTileDtoEquals(TileDTO expected, TileDTO actual, String message) {
         assertEquals(expected.getPosX(),actual.getPosX(),message);
         assertEquals(expected.getPosY(),actual.getPosY(),message);
@@ -289,14 +323,16 @@ public class LevelControllerTests {
         assertEquals(expected.getType(),actual.getType(),message);
     }
 
+    @Test
+    @DisplayName("Test the equals method of the ItemDTO class-POS X,Y")
     public void testItemDtoEquals(ItemDTO expected, ItemDTO actual, String message) {
         assertEquals(expected.getPosX(),actual.getPosX(),message);
         assertEquals(expected.getPosY(),actual.getPosY(),message);
         assertEquals(expected.getType(),actual.getType(),message);
     }
 
-    @DisplayName("should be able to get a specific level given its number")
     @Test
+    @DisplayName("should be able to get a specific level given its number")
     public void testGetByLevelNumber() throws Exception {
         given(userService.getUserByToken(fakeOAuth2User1.getOAuth2AuthenticationToken()))
                 .willReturn(user1);
@@ -312,8 +348,8 @@ public class LevelControllerTests {
                 "first","first",true);
     }
 
-    @DisplayName("should be able to get a specific level info given its number and onlyinfo true as a query parameter")
     @Test
+    @DisplayName("should be able to get a specific level info given its number and onlyinfo true as a query parameter")
     public void testGetByLevelNumberOnlyInfo() throws Exception {
         given(userService.getUserByToken(fakeOAuth2User1.getOAuth2AuthenticationToken()))
                 .willReturn(user1);
@@ -329,8 +365,8 @@ public class LevelControllerTests {
                 "first","first",false);
     }
 
-    @DisplayName("should not be able to get a specific level if not playable")
     @Test
+    @DisplayName("should not be able to get a specific level if not playable")
     public void testGetByLevelNumberNotPlayable() throws Exception {
         given(userService.getUserByToken(fakeOAuth2User1.getOAuth2AuthenticationToken()))
                 .willReturn(user1);
@@ -347,8 +383,8 @@ public class LevelControllerTests {
                 "first","first",false);
     }
 
-    @DisplayName("should not be able to get a specific level if user does not exist")
     @Test
+    @DisplayName("should not be able to get a specific level if user does not exist")
     public void testGetByLevelNumberUserNotFound() throws Exception {
         given(userService.getUserByToken(fakeOAuth2User1.getOAuth2AuthenticationToken()))
                 .willThrow(UserInexistentException.class);
@@ -358,8 +394,8 @@ public class LevelControllerTests {
                 .andExpect(status().isNotFound());
     }
 
-    @DisplayName("should not be able to get a specific level if level does not exist")
     @Test
+    @DisplayName("should not be able to get a specific level if level does not exist")
     public void testGetByLevelNumberLevelNotFound() throws Exception {
         given(userService.getUserByToken(fakeOAuth2User1.getOAuth2AuthenticationToken()))
                 .willReturn(user1);
@@ -371,8 +407,9 @@ public class LevelControllerTests {
                 .andExpect(status().isNotFound());
     }
 
-        @DisplayName("should be able to retrieve all the worlds")
+    //------------------------------GET ALL WORLDS-----------------------------//
     @Test
+    @DisplayName("should be able to retrieve all the worlds")
     public void testGetLevelWorlds() throws Exception {
         given(levelService.getLevelNumberRangeForWorld(EWorld.INFERNO)).willReturn(Pair.of(1,5));
         given(levelService.getLevelNumberRangeForWorld(EWorld.PURGATORY)).willReturn(Pair.of(6,10));
@@ -390,6 +427,8 @@ public class LevelControllerTests {
                 "the worlds don't match the inserted worlds");
     }
 
+    @Test
+    @DisplayName("should be able to retrieve all the worlds that are equal")
     public void testWorldsEquals(List<EWorldDTO> expected, List<EWorldDTO> actual,String message) {
         assertEquals(expected.size(),actual.size(),"the size of "+message);
         for (int i = 0; i < expected.size(); i++) {
@@ -397,6 +436,8 @@ public class LevelControllerTests {
         }
     }
 
+    @Test
+    @DisplayName("should be able to retrieve all the worlds that are equal")
     public void testWorldEquals(EWorldDTO expected, EWorldDTO actual, String message) {
         assertEquals(expected.getCongratulationsMessage(), actual.getCongratulationsMessage(),message);
         assertEquals(expected.getDescriptionMessage(), actual.getDescriptionMessage(),message);
@@ -408,6 +449,8 @@ public class LevelControllerTests {
 
     @ParameterizedTest(name = "should be able to retrieve a specific world given its name")
     @MethodSource("getWorldArgumentsProvider")
+
+    //------------------------------GET THE WORLD-----------------------------//
     public void testGetWorld(EWorld world,String name, Pair<Integer,Integer> range) throws Exception {
         given(levelService.getLevelNumberRangeForWorld(world)).willReturn(range);
         MvcResult result = mockMvc.perform(get("/levels/worlds/"+name)
@@ -421,6 +464,8 @@ public class LevelControllerTests {
                 "world does not match the world with the given name");
     }
 
+    @Test
+    @DisplayName("Get a world when arguments are provided")
     public static Stream<Arguments> getWorldArgumentsProvider() {
         return Stream.of(
                 arguments(EWorld.INFERNO, "Inferno", Pair.of(1,5)),
@@ -429,8 +474,8 @@ public class LevelControllerTests {
         );
     }
 
-    @DisplayName("should not be able to retrieve a specific world given a wrong name")
     @Test
+    @DisplayName("Error exception for a world that does not exist")
     public void testGetWorldNotFound() throws Exception {
         mockMvc.perform(get("/levels/worlds/unknownworld")
                         .with(SecurityMockMvcRequestPostProcessors

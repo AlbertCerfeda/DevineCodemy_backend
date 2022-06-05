@@ -46,6 +46,7 @@ public class LevelController {
      * @param authenticationToken Token from GitLab after the Log-in.
      * @param onlyinfo            Boolean query parameter that indicates whether the playable levels should include only their essential infos.
      */
+
     @GetMapping
     public ResponseEntity<Pair<List<LevelDTO>, List<LevelDTO>>> getPlayableAndUnplayableLevels(OAuth2AuthenticationToken authenticationToken, @RequestParam(name = "onlyinfo", required = false, defaultValue = "false") boolean onlyinfo) {
         try {
@@ -57,7 +58,6 @@ public class LevelController {
                             playableLevels.stream().map(Level::toLevelDTO).collect(Collectors.toList()),
                     // Unplayable levels just contain the level infos
                     unplayableLevels.stream().map(Level::toLevelInfoDTO).collect(Collectors.toList())));
-
 
         } catch (UserInexistentException e) {
             return ResponseEntity.status(404).build();
@@ -106,8 +106,6 @@ public class LevelController {
 
     /**
      * GET /levels/worlds/{worldName}.
-     *
-     *
      * @param authenticationToken Token from GitLab after the Log-in.
      * @param worldName name of the world to retrieve.
      * @return the world with the specified name.
