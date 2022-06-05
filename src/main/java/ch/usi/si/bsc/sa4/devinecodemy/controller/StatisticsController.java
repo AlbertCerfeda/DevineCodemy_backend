@@ -50,6 +50,7 @@ public class StatisticsController {
         return ResponseEntity.ok(statisticsService.sortedLeaderboardUsers());
     }
 
+
     /**
      * GET /stats/{id}
      * @param id id of the user of stat to retrieve.
@@ -66,11 +67,12 @@ public class StatisticsController {
      * @param levelNumber the level for which to retrieve the attempt.
      * @param attemptNumber the number of the attempt to retrieve, for -1 retrieves the last one.
      * @return an Optional<UserStatistics> containing the UserStatistics if present.
+     * @throws StatisticInexistentException if the statistics for the level and attempt are not present.
      */
     @GetMapping("/level/{levelNumber}")
     public ResponseEntity<String> getAttempt(OAuth2AuthenticationToken authenticationToken, @PathVariable("levelNumber") int levelNumber,@RequestParam(name = "attemptNumber", defaultValue = "-1") Integer attemptNumber){
 
-        try{
+        try {
             User user = userService.getUserByToken(authenticationToken);
             String userId = user.getId();
 
@@ -80,8 +82,5 @@ public class StatisticsController {
         } catch (StatisticInexistentException | UserInexistentException e) {
             return ResponseEntity.status(404).build();
         }
-
     }
-
-
 }
