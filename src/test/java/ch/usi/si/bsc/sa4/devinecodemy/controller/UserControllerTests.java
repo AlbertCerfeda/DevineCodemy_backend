@@ -45,6 +45,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @SpringBootTest(classes = DevineCodemyBackend.class)
 @ContextConfiguration(classes = DevineCodemyBackend.class)
 @AutoConfigureMockMvc
+
 @DisplayName("he User Controller")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UserControllerTests {
@@ -119,6 +120,7 @@ public class UserControllerTests {
         List<DynamicJsonObject> responseList = objectMapper.readValue(
                 result.getResponse().getContentAsString(),
                 new TypeReference<List<DynamicJsonObject>>() {});
+
         assertEquals(2, responseList.size());
         assertEquals("a name", responseList.get(0).get("name"));
         assertEquals("another name", responseList.get(1).get("name"));
@@ -128,6 +130,7 @@ public class UserControllerTests {
     @DisplayName("Put /users/{id}")
     void testUpdateUser() throws Exception {
         given(userService.getUserByToken(fakeOAuth2User.getOAuth2AuthenticationToken())).willReturn(user1);
+
         UserDTO u1 = new UserDTO(user1, false);
 
         // Test for Status 200 OK
@@ -225,8 +228,10 @@ public class UserControllerTests {
         // Don't mockMvc this: Can't supply a mock UserDTO via API endpoint
         User publicUser = Mockito.mock(User.class);
         given(publicUser.isProfilePublic()).willReturn(true);
+
         User privateUser = Mockito.mock(User.class);
         given(privateUser.isProfilePublic()).willReturn(false);
+
         given(userService.getById("public")).willReturn(Optional.of(publicUser));
         given(userService.getById("private")).willReturn(Optional.of(privateUser));
 
@@ -257,6 +262,7 @@ public class UserControllerTests {
     void testGetUser() throws Exception {
         // To check publicUser has been called
         User publicUser = Mockito.mock(User.class);
+
         given(userService.getUserByToken(fakeOAuth2User.getOAuth2AuthenticationToken())).willReturn(publicUser);
         given(userService.getUserByToken(invalidAuthenticationToken)).willThrow(new InvalidAuthTokenException());
         given(userService.getUserByToken(nonexistentAuthenticationToken)).willThrow(new UserInexistentException());

@@ -30,7 +30,7 @@ public class UserController {
 
     /**
      * GET /users
-     * Returns list of all public users.
+     * @Returns list of all public users.
      */
     @GetMapping
     public ResponseEntity<List<UserDTO>> getAll() {
@@ -43,7 +43,11 @@ public class UserController {
      * Updates the user in the database with info passed from UpdateUserDTO in RequestBody
      * The modifyProfile field of UpdateUserDTO used to indicate whether we are modifying the profile status
      * of the user or the other user attributes.
-     *
+     * @param authenticationToken the authentication token of the user
+     * @param id the id of the user to update
+     * @param updateUserDTO the user info to update
+     * @return the updated user
+     * @throws UserInexistentException if the user does not exist
      * @constraint boolean modifyProfile if true modify profile status, else modify other user fields.
      */
     @PutMapping("/{id}")
@@ -73,6 +77,8 @@ public class UserController {
     /**
      * GET /users/search?name=string
      * Gets the user with the specific name.
+     * @param name the name of the user to search
+     * @return the user with the specific name.
      * @constraint user's profile is public
      */
     @GetMapping("/search")
@@ -87,6 +93,9 @@ public class UserController {
     /**
      * GET /users/:id
      * Gets the user with the specific id only if it's public or the user making the request.
+     * @param authenticationToken the authentication token of the user
+     * @param id the id of the user to get
+     * @returns the user with the specific id.
      * @constraint user's profile is public or of the user itself
      */
     @GetMapping("/{id}")
@@ -107,6 +116,11 @@ public class UserController {
     /**
      * GET /users/user
      * Gets the user
+     * @param authenticationToken the authentication token of the user
+     * @return the user
+     * @catch UserInexistentException if the user does not exist
+     * @catch UserNotFoundException if the user does not exist
+     * @constraint user's profile is public or of the user itself
      */
     @GetMapping("/user")
     public ResponseEntity<UserDTO> getUser(OAuth2AuthenticationToken authenticationToken) {
