@@ -35,7 +35,6 @@ public class PlayController {
     
     /**
      * PUT /play/
-     *
      * @param authenticationToken the users auth token.
      * @param playLevelDTO the needed parameters passed in the body.
      * @return a LevelValidationDTO containing the results of the play.
@@ -45,9 +44,7 @@ public class PlayController {
     public ResponseEntity<LevelValidationDTO> play(OAuth2AuthenticationToken authenticationToken, @RequestBody PlayLevelDTO playLevelDTO) {
         final User user = userService.getUserByToken(authenticationToken);
         final LevelValidation playedLevel = levelService.playLevel(playLevelDTO.getLevelNumber(), user.getId(), playLevelDTO.getProgram(), playLevelDTO.getAttempt());
-
         return ResponseEntity.ok(playedLevel.toLevelValidationDTO());
-
     }
 
 }

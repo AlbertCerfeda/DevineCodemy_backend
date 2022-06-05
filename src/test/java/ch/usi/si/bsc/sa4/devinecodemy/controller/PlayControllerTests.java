@@ -57,38 +57,49 @@ public class PlayControllerTests {
     @BeforeEach
     void setup() {
         program = new Program(List.of());
+
         playLevelDTO = new PlayLevelDTO(1, program, "");
+
         user1 = new User("an id","a name", "a username", "an email","an avatar",
                 "a bio",new SocialMedia("a twitter","a skype", "a linkedin"));
+
         fakeOAuth2User = new FakeOAuth2User("an id");
+
         levelValidation = mock(LevelValidation.class);
         levelValidationDTO = mock(LevelValidationDTO.class);
+
         given(levelValidation.toLevelValidationDTO()).willReturn(levelValidationDTO);
         given(levelValidationDTO.isCompleted()).willReturn(false);
         given(levelValidationDTO.getAnimations()).willReturn(List.of());
         given(levelValidationDTO.getErrors()).willReturn(List.of());
     }
 
-    @DisplayName("should be able to play a level given a proper body")
     @Test
+    @DisplayName("should be able to play a level given a proper body")
     public void testPlay() throws Exception {
         given(userService.getUserByToken(fakeOAuth2User.getOAuth2AuthenticationToken())).willReturn(user1);
         given(levelService.playLevel(anyInt(),any(),any(),any()))
                 .willReturn(levelValidation);
+
         String body = objectMapper.writeValueAsString(playLevelDTO);
+
         MvcResult result = mockMvc.perform(put("/play/")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body)
                 .with(SecurityMockMvcRequestPostProcessors
                         .authentication(fakeOAuth2User.getOAuth2AuthenticationToken())))
                 .andReturn();
+
         LevelValidationDTO levelValidationDTO = objectMapper.readValue(
                 result.getResponse().getContentAsString(),
                 LevelValidationDTO.class);
+
         assertEquals(this.levelValidationDTO.isCompleted(), levelValidationDTO.isCompleted(),
                 "completed state of the playLevelDTO doesn't match the expected one");
+
         assertEquals(this.levelValidationDTO.getAnimations(), levelValidationDTO.getAnimations(),
                 "animations of the playLevelDTO doesn't match the expected one");
+
         assertEquals(this.levelValidationDTO.getErrors(), levelValidationDTO.getErrors(),
                 "errors state of the playLevelDTO doesn't match the expected one");
     }
