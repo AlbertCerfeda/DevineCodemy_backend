@@ -30,7 +30,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
@@ -38,13 +37,27 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+
 @DisplayName("The authentication controller")
 public class AuthenticationControllerTests {
     @Mock
     private RestTemplate restTemplate;
+
+    @Mock
+    private OAuth2AuthorizedClient fakeAuthorizedClient;
+
+    @Mock
+    private OAuth2AuthorizedClient noAccessAuthorizedClient;
+
+    @Mock
+    private OAuth2AccessToken fakeAccessToken;
+
+    @Mock
+    private OAuth2AccessToken noAccessAccessToken;
 
     @MockBean
     private UserService userService;
@@ -63,6 +76,7 @@ public class AuthenticationControllerTests {
 
     private static User user1;
     private static User user2;
+
     private FakeOAuth2User fakeOAuth2User;
     private FakeOAuth2User invalidOAuth2User;
     private FakeOAuth2User noAccessOAuth2User;
@@ -73,33 +87,24 @@ public class AuthenticationControllerTests {
 
     private String fakeAccessTokenValue = "someAccessToken";
 
-    @Mock
-    private OAuth2AuthorizedClient fakeAuthorizedClient;
-
-    @Mock
-    private OAuth2AuthorizedClient noAccessAuthorizedClient;
-
-    @Mock
-    private OAuth2AccessToken fakeAccessToken;
-    @Mock
-    private OAuth2AccessToken noAccessAccessToken;
 
     @BeforeEach
     void setup() {
         //authController = new AuthController(userService, authorizedClientService);
-
 
         user1 = new User("an id", "a name", "a username", "an email", "an avatar",
                 "a bio", new SocialMedia("a twitter", "a skype", "a linkedin"));
         user2 = new User("another id", "another name", "another username", "another email",
                 "another avatar", "another bio",
                 new SocialMedia("another twitter", "another skype", "another linkedin"));
+
         fakeOAuth2User = new FakeOAuth2User("garbage");
         invalidOAuth2User = new FakeOAuth2User("invalid");
         noAccessOAuth2User = new FakeOAuth2User("no access");
 
         given(this.userService.getUserByToken(null))
                 .willThrow(new InvalidAuthTokenException());
+
         given(this.userService.getUserByToken(invalidOAuth2User.getOAuth2AuthenticationToken()))
                 .willThrow(new UserInexistentException());
 
@@ -118,7 +123,6 @@ public class AuthenticationControllerTests {
         given(this.fakeAuthorizedClient.getAccessToken()).willReturn(fakeAccessToken);
         given(this.noAccessAuthorizedClient.getAccessToken()).willReturn(noAccessAccessToken);
 
-
         // Build a
         CreateUserDTO userDto = Mockito.mock(CreateUserDTO.class);
         Mockito.when(userDto.getName()).thenReturn("fakeName");
@@ -128,13 +132,14 @@ public class AuthenticationControllerTests {
         Mockito.when(userDto.getBio()).thenReturn("fakeBio");
 
         String userJson = "";
+
         ObjectMapper mapper = new ObjectMapper();
+
         try {
             userJson = mapper.writeValueAsString(userDto);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-
 
         // Login: Mocks the RestTemplate
         authController.setRestTemplate(restTemplate);
@@ -172,8 +177,8 @@ public class AuthenticationControllerTests {
                 .thenThrow(new RestClientException("i simulate a connection problem"));
     }
 
-    @DisplayName("should be able to check if user is authenticated")
     @Test
+    @DisplayName("Should be able to check if user is authenticated")
     public void testIsAuthenticated() throws Exception {
         //status 200
         this.mockMvc.perform(get("/auth/check")
@@ -194,8 +199,8 @@ public class AuthenticationControllerTests {
                 .andExpect(status().isNotFound());
     }
 
-    @DisplayName("should be able to logout a user")
     @Test
+    @DisplayName("should be able to logout a user")
     public void testUserLogout() throws Exception {
         mockMvc.perform(get("/auth/logout")
                 .with(SecurityMockMvcRequestPostProcessors
@@ -204,8 +209,8 @@ public class AuthenticationControllerTests {
     }
 
     // test userLogin
-    @DisplayName("should be able to login a user")
     @Test
+    @DisplayName("should be able to login a user")
     public void testUserLogin() throws Exception {
         // successful login
         MvcResult resultRedirectSuccess = mockMvc.perform(get("/auth/login")
@@ -226,8 +231,8 @@ public class AuthenticationControllerTests {
         assertEquals("/", resultRedirectUnsuccessful.getResponse().getRedirectedUrl());
     }
 
-    @DisplayName("get user login access token")
     @Test
+    @DisplayName("get user login access token")
     public void testUserLoginGetAccessToken() {
         assertEquals(fakeAccessTokenValue, authController.userLoginGetAccessToken(fakeOAuth2User.getOAuth2AuthenticationToken()));
 
@@ -236,8 +241,8 @@ public class AuthenticationControllerTests {
         });
     }
 
-    @DisplayName("fetch user info from GitLab")
     @Test
+    @DisplayName("fetch user info from GitLab")
     public void testUserLoginFetchUserInfoFromGitLab() {
         CreateUserDTO result = authController.userLoginFetchUserInfoFromGitLab(fakeAccessTokenValue);
         assertEquals("fakeName", result.getName());
@@ -249,16 +254,18 @@ public class AuthenticationControllerTests {
         assertThrows(SessionAuthenticationException.class, () -> {
             authController.userLoginFetchUserInfoFromGitLab("invalid");
         });
+
         assertThrows(RestClientException.class, () -> {
             authController.userLoginFetchUserInfoFromGitLab("connection_problem");
         });
+
         assertThrows(IllegalArgumentException.class, () -> {
             authController.userLoginFetchUserInfoFromGitLab("broken");
         });
     }
 
-    @DisplayName("add or update a user")
     @Test
+    @DisplayName("add or update a user")
     public void testUserLoginAddOrUpdateUser() {
         CreateUserDTO fakeUser = Mockito.mock(CreateUserDTO.class);
         authController.userLoginAddOrUpdateUser(fakeOAuth2User.getOAuth2AuthenticationToken(), fakeUser);
